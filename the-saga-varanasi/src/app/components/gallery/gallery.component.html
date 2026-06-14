@@ -1,0 +1,79 @@
+<section class="gallery-section" id="gallery" aria-label="Project Gallery — Floor Plans, Design Renders & Construction Photos">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Gallery</div>
+      <h2>See The <span class="text-gold">SAGA</span> Come to Life</h2>
+      <p>Explore floor plans, architectural renders, construction progress, and site photographs. Images are updated regularly as the project progresses.</p>
+      <div class="divider"></div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
+      <button
+        *ngFor="let t of tabs"
+        [id]="'gallery-tab-' + t.id"
+        role="tab"
+        [attr.aria-selected]="activeTab === t.id"
+        class="gtab"
+        [class.active]="activeTab === t.id"
+        (click)="selectTab(t.id)">
+        <span>{{ t.icon }}</span>
+        <span>{{ t.label }}</span>
+      </button>
+    </div>
+
+    <!-- Grid -->
+    <div class="gallery-grid" role="tabpanel">
+      <div
+        *ngFor="let item of currentItems; let i = index"
+        class="gallery-card"
+        [style.animationDelay]="(i * 0.06) + 's'"
+        (click)="openLightbox(item)"
+        [class.clickable]="!item.coming">
+
+        <!-- Coming Soon State -->
+        <div class="gc-coming" *ngIf="item.coming">
+          <div class="gc-pattern"></div>
+          <div class="gc-overlay">
+            <div class="gc-icon">🖼️</div>
+            <div class="gc-coming-label">Coming Soon</div>
+            <div class="gc-title">{{ item.title }}</div>
+          </div>
+        </div>
+
+        <!-- Actual Image State -->
+        <div class="gc-image" *ngIf="!item.coming">
+          <img [src]="item.src" [alt]="item.title" loading="lazy">
+          <div class="gc-image-overlay">
+            <span class="gc-zoom">🔍</span>
+            <div class="gc-title">{{ item.title }}</div>
+          </div>
+        </div>
+
+        <div class="gc-meta">
+          <span class="gc-tag">{{ item.tag }}</span>
+          <span class="gc-name">{{ item.title }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload CTA -->
+    <div class="gallery-upload-note">
+      <div class="upload-icon">📸</div>
+      <div>
+        <strong>Images Coming Soon</strong>
+        <p>High-resolution floor plans, 3D renders, and on-site construction photos will be published here. Follow us or check back soon.</p>
+      </div>
+      <button class="btn-outline" (click)="notifyMe()">Notify Me When Published</button>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" [class.open]="lightboxOpen" (click)="closeLightbox()">
+    <div class="lb-inner" (click)="$event.stopPropagation()">
+      <button class="lb-close" (click)="closeLightbox()">✕</button>
+      <img [src]="lightboxSrc" [alt]="lightboxTitle">
+      <div class="lb-title">{{ lightboxTitle }}</div>
+    </div>
+  </div>
+</section>

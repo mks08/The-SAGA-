@@ -1,38 +1,61 @@
-<div class="ideal-for">
-  <h2>Ideal For</h2>
-  <div class="tabs-container">
-    <div class="tabs-header">
-      <button 
-        class="tab-button" 
-        [class.active]="activeTab === 'businesses'"
-        (click)="selectTab('businesses')">
-        Businesses
-      </button>
-      <button 
-        class="tab-button"
-        [class.active]="activeTab === 'startups'"
-        (click)="selectTab('startups')">
-        Startups
-      </button>
-      <button 
-        class="tab-button"
-        [class.active]="activeTab === 'professionals'"
-        (click)="selectTab('professionals')">
-        Professionals
-      </button>
-      <button 
-        class="tab-button"
-        [class.active]="activeTab === 'retail'"
-        (click)="selectTab('retail')">
-        Retail
-      </button>
+<section class="idealfor-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Use Cases</div>
+      <h2>Ideal For <span class="text-gold">Every Ambition</span></h2>
+      <p>From retail powerhouses to medical clinics — The SAGA is built to house every kind of business that aspires to lead.</p>
+      <div class="divider"></div>
     </div>
-    <div class="tab-content">
-      <h3>{{ tabContent[activeTab].title }}</h3>
-      <p>{{ tabContent[activeTab].description }}</p>
-      <ul>
-        <li *ngFor="let point of tabContent[activeTab].points">{{ point }}</li>
-      </ul>
+
+    <div class="idealfor-layout">
+      <!-- Tab Buttons -->
+      <div class="tabs-nav" role="tablist">
+        <button
+          *ngFor="let tab of tabs"
+          role="tab"
+          [id]="'tab-' + tab.id"
+          [class.active]="activeTab === tab.id"
+          (click)="selectTab(tab.id)"
+          class="tab-btn">
+          <span class="tab-icon">{{ tab.icon }}</span>
+          <span class="tab-label">{{ tab.label }}</span>
+          <span class="tab-indicator"></span>
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content" *ngIf="currentTab">
+        <div class="tab-content-inner">
+          <div class="tc-icon">{{ currentTab.icon }}</div>
+          <div class="tc-tag">{{ currentTab.label }}</div>
+          <h3>{{ currentTab.title }}</h3>
+          <p>{{ currentTab.description }}</p>
+
+          <div class="tc-features">
+            <div class="tc-feature" *ngFor="let feat of currentTab.features">
+              <div class="feat-icon">{{ feat.icon }}</div>
+              <div class="feat-body">
+                <div class="feat-name">{{ feat.name }}</div>
+                <div class="feat-desc">{{ feat.desc }}</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary" (click)="openPopup()">Enquire for {{ currentTab.label }} →</button>
+        </div>
+
+        <!-- Visual side -->
+        <div class="tc-visual">
+          <div class="visual-box">
+            <div class="visual-icon">{{ currentTab.icon }}</div>
+            <div class="visual-metric" *ngFor="let m of currentTab.metrics">
+              <div class="metric-val">{{ m.value }}</div>
+              <div class="metric-lbl">{{ m.label }}</div>
+            </div>
+          </div>
+          <div class="visual-glow"></div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>

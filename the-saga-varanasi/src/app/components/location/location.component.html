@@ -1,6 +1,85 @@
-<div class="location">
-  <h2>Location</h2>
-  <div class="map-container">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.9819697089066!2d82.98!3d25.32!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDMwJzU0LjAiTiA4MsKwNTgnNTAuMCJF!5e0!3m2!1sen!2sin!4v1234567890" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<section class="location-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Location</div>
+      <h2>Prime Location in <span class="text-gold">Bada Lalpur</span></h2>
+      <p>Strategically positioned at Varanasi's most rapidly developing commercial intersection — where business meets opportunity.</p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="location-layout">
+      <!-- Info Panel -->
+      <div class="location-info">
+        <div class="loc-address-card">
+          <div class="loc-icon-wrap">📍</div>
+          <div>
+            <div class="loc-label">Project Address</div>
+            <div class="loc-address">Bada Lalpur, Varanasi, Uttar Pradesh</div>
+          </div>
+        </div>
+
+        <div class="loc-landmarks">
+          <h4>Key Landmarks</h4>
+          <div class="landmark-list">
+            <div class="landmark-item">
+              <div class="lm-icon">🏥</div>
+              <div class="lm-body">
+                <div class="lm-name">Apollo Hospital (400 beds)</div>
+                <div class="lm-dist">Directly Opposite</div>
+              </div>
+              <div class="lm-badge near">Opposite</div>
+            </div>
+            <div class="landmark-item">
+              <div class="lm-icon">🎓</div>
+              <div class="lm-body">
+                <div class="lm-name">NIFT — National Institute of Fashion Technology</div>
+                <div class="lm-dist">Diagonal</div>
+              </div>
+              <div class="lm-badge near">Diagonal</div>
+            </div>
+            <div class="landmark-item">
+              <div class="lm-icon">🛣️</div>
+              <div class="lm-body">
+                <div class="lm-name">Major City Road Connectivity</div>
+                <div class="lm-dist">Direct Access</div>
+              </div>
+              <div class="lm-badge">Well Connected</div>
+            </div>
+            <div class="landmark-item">
+              <div class="lm-icon">🏢</div>
+              <div class="lm-body">
+                <div class="lm-name">Emerging Business Hub</div>
+                <div class="lm-dist">City's fastest growing zone</div>
+              </div>
+              <div class="lm-badge">Prime Zone</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" (click)="openPopup()">
+          Get Location Details →
+        </button>
+      </div>
+
+      <!-- Map -->
+      <div class="location-map">
+        <div class="map-wrapper">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.5!2d82.9764!3d25.3226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e2db76febcf4f%3A0x970b0e1642b8ed0b!2sBada%20Lalpur%2C%20Varanasi%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1718000000000"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="The SAGA Varanasi Location">
+          </iframe>
+          <div class="map-overlay-label">
+            <span>📍</span>
+            <span>The SAGA, Bada Lalpur</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>

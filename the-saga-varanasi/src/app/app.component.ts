@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'the-saga-varanasi';
+  title = 'The SAGA Varanasi — Premier G+4 Commercial Complex';
 }

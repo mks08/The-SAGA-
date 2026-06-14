@@ -1,0 +1,62 @@
+<section class="connectivity-section" id="connectivity" aria-label="Connectivity and Distances from The SAGA Varanasi">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Connectivity</div>
+      <h2>At the Heart of <span class="text-gold">Varanasi</span></h2>
+      <p>The SAGA, Bada Lalpur offers exceptional connectivity to all key landmarks, transport hubs, educational institutions and commercial zones of Varanasi.</p>
+      <div class="divider"></div>
+    </div>
+
+    <!-- Hero stat bar -->
+    <div class="conn-hero-bar">
+      <div class="chb-item">
+        <div class="chb-val">18 km</div>
+        <div class="chb-lbl">From Airport</div>
+      </div>
+      <div class="chb-div"></div>
+      <div class="chb-item">
+        <div class="chb-val">8 km</div>
+        <div class="chb-lbl">From Railway Station</div>
+      </div>
+      <div class="chb-div"></div>
+      <div class="chb-item">
+        <div class="chb-val">Opposite</div>
+        <div class="chb-lbl">Apollo Hospital</div>
+      </div>
+      <div class="chb-div"></div>
+      <div class="chb-item">
+        <div class="chb-val">Diagonal</div>
+        <div class="chb-lbl">NIFT Campus</div>
+      </div>
+    </div>
+
+    <!-- Connections Grid -->
+    <div class="connections-grid">
+      <div class="conn-card"
+           *ngFor="let c of connections; let i = index"
+           [class.highlight]="c.highlight"
+           [style.animationDelay]="(i * 0.07) + 's'">
+
+        <div class="conn-icon-wrap">
+          <span class="conn-icon">{{ c.icon }}</span>
+        </div>
+
+        <div class="conn-body">
+          <div class="conn-tag">{{ c.tag }}</div>
+          <div class="conn-name">{{ c.name }}</div>
+        </div>
+
+        <div class="conn-metrics">
+          <div class="conn-dist" [class.gold]="c.highlight">{{ c.distance }}</div>
+          <div class="conn-time">{{ c.time }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom note -->
+    <div class="conn-note">
+      <span>📍</span>
+      <span>All distances are approximate from The SAGA, Bada Lalpur, Varanasi. Travel times may vary with traffic conditions.</span>
+    </div>
+  </div>
+</section>

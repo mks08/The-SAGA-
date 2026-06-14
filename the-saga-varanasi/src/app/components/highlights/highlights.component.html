@@ -1,35 +1,49 @@
-<div class="highlights">
-  <h2>Highlights</h2>
-  <div class="grid">
-    <div class="highlight-card">
-      <div class="card-icon">🏢</div>
-      <div class="card-title">Massive Spaces</div>
-      <div class="card-description">Commercial spaces ranging from 1,000 to 50,000 sq ft, designed for scalability</div>
+<section class="highlights-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Key Highlights</div>
+      <h2>Everything You Need to <br><span class="text-gold">Grow Your Business</span></h2>
+      <p>The SAGA is engineered for ambitious businesses, clinics, banks, studios, and retail brands who demand the very best.</p>
+      <div class="divider"></div>
     </div>
-    <div class="highlight-card">
-      <div class="card-icon">✓</div>
-      <div class="card-title">VDA Approved</div>
-      <div class="card-description">Government approved development with all necessary clearances and certifications</div>
+
+    <!-- VDA Approved Banner -->
+    <div class="vda-banner">
+      <div class="vda-icon">✓</div>
+      <div class="vda-text">
+        <strong>VDA APPROVED</strong>
+        <span>Fully compliant project with all necessary government clearances &amp; certifications</span>
+      </div>
+      <div class="vda-badge">Government Approved</div>
     </div>
-    <div class="highlight-card">
-      <div class="card-icon">📍</div>
-      <div class="card-title">Prime Location</div>
-      <div class="card-description">Strategic location in Varanasi's commercial hub with excellent connectivity</div>
+
+    <!-- Highlights Grid -->
+    <div class="highlights-grid">
+      <div class="highlight-card" *ngFor="let card of cards; let i = index"
+           [style.animationDelay]="(i * 0.1) + 's'">
+        <div class="card-glow"></div>
+        <div class="card-icon-wrap">
+          <div class="card-icon">{{ card.icon }}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-number">0{{ i + 1 }}</div>
+          <h3 class="card-title">{{ card.title }}</h3>
+          <p class="card-desc">{{ card.description }}</p>
+          <ul class="card-points" *ngIf="card.points?.length">
+            <li *ngFor="let pt of card.points">{{ pt }}</li>
+          </ul>
+        </div>
+        <div class="card-corner"></div>
+      </div>
     </div>
-    <div class="highlight-card">
-      <div class="card-icon">🎯</div>
-      <div class="card-title">Modern Design</div>
-      <div class="card-description">Contemporary architecture with state-of-the-art infrastructure and amenities</div>
-    </div>
-    <div class="highlight-card">
-      <div class="card-icon">🔐</div>
-      <div class="card-title">24/7 Security</div>
-      <div class="card-description">Advanced security systems and round-the-clock monitoring for complete peace of mind</div>
-    </div>
-    <div class="highlight-card">
-      <div class="card-icon">⚡</div>
-      <div class="card-title">Smart Tech</div>
-      <div class="card-description">IoT-enabled infrastructure with smart utilities and energy-efficient systems</div>
+
+    <!-- Bottom CTA strip -->
+    <div class="highlights-cta">
+      <div class="cta-text">
+        <h3>Structure Ready <span class="text-gold">October 2026</span></h3>
+        <p>Modify layouts to maximize your brand's visibility &amp; business needs. Custom builds available.</p>
+      </div>
+      <button class="btn-primary" (click)="openPopup()">Enquire Now →</button>
     </div>
   </div>
-</div>
+</section>

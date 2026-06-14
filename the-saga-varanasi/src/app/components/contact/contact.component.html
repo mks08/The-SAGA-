@@ -1,10 +1,150 @@
-<div class="contact">
-  <h2>Contact</h2>
-  <form [formGroup]="contactForm" (ngSubmit)="submit()">
-    <input formControlName="name" placeholder="Full name" />
-    <input formControlName="email" placeholder="Email" />
-    <input formControlName="phone" placeholder="Phone" />
-    <textarea formControlName="message" placeholder="Message"></textarea>
-    <button type="submit">Send</button>
-  </form>
-</div>
+<section class="contact-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Contact Us</div>
+      <h2>Start Your Journey at <span class="text-gold">The SAGA</span></h2>
+      <p>Pre-leasing has started on a first-come, first-serve basis. Reach out to secure your landmark space today.</p>
+      <div class="divider"></div>
+    </div>
+
+    <div class="contact-layout">
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <div class="info-card">
+          <div class="info-icon">📞</div>
+          <div class="info-body">
+            <div class="info-label">Call Us</div>
+            <a href="tel:07355770378" class="info-value">073557 70378</a>
+            <div class="info-sub">Mon–Sat, 10am to 7pm</div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">✉️</div>
+          <div class="info-body">
+            <div class="info-label">Email Us</div>
+            <a href="mailto:info@thesagavaranasi.in" class="info-value">info&#64;thesagavaranasi.in</a>
+            <div class="info-sub">Response within 24 hours</div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📍</div>
+          <div class="info-body">
+            <div class="info-label">Visit Us</div>
+            <div class="info-value small">Bada Lalpur, Varanasi, UP</div>
+            <div class="info-sub">Opposite Apollo Hospital</div>
+          </div>
+        </div>
+
+        <div class="urgency-strip">
+          <div class="urgency-dot"></div>
+          <div>
+            <strong>Pre-Leasing Open — Act Now!</strong>
+            <p>Limited spaces available on first-come, first-serve basis. Structure ready October 2026.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-wrap">
+        <div class="form-header">
+          <h3>Send an Enquiry</h3>
+          <p>Tell us about your space requirements</p>
+        </div>
+
+        <form [formGroup]="contactForm" (ngSubmit)="submit()" class="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group" [class.error]="isInvalid('name')">
+              <label for="contact-name">Full Name *</label>
+              <input id="contact-name" formControlName="name" placeholder="Your full name" autocomplete="name">
+              <span class="form-error" *ngIf="isInvalid('name')">Please enter your name</span>
+            </div>
+            <div class="form-group" [class.error]="isInvalid('phone')">
+              <label for="contact-phone">Phone Number *</label>
+              <input id="contact-phone" formControlName="phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel">
+              <span class="form-error" *ngIf="isInvalid('phone')">Please enter your phone</span>
+            </div>
+          </div>
+
+          <div class="form-group" [class.error]="isInvalid('email')">
+            <label for="contact-email">Email Address</label>
+            <input id="contact-email" type="email" formControlName="email" placeholder="yourname@example.com" autocomplete="email">
+            <span class="form-error" *ngIf="isInvalid('email')">Please enter a valid email</span>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-type">Space Requirement</label>
+            <select id="contact-type" formControlName="spaceType">
+              <option value="">Select type of space</option>
+              <option value="retail">Retail Store</option>
+              <option value="clinic">Clinic / Medical</option>
+              <option value="office">Office / Corporate</option>
+              <option value="bank">Bank / Financial Services</option>
+              <option value="studio">1 BHK Studio</option>
+              <option value="restaurant">Restaurant / Café</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" formControlName="message" placeholder="Tell us about your requirements — floor preference, sq ft needed, timeline, etc." rows="4"></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" [disabled]="submitted">
+            <span *ngIf="!submitted">Send Enquiry →</span>
+            <span *ngIf="submitted">✓ Enquiry Sent!</span>
+          </button>
+        </form>
+
+        <div class="form-success" *ngIf="submitted">
+          <div class="success-icon">✓</div>
+          <strong>Thank you! We'll contact you shortly.</strong>
+          <p>Our team will reach out within 24 hours to discuss your space requirements.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span>◈</span>
+          <div>
+            <div class="fl-main">THE SAGA</div>
+            <div class="fl-sub">VARANASI</div>
+          </div>
+        </div>
+        <p>Premier G+4 mixed-use commercial complex in Bada Lalpur, Varanasi — redefining the city's commercial future.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#highlights">Highlights</a></li>
+            <li><a href="#ideal-for">Use Cases</a></li>
+            <li><a href="#location">Location</a></li>
+          </ul>
+        </div>
+        <div class="fl-col">
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="tel:07355770378">073557 70378</a></li>
+            <li><a href="mailto:info@thesagavaranasi.in">info&#64;thesagavaranasi.in</a></li>
+            <li>Bada Lalpur, Varanasi</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 The SAGA Varanasi. All rights reserved. · VDA Approved Project</p>
+      <p class="footer-disc">*All images are for representational purposes. Structure ready October 2026.</p>
+    </div>
+  </div>
+</footer>

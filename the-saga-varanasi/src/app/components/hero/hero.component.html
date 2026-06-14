@@ -1,8 +1,86 @@
-<div class="hero">
-  <!-- 3D render placeholder + parallax layers -->
-  <div class="hero-canvas">3D canvas placeholder</div>
-  <div class="hero-content">
-    <h1>The SAGA Varanasi</h1>
-    <p>Premium commercial spaces — crafted for scale.</p>
+<section class="hero" id="hero-section">
+  <!-- Animated background grid -->
+  <div class="hero-grid"></div>
+
+  <!-- Floating particles -->
+  <div class="particles">
+    <span *ngFor="let p of particles" class="particle"
+      [style.left]="p.left"
+      [style.animationDuration]="p.duration"
+      [style.animationDelay]="p.delay"
+      [style.width]="p.size"
+      [style.height]="p.size">
+    </span>
   </div>
-</div>
+
+  <!-- Glowing orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      <span>Pre-Leasing Now Open · First Come, First Serve</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="title-line">THE</span>
+      <span class="title-line title-saga">SAGA</span>
+      <span class="title-line title-sub">VARANASI</span>
+    </h1>
+
+    <p class="hero-desc">
+      Varanasi's premier <span class="highlight">G+4 mixed-use commercial complex</span> in Bada Lalpur —
+      opposite the <strong>400-bed Apollo Hospital</strong> & diagonal to <strong>NIFT</strong>.
+      The city's most rapidly developing business hub.
+    </p>
+
+    <!-- Stats bar -->
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value">G+4</div>
+        <div class="stat-label">Floors</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value">3,500</div>
+        <div class="stat-label">Sq. Ft / Floor</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value">Oct '26</div>
+        <div class="stat-label">Possession</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value">VDA</div>
+        <div class="stat-label">Approved</div>
+      </div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="hero-actions">
+      <button id="hero-book-btn" class="btn-hero-primary" (click)="openPopup()">
+        Book Your Space
+        <span class="btn-arrow">→</span>
+      </button>
+      <a id="hero-call-btn" href="tel:07355770378" class="btn-hero-outline">
+        📞 073557 70378
+      </a>
+    </div>
+
+    <!-- Location tag -->
+    <div class="hero-location">
+      <span class="loc-icon">📍</span>
+      <span>Bada Lalpur, Varanasi · Opposite Apollo Hospital</span>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
