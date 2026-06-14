@@ -6,43 +6,60 @@ import { Component } from '@angular/core';
   styleUrls: ['./highlights.component.scss'],
 })
 export class HighlightsComponent {
-  cards = [
+
+  // Key commercial highlights — shown as full cards
+  highlights = [
     {
       icon: '🏢',
-      title: 'Massive 3,500 Sq Ft Floors',
-      description: 'Each floor offers 3,500 sq. ft. of premium space — ideal for retail stores, offices, clinics, banks, and 1 BHK studios.',
-      points: ['Open plan layouts', 'Floor-to-ceiling heights', 'Natural light on all sides'],
+      num: '01',
+      title: '3,500 Sq Ft Per Floor',
+      desc: 'Each of the 5 floors offers 3,500 sq ft of premium, column-free space — adaptable for any commercial use.',
+      points: ['Open plan layouts', 'Floor-to-ceiling heights', 'Natural light all sides'],
     },
     {
       icon: '📍',
-      title: 'Unmatched Visibility',
-      description: 'Positioned opposite the 400-bed Apollo Hospital and diagonal to NIFT in Bada Lalpur — Varanasi\'s fastest-growing business corridor.',
-      points: ['High footfall area', 'Opposite Apollo Hospital', 'Adjacent to NIFT'],
-    },
-    {
-      icon: '🚗',
-      title: 'Dedicated Parking',
-      description: 'Purpose-built dedicated parking facility ensuring hassle-free access for tenants, employees, and customers at all times.',
-      points: ['Multi-level parking', 'Visitor parking bays', 'EV charging ready'],
-    },
-    {
-      icon: '☕',
-      title: 'Rooftop Café',
-      description: 'A premium rooftop café with panoramic views of Varanasi — perfect for business lunches, client meetings, and team downtime.',
-      points: ['360° city views', 'Premium F&B setup', 'Event hosting capability'],
+      num: '02',
+      title: 'Prime Location — Bada Lalpur',
+      desc: 'Directly opposite the 400-bed Apollo Hospital & diagonal to NIFT — Varanasi\'s fastest-growing commercial corridor.',
+      points: ['Max footfall zone', 'Opposite Apollo Hospital', 'Diagonal to NIFT Campus'],
     },
     {
       icon: '🔧',
-      title: 'Custom Builds',
-      description: 'Structure ready by October 2026. Modify layouts before possession to perfectly suit your brand identity and operational needs.',
-      points: ['Flexible floor plans', 'Brand-specific fitouts', 'Early bird advantage'],
+      num: '03',
+      title: 'Custom Fit-Out Ready',
+      desc: 'Bare-shell handover so you design your space from scratch — layouts, partitions, interiors fully customisable.',
+      points: ['Bare-shell delivery', 'Modify before Oct 2026', 'Design assistance available'],
     },
     {
-      icon: '⚡',
-      title: 'Smart Infrastructure',
-      description: 'State-of-the-art infrastructure including high-speed fiber connectivity, 24/7 power backup, and modern security systems.',
-      points: ['100% power backup', 'High-speed internet', 'CCTV security'],
+      icon: '☕',
+      num: '04',
+      title: 'Rooftop Café & Terrace',
+      desc: 'A stunning rooftop terrace with panoramic Varanasi skyline views — ideal for café, dining, corporate events.',
+      points: ['Panoramic city views', 'Event-ready terrace', 'Hospitality provisioned'],
     },
+    {
+      icon: '📋',
+      num: '05',
+      title: 'VDA Approved',
+      desc: 'Fully compliant with Varanasi Development Authority norms — clear title, all approvals in place, zero legal risk.',
+      points: ['VDA clearance obtained', 'RERA compliant', 'Zero encumbrance'],
+    },
+  ];
+
+  // Services & Infrastructure — displayed as a compact icon grid
+  services = [
+    { icon: '🛗', label: 'Passenger Lift' },
+    { icon: '🔥', label: 'Fire Fighting System' },
+    { icon: '🚗', label: 'Dedicated Parking' },
+    { icon: '⚡', label: '24×7 Power Backup' },
+    { icon: '🔒', label: 'CCTV & Security' },
+    { icon: '🌐', label: 'Fiber Connectivity' },
+    { icon: '💧', label: 'Water Supply & STP' },
+    { icon: '♿', label: 'Accessible Design' },
+    { icon: '🎨', label: 'Premium Finishes' },
+    { icon: '📡', label: 'Telecom Ready' },
+    { icon: '🏗️', label: 'Seismic-Safe Structure' },
+    { icon: '🌿', label: 'Landscaped Entrance' },
   ];
 
   openPopup() {

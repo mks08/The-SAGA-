@@ -1,61 +1,42 @@
-<section class="idealfor-section">
+<section class="idealfor-section" id="ideal-for">
   <div class="container">
+
     <div class="section-header">
-      <div class="section-tag">Use Cases</div>
+      <div class="section-tag">Who It's For</div>
       <h2>Ideal For <span class="text-gold">Every Ambition</span></h2>
-      <p>From retail powerhouses to medical clinics — The SAGA is built to house every kind of business that aspires to lead.</p>
+      <p>
+        The SAGA is engineered for ambitious businesses who demand the very best.
+        Whether you need a clinic, a branch, a showroom, or a studio —
+        <strong>you can get the space you need.</strong>
+      </p>
       <div class="divider"></div>
     </div>
 
-    <div class="idealfor-layout">
-      <!-- Tab Buttons -->
-      <div class="tabs-nav" role="tablist">
-        <button
-          *ngFor="let tab of tabs"
-          role="tab"
-          [id]="'tab-' + tab.id"
-          [class.active]="activeTab === tab.id"
-          (click)="selectTab(tab.id)"
-          class="tab-btn">
-          <span class="tab-icon">{{ tab.icon }}</span>
-          <span class="tab-label">{{ tab.label }}</span>
-          <span class="tab-indicator"></span>
-        </button>
-      </div>
-
-      <!-- Tab Content -->
-      <div class="tab-content" *ngIf="currentTab">
-        <div class="tab-content-inner">
-          <div class="tc-icon">{{ currentTab.icon }}</div>
-          <div class="tc-tag">{{ currentTab.label }}</div>
-          <h3>{{ currentTab.title }}</h3>
-          <p>{{ currentTab.description }}</p>
-
-          <div class="tc-features">
-            <div class="tc-feature" *ngFor="let feat of currentTab.features">
-              <div class="feat-icon">{{ feat.icon }}</div>
-              <div class="feat-body">
-                <div class="feat-name">{{ feat.name }}</div>
-                <div class="feat-desc">{{ feat.desc }}</div>
-              </div>
-            </div>
-          </div>
-
-          <button class="btn-primary" (click)="openPopup()">Enquire for {{ currentTab.label }} →</button>
-        </div>
-
-        <!-- Visual side -->
-        <div class="tc-visual">
-          <div class="visual-box">
-            <div class="visual-icon">{{ currentTab.icon }}</div>
-            <div class="visual-metric" *ngFor="let m of currentTab.metrics">
-              <div class="metric-val">{{ m.value }}</div>
-              <div class="metric-lbl">{{ m.label }}</div>
-            </div>
-          </div>
-          <div class="visual-glow"></div>
-        </div>
-      </div>
+    <!-- Use Case Grid -->
+    <div class="uc-grid">
+      <button
+        *ngFor="let uc of useCases; let i = index"
+        class="uc-card"
+        [class.other-card]="uc.isOther"
+        [style.--accent]="uc.color"
+        [style.animationDelay]="(i * 0.04) + 's'"
+        (click)="openPopup()"
+        [attr.aria-label]="'Enquire for ' + uc.label">
+        <span class="uc-icon">{{ uc.icon }}</span>
+        <span class="uc-label">{{ uc.label }}</span>
+        <span class="uc-arrow" *ngIf="uc.isOther">→</span>
+      </button>
     </div>
+
+    <!-- Bottom message -->
+    <div class="uc-bottom">
+      <div class="uc-tagline">
+        <span class="uc-quote">"</span>
+        The SAGA is built for Varanasi's next generation of businesses.
+        <span class="uc-cta-text"> Don't see your use case?</span>
+      </div>
+      <button class="btn-primary" (click)="openPopup()">Tell Us What You Need →</button>
+    </div>
+
   </div>
 </section>

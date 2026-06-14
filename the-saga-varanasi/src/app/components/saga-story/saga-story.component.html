@@ -1,57 +1,39 @@
-<section class="story-section" id="story" aria-label="The Story Behind The SAGA">
+<section class="story-section" id="story" aria-label="About The SAGA — Our Story">
   <div class="story-bg-grid"></div>
 
   <div class="container">
-    <!-- Header -->
     <div class="section-header">
       <div class="section-tag">Our Story</div>
-      <h2>The <span class="text-gold">SAGA</span> Behind The Name</h2>
-      <p>A tribute to two people whose initials created a legacy — and a landmark that will define Varanasi's commercial future for generations to come.</p>
+      <h2>Built on <span class="text-gold">Love & Legacy</span></h2>
       <div class="divider"></div>
     </div>
 
-    <!-- Letter breakdown -->
-    <div class="saga-letters">
-      <div class="letter-card" *ngFor="let l of letters; let i = index" [style.animationDelay]="(i * 0.12) + 's'">
-        <div class="letter-char">{{ l.char }}</div>
-        <div class="letter-stands">stands for</div>
-        <div class="letter-word">{{ l.word }}</div>
-        <div class="letter-parent">{{ l.from }}</div>
-      </div>
-    </div>
+    <div class="story-card" #revealEl>
+      <!-- Decorative quote mark -->
+      <div class="story-quote-mark">"</div>
 
-    <!-- Quote -->
-    <div class="story-quote">
-      <div class="quote-mark">"</div>
-      <blockquote>
-        This project is our parents' story — told in steel, glass, and granite. Every floor, every space is a chapter of their hard work, their dreams, and their dedication to this sacred city.
-      </blockquote>
-      <div class="quote-attribution">— The Founders, The SAGA Varanasi</div>
-    </div>
+      <div class="story-body">
+        <div class="story-icon">🏛️</div>
 
-    <!-- Timeline -->
-    <div class="story-timeline">
-      <div class="timeline-line"></div>
-      <div class="timeline-item reveal-item"
-           *ngFor="let m of milestones; let i = index; let odd = odd"
-           [class.right]="odd"
-           #revealEl>
-        <div class="timeline-dot">
-          <span>{{ m.icon }}</span>
+        <p class="story-para">
+          The SAGA is more than a commercial complex — it is a <strong>tribute to Gopal Singh and Savitri Singh</strong>,
+          whose lifelong hard work, sacrifices, and dedication paved the way for this family and the generations to follow.
+        </p>
+
+        <p class="story-para">
+          Their relentless effort rooted in us the values of <strong>honesty, hard work, and a deep sense of belonging to Varanasi</strong>.
+          This project is our way of honouring that ideology — by contributing something meaningful and lasting to the city they called home.
+        </p>
+
+        <p class="story-para highlight-line">
+          Everything that The SAGA offers today — the quality, the ambition, the commitment — is the direct result of what they gave us.
+        </p>
+
+        <div class="story-attribution">
+          <div class="attr-line"></div>
+          <span>— Dedicated to Gopal Singh & Savitri Singh</span>
+          <div class="attr-line"></div>
         </div>
-        <div class="timeline-card">
-          <div class="tc-year">{{ m.year }}</div>
-          <h3>{{ m.title }}</h3>
-          <p>{{ m.text }}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Values strip -->
-    <div class="story-values">
-      <div class="value-item" *ngFor="let v of values">
-        <div class="val-icon">{{ v.icon }}</div>
-        <div class="val-text">{{ v.text }}</div>
       </div>
     </div>
   </div>

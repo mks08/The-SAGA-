@@ -1,49 +1,76 @@
-<section class="highlights-section">
+<section class="highlights-section" id="highlights">
   <div class="container">
+
+    <!-- Section Header -->
     <div class="section-header">
-      <div class="section-tag">Key Highlights</div>
-      <h2>Everything You Need to <br><span class="text-gold">Grow Your Business</span></h2>
-      <p>The SAGA is engineered for ambitious businesses, clinics, banks, studios, and retail brands who demand the very best.</p>
+      <div class="section-tag">Why Choose The SAGA</div>
+      <h2>Key <span class="text-gold">Highlights</span></h2>
+      <p>Everything your business needs — in one landmark address.</p>
       <div class="divider"></div>
     </div>
 
-    <!-- VDA Approved Banner -->
+    <!-- VDA Banner -->
     <div class="vda-banner">
       <div class="vda-icon">✓</div>
       <div class="vda-text">
-        <strong>VDA APPROVED</strong>
-        <span>Fully compliant project with all necessary government clearances &amp; certifications</span>
+        <strong>VDA Approved &amp; RERA Compliant</strong>
+        <span>Varanasi Development Authority — fully cleared. Structure completion: October 2026.</span>
       </div>
-      <div class="vda-badge">Government Approved</div>
+      <div class="vda-badge">🏗️ Construction in Progress</div>
     </div>
 
-    <!-- Highlights Grid -->
+    <!-- Key Highlights Grid -->
     <div class="highlights-grid">
-      <div class="highlight-card" *ngFor="let card of cards; let i = index"
-           [style.animationDelay]="(i * 0.1) + 's'">
+      <div class="highlight-card"
+           *ngFor="let h of highlights; let i = index"
+           [style.animationDelay]="(i * 0.12) + 's'">
+
         <div class="card-glow"></div>
-        <div class="card-icon-wrap">
-          <div class="card-icon">{{ card.icon }}</div>
-        </div>
+        <div class="card-corner"></div>
+
         <div class="card-body">
-          <div class="card-number">0{{ i + 1 }}</div>
-          <h3 class="card-title">{{ card.title }}</h3>
-          <p class="card-desc">{{ card.description }}</p>
-          <ul class="card-points" *ngIf="card.points?.length">
-            <li *ngFor="let pt of card.points">{{ pt }}</li>
+          <div class="card-icon-wrap">
+            <span class="card-icon">{{ h.icon }}</span>
+          </div>
+          <div class="card-num">{{ h.num }}</div>
+          <div class="card-title">{{ h.title }}</div>
+          <div class="card-desc">{{ h.desc }}</div>
+          <ul class="card-points">
+            <li *ngFor="let p of h.points">
+              <span class="cp-dot">◈</span>
+              <span>{{ p }}</span>
+            </li>
           </ul>
         </div>
-        <div class="card-corner"></div>
       </div>
     </div>
 
-    <!-- Bottom CTA strip -->
-    <div class="highlights-cta">
-      <div class="cta-text">
-        <h3>Structure Ready <span class="text-gold">October 2026</span></h3>
-        <p>Modify layouts to maximize your brand's visibility &amp; business needs. Custom builds available.</p>
+    <!-- ─────── Building Services Section ─────── -->
+    <div class="services-block">
+      <div class="services-header">
+        <div class="sh-label">Building Infrastructure</div>
+        <h3 class="sh-title">Services &amp; Amenities</h3>
+        <p class="sh-desc">
+          Every essential amenity — engineered and installed — so your business runs without compromise.
+        </p>
       </div>
-      <button class="btn-primary" (click)="openPopup()">Enquire Now →</button>
+
+      <div class="services-grid">
+        <div class="service-item" *ngFor="let s of services">
+          <div class="si-icon">{{ s.icon }}</div>
+          <div class="si-label">{{ s.label }}</div>
+        </div>
+      </div>
     </div>
+
+    <!-- CTA Strip -->
+    <div class="highlights-cta">
+      <div class="hcta-text">
+        <strong>Pre-leasing is now open.</strong>
+        <span>First come, first serve — secure your floor before it's gone.</span>
+      </div>
+      <button class="btn-gold" id="highlights-book-btn" (click)="openPopup()">Book Your Space →</button>
+    </div>
+
   </div>
 </section>

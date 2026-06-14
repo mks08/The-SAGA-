@@ -1,6 +1,11 @@
 <section class="hero" id="hero-section">
-  <!-- Animated background grid -->
-  <div class="hero-grid"></div>
+  <!-- Warm gradient mesh background -->
+  <div class="hero-bg">
+    <div class="bg-mesh"></div>
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
 
   <!-- Floating particles -->
   <div class="particles">
@@ -13,68 +18,89 @@
     </span>
   </div>
 
-  <!-- Glowing orbs -->
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+  <!-- Main Content: Two-column -->
+  <div class="hero-inner">
+    <!-- LEFT: Text Content -->
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>🏗️ Construction in Progress · Pre-Leasing Open</span>
+      </div>
 
-  <!-- Hero Content -->
-  <div class="hero-content">
-    <div class="hero-badge">
-      <span class="badge-dot"></span>
-      <span>Pre-Leasing Now Open · First Come, First Serve</span>
+      <h1 class="hero-title">
+        <span class="title-eyebrow">INTRODUCING</span>
+        <span class="title-the">THE</span>
+        <span class="title-saga">SAGA</span>
+        <span class="title-sub">VARANASI</span>
+      </h1>
+
+      <p class="hero-desc">
+        Varanasi's most anticipated <span class="hl">G+4 mixed-use commercial complex</span> in Bada Lalpur —
+        opposite <strong>Apollo Hospital</strong> & diagonal to <strong>NIFT</strong>.
+        The city's fastest-growing business address.
+      </p>
+
+      <!-- Stats bar -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value">G+4</div>
+          <div class="stat-label">Floors</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value">3,500</div>
+          <div class="stat-label">Sq Ft / Floor</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value">Oct '26</div>
+          <div class="stat-label">Possession</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value">VDA ✓</div>
+          <div class="stat-label">Approved</div>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="hero-actions">
+        <button id="hero-book-btn" class="btn-hero-primary" (click)="openPopup()">
+          Book Your Space
+          <span class="btn-arrow">→</span>
+        </button>
+        <a id="hero-call-btn" href="tel:07355770378" class="btn-hero-outline">
+          📞 073557 70378
+        </a>
+      </div>
+
+      <!-- Location tag -->
+      <div class="hero-location">
+        <span>📍</span>
+        <span>Bada Lalpur, Varanasi · Opposite Apollo Hospital</span>
+      </div>
     </div>
 
-    <h1 class="hero-title">
-      <span class="title-line">THE</span>
-      <span class="title-line title-saga">SAGA</span>
-      <span class="title-line title-sub">VARANASI</span>
-    </h1>
-
-    <p class="hero-desc">
-      Varanasi's premier <span class="highlight">G+4 mixed-use commercial complex</span> in Bada Lalpur —
-      opposite the <strong>400-bed Apollo Hospital</strong> & diagonal to <strong>NIFT</strong>.
-      The city's most rapidly developing business hub.
-    </p>
-
-    <!-- Stats bar -->
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-value">G+4</div>
-        <div class="stat-label">Floors</div>
+    <!-- RIGHT: Floating Building Image -->
+    <div class="hero-visual">
+      <div class="building-frame">
+        <div class="building-glow"></div>
+        <img
+          src="assets/building-render.jpg"
+          alt="The SAGA Varanasi — G+4 Commercial Complex Render"
+          class="building-img"
+          loading="eager"
+        >
+        <!-- Floor labels overlay -->
+        <div class="floor-tag floor-roof">🌅 Rooftop Café</div>
+        <div class="floor-tag floor-top">4th Floor · Premium Offices</div>
+        <div class="floor-tag floor-mid">Ground · Retail & Commercial</div>
+        <!-- Construction badge -->
+        <div class="construction-badge">
+          <span class="cb-dot"></span>
+          Under Construction
+        </div>
       </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <div class="stat-value">3,500</div>
-        <div class="stat-label">Sq. Ft / Floor</div>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <div class="stat-value">Oct '26</div>
-        <div class="stat-label">Possession</div>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <div class="stat-value">VDA</div>
-        <div class="stat-label">Approved</div>
-      </div>
-    </div>
-
-    <!-- CTAs -->
-    <div class="hero-actions">
-      <button id="hero-book-btn" class="btn-hero-primary" (click)="openPopup()">
-        Book Your Space
-        <span class="btn-arrow">→</span>
-      </button>
-      <a id="hero-call-btn" href="tel:07355770378" class="btn-hero-outline">
-        📞 073557 70378
-      </a>
-    </div>
-
-    <!-- Location tag -->
-    <div class="hero-location">
-      <span class="loc-icon">📍</span>
-      <span>Bada Lalpur, Varanasi · Opposite Apollo Hospital</span>
     </div>
   </div>
 
