@@ -1,0 +1,107 @@
+.contact {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, var(--dark) 0%, var(--dark-alt) 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.8s ease-out;
+
+  h2 {
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
+      margin: 1rem auto 0;
+    }
+  }
+}
+
+form {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-xl);
+  max-width: 500px;
+  width: 100%;
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--light-alt);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-primary);
+  transition: var(--transition);
+  background: var(--light);
+
+  &::placeholder {
+    color: var(--text-secondary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(11, 92, 255, 0.1);
+  }
+
+  &:hover:not(:focus) {
+    border-color: var(--primary-light);
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+button {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(11, 92, 255, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

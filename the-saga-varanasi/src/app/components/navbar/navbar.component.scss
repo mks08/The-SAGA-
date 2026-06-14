@@ -1,0 +1,78 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  animation: slideInDown 0.6s ease-out;
+
+  nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: var(--transition);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: var(--primary);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+      }
+
+      &:hover {
+        color: var(--primary);
+
+        &::before {
+          width: 100%;
+        }
+      }
+
+      &.active {
+        color: var(--primary);
+        background: rgba(11, 92, 255, 0.1);
+
+        &::before {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+app-chatbot-widget {
+  position: fixed;
+  right: 2rem;
+  top: 1.5rem;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .navbar nav {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    a {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

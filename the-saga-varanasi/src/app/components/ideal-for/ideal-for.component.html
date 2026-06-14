@@ -1,0 +1,38 @@
+<div class="ideal-for">
+  <h2>Ideal For</h2>
+  <div class="tabs-container">
+    <div class="tabs-header">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'businesses'"
+        (click)="selectTab('businesses')">
+        Businesses
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'startups'"
+        (click)="selectTab('startups')">
+        Startups
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'professionals'"
+        (click)="selectTab('professionals')">
+        Professionals
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'retail'"
+        (click)="selectTab('retail')">
+        Retail
+      </button>
+    </div>
+    <div class="tab-content">
+      <h3>{{ tabContent[activeTab].title }}</h3>
+      <p>{{ tabContent[activeTab].description }}</p>
+      <ul>
+        <li *ngFor="let point of tabContent[activeTab].points">{{ point }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

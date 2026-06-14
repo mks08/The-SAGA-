@@ -1,0 +1,15 @@
+<div class="chatbot-widget">
+  <h3>Quick Inquiry</h3>
+  <form [formGroup]="quickForm" (ngSubmit)="sendQuick()">
+    <input 
+      formControlName="email" 
+      placeholder="Your email" 
+      type="email"
+    />
+    <textarea 
+      formControlName="message" 
+      placeholder="Tell us more...">
+    </textarea>
+    <button type="submit" [disabled]="!quickForm.valid">Send</button>
+  </form>
+</div>
