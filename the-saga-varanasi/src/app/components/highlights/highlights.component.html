@@ -1,49 +1,119 @@
-<section class="highlights-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Key Highlights</div>
-      <h2>Everything You Need to <br><span class="text-gold">Grow Your Business</span></h2>
-      <p>The SAGA is engineered for ambitious businesses, clinics, banks, studios, and retail brands who demand the very best.</p>
-      <div class="divider"></div>
+<section class="section-py" id="highlights-section" aria-label="Key Highlights">
+  <div class="container-saga">
+
+    <!-- Header -->
+    <div class="sec-header reveal">
+      <span class="section-eyebrow">Why The SAGA</span>
+      <h2 class="section-heading">
+        Built for <em>Ambitious</em><br>Businesses
+      </h2>
+      <p class="section-sub">
+        Every detail engineered to maximize visibility, footfall, and profitability for the businesses that call The SAGA home.
+      </p>
+      <div class="gold-divider"></div>
     </div>
 
     <!-- VDA Approved Banner -->
-    <div class="vda-banner">
-      <div class="vda-icon">✓</div>
+    <div class="vda-strip reveal delay-100">
+      <div class="vda-check">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0C0A08" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
       <div class="vda-text">
         <strong>VDA APPROVED</strong>
-        <span>Fully compliant project with all necessary government clearances &amp; certifications</span>
+        <span>Fully compliant · All government clearances obtained · Legal &amp; verified</span>
       </div>
-      <div class="vda-badge">Government Approved</div>
+      <div class="vda-badge-pill">Government Certified</div>
     </div>
 
-    <!-- Highlights Grid -->
-    <div class="highlights-grid">
-      <div class="highlight-card" *ngFor="let card of cards; let i = index"
-           [style.animationDelay]="(i * 0.1) + 's'">
-        <div class="card-glow"></div>
+    <!-- Bento Grid -->
+    <div class="bento-grid">
+      <!-- Feature card (large) -->
+      <div class="bento-card bento-feature reveal" style="--delay: 0ms">
+        <div class="card-number">01</div>
         <div class="card-icon-wrap">
-          <div class="card-icon">{{ card.icon }}</div>
+          <span>🏢</span>
         </div>
-        <div class="card-body">
-          <div class="card-number">0{{ i + 1 }}</div>
-          <h3 class="card-title">{{ card.title }}</h3>
-          <p class="card-desc">{{ card.description }}</p>
-          <ul class="card-points" *ngIf="card.points?.length">
-            <li *ngFor="let pt of card.points">{{ pt }}</li>
-          </ul>
+        <h3>Massive 3,500 Sq Ft Floors</h3>
+        <p>Each floor is an expansive, column-free canvas — perfect for retail flagships, full-service clinics, offices, restaurants, and studios with real room to grow.</p>
+        <ul class="card-bullets">
+          <li>Open plan, column-free layout</li>
+          <li>High ceiling — 12 ft floor-to-floor</li>
+          <li>Natural light on all facades</li>
+        </ul>
+      </div>
+
+      <!-- Location card -->
+      <div class="bento-card reveal delay-100" style="--delay: 100ms">
+        <div class="card-number">02</div>
+        <div class="card-icon-wrap"><span>📍</span></div>
+        <h3>Unmatched Location</h3>
+        <p>Opposite the 400-bed Apollo Hospital. Diagonal to NIFT. On Varanasi's fastest-growing corridor.</p>
+        <ul class="card-bullets">
+          <li>Opposite Apollo Hospital (400 beds)</li>
+          <li>Ring Road — 1 km</li>
+          <li>Airport — 15 km</li>
+        </ul>
+      </div>
+
+      <!-- Parking card -->
+      <div class="bento-card reveal delay-200" style="--delay: 200ms">
+        <div class="card-number">03</div>
+        <div class="card-icon-wrap"><span>🚗</span></div>
+        <h3>Dedicated Parking</h3>
+        <p>Purpose-built multi-level parking — never lose a customer to parking hassles again.</p>
+        <ul class="card-bullets">
+          <li>Multi-level dedicated bays</li>
+          <li>Visitor &amp; tenant zones</li>
+          <li>EV charging points</li>
+        </ul>
+      </div>
+
+      <!-- Services wide card -->
+      <div class="bento-card bento-services reveal delay-100" style="--delay: 100ms">
+        <div class="card-number">04</div>
+        <div class="card-icon-wrap"><span>⚙️</span></div>
+        <h3>Premium Services &amp; Infrastructure</h3>
+        <div class="services-grid">
+          <div class="svc-item" *ngFor="let s of services">
+            <span class="svc-icon">{{ s.icon }}</span>
+            <span>{{ s.label }}</span>
+          </div>
         </div>
-        <div class="card-corner"></div>
+      </div>
+
+      <!-- Custom builds card -->
+      <div class="bento-card reveal delay-200" style="--delay: 200ms">
+        <div class="card-number">05</div>
+        <div class="card-icon-wrap"><span>🔧</span></div>
+        <h3>Custom Fit-Outs</h3>
+        <p>Structure ready Oct 2026. Modify before possession — brand-specific interiors, custom layouts, signage maximized.</p>
+        <ul class="card-bullets">
+          <li>Early-bird layout advantage</li>
+          <li>Brand-specific fitouts</li>
+          <li>Custom signage &amp; façade</li>
+        </ul>
+      </div>
+
+      <!-- Rooftop card -->
+      <div class="bento-card bento-rooftop reveal delay-300" style="--delay: 300ms">
+        <div class="card-number">06</div>
+        <div class="card-icon-wrap"><span>🌇</span></div>
+        <h3>Rooftop Café</h3>
+        <p>A panoramic rooftop café — an amenity that drives footfall to <em>every</em> floor below it.</p>
       </div>
     </div>
 
-    <!-- Bottom CTA strip -->
-    <div class="highlights-cta">
-      <div class="cta-text">
-        <h3>Structure Ready <span class="text-gold">October 2026</span></h3>
-        <p>Modify layouts to maximize your brand's visibility &amp; business needs. Custom builds available.</p>
+    <!-- CTA strip -->
+    <div class="highlights-cta reveal delay-200">
+      <div>
+        <h3>Structure ready <em>October 2026</em></h3>
+        <p>Customize your layout before possession. Limited spaces available.</p>
       </div>
-      <button class="btn-primary" (click)="openPopup()">Enquire Now →</button>
+      <button class="btn-primary" (click)="openPopup()">
+        Enquire Now <span class="arrow">→</span>
+      </button>
     </div>
   </div>
 </section>

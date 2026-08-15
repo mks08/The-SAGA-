@@ -13,11 +13,13 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
 
   spaceTypes = [
     { id: 'retail',     icon: '🛍️', label: 'Retail Store' },
+    { id: 'restaurant', icon: '🍽️', label: 'Restaurant / Café' },
     { id: 'clinic',     icon: '🏥', label: 'Clinic / Medical' },
+    { id: 'pharmacy',   icon: '💊', label: 'Medical Store / Pharmacy' },
     { id: 'office',     icon: '💼', label: 'Office / Corporate' },
     { id: 'bank',       icon: '🏦', label: 'Bank / NBFC' },
     { id: 'studio',     icon: '🏠', label: '1 BHK Studio' },
-    { id: 'restaurant', icon: '☕', label: 'Café / Restaurant' },
+    { id: 'others',     icon: '❓', label: 'Something Else' },
   ];
 
   private popupListener!: EventListener;
@@ -26,11 +28,12 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.bookingForm = this.fb.group({
-      name:      ['', Validators.required],
-      phone:     ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
-      email:     ['', Validators.email],
-      spaceType: ['', Validators.required],
-      message:   [''],
+      name:        ['', Validators.required],
+      phone:       ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
+      email:       ['', Validators.email],
+      spaceType:   ['', Validators.required],
+      otherDetails: [''],
+      message:     [''],
     });
 
     // Auto-open after 3 s on first visit
@@ -75,13 +78,40 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
     return c && c.invalid && (c.dirty || c.touched);
   }
 
-  submit() {
+  async submit() {
     this.bookingForm.markAllAsTouched();
-    if (this.bookingForm.valid) {
-      console.log('📬 SAGA Booking:', this.bookingForm.value);
-      this.popupSubmitted = true;
-      setTimeout(() => this.close(), 3500);
+    if (!this.bookingForm.valid) return;
+    
+    const data = this.bookingForm.value;
+    const submitBtn = document.getElementById('popup-submit-btn');
+    if (submitBtn) {
+      submitBtn.textContent = 'Sending...';
+      (submitBtn as HTMLButtonElement).disabled = true;
     }
+
+    try {
+      await fetch('https://formsubmit.co/ajax/immayank08@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: 'New Booking Popup Enquiry for The SAGA Varanasi',
+          name: data.name,
+          phone: data.phone,
+          email: data.email || 'Not provided',
+          space_type: data.spaceType || 'Not specified',
+          other_details: data.otherDetails || 'N/A',
+          message: data.message || 'No message'
+        })
+      });
+    } catch (err) {
+      console.error('Email send error:', err);
+    }
+
+    this.popupSubmitted = true;
+    setTimeout(() => this.close(), 3500);
   }
 
   ngOnDestroy() {

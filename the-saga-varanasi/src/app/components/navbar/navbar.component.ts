@@ -15,12 +15,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   readonly navLinks = [
     { id: 'hero',         label: 'Home' },
-    { id: 'highlights',   label: 'Highlights' },
-    { id: 'story',        label: 'Our Story' },
+    { id: 'highlights',   label: 'Why SAGA' },
     { id: 'ideal-for',    label: 'Use Cases' },
     { id: 'gallery',      label: 'Gallery' },
-    { id: 'connectivity', label: 'Connectivity' },
-    { id: 'location',     label: 'Location' },
+    { id: 'connectivity', label: 'Location' },
+    { id: 'faq',          label: 'FAQ' },
     { id: 'contact',      label: 'Contact' },
   ];
 

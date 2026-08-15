@@ -1,62 +1,38 @@
-<section class="connectivity-section" id="connectivity" aria-label="Connectivity and Distances from The SAGA Varanasi">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Connectivity</div>
-      <h2>At the Heart of <span class="text-gold">Varanasi</span></h2>
-      <p>The SAGA, Bada Lalpur offers exceptional connectivity to all key landmarks, transport hubs, educational institutions and commercial zones of Varanasi.</p>
-      <div class="divider"></div>
+<section class="section-py connectivity-section" id="connectivity-section" aria-label="Connectivity and Location Advantages">
+  <div class="container-saga">
+    <div class="sec-header reveal">
+      <span class="section-eyebrow">Location Advantage</span>
+      <h2 class="section-heading">Superbly <em>Connected</em></h2>
+      <p class="section-sub">Bada Lalpur is at the epicenter of Varanasi's new commercial growth corridor — surrounded by landmarks that drive consistent footfall.</p>
+      <div class="gold-divider"></div>
     </div>
 
-    <!-- Hero stat bar -->
-    <div class="conn-hero-bar">
-      <div class="chb-item">
-        <div class="chb-val">18 km</div>
-        <div class="chb-lbl">From Airport</div>
-      </div>
-      <div class="chb-div"></div>
-      <div class="chb-item">
-        <div class="chb-val">8 km</div>
-        <div class="chb-lbl">From Railway Station</div>
-      </div>
-      <div class="chb-div"></div>
-      <div class="chb-item">
-        <div class="chb-val">Opposite</div>
-        <div class="chb-lbl">Apollo Hospital</div>
-      </div>
-      <div class="chb-div"></div>
-      <div class="chb-item">
-        <div class="chb-val">Diagonal</div>
-        <div class="chb-lbl">NIFT Campus</div>
-      </div>
-    </div>
-
-    <!-- Connections Grid -->
-    <div class="connections-grid">
-      <div class="conn-card"
+    <!-- Landmark cards -->
+    <div class="conn-grid">
+      <div class="conn-card reveal"
            *ngFor="let c of connections; let i = index"
-           [class.highlight]="c.highlight"
-           [style.animationDelay]="(i * 0.07) + 's'">
-
-        <div class="conn-icon-wrap">
-          <span class="conn-icon">{{ c.icon }}</span>
-        </div>
-
-        <div class="conn-body">
-          <div class="conn-tag">{{ c.tag }}</div>
-          <div class="conn-name">{{ c.name }}</div>
-        </div>
-
-        <div class="conn-metrics">
-          <div class="conn-dist" [class.gold]="c.highlight">{{ c.distance }}</div>
-          <div class="conn-time">{{ c.time }}</div>
+           [style.transitionDelay]="(i * 0.07) + 's'">
+        <div class="cc-icon">{{ c.icon }}</div>
+        <div class="cc-body">
+          <div class="cc-dist">{{ c.distance }}</div>
+          <h3 class="cc-name">{{ c.name }}</h3>
+          <p class="cc-desc">{{ c.desc }}</p>
         </div>
       </div>
     </div>
 
-    <!-- Bottom note -->
-    <div class="conn-note">
-      <span>📍</span>
-      <span>All distances are approximate from The SAGA, Bada Lalpur, Varanasi. Travel times may vary with traffic conditions.</span>
+    <!-- Why location matters -->
+    <div class="location-why reveal delay-200">
+      <div class="why-header">
+        <h3>Why Bada Lalpur is Varanasi's <em>Next Big Thing</em></h3>
+        <p>The Apollo Hospital ecosystem alone generates massive daily footfall — making this location a goldmine for medical zone businesses.</p>
+      </div>
+      <ul class="why-points">
+        <li *ngFor="let p of whyPoints">
+          <span class="wp-dot">◈</span>
+          <span>{{ p }}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </section>

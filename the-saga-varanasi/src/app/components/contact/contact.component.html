@@ -1,150 +1,188 @@
-<section class="contact-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Contact Us</div>
-      <h2>Start Your Journey at <span class="text-gold">The SAGA</span></h2>
-      <p>Pre-leasing has started on a first-come, first-serve basis. Reach out to secure your landmark space today.</p>
-      <div class="divider"></div>
-    </div>
+<section class="contact-section" id="contact-section" aria-label="Contact and Enquiry">
+  <!-- Contact body -->
+  <div class="section-py">
+    <div class="container-saga">
+      <div class="contact-grid">
 
-    <div class="contact-layout">
-      <!-- Contact Info -->
-      <div class="contact-info">
-        <div class="info-card">
-          <div class="info-icon">📞</div>
-          <div class="info-body">
-            <div class="info-label">Call Us</div>
-            <a href="tel:07355770378" class="info-value">073557 70378</a>
-            <div class="info-sub">Mon–Sat, 10am to 7pm</div>
-          </div>
-        </div>
+        <!-- Left: info -->
+        <div class="contact-left reveal-left">
+          <span class="section-eyebrow">Reserve Your Space</span>
+          <h2 class="section-heading">Let's Start <em>Your<br>Business Journey</em></h2>
+          <p class="section-sub">Pre-leasing is open on a first-come, first-serve basis. Fill the form or reach out directly — our team responds within 24 hours.</p>
+          <div class="gold-divider"></div>
 
-        <div class="info-card">
-          <div class="info-icon">✉️</div>
-          <div class="info-body">
-            <div class="info-label">Email Us</div>
-            <a href="mailto:info@thesagavaranasi.in" class="info-value">info&#64;thesagavaranasi.in</a>
-            <div class="info-sub">Response within 24 hours</div>
-          </div>
-        </div>
-
-        <div class="info-card">
-          <div class="info-icon">📍</div>
-          <div class="info-body">
-            <div class="info-label">Visit Us</div>
-            <div class="info-value small">Bada Lalpur, Varanasi, UP</div>
-            <div class="info-sub">Opposite Apollo Hospital</div>
-          </div>
-        </div>
-
-        <div class="urgency-strip">
-          <div class="urgency-dot"></div>
-          <div>
-            <strong>Pre-Leasing Open — Act Now!</strong>
-            <p>Limited spaces available on first-come, first-serve basis. Structure ready October 2026.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contact Form -->
-      <div class="contact-form-wrap">
-        <div class="form-header">
-          <h3>Send an Enquiry</h3>
-          <p>Tell us about your space requirements</p>
-        </div>
-
-        <form [formGroup]="contactForm" (ngSubmit)="submit()" class="contact-form" novalidate>
-          <div class="form-row">
-            <div class="form-group" [class.error]="isInvalid('name')">
-              <label for="contact-name">Full Name *</label>
-              <input id="contact-name" formControlName="name" placeholder="Your full name" autocomplete="name">
-              <span class="form-error" *ngIf="isInvalid('name')">Please enter your name</span>
-            </div>
-            <div class="form-group" [class.error]="isInvalid('phone')">
-              <label for="contact-phone">Phone Number *</label>
-              <input id="contact-phone" formControlName="phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel">
-              <span class="form-error" *ngIf="isInvalid('phone')">Please enter your phone</span>
+          <div class="contact-methods">
+            <a href="tel:07355770378" class="cm-item">
+              <div class="cm-icon">📞</div>
+              <div>
+                <div class="cm-label">Call Us</div>
+                <div class="cm-value">073557 70378</div>
+                <div class="cm-sub">Mon–Sat, 10am–7pm</div>
+              </div>
+            </a>
+            <a href="https://wa.me/917355770378" target="_blank" rel="noopener" class="cm-item">
+              <div class="cm-icon">💬</div>
+              <div>
+                <div class="cm-label">WhatsApp</div>
+                <div class="cm-value">+91 73557 70378</div>
+                <div class="cm-sub">Usually replies in minutes</div>
+              </div>
+            </a>
+            <div class="cm-item">
+              <div class="cm-icon">📍</div>
+              <div>
+                <div class="cm-label">Site Location</div>
+                <div class="cm-value">Bada Lalpur, Varanasi</div>
+                <div class="cm-sub">Opposite Apollo Hospital · Near NIFT</div>
+              </div>
             </div>
           </div>
 
-          <div class="form-group" [class.error]="isInvalid('email')">
-            <label for="contact-email">Email Address</label>
-            <input id="contact-email" type="email" formControlName="email" placeholder="yourname@example.com" autocomplete="email">
-            <span class="form-error" *ngIf="isInvalid('email')">Please enter a valid email</span>
+          <!-- Urgency strip -->
+          <div class="urgency-strip">
+            <span class="live-dot"></span>
+            <span><strong>Limited Pre-Leasing Slots</strong> — Early lessees get best rates &amp; layout priority</span>
           </div>
-
-          <div class="form-group">
-            <label for="contact-type">Space Requirement</label>
-            <select id="contact-type" formControlName="spaceType">
-              <option value="">Select type of space</option>
-              <option value="retail">Retail Store</option>
-              <option value="clinic">Clinic / Medical</option>
-              <option value="office">Office / Corporate</option>
-              <option value="bank">Bank / Financial Services</option>
-              <option value="studio">1 BHK Studio</option>
-              <option value="restaurant">Restaurant / Café</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="contact-message">Message</label>
-            <textarea id="contact-message" formControlName="message" placeholder="Tell us about your requirements — floor preference, sq ft needed, timeline, etc." rows="4"></textarea>
-          </div>
-
-          <button type="submit" class="btn-submit" [disabled]="submitted">
-            <span *ngIf="!submitted">Send Enquiry →</span>
-            <span *ngIf="submitted">✓ Enquiry Sent!</span>
-          </button>
-        </form>
-
-        <div class="form-success" *ngIf="submitted">
-          <div class="success-icon">✓</div>
-          <strong>Thank you! We'll contact you shortly.</strong>
-          <p>Our team will reach out within 24 hours to discuss your space requirements.</p>
         </div>
+
+        <!-- Right: form -->
+        <div class="contact-right reveal-right">
+          <div class="contact-form-card" *ngIf="!submitted">
+            <h3>Enquiry Form</h3>
+            <form [formGroup]="contactForm" (ngSubmit)="submit()" novalidate>
+
+              <div class="field-group">
+                <div class="field" [class.has-value]="contactForm.get('name')?.value" [class.invalid]="isInvalid('name')">
+                  <input id="c-name" type="text" formControlName="name" required autocomplete="name">
+                  <label for="c-name">Your Name *</label>
+                  <div class="field-line"></div>
+                </div>
+
+                <div class="field" [class.has-value]="contactForm.get('phone')?.value" [class.invalid]="isInvalid('phone')">
+                  <input id="c-phone" type="tel" formControlName="phone" required autocomplete="tel">
+                  <label for="c-phone">Phone Number *</label>
+                  <div class="field-line"></div>
+                </div>
+              </div>
+
+              <div class="field" [class.has-value]="contactForm.get('email')?.value">
+                <input id="c-email" type="email" formControlName="email" autocomplete="email">
+                <label for="c-email">Email (optional)</label>
+                <div class="field-line"></div>
+              </div>
+
+              <div class="field select-field" [class.has-value]="contactForm.get('spaceType')?.value">
+                <select id="c-space" formControlName="spaceType">
+                  <option value="">Select space type</option>
+                  <option>Retail Store</option>
+                  <option>Restaurant / Café</option>
+                  <option>Medical Clinic</option>
+                  <option>Pharmacy / Medical Store</option>
+                  <option>Pathology / Diagnostics</option>
+                  <option>Corporate Office</option>
+                  <option>Bank / NBFC</option>
+                  <option>Coaching Institute</option>
+                  <option>1 BHK Studio</option>
+                  <option>Other (mention below)</option>
+                </select>
+                <label for="c-space">Interested In</label>
+                <div class="field-line"></div>
+              </div>
+
+              <div class="field textarea-field" [class.has-value]="contactForm.get('message')?.value">
+                <textarea id="c-msg" formControlName="message" rows="3"></textarea>
+                <label for="c-msg">Message or Requirements</label>
+                <div class="field-line"></div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-submit" [disabled]="submitting">
+                  <span *ngIf="!submitting">Send Enquiry →</span>
+                  <span *ngIf="submitting">Sending...</span>
+                </button>
+                <a href="https://wa.me/917355770378?text=Hi%2C+I+want+to+enquire+about+The+SAGA+Varanasi"
+                   class="btn-wa-alt" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  WhatsApp Instead
+                </a>
+              </div>
+            </form>
+          </div>
+
+          <!-- Success state -->
+          <div class="form-success" *ngIf="submitted">
+            <div class="success-icon">✓</div>
+            <h3>Enquiry Sent!</h3>
+            <p>Thank you. Our team will contact you within 24 hours. You can also WhatsApp us for a faster response.</p>
+            <a href="https://wa.me/917355770378" class="btn-wa-alt" target="_blank" rel="noopener" style="display: inline-flex; margin-top: 1rem;">WhatsApp for Quick Reply</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
-</section>
 
-<!-- Footer -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-logo">
-          <span>◈</span>
-          <div>
-            <div class="fl-main">THE SAGA</div>
-            <div class="fl-sub">VARANASI</div>
+  <!-- Footer -->
+  <footer class="saga-footer">
+    <div class="container-saga">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="fl-mark">◈</span>
+            <div>
+              <span class="fl-name">THE SAGA</span>
+              <span class="fl-city">VARANASI</span>
+            </div>
+          </div>
+          <p>Varanasi's premier G+4 mixed-use commercial complex in Bada Lalpur — VDA approved, possession October 2026.</p>
+          <div class="footer-social">
+            <a href="https://wa.me/917355770378" target="_blank" rel="noopener" class="fs-btn" aria-label="WhatsApp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            </a>
+            <a href="tel:07355770378" class="fs-btn" aria-label="Call us">📞</a>
           </div>
         </div>
-        <p>Premier G+4 mixed-use commercial complex in Bada Lalpur, Varanasi — redefining the city's commercial future.</p>
-      </div>
-      <div class="footer-links">
-        <div class="fl-col">
-          <h5>Quick Links</h5>
+
+        <div class="footer-col">
+          <h4>Quick Links</h4>
           <ul>
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#highlights">Highlights</a></li>
+            <li><a href="#highlights">Why The SAGA</a></li>
             <li><a href="#ideal-for">Use Cases</a></li>
-            <li><a href="#location">Location</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#connectivity">Location</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">Enquire</a></li>
           </ul>
         </div>
-        <div class="fl-col">
-          <h5>Contact</h5>
+
+        <div class="footer-col">
+          <h4>Ideal For</h4>
+          <ul>
+            <li>Retail Stores</li>
+            <li>Restaurants &amp; Cafés</li>
+            <li>Medical Clinics</li>
+            <li>Pharmacies</li>
+            <li>Corporate Offices</li>
+            <li>Bank Branches</li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact</h4>
           <ul>
             <li><a href="tel:07355770378">073557 70378</a></li>
-            <li><a href="mailto:info@thesagavaranasi.in">info&#64;thesagavaranasi.in</a></li>
+            <li><a href="https://wa.me/917355770378" target="_blank" rel="noopener">WhatsApp Us</a></li>
             <li>Bada Lalpur, Varanasi</li>
+            <li>Uttar Pradesh — 221005</li>
+            <li>Opposite Apollo Hospital</li>
           </ul>
         </div>
       </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 The SAGA Varanasi. All rights reserved. VDA Approved Commercial Project.</p>
+        <p class="footer-seo-text">Commercial space for rent in Varanasi · Retail shops for lease Varanasi · Office space Bada Lalpur · G+4 mixed-use complex near Apollo Hospital Varanasi</p>
+      </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 The SAGA Varanasi. All rights reserved. · VDA Approved Project</p>
-      <p class="footer-disc">*All images are for representational purposes. Structure ready October 2026.</p>
-    </div>
-  </div>
-</footer>
+  </footer>
+</section>

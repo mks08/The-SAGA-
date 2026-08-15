@@ -20,11 +20,15 @@ import { IdealForComponent } from './components/ideal-for/ideal-for.component';
 import { LocationComponent } from './components/location/location.component';
 import { ContactComponent } from './components/contact/contact.component';
 
-// New Sections
+// Sections
 import { BookingPopupComponent } from './components/booking-popup/booking-popup.component';
 import { SagaStoryComponent } from './components/saga-story/saga-story.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { ConnectivityComponent } from './components/connectivity/connectivity.component';
+
+// New Components
+import { FaqComponent } from './components/faq/faq.component';
+import { WhatsappFabComponent } from './components/whatsapp-fab/whatsapp-fab.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +44,8 @@ import { ConnectivityComponent } from './components/connectivity/connectivity.co
     SagaStoryComponent,
     GalleryComponent,
     ConnectivityComponent,
+    FaqComponent,
+    WhatsappFabComponent,
   ],
   imports: [
     BrowserModule,

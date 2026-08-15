@@ -1,27 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-
-interface Particle {
-  left: string;
-  duration: string;
-  delay: string;
-  size: string;
-}
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-hero',
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.scss'],
 })
-export class HeroComponent implements OnInit {
-  particles: Particle[] = [];
+export class HeroComponent implements OnInit, AfterViewInit {
+  loaded = false;
 
-  ngOnInit() {
-    this.particles = Array.from({ length: 20 }, () => ({
-      left: `${Math.random() * 100}%`,
-      duration: `${6 + Math.random() * 10}s`,
-      delay: `${Math.random() * 8}s`,
-      size: `${2 + Math.random() * 4}px`,
-    }));
+  stats = [
+    { value: 'G+4',    label: 'Floors' },
+    { value: '3,500',  label: 'Sq Ft / Floor' },
+    { value: 'Oct\'26', label: 'Possession' },
+    { value: 'VDA',    label: 'Approved' },
+  ];
+
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    // Trigger reveal after slight delay (ensures fonts loaded)
+    setTimeout(() => { this.loaded = true; }, 120);
   }
 
   openPopup() {

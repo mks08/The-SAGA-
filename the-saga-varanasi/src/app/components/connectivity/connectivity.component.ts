@@ -1,75 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { RevealService } from '../../services/reveal.service';
 
 @Component({
   selector: 'app-connectivity',
   templateUrl: './connectivity.component.html',
   styleUrls: ['./connectivity.component.scss'],
 })
-export class ConnectivityComponent {
+export class ConnectivityComponent implements AfterViewInit, OnDestroy {
+  private io?: IntersectionObserver;
+
   connections = [
-    {
-      icon: '✈️',
-      name: 'Lal Bahadur Shastri International Airport',
-      distance: '~18 km',
-      time: '~35 min',
-      tag: 'Airport',
-      highlight: false,
-    },
-    {
-      icon: '🚂',
-      name: 'Varanasi Junction Railway Station',
-      distance: '~8 km',
-      time: '~20 min',
-      tag: 'Railway',
-      highlight: false,
-    },
-    {
-      icon: '🚉',
-      name: 'Varanasi Cantt Railway Station',
-      distance: '~6 km',
-      time: '~15 min',
-      tag: 'Railway',
-      highlight: false,
-    },
-    {
-      icon: '🏥',
-      name: 'Apollo Hospital (400 Beds)',
-      distance: 'Directly Opposite',
-      time: 'Walking',
-      tag: 'Landmark',
-      highlight: true,
-    },
-    {
-      icon: '🎓',
-      name: 'NIFT — National Institute of Fashion Technology',
-      distance: 'Diagonal',
-      time: 'Walking',
-      tag: 'Institution',
-      highlight: true,
-    },
-    {
-      icon: '🏛️',
-      name: 'BHU — Banaras Hindu University',
-      distance: '~10 km',
-      time: '~25 min',
-      tag: 'University',
-      highlight: false,
-    },
-    {
-      icon: '🛕',
-      name: 'Kashi Vishwanath Temple / Godaulia',
-      distance: '~7 km',
-      time: '~18 min',
-      tag: 'City Centre',
-      highlight: false,
-    },
-    {
-      icon: '🏢',
-      name: 'Varanasi Development Authority (VDA)',
-      distance: '~5 km',
-      time: '~12 min',
-      tag: 'Govt. Office',
-      highlight: false,
-    },
+    { icon: '🏥', distance: 'Opposite', name: 'Apollo Hospital', desc: '400-bed multi-speciality hospital — daily patient & visitor footfall' },
+    { icon: '🎓', distance: 'Diagonal', name: 'NIFT Varanasi', desc: 'National Institute of Fashion Technology — student & faculty footfall' },
+    { icon: '🔵', distance: '1 km', name: 'Ring Road', desc: 'Direct connectivity to all parts of Varanasi — high vehicle traffic' },
+    { icon: '✈️', distance: '15 km', name: 'Airport', desc: 'Lal Bahadur Shastri International Airport — national & international access' },
+    { icon: '🛤️', distance: 'Nearby', name: 'Varanasi Cantt. Station', desc: 'One of India\'s busiest railway junctions — massive transit crowd' },
+    { icon: '🛣️', distance: 'Prime', name: 'Bada Lalpur Corridor', desc: 'Fastest growing commercial micro-market in new Varanasi' },
   ];
+
+  whyPoints = [
+    '400-bed Apollo Hospital across the street = thousands of daily visitors',
+    'NIFT student corridor drives F&B and retail demand',
+    '1 km Ring Road access = catchment from all city zones',
+    'Medical zone = pharmacy, clinic, diagnostics demand is structural',
+    'Zero competition at this scale in the immediate vicinity',
+    'Early lessees get the lowest rates before market appreciation',
+  ];
+
+  constructor(private revealService: RevealService) {}
+  ngAfterViewInit() { this.io = this.revealService.observe(); }
+  ngOnDestroy() { this.io?.disconnect(); }
 }
