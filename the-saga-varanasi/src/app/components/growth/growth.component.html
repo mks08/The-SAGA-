@@ -1,0 +1,43 @@
+<section class="section-py growth-section" id="growth-section" aria-label="A Location Positioned for Growth" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="sec-header reveal" *ngIf="showIntro">
+      <span class="section-eyebrow">The Next Phase of Bada Lalpur</span>
+      <h2 class="section-heading">A Location Positioned for <em>Growth</em></h2>
+      <p class="section-sub">
+        SHRINEVA sits inside an emerging healthcare, education, trade and business corridor —
+        not as a standalone building, but as a commercial address aligned to several demand engines.
+      </p>
+      <div class="gold-divider"></div>
+    </div>
+
+    <div class="growth-timeline" role="list">
+      <article class="growth-node reveal"
+           *ngFor="let t of timeline; let i = index"
+           role="listitem"
+           [style.transitionDelay]="(i * 0.1) + 's'">
+        <div class="gn-index">0{{ i + 1 }}</div>
+        <div class="gn-marker" [class]="'status-' + t.status"></div>
+        <div class="gn-body">
+          <div class="gn-phase">{{ t.phase }}</div>
+          <div class="gn-title">{{ t.title }}</div>
+          <div class="gn-status">{{ t.statusLabel }}</div>
+          <ul>
+            <li *ngFor="let p of t.points">{{ p }}</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <div class="growth-engines reveal">
+      <p class="engines-kicker">One Location. Multiple Demand Engines.</p>
+      <ul class="engines-grid">
+        <li *ngFor="let e of engines">
+          <span>{{ e.kicker }}</span>
+          <strong>{{ e.line }}</strong>
+        </li>
+      </ul>
+    </div>
+
+    <p class="growth-legal">{{ property.legal.futureDisclaimer }} No guaranteed footfall, occupancy, returns or completion dates are implied.</p>
+  </div>
+</section>

@@ -1,112 +1,52 @@
-<section class="hero" id="hero-section">
-  <!-- Warm gradient mesh background -->
-  <div class="hero-bg">
-    <div class="bg-mesh"></div>
-    <div class="bg-grid"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-  </div>
+<section class="hero" id="hero-section" aria-label="SHRINEVA — commercial space for lease in Bada Lalpur, Varanasi">
+  <div class="hero-bg" aria-hidden="true"></div>
 
-  <!-- Floating particles -->
-  <div class="particles">
-    <span *ngFor="let p of particles" class="particle"
-      [style.left]="p.left"
-      [style.animationDuration]="p.duration"
-      [style.animationDelay]="p.delay"
-      [style.width]="p.size"
-      [style.height]="p.size">
-    </span>
-  </div>
-
-  <!-- Main Content: Two-column -->
-  <div class="hero-inner">
-    <!-- LEFT: Text Content -->
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        <span>🏗️ Construction in Progress · Pre-Leasing Open</span>
-      </div>
-
-      <h1 class="hero-title">
-        <span class="title-eyebrow">INTRODUCING</span>
-        <span class="title-the">THE</span>
-        <span class="title-saga">SAGA</span>
-        <span class="title-sub">VARANASI</span>
-      </h1>
-
-      <p class="hero-desc">
-        Varanasi's most anticipated <span class="hl">G+4 mixed-use commercial complex</span> in Bada Lalpur —
-        opposite <strong>Apollo Hospital</strong> & diagonal to <strong>NIFT</strong>.
-        The city's fastest-growing business address.
+  <div class="hero-container container-srineva">
+    <div class="hero-left">
+      <p class="hero-eyebrow">
+        <span class="live-dot"></span>
+        Commercial · Stilt + 3 floors · Bada Lalpur, Varanasi
       </p>
 
-      <!-- Stats bar -->
-      <div class="hero-stats">
-        <div class="stat-item">
-          <div class="stat-value">G+4</div>
-          <div class="stat-label">Floors</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-value">3,500</div>
-          <div class="stat-label">Sq Ft / Floor</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-value">Oct '26</div>
-          <div class="stat-label">Possession</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-value">VDA ✓</div>
-          <div class="stat-label">Approved</div>
-        </div>
-      </div>
+      <h1 class="hero-title">
+        <span class="title-brand">SHRINEVA</span>
+        <span class="sr-only"> — </span>
+        <span class="title-sub">Commercial space for lease, about 60–70&nbsp;m from Apollo Hospital and NIFT</span>
+      </h1>
 
-      <!-- CTAs -->
-      <div class="hero-actions">
-        <button id="hero-book-btn" class="btn-hero-primary" (click)="openPopup()">
-          Book Your Space
-          <span class="btn-arrow">→</span>
-        </button>
-        <a id="hero-call-btn" href="tel:07355770378" class="btn-hero-outline">
-          📞 073557 70378
+      <p class="hero-tagline">
+        Whole floors of {{ plan.typical.floorArea.sqft | number:'1.0-0' }} sq ft with a glass frontage on a {{ plan.plot.roadWidthM }} m road,
+        in Varanasi's emerging healthcare, education and trade corridor.
+      </p>
+
+      <div class="hero-ctas">
+        <a routerLink="/floor-plans" class="btn-primary" id="hero-explore-btn" (click)="track('floor_plans_click')">
+          View floor plans <span class="arrow">→</span>
         </a>
+        <button type="button" class="btn-outline" id="hero-visit-btn" (click)="openPopup(); track('site_visit_click')">
+          Schedule a site visit
+        </button>
       </div>
 
-      <!-- Location tag -->
-      <div class="hero-location">
-        <span>📍</span>
-        <span>Bada Lalpur, Varanasi · Opposite Apollo Hospital</span>
-      </div>
-    </div>
-
-    <!-- RIGHT: Floating Building Image -->
-    <div class="hero-visual">
-      <div class="building-frame">
-        <div class="building-glow"></div>
-        <img
-          src="assets/building-render.jpg"
-          alt="The SAGA Varanasi — G+4 Commercial Complex Render"
-          class="building-img"
-          loading="eager"
-        >
-        <!-- Floor labels overlay -->
-        <div class="floor-tag floor-roof">🌅 Rooftop Café</div>
-        <div class="floor-tag floor-top">4th Floor · Premium Offices</div>
-        <div class="floor-tag floor-mid">Ground · Retail & Commercial</div>
-        <!-- Construction badge -->
-        <div class="construction-badge">
-          <span class="cb-dot"></span>
-          Under Construction
+      <dl class="hero-stats">
+        <div class="stat" *ngFor="let s of stats">
+          <dt class="stat-val">{{ s.value }}</dt>
+          <dd class="stat-label">{{ s.label }}</dd>
         </div>
-      </div>
+      </dl>
     </div>
-  </div>
 
-  <!-- Scroll indicator -->
-  <div class="scroll-indicator">
-    <div class="scroll-line"></div>
-    <span>SCROLL</span>
+    <figure class="hero-right">
+      <img
+        src="assets/images/renders/facade-golden.webp"
+        alt="Indicative render of the SHRINEVA façade at golden hour: stilt plus three floors with glass fronts and timber screens, Bada Lalpur, Varanasi"
+        class="building-img"
+        width="1024"
+        height="639"
+        fetchpriority="high"
+        loading="eager"
+        decoding="async">
+      <figcaption>Indicative 3D visualisation · subject to change</figcaption>
+    </figure>
   </div>
 </section>

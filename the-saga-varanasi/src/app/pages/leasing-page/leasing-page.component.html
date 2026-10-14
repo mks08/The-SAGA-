@@ -1,0 +1,34 @@
+<main id="main-content" role="main">
+<app-page-header
+  eyebrow="Leasing"
+  title="Lease a Space at SHRINEVA"
+  subtitle="Whole floors of 3,520 sq ft (3,017 sq ft carpet), full floor or divided as required, on long-term commercial leases.">
+</app-page-header>
+
+<section class="section-py generic-page-section">
+  <div class="container-srineva">
+    <div class="two-col-grid">
+      <div class="info-card glass-card">
+        <h3>What's Available</h3>
+        <ul>
+          <li>{{ property.area.floorAreaPerFloorSqFt | number:'1.2-2' }} sq ft floor area per floor ({{ property.area.carpetAreaPerFloorSqFt | number:'1.2-2' }} sq ft carpet)</li>
+          <li>Full-floor lease or subdivision, subject to requirement</li>
+          <li>Long-term leases accepted</li>
+          <li>Mixed commercial use across Floors 1, 2 and 3, with hotel and studio-apartment formats a possibility</li>
+          <li>Fit-out and handover condition agreed with each occupier</li>
+          <li>Brand visibility on a 24 m road, signage and stilt-level parking</li>
+        </ul>
+      </div>
+      <div class="info-card glass-card">
+        <h3>Commercial Terms</h3>
+        <p>{{ property.leasing.pricingDisclosure }}. Our leasing team will share detailed commercial terms, floor plans and technical specifications directly.</p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
+          <a routerLink="/contact" class="btn-primary">Request Leasing Details →</a>
+          <a href="assets/shrineva-floor-plans.pdf" target="_blank" rel="noopener" download class="btn-outline">Download floor plans (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-final-cta></app-final-cta>
+</main>

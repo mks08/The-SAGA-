@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { NavigationMemoryService } from './core/services/navigation-memory.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'The SAGA Varanasi — Premier G+4 Commercial Complex';
+  title = 'SHRINEVA — Premium Commercial & Mixed-Use Spaces, Bada Lalpur, Varanasi';
+
+  constructor(
+    viewport: ViewportScroller,
+    _navigation: NavigationMemoryService,
+  ) {
+    viewport.setOffset([0, 80]);
+  }
 }

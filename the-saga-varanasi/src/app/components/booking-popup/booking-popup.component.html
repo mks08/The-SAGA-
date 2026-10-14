@@ -1,106 +1,100 @@
-<div class="popup-overlay" [class.active]="showPopup" (click)="onOverlayClick($event)">
-  <div class="popup-modal" role="dialog" aria-modal="true" aria-labelledby="popup-heading" *ngIf="showPopup">
+<div class="popup-overlay" *ngIf="showPopup" (click)="onOverlayClick($event)" role="dialog" aria-modal="true" aria-label="Reserve Your Space at SHRINEVA">
+  <div class="popup-card">
 
-    <button class="popup-close" (click)="close()" aria-label="Close">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </button>
+    <!-- Close -->
+    <button class="popup-close" (click)="close()" aria-label="Close">✕</button>
 
-    <!-- Success -->
-    <div class="popup-success" *ngIf="popupSubmitted">
-      <div class="success-ring">✓</div>
-      <h3>We've Got Your Enquiry!</h3>
-      <p>Our team will call you back within <strong>2 working hours</strong>. You can also reach us directly:</p>
-      <a href="tel:07355770378" class="popup-call-btn">📞 073557 70378</a>
-    </div>
-
-    <!-- Form -->
-    <ng-container *ngIf="!popupSubmitted">
-      <div class="popup-two-col">
-
-        <!-- Left: Building Image -->
-        <div class="popup-image-col">
-          <img src="assets/building-render.jpg" alt="The SAGA Varanasi Building Render" class="popup-building-img">
-          <div class="popup-img-overlay">
-            <div class="pio-badge">🏗️ Under Construction</div>
-            <div class="pio-name">◈ THE SAGA</div>
-            <div class="pio-loc">Bada Lalpur, Varanasi</div>
-            <div class="pio-meta">G+4 · 3,500 sq ft/floor · Oct 2026</div>
-          </div>
-        </div>
-
-        <!-- Right: Form -->
-        <div class="popup-form-col">
-          <div class="popup-header">
-            <div class="popup-badge">
-              <span class="pb-dot"></span>
-              Pre-Leasing Open · First Come, First Serve
-            </div>
-            <h2 id="popup-heading">Reserve Your Space</h2>
-            <p>Limited floors available. Share your details and we'll get back to you.</p>
-          </div>
-
-          <form [formGroup]="bookingForm" (ngSubmit)="submit()" novalidate class="popup-form">
-
-            <div class="pf-row">
-              <div class="pf-field" [class.has-error]="isInvalid('name')">
-                <label for="bp-name">Full Name <span class="req">*</span></label>
-                <input id="bp-name" formControlName="name" placeholder="Your name" autocomplete="name">
-                <span class="pf-error" *ngIf="isInvalid('name')">Required</span>
-              </div>
-              <div class="pf-field" [class.has-error]="isInvalid('phone')">
-                <label for="bp-phone">WhatsApp / Phone <span class="req">*</span></label>
-                <input id="bp-phone" formControlName="phone" placeholder="10-digit number" inputmode="tel">
-                <span class="pf-error" *ngIf="isInvalid('phone')">Enter valid 10-digit number</span>
-              </div>
-            </div>
-
-            <div class="pf-field">
-              <label for="bp-email">Email <span class="opt">(Optional)</span></label>
-              <input id="bp-email" type="email" formControlName="email" placeholder="For brochure / floor plans">
-            </div>
-
-            <div class="pf-field" [class.has-error]="isInvalid('spaceType')">
-              <label>I Want to Lease For <span class="req">*</span></label>
-              <div class="space-grid">
-                <button type="button"
-                  *ngFor="let s of spaceTypes"
-                  [id]="'popup-' + s.id"
-                  class="space-btn"
-                  [class.selected]="bookingForm.get('spaceType')?.value === s.id"
-                  (click)="selectSpace(s.id)">
-                  <span class="si">{{ s.icon }}</span>
-                  <span class="sl">{{ s.label }}</span>
-                </button>
-              </div>
-              <span class="pf-error" *ngIf="isInvalid('spaceType')">Please select a type</span>
-            </div>
-
-            <!-- Other description box — shows when "Something Else" is selected -->
-            <div class="pf-field" *ngIf="showOtherBox" [class.has-error]="isInvalid('otherDesc')">
-              <label for="bp-other">Please Describe What You Need <span class="req">*</span></label>
-              <textarea id="bp-other" formControlName="otherDesc" rows="2" placeholder="E.g. ATM kiosk, educational centre, wellness spa…"></textarea>
-              <span class="pf-error" *ngIf="isInvalid('otherDesc')">Please describe your requirement</span>
-            </div>
-
-            <div class="pf-field">
-              <label for="bp-msg">Additional Notes <span class="opt">(Optional)</span></label>
-              <textarea id="bp-msg" formControlName="message" rows="2" placeholder="Floor preference, timeline, any questions…"></textarea>
-            </div>
-
-            <button type="submit" id="popup-submit-btn" class="popup-submit">
-              <span>Secure My Space →</span>
-            </button>
-          </form>
-
-          <div class="popup-footer">
-            <a href="tel:07355770378">📞 073557 70378</a>
-            <span>·</span>
-            <span>Bada Lalpur, Varanasi</span>
-          </div>
+    <!-- Left: building image (desktop only) -->
+    <div class="popup-left">
+      <img src="assets/images/renders/facade-golden.webp" alt="Indicative render of the SHRINEVA façade" class="popup-building" width="1024" height="639">
+      <div class="popup-left-overlay">
+        <img class="plo-logo" src="assets/images/shrineva-logo.webp" alt="SHRINEVA" width="512" height="512">
+        <div class="plo-name">SHRINEVA</div>
+        <div class="plo-city">VARANASI</div>
+        <div class="plo-facts">
+          <div class="plf"><span>Stilt+3</span><span>Floors</span></div>
+          <div class="plf"><span>3,520</span><span>Sq Ft/Floor</span></div>
+          <div class="plf"><span>25+</span><span>Parking</span></div>
         </div>
       </div>
-    </ng-container>
+    </div>
+
+    <!-- Right: form -->
+    <div class="popup-right">
+      <!-- Success state -->
+      <div class="popup-success" *ngIf="popupSubmitted">
+        <div class="ps-icon">✓</div>
+        <h3>Enquiry Received!</h3>
+        <p>Our team will call you within 24 hours. For faster response, WhatsApp us now.</p>
+        <a href="https://wa.me/917355770378?text=Hi%2C+I+just+submitted+a+lease+enquiry+for+SHRINEVA%2C+Bada+Lalpur+Varanasi"
+           class="btn-wa-success" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          WhatsApp Now
+        </a>
+      </div>
+
+      <!-- Form -->
+      <ng-container *ngIf="!popupSubmitted">
+        <div class="popup-header">
+          <span>Schedule a Site Visit</span>
+        </div>
+        <h2>Tell us what you need</h2>
+        <p class="popup-sub">Our leasing team will confirm floor options and a convenient visit time.</p>
+
+        <form [formGroup]="bookingForm" (ngSubmit)="submit()" novalidate>
+
+          <!-- Space type selector -->
+          <div class="space-grid">
+            <button
+              type="button"
+              class="space-btn"
+              *ngFor="let s of spaceTypes"
+              [class.selected]="bookingForm.get('spaceType')?.value === s.id"
+              (click)="selectSpace(s.id)">
+              <span class="sb-icon">{{ s.icon }}</span>
+              <span class="sb-label">{{ s.label }}</span>
+            </button>
+          </div>
+          <div class="field-error" *ngIf="isInvalid('spaceType')">Please select a space type</div>
+
+          <!-- Other details -->
+          <div class="popup-field" *ngIf="bookingForm.get('spaceType')?.value === 'others'">
+            <input type="text" formControlName="otherDetails" placeholder="Describe your requirement">
+          </div>
+
+          <!-- Name -->
+          <div class="popup-field" [class.invalid]="isInvalid('name')">
+            <input type="text" formControlName="name" placeholder="Your Name *" autocomplete="name">
+          </div>
+
+          <!-- Phone -->
+          <div class="popup-field" [class.invalid]="isInvalid('phone')">
+            <input type="tel" formControlName="phone" placeholder="Phone Number * (10 digit)" autocomplete="tel">
+            <div class="field-error" *ngIf="isInvalid('phone')">Enter a valid 10-digit mobile number</div>
+          </div>
+
+          <!-- Email -->
+          <div class="popup-field">
+            <input type="email" formControlName="email" placeholder="Email (optional)" autocomplete="email">
+          </div>
+
+          <!-- Message -->
+          <div class="popup-field">
+            <textarea formControlName="message" placeholder="Any specific requirements?" rows="2"></textarea>
+          </div>
+
+          <div class="popup-actions">
+            <button type="submit" class="btn-popup-submit" id="popup-submit-btn">
+              Send Enquiry →
+            </button>
+            <a href="https://wa.me/917355770378?text=Hi%2C+I+want+to+lease+space+at+SHRINEVA%2C+Bada+Lalpur+Varanasi"
+               class="btn-popup-wa" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+        </form>
+      </ng-container>
+    </div>
   </div>
 </div>

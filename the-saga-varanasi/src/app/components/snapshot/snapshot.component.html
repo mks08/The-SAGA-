@@ -1,0 +1,12 @@
+<section class="snapshot-section" id="snapshot" aria-label="SHRINEVA at a glance">
+  <div class="container-srineva">
+    <h2 class="sr-only">SHRINEVA at a glance</h2>
+    <dl class="snap-grid">
+      <div class="snap-item" *ngFor="let s of stats">
+        <dt class="snap-value">{{ s.value }}</dt>
+        <dd class="snap-label">{{ s.label }}</dd>
+        <dd class="snap-sub">{{ s.sub }}</dd>
+      </div>
+    </dl>
+  </div>
+</section>

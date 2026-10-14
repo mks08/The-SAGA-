@@ -1,42 +1,27 @@
-<section class="idealfor-section" id="ideal-for">
-  <div class="container">
-
-    <div class="section-header">
-      <div class="section-tag">Who It's For</div>
-      <h2>Ideal For <span class="text-gold">Every Ambition</span></h2>
-      <p>
-        The SAGA is engineered for ambitious businesses who demand the very best.
-        Whether you need a clinic, a branch, a showroom, or a studio —
-        <strong>you can get the space you need.</strong>
+<section class="section-py" id="ideal-for-section" aria-label="Business fit" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="sec-header" *ngIf="showIntro">
+      <span class="section-eyebrow">Business Fit</span>
+      <h2 class="section-heading">Built around <em>business needs</em></h2>
+      <p class="section-sub">
+        Whole floors of {{ plan.typical.floorArea.sqft | number:'1.0-0' }} sq ft, divided as required. These are suitability notes, not exclusive legal use permissions.
       </p>
-      <div class="divider"></div>
     </div>
 
-    <!-- Use Case Grid -->
-    <div class="uc-grid">
-      <button
-        *ngFor="let uc of useCases; let i = index"
-        class="uc-card"
-        [class.other-card]="uc.isOther"
-        [style.--accent]="uc.color"
-        [style.animationDelay]="(i * 0.04) + 's'"
-        (click)="openPopup()"
-        [attr.aria-label]="'Enquire for ' + uc.label">
-        <span class="uc-icon">{{ uc.icon }}</span>
-        <span class="uc-label">{{ uc.label }}</span>
-        <span class="uc-arrow" *ngIf="uc.isOther">→</span>
-      </button>
-    </div>
+    <ul class="ideal-grid" [class.compact]="compact">
+      <li class="ideal-card" *ngFor="let item of categories">
+        <h3>{{ item.label }}</h3>
+        <p *ngIf="compact">{{ item.short }}</p>
+        <ng-container *ngIf="!compact">
+          <p>{{ item.description }}</p>
+          <span class="ic-benefit">{{ item.benefit }}</span>
+        </ng-container>
+      </li>
+    </ul>
 
-    <!-- Bottom message -->
-    <div class="uc-bottom">
-      <div class="uc-tagline">
-        <span class="uc-quote">"</span>
-        The SAGA is built for Varanasi's next generation of businesses.
-        <span class="uc-cta-text"> Don't see your use case?</span>
-      </div>
-      <button class="btn-primary" (click)="openPopup()">Tell Us What You Need →</button>
+    <div class="ideal-cta">
+      <button type="button" class="btn-primary" (click)="openPopup()">Tell us what you need →</button>
+      <a *ngIf="showPageLink" routerLink="/business-fit" class="text-link">How each category fits →</a>
     </div>
-
   </div>
 </section>

@@ -1,0 +1,22 @@
+<div class="lb" *ngIf="open && current as c" role="dialog" aria-modal="true" [attr.aria-label]="c.title" (click)="close()">
+  <div class="lb-top" (click)="$event.stopPropagation()">
+    <span class="lb-count" *ngIf="items.length > 1">{{ (index || 0) + 1 }} / {{ items.length }}</span>
+    <div class="lb-actions">
+      <button type="button" class="lb-btn" *ngIf="c.zoomSrc" (click)="zoomed = !zoomed">{{ zoomed ? 'Fit to screen' : 'Zoom full sheet' }}</button>
+      <button type="button" class="lb-btn" (click)="close()" aria-label="Close viewer">Close ✕</button>
+    </div>
+  </div>
+
+  <div class="lb-stage" [class.zoomed]="zoomed" (click)="$event.stopPropagation()">
+    <button type="button" class="lb-nav prev" *ngIf="items.length > 1 && !zoomed" (click)="step(-1)" aria-label="Previous image">‹</button>
+    <img *ngIf="!zoomed" [src]="c.src" [alt]="c.alt" [attr.width]="c.width" [attr.height]="c.height" class="lb-img">
+    <img *ngIf="zoomed" [src]="c.zoomSrc || c.src" [alt]="c.alt" class="lb-img-zoom" [style.width.px]="c.zoomWidth || c.width">
+    <button type="button" class="lb-nav next" *ngIf="items.length > 1 && !zoomed" (click)="step(1)" aria-label="Next image">›</button>
+  </div>
+
+  <div class="lb-caption" (click)="$event.stopPropagation()">
+    <strong>{{ c.title }}</strong>
+    <span>{{ c.caption }}</span>
+    <small *ngIf="disclaimer">{{ disclaimer }}</small>
+  </div>
+</div>

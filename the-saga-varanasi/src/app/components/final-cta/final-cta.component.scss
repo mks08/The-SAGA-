@@ -1,0 +1,28 @@
+.final-cta-inner {
+  text-align: center;
+  max-width: 720px;
+}
+
+.final-cta-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    a, button { width: 100%; justify-content: center; }
+  }
+}
+
+.final-cta-contact {
+  font-size: 0.85rem;
+  color: var(--color-cream-muted);
+
+  a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}

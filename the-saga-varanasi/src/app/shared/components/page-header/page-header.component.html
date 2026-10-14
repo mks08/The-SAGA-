@@ -1,0 +1,12 @@
+<header class="page-header">
+  <div class="container-srineva">
+    <button type="button" class="page-back" (click)="goBack()" aria-label="Go back to previous page">
+      <span aria-hidden="true">←</span>
+      Back
+    </button>
+    <span class="section-eyebrow" *ngIf="eyebrow">{{ eyebrow }}</span>
+    <h1 class="section-heading">{{ title }}</h1>
+    <p class="section-sub" *ngIf="subtitle">{{ subtitle }}</p>
+    <div class="gold-divider"></div>
+  </div>
+</header>

@@ -1,0 +1,26 @@
+<main id="main-content" role="main">
+<app-page-header
+  eyebrow="Floor Plans"
+  title="Floor Plans"
+  subtitle="The architect's stilt and first-floor plans in 2D and 3D, with the area statement for each. The first-floor plan is typical for Floors 1, 2 and 3.">
+</app-page-header>
+
+<app-plans [showIntro]="false"></app-plans>
+
+<section class="section-py plan-business no-intro">
+  <div class="container-srineva">
+    <div class="pb-card">
+      <h2>Hotels and studio apartments are a possibility</h2>
+      <p>
+        The whole-floor plate can also be considered for boutique hotel, serviced-stay and studio-apartment formats for visitors,
+        families and professionals. This is a business possibility, not an exclusive floor assignment. {{ property.legal.useDisclaimer }}
+      </p>
+      <div class="pb-actions">
+        <a class="btn-primary" [href]="pdf" target="_blank" rel="noopener" download>Download plans (PDF) ↓</a>
+        <a class="btn-outline" routerLink="/contact">Talk to leasing</a>
+      </div>
+    </div>
+  </div>
+</section>
+<app-final-cta></app-final-cta>
+</main>

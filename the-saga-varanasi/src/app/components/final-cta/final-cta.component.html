@@ -1,0 +1,17 @@
+<section class="section-py final-cta-section" aria-label="Final Call to Action">
+  <div class="container-srineva final-cta-inner">
+    <h2 class="section-heading">A Space for the <em>Next Business Move</em></h2>
+    <p class="section-sub" style="margin: 0 auto 2rem;">
+      Tell us what your business needs. We'll show you the right floor, configuration and leasing options at SHRINEVA.
+    </p>
+    <div class="final-cta-actions">
+      <button class="btn-primary" (click)="openPopup()">Schedule a Site Visit →</button>
+      <a routerLink="/contact" class="btn-outline">Request Leasing Details</a>
+    </div>
+    <p class="final-cta-contact">
+      <a [href]="'mailto:' + property.contact.email">{{ property.contact.email }}</a>
+      · <a [href]="waHref" target="_blank" rel="noopener">WhatsApp</a>
+      · <a [href]="'tel:' + property.contact.phoneE164">{{ property.contact.phoneDisplay }}</a>
+    </p>
+  </div>
+</section>

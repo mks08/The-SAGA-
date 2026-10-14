@@ -1,0 +1,39 @@
+.page-header {
+  padding: clamp(6.5rem, 12vw, 9.5rem) 0 2rem;
+
+  @media (max-width: 640px) {
+    padding: 5.75rem 0 1.25rem;
+  }
+
+  .section-heading,
+  .section-sub {
+    overflow-wrap: anywhere;
+  }
+}
+
+.page-back {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 1.35rem;
+  padding: 0.35rem 0;
+  background: none;
+  border: none;
+  color: var(--color-gold);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  span {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  &:hover {
+    color: var(--color-gold-lt);
+  }
+}

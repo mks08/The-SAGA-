@@ -1,30 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-
-interface Particle {
-  left: string;
-  duration: string;
-  delay: string;
-  size: string;
-}
+import { Component } from '@angular/core';
+import { PLAN, PROPERTY } from '../../config/property.config';
 
 @Component({
   selector: 'app-hero',
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.scss'],
 })
-export class HeroComponent implements OnInit {
-  particles: Particle[] = [];
+export class HeroComponent {
+  property = PROPERTY;
+  plan = PLAN;
 
-  ngOnInit() {
-    this.particles = Array.from({ length: 20 }, () => ({
-      left: `${Math.random() * 100}%`,
-      duration: `${6 + Math.random() * 10}s`,
-      delay: `${Math.random() * 8}s`,
-      size: `${2 + Math.random() * 4}px`,
-    }));
-  }
+  stats = [
+    { value: `${PLAN.typical.floorArea.sqft.toLocaleString('en-IN', { maximumFractionDigits: 0 })} sq ft`, label: 'Floor area, each floor' },
+    { value: PLAN.plot.frontage, label: `Frontage · ${PLAN.plot.roadWidthM} m road` },
+    { value: '60–70 m', label: 'To Apollo & NIFT' },
+    { value: 'Stilt + 3', label: 'Commercial floors' },
+  ];
 
   openPopup() {
     window.dispatchEvent(new CustomEvent('open-booking-popup'));
+  }
+
+  track(eventName: string) {
+    const w = window as any;
+    if (typeof w.gtag === 'function') w.gtag('event', eventName);
   }
 }

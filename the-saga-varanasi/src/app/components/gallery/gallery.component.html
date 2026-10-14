@@ -1,79 +1,30 @@
-<section class="gallery-section" id="gallery" aria-label="Project Gallery — Floor Plans, Design Renders & Construction Photos">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Gallery</div>
-      <h2>See The <span class="text-gold">SAGA</span> Come to Life</h2>
-      <p>Explore floor plans, architectural renders, construction progress, and site photographs. Images are updated regularly as the project progresses.</p>
-      <div class="divider"></div>
-    </div>
-
-    <!-- Tab Bar -->
-    <div class="gallery-tabs" role="tablist" aria-label="Gallery categories">
-      <button
-        *ngFor="let t of tabs"
-        [id]="'gallery-tab-' + t.id"
-        role="tab"
-        [attr.aria-selected]="activeTab === t.id"
-        class="gtab"
-        [class.active]="activeTab === t.id"
-        (click)="selectTab(t.id)">
-        <span>{{ t.icon }}</span>
-        <span>{{ t.label }}</span>
-      </button>
-    </div>
-
-    <!-- Grid -->
-    <div class="gallery-grid" role="tabpanel">
-      <div
-        *ngFor="let item of currentItems; let i = index"
-        class="gallery-card"
-        [style.animationDelay]="(i * 0.06) + 's'"
-        (click)="openLightbox(item)"
-        [class.clickable]="!item.coming">
-
-        <!-- Coming Soon State -->
-        <div class="gc-coming" *ngIf="item.coming">
-          <div class="gc-pattern"></div>
-          <div class="gc-overlay">
-            <div class="gc-icon">🖼️</div>
-            <div class="gc-coming-label">Coming Soon</div>
-            <div class="gc-title">{{ item.title }}</div>
-          </div>
-        </div>
-
-        <!-- Actual Image State -->
-        <div class="gc-image" *ngIf="!item.coming">
-          <img [src]="item.src" [alt]="item.title" loading="lazy">
-          <div class="gc-image-overlay">
-            <span class="gc-zoom">🔍</span>
-            <div class="gc-title">{{ item.title }}</div>
-          </div>
-        </div>
-
-        <div class="gc-meta">
-          <span class="gc-tag">{{ item.tag }}</span>
-          <span class="gc-name">{{ item.title }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Upload CTA -->
-    <div class="gallery-upload-note">
-      <div class="upload-icon">📸</div>
+<section class="section-py gallery-section" id="gallery-section" aria-label="Gallery" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="gal-head" *ngIf="showIntro">
       <div>
-        <strong>Images Coming Soon</strong>
-        <p>High-resolution floor plans, 3D renders, and on-site construction photos will be published here. Follow us or check back soon.</p>
+        <span class="section-eyebrow">Gallery</span>
+        <h2 class="section-heading">The building, <em>as designed</em></h2>
+        <p class="section-sub">Façade, stilt court and lift lobby. Indicative 3D visualisations; finishes and surroundings are illustrative and subject to change.</p>
       </div>
-      <button class="btn-outline" (click)="notifyMe()">Notify Me When Published</button>
+      <a *ngIf="showPageLink" routerLink="/gallery" class="btn-outline gal-all">View all {{ total }} →</a>
     </div>
-  </div>
 
-  <!-- Lightbox -->
-  <div class="lightbox" [class.open]="lightboxOpen" (click)="closeLightbox()">
-    <div class="lb-inner" (click)="$event.stopPropagation()">
-      <button class="lb-close" (click)="closeLightbox()">✕</button>
-      <img [src]="lightboxSrc" [alt]="lightboxTitle">
-      <div class="lb-title">{{ lightboxTitle }}</div>
+    <div class="gal-filters" role="tablist" aria-label="Filter images" *ngIf="!isHome">
+      <button type="button" role="tab" *ngFor="let g of groups" [class.active]="g === active" [attr.aria-selected]="g === active" (click)="select(g)">{{ g }}</button>
     </div>
+
+    <ul class="gal-grid" [class.home]="isHome">
+      <li *ngFor="let r of items; let i = index" [class.hero]="i === 0">
+        <button type="button" (click)="open(i)" [attr.aria-label]="'Open ' + r.title">
+          <img [src]="i === 0 ? r.src : r.thumb" [alt]="r.alt" [attr.width]="i === 0 ? r.width : 560" [attr.height]="i === 0 ? r.height : (r.height * 560 / r.width | number:'1.0-0')" loading="lazy" decoding="async">
+          <span class="gal-cap"><em>{{ r.group }}</em><strong>{{ r.title }}</strong></span>
+        </button>
+      </li>
+    </ul>
+
+    <p class="gal-note">{{ property.legal.renderDisclaimer }}</p>
   </div>
 </section>
+
+<app-lightbox [items]="items" [index]="lightboxIndex" [disclaimer]="'Indicative 3D visualisation. Subject to change.'"
+              (indexChange)="lightboxIndex = $event" (closed)="lightboxIndex = null"></app-lightbox>

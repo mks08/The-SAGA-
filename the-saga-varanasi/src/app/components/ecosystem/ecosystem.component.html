@@ -1,0 +1,55 @@
+<section class="section-py eco-section" id="ecosystem" aria-label="Location and opportunity" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="eco-intro" *ngIf="showIntro">
+      <span class="section-eyebrow">Location &amp; Opportunity</span>
+      <h2 class="section-heading">Three anchors. <em>One address.</em></h2>
+      <p class="section-sub">
+        SHRINEVA stands on a north-facing plot with {{ plan.plot.frontage }} of frontage on a {{ plan.plot.roadWidthM }} m wide road at Bada Lalpur,
+        about a kilometre by road from the Varanasi Ring Road, with Apollo Hospital, NIFT and the Trade Centre all on the same stretch of road.
+      </p>
+    </div>
+
+    <button type="button" class="eco-map" (click)="lightboxIndex = 0" aria-label="Enlarge the location map">
+      <img [src]="map.src" [alt]="map.alt" [attr.width]="map.width" [attr.height]="map.height" loading="lazy" decoding="async">
+      <span class="eco-map-badge" aria-hidden="true">Enlarge ⤢</span>
+    </button>
+    <p class="eco-map-note">{{ map.caption }}</p>
+
+    <ul class="eco-anchors">
+      <li *ngFor="let a of anchors">
+        <span class="ea-status">{{ a.status }}</span>
+        <div class="ea-dist"><strong>{{ a.distanceDisplay }}</strong><em *ngIf="a.direction">{{ a.direction }}</em></div>
+        <h3>{{ a.name }}</h3>
+        <p>{{ a.detail }}</p>
+      </li>
+    </ul>
+
+    <div class="eco-people">
+      <h3>Who is expected on this road</h3>
+      <p>
+        Patients and families, students and faculty, exhibitors and delegates. That is potential steady demand for
+        <ng-container *ngFor="let s of stays; let last = last"><span class="chip">{{ s }}</span></ng-container>
+        — with premium stays such as studio apartments for visitors, families and professionals.
+      </p>
+    </div>
+
+    <div class="eco-spots">
+      <h3 class="eco-spots-h">Key spots · approximate road distance from SHRINEVA</h3>
+      <ul>
+        <li *ngFor="let s of spots">
+          <strong>{{ s.distanceDisplay }}</strong>
+          <span>{{ s.name }}</span>
+          <small *ngIf="s.detail">{{ s.detail }}</small>
+        </li>
+      </ul>
+    </div>
+
+    <p class="eco-legal">
+      Distances are approximate straight lines from the plot boundary to the nearest edge of each site, measured on satellite imagery (Trade Centre: nearest block; its main hall is about 470 m).
+      {{ property.legal.futureDisclaimer }}
+    </p>
+    <a *ngIf="showPageLink" routerLink="/location" class="text-link">Full location brief →</a>
+  </div>
+</section>
+
+<app-lightbox [items]="mapItems" [index]="lightboxIndex" (closed)="lightboxIndex = null"></app-lightbox>

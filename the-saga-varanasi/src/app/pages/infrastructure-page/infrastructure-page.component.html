@@ -1,0 +1,21 @@
+<main id="main-content" role="main">
+<app-page-header
+  eyebrow="Infrastructure"
+  title="Built for Serious Operators"
+  subtitle="Confirmed commercial infrastructure. Detailed MEP, electrical load and F&B provisions are shared in the leasing information pack.">
+</app-page-header>
+
+<section class="section-py">
+  <div class="container-srineva">
+    <ul class="infra-essentials">
+      <li *ngFor="let item of essentials">{{ item }}</li>
+    </ul>
+    <p class="section-sub">{{ property.legal.areaDisclaimer }}</p>
+    <div class="infra-actions">
+      <a class="btn-primary" [href]="dossierHref" target="_blank" rel="noopener">Request the Leasing Pack →</a>
+      <a class="btn-outline" routerLink="/contact">Talk to Leasing</a>
+    </div>
+  </div>
+</section>
+<app-final-cta></app-final-cta>
+</main>
