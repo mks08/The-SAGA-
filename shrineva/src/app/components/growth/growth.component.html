@@ -1,0 +1,93 @@
+<section class="section-py growth-section" id="growth-section" aria-label="A Location Positioned for Growth" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="sec-header reveal" *ngIf="showIntro">
+      <span class="section-eyebrow">The Next Phase of Bada Lalpur</span>
+      <h2 class="section-heading">A Location Positioned for <em>Growth</em></h2>
+      <p class="section-sub">
+        SHRINEVA sits inside an emerging healthcare, education, trade and business corridor —
+        not as a standalone building, but as a commercial address aligned to several demand engines.
+      </p>
+      <div class="gold-divider"></div>
+    </div>
+
+    <div class="growth-timeline">
+      <article class="growth-node reveal"
+           *ngFor="let t of timeline; let i = index"
+           [style.transitionDelay]="(i * 0.1) + 's'">
+        <div class="gn-index">0{{ i + 1 }}</div>
+        <div class="gn-marker" [class]="'status-' + t.status"></div>
+        <div class="gn-body">
+          <div class="gn-phase">{{ t.phase }}</div>
+          <div class="gn-title">{{ t.title }}</div>
+          <div class="gn-status">{{ t.statusLabel }}</div>
+          <ul>
+            <li *ngFor="let p of t.points">{{ p }}</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+
+    <ng-container *ngIf="detailed">
+      <section class="fx-block" aria-labelledby="fx-nearby">
+        <h2 id="fx-nearby" class="fx-h">What is being built near SHRINEVA</h2>
+        <p class="fx-lead">Four projects within about 400 m give this road its footfall case. Reviewed {{ asOf }}.</p>
+        <ul class="fx-grid">
+          <li class="fx-card" *ngFor="let p of nearby">
+            <div class="fx-top"><span class="fx-kind">{{ p.kind }}</span><span class="fx-conf" [attr.data-level]="p.confidence">{{ p.confidence }} confidence</span></div>
+            <h3>{{ p.name }}</h3>
+            <p class="fx-dist">{{ p.distance }}</p>
+            <p class="fx-status">{{ p.status }}</p>
+            <ul class="fx-facts"><li *ngFor="let f of p.facts">{{ f }}</li></ul>
+            <p class="fx-brings"><strong>Brings:</strong> {{ p.brings }}</p>
+            <p class="fx-caveat" *ngIf="p.caveat">{{ p.caveat }}</p>
+            <a class="fx-src" [href]="p.source.url" target="_blank" rel="noopener">Source: {{ p.source.label }}</a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="fx-block" aria-labelledby="fx-layers">
+        <h2 id="fx-layers" class="fx-h">How footfall builds on this road</h2>
+        <p class="fx-lead">Different groups use the same stretch at different times. This is reasoning from the facilities above, not measured data.</p>
+        <div class="fx-table-wrap">
+          <table class="fx-table">
+            <caption class="sr-only">Visitor groups, when they come, and the businesses they need</caption>
+            <thead><tr><th scope="col">Who</th><th scope="col">When</th><th scope="col">What they need nearby</th></tr></thead>
+            <tbody><tr *ngFor="let l of layers"><th scope="row">{{ l.who }}</th><td>{{ l.when }}</td><td>{{ l.needs }}</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="fx-block" aria-labelledby="fx-city">
+        <h2 id="fx-city" class="fx-h">City-level projects (indirect)</h2>
+        <p class="fx-lead">These bring visitors to Varanasi. They do not bring them to this road on their own.</p>
+        <ul class="fx-city">
+          <li *ngFor="let c of cityDrivers">
+            <div class="fx-top"><h3>{{ c.name }}</h3><span class="fx-conf" [attr.data-level]="c.confidence">{{ c.confidence }} confidence</span></div>
+            <p>{{ c.facts }}</p>
+            <p class="fx-caveat">{{ c.whyIndirect }}</p>
+            <a class="fx-src" [href]="c.source.url" target="_blank" rel="noopener">Source: {{ c.source.label }}</a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="fx-block fx-not" aria-labelledby="fx-not">
+        <h2 id="fx-not" class="fx-h">What we do not claim</h2>
+        <ul><li *ngFor="let n of notClaimed">{{ n }}</li></ul>
+        <p class="fx-note">{{ note }}</p>
+      </section>
+    </ng-container>
+
+    <div class="growth-engines reveal">
+      <p class="engines-kicker">One Location. Multiple Demand Engines.</p>
+      <ul class="engines-grid">
+        <li *ngFor="let e of engines">
+          <span>{{ e.kicker }}</span>
+          <strong>{{ e.line }}</strong>
+        </li>
+      </ul>
+    </div>
+
+    <p class="growth-legal">{{ property.legal.futureDisclaimer }} No guaranteed footfall, occupancy, returns or completion dates are implied.</p>
+  </div>
+</section>

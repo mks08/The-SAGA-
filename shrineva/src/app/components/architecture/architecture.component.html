@@ -1,0 +1,49 @@
+<section class="section-py architecture-section" id="property" aria-label="The property" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="arch-intro" *ngIf="showIntro">
+      <span class="section-eyebrow">The Property</span>
+      <h2 class="section-heading">A commercial building designed for <em>flexibility</em></h2>
+      <p class="section-sub">
+        Stilt plus three whole commercial floors on a {{ plan.plot.areaSqM }} sq m plot, each floor {{ plan.typical.floorArea.sqft | number:'1.0-0' }} sq ft.
+      </p>
+    </div>
+
+    <h2 class="sr-only" *ngIf="!showIntro">The building, level by level</h2>
+    <div class="arch-layout">
+      <ol class="arch-stack">
+        <li class="arch-plate"
+            *ngFor="let l of levels"
+            [class.is-ground]="l.id === 'ground'">
+          <a *ngIf="l.route; else plain" [routerLink]="l.route" class="arch-link">
+            <span class="arch-label">{{ l.label }}</span>
+            <span class="arch-area">{{ l.area }}</span>
+            <span class="arch-note">{{ l.note }}</span>
+          </a>
+          <ng-template #plain>
+            <div class="arch-link">
+              <span class="arch-label">{{ l.label }}</span>
+              <span class="arch-area">{{ l.area }}</span>
+              <span class="arch-note">{{ l.note }}</span>
+            </div>
+          </ng-template>
+        </li>
+      </ol>
+
+      <div class="arch-explain">
+        <h3>Understanding the space</h3>
+        <p>Each floor is {{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft of floor area with {{ plan.typical.carpet.sqft | number:'1.2-2' }} sq ft of carpet area ({{ plan.typical.carpet.pct }}%). The first-floor plan is typical for Floors 1, 2 and 3.</p>
+        <dl>
+          <div><dt>Plot</dt><dd>{{ plan.plot.areaSqM }} sq m (≈ {{ plan.plot.areaSqFt | number }} sq ft)</dd></div>
+          <div><dt>Frontage</dt><dd>{{ plan.plot.frontage }} · {{ plan.plot.roadWidthM }} m road</dd></div>
+          <div><dt>Total carpet, 3 floors</dt><dd>≈ {{ property.area.totalCommercialCarpetSqFt | number }} sq ft</dd></div>
+          <div><dt>Floor to floor</dt><dd>Stilt {{ plan.stilt.floorToFloor }} · floors {{ plan.typical.floorToFloor }}</dd></div>
+          <div><dt>Lift</dt><dd>{{ plan.lift.capacity }}</dd></div>
+          <div><dt>Parking</dt><dd>Stilt level; capacity to be confirmed</dd></div>
+        </dl>
+        <p class="arch-legal">{{ property.legal.areaDisclaimer }}</p>
+        <a routerLink="/floor-plans" class="text-link">View floor plans →</a>
+        <a *ngIf="showPageLink" routerLink="/property" class="text-link">Full property brief →</a>
+      </div>
+    </div>
+  </div>
+</section>

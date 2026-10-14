@@ -1,0 +1,205 @@
+.sec-header { margin-bottom: 3rem; max-width: 680px; }
+
+.growth-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2.35rem;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--rgb-accent),0.45), transparent);
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1.25rem;
+    &::before { display: none; }
+  }
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.growth-node {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0 1.1rem 0.5rem;
+  position: relative;
+}
+
+.gn-index {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--color-cream-dim);
+}
+
+.gn-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-cream-dim);
+  box-shadow: 0 0 0 6px rgba(var(--rgb-accent),0.08);
+  z-index: 1;
+
+  &.status-confirmed { background: var(--color-gold); box-shadow: 0 0 0 6px rgba(var(--rgb-accent),0.18); }
+  &.status-under-construction { background: var(--color-gold-lt); }
+  &.status-planned { background: #8A7A5C; }
+  &.status-potential { background: var(--color-cream-dim); }
+}
+
+.gn-phase {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  color: var(--color-cream);
+  line-height: 1.1;
+}
+
+.gn-title {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-cream-muted);
+}
+
+.gn-status {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.gn-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.35rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+
+  li {
+    font-size: 0.84rem;
+    color: var(--color-cream-muted);
+    line-height: 1.5;
+    padding-left: 0.85rem;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(var(--rgb-accent),0.7);
+    }
+  }
+}
+
+.growth-engines {
+  margin-top: 4rem;
+  padding: 2.25rem 2rem;
+  border: 1px solid rgba(var(--rgb-accent),0.22);
+  background:
+    radial-gradient(ellipse 80% 80% at 10% 0%, rgba(var(--rgb-accent),0.08), transparent 55%),
+    linear-gradient(180deg, rgba(var(--rgb-bg),0.9), rgba(var(--rgb-bg),0.4));
+
+  @media (max-width: 640px) {
+    margin-top: 2.5rem;
+    padding: 1.5rem 1.15rem;
+  }
+}
+
+.engines-kicker {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--color-cream);
+  margin: 0 0 1.5rem;
+  font-style: italic;
+}
+
+.engines-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem 2rem;
+
+  @media (max-width: 800px) { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 520px) { grid-template-columns: 1fr; }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(var(--rgb-accent),0.18);
+  }
+
+  span {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  strong {
+    font-weight: 500;
+    color: var(--color-cream);
+    font-size: 1rem;
+  }
+}
+
+.growth-legal {
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--color-cream-dim);
+  max-width: 70ch;
+}
+
+/* ── Evidence section (nearby projects, footfall layers, city drivers) ── */
+.fx-block { margin-top: 3.5rem; }
+.fx-h { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 0.5rem; }
+.fx-lead { color: var(--color-cream-muted); max-width: 60ch; margin-bottom: 1.5rem; }
+.fx-grid { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; @media (max-width: 760px) { grid-template-columns: 1fr; } }
+.fx-card, .fx-city li {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 1.25rem 1.35rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  h3 { font-size: 1.3rem; }
+  p { color: var(--color-cream-muted); font-size: 0.95rem; }
+}
+.fx-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+.fx-kind { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-gold); }
+.fx-conf { font-size: 0.72rem; border: 1px solid var(--color-border-strong); border-radius: 999px; padding: 0.1rem 0.6rem; color: var(--color-cream-muted); }
+.fx-dist { font-family: var(--font-display); font-size: 1.15rem; color: var(--color-cream) !important; }
+.fx-status { color: var(--color-cream) !important; }
+.fx-facts { list-style: disc; padding-left: 1.1rem; color: var(--color-cream-muted); font-size: 0.92rem; li { margin: 0.15rem 0; } }
+.fx-caveat { font-size: 0.85rem !important; color: var(--color-cream-dim) !important; font-style: italic; }
+.fx-src { font-size: 0.85rem; color: var(--color-gold); text-decoration: underline; text-underline-offset: 3px; margin-top: auto; }
+.fx-city { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; @media (max-width: 760px) { grid-template-columns: 1fr; } }
+.fx-table-wrap { overflow-x: auto; }
+.fx-table {
+  width: 100%; border-collapse: collapse; font-size: 0.95rem;
+  th, td { text-align: left; padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+  thead th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-cream-dim); }
+  tbody th { font-weight: 600; color: var(--color-cream); }
+  td { color: var(--color-cream-muted); }
+}
+.fx-not { background: var(--color-deep); border: 1px solid var(--color-border); border-radius: 10px; padding: 1.5rem; ul { list-style: disc; padding-left: 1.2rem; color: var(--color-cream-muted); li { margin: 0.35rem 0; } } }
+.fx-note { margin-top: 1rem; font-size: 0.85rem; color: var(--color-cream-dim); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

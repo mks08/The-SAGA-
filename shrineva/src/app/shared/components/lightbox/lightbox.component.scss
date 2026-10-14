@@ -1,0 +1,93 @@
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background: rgba(var(--rgb-bg), 0.94);
+  animation: lbIn 0.2s ease;
+}
+@keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
+
+.lb-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem clamp(0.75rem, 3vw, 1.5rem);
+  flex: 0 0 auto;
+}
+.lb-count {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--color-cream-muted);
+}
+.lb-actions { display: flex; gap: 0.5rem; margin-left: auto; }
+.lb-btn {
+  min-height: 44px;
+  padding: 0 1rem;
+  background: rgba(var(--rgb-accent), 0.1);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  color: var(--color-gold-lt);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  &:hover { background: rgba(var(--rgb-accent), 0.2); }
+}
+
+.lb-stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 clamp(0.5rem, 6vw, 4.5rem);
+
+  &.zoomed { overflow: auto; align-items: flex-start; justify-content: flex-start; padding: 0 1rem 1rem; }
+}
+.lb-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 20px 80px rgba(27,26,23,0.14);
+}
+.lb-img-zoom { max-width: none; height: auto; flex: 0 0 auto; background: var(--color-cream); }
+
+.lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-strong);
+  background: rgba(var(--rgb-bg), 0.8);
+  color: var(--color-gold-lt);
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  &.prev { left: clamp(0.25rem, 1.5vw, 1rem); }
+  &.next { right: clamp(0.25rem, 1.5vw, 1rem); }
+  &:hover { background: rgba(var(--rgb-accent), 0.25); }
+  @media (max-width: 640px) { width: 40px; height: 40px; font-size: 1.5rem; }
+}
+
+.lb-caption {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.85rem clamp(1rem, 4vw, 2rem) 1.1rem;
+  text-align: center;
+  strong { font-family: var(--font-display); font-size: 1.15rem; font-weight: 500; color: var(--color-cream); }
+  span { font-size: 0.85rem; color: var(--color-cream-muted); }
+  small { font-size: 0.7rem; color: var(--color-cream-dim); letter-spacing: 0.03em; }
+}

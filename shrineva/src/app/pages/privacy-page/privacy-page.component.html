@@ -1,0 +1,14 @@
+<main id="main-content" role="main">
+<app-page-header
+  eyebrow="Legal"
+  title="Privacy Policy"
+  subtitle="How enquiry information submitted through this website is used.">
+</app-page-header>
+<section class="section-py generic-page-section">
+  <div class="container-srineva">
+    <p>SHRINEVA collects the information you submit through leasing, site-visit and broker enquiry forms — typically name, company, designation, business category, phone, email and requirement notes — in order to respond to your enquiry.</p>
+    <p>We do not sell personal data. Information is shared only with the SHRINEVA leasing team and service providers required to operate the website: FormSubmit (form delivery to the leasing inbox) and, once configured, Google Analytics. Analytics may be used to understand site performance once measurement IDs are configured.</p>
+    <p>To request deletion or a copy of your enquiry record, message the leasing team on WhatsApp or call <a [href]="'tel:' + property.contact.phoneE164">{{ property.contact.phoneDisplay }}</a><ng-container *ngIf="property.contact.publicEmail">, or email <a [href]="'mailto:' + property.contact.publicEmail">{{ property.contact.publicEmail }}</a></ng-container>.</p>
+  </div>
+</section>
+</main>

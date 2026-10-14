@@ -1,0 +1,69 @@
+# SHRINEVA — Hostinger (Apache / LiteSpeed) rules for the static Angular build.
+# Domain-agnostic: nothing here names the domain, so it works unchanged for shrineva.com / .in / any alias.
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# 1. Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# 2. www -> apex (any domain)
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# 3a. /growth (no slash) serves /growth/index.html directly, so the URL matches the canonical (no 301 to /growth/)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.*[^/])$ $1/index.html [L]
+
+# 3. Real files and folders are served as they are (including per-route SEO shells in /property/, /growth/ ...)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 4. Known app routes fall back to the app if their static folder is missing. Anything else is a real 404
+#    (see ErrorDocument below), so crawlers do not index junk URLs as copies of the home page.
+#    Keep this list in step with src/app/config/seo.config.ts; `npm run build` fails if a route is missing.
+RewriteRule ^(property|spaces|spaces/floor-[1-3]|floor-plans|location|growth|business-fit|infrastructure|gallery|leasing|brokers|faq|contact|privacy|terms|disclaimer)/?$ index.html [L]
+</IfModule>
+
+# Unknown URLs: real 404 status with the app shell (404.html), which sends visitors to the home page.
+ErrorDocument 404 /404.html
+
+# Compression
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml font/ttf
+</IfModule>
+
+# Browser caching: hashed JS/CSS/fonts never change under the same name; HTML must revalidate.
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/html "access plus 0 seconds"
+ExpiresByType application/xml "access plus 1 day"
+ExpiresByType text/plain "access plus 1 day"
+ExpiresByType image/webp "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType font/woff "access plus 1 year"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType application/pdf "access plus 1 week"
+</IfModule>
+
+# Security headers (no inline-script CSP yet: Angular injects inline styles; see README)
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+<FilesMatch "\.(html)$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
+</IfModule>
+
+# Do not list folders
+Options -Indexes

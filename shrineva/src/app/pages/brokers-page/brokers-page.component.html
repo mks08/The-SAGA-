@@ -1,0 +1,37 @@
+<main id="main-content" role="main">
+<app-page-header
+  eyebrow="For Tenant Representatives & Brokers"
+  title="For Tenant Representatives & Brokers"
+  subtitle="A direct leasing channel for commercial brokers and tenant-representation consultants working with SHRINEVA.">
+</app-page-header>
+
+<section class="section-py generic-page-section">
+  <div class="container-srineva">
+    <h2 class="sr-only">Broker information and requirement form</h2>
+    <div class="two-col-grid">
+      <div class="info-card glass-card">
+        <h3>Available Floors</h3>
+        <ul>
+          <li *ngFor="let f of property.floors">{{ f.label }}: {{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft floor area · {{ f.carpetAreaSqFt | number:'1.2-2' }} sq ft carpet</li>
+        </ul>
+        <p style="margin-top:1rem;">Stilt level: open ground level for parking and arrival, with the lift and stair lobby.</p>
+      </div>
+      <div class="info-card glass-card">
+        <h3>Target Occupier Categories</h3>
+        <p>{{ property.businessCategories.slice(0, -1).join(', ') }}, and other credible commercial occupiers.</p>
+      </div>
+    </div>
+
+    <div class="info-card glass-card" style="margin-top: 1.5rem;">
+      <h3>Register a Requirement</h3>
+      <p>Share your client's requirement and our leasing team will respond with floor options, the information pack and site visit scheduling.</p>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.25rem;">
+        <a routerLink="/contact" class="btn-primary">Register a Requirement →</a>
+        <a [href]="waHref" target="_blank" rel="noopener" class="btn-outline">WhatsApp Leasing Desk</a>
+        <a *ngIf="property.contact.publicEmail" [href]="'mailto:' + property.contact.publicEmail" class="btn-outline">{{ property.contact.publicEmail }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+<app-final-cta></app-final-cta>
+</main>
