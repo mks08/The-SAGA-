@@ -1,0 +1,5 @@
+
+# Server-only overrides (SMTP password etc.) and stored enquiries
+src/api/config.local.php
+src/api/_data/
+shrineva-leads/

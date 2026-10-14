@@ -1,13 +1,13 @@
-<section class="section-py story-section" id="story-section" aria-label="About SHRINEVA">
+<section id="story" class="relative bg-paper py-16 md:py-24" aria-labelledby="story-title">
   <div class="container-srineva">
-    <div class="story-inner reveal">
-      <img class="story-logo" [src]="property.images.logo" alt="SHRINEVA — Commercial & Mixed-Use Spaces, Bada Lalpur, Varanasi" width="480" height="480">
-      <span class="section-eyebrow">A Long-Term View</span>
-      <h2 class="section-heading">Family-Led. Built for <em>Business</em>.</h2>
-      <p class="story-verse">
+    <div appReveal class="mx-auto max-w-3xl text-center">
+      <img class="mx-auto mb-6 size-24 rounded-3xl ring-1 ring-brass-deep/30" [src]="property.images.logo" alt="SHRINEVA, commercial spaces, Bada Lalpur, Varanasi" width="480" height="480" loading="lazy" decoding="async">
+      <span class="eyebrow justify-center">A long-term view</span>
+      <h2 id="story-title" class="font-display text-display-lg text-ink">Family-led. Built for <em class="text-brass-deep">business.</em></h2>
+      <p class="mt-5 text-[1.05rem] leading-relaxed text-ink/75">
         Built with a long-term view of Varanasi's evolving commercial landscape, SHRINEVA combines a family-led vision with a practical approach to modern business space.
       </p>
-      <p class="story-sg">{{ property.brand.legalNote }}</p>
+      <p class="mt-3 text-[0.9rem] text-ink/70">{{ property.brand.legalNote }}</p>
     </div>
   </div>
 </section>

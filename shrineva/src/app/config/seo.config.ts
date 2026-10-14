@@ -24,21 +24,21 @@ const floorSqFt = Math.round(PLAN.typical.floorArea.sqft).toLocaleString('en-IN'
 const carpetSqFt = Math.round(PLAN.typical.carpet.sqft).toLocaleString('en-IN');
 
 const floorDesc = (n: number) =>
-  `Floor ${n} at SHRINEVA, Bada Lalpur, Varanasi: ${floorSqFt} sq ft floor area (${carpetSqFt} sq ft carpet), one open floor plate with a 40 ft glass frontage on a ${PLAN.plot.roadWidthM} m road.`;
+  `Floor ${n} at SHRINEVA, Bada Lalpur, Varanasi: ${floorSqFt} sq ft floor area (${carpetSqFt} sq ft carpet), one open floor plate with a glass front on a ${PLAN.plot.roadWidthM} m road.`;
 
 export const SEO_ROUTES: RouteSeo[] = [
   {
     path: '',
     title: 'Commercial Space for Lease, Bada Lalpur Varanasi | SHRINEVA',
-    description: `Whole commercial floors of ${floorSqFt} sq ft on a ${PLAN.plot.roadWidthM} m road in Bada Lalpur, Varanasi, about 60–70 m from the Apollo Medics hospital site and NIFT. Plans and leasing.`,
+    description: `VDA-approved Parking + 3 building for lease on a ${PLAN.plot.roadWidthM} m road in Bada Lalpur, Varanasi, 60–70 m from the Apollo Medics site and NIFT. ${floorSqFt} sq ft floors, 3D walkthrough.`,
     h1: 'SHRINEVA — Commercial space for lease in Bada Lalpur, Varanasi',
     priority: 1.0,
     changefreq: 'weekly',
   },
   {
     path: 'property',
-    title: 'The Property | SHRINEVA, Stilt + 3 Floors, Bada Lalpur',
-    description: `A stilt + 3 commercial building on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} frontage on a ${PLAN.plot.roadWidthM} m road. An ${PLAN.lift.adjective} lift, ${floorSqFt} sq ft floors, stilt-level parking.`,
+    title: 'The Property | SHRINEVA, Parking + 3 Floors, Bada Lalpur',
+    description: `A VDA-approved Parking + 3 commercial building on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} frontage on a ${PLAN.plot.roadWidthM} m road. An ${PLAN.lift.adjective} lift, ${floorSqFt} sq ft floors, ground-level parking.`,
     h1: 'A Commercial Building Designed for Flexibility',
     priority: 0.9,
     changefreq: 'monthly',
@@ -46,7 +46,7 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'spaces',
     title: 'Explore the Space | Commercial Floors at SHRINEVA, Varanasi',
-    description: `Three identical floors at SHRINEVA, each ${floorSqFt} sq ft (${carpetSqFt} sq ft carpet), above an open stilt level in Bada Lalpur, Varanasi. Whole floor or divided.`,
+    description: `Three identical floors at SHRINEVA, each ${floorSqFt} sq ft (${carpetSqFt} sq ft carpet), above an open parking level in Bada Lalpur, Varanasi. Whole floor or divided.`,
     h1: 'Explore the Space',
     priority: 0.8,
     changefreq: 'monthly',
@@ -78,11 +78,19 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'floor-plans',
     title: 'Floor Plans (2D & 3D) | SHRINEVA, Bada Lalpur, Varanasi',
-    description: `Architect's stilt and typical-floor plans in 2D, 3D and top view: ${floorSqFt} sq ft floor area and ${carpetSqFt} sq ft carpet per floor. Download the PDF.`,
+    description: `Architect's parking-level and typical-floor plans in 2D, 3D and top view: ${floorSqFt} sq ft floor area and ${carpetSqFt} sq ft carpet per floor. Download the PDF.`,
     h1: 'Floor Plans',
     priority: 0.9,
     changefreq: 'monthly',
     image: `${domain}/assets/images/og-shrineva.jpg`,
+  },
+  {
+    path: 'walkthrough',
+    title: '3D Walkthrough | Explore SHRINEVA Floors in 3D, Varanasi',
+    description: 'Orbit the building, step into the parking level and each floor, and look around with your mouse or finger. An indicative 3D model of SHRINEVA, Bada Lalpur, Varanasi.',
+    h1: '3D Walkthrough',
+    priority: 0.8,
+    changefreq: 'monthly',
   },
   {
     path: 'location',
@@ -94,9 +102,9 @@ export const SEO_ROUTES: RouteSeo[] = [
   },
   {
     path: 'growth',
-    title: 'Bada Lalpur Growth: Apollo, NIFT, Trade Centre, Mall',
-    description: 'What is being built near Bada Lalpur, Varanasi: planned 400-bed Apollo Medics hospital, NIFT campus, Trade Centre, Bliss Emporio mall. Sourced, Oct 2026.',
-    h1: 'A Location Positioned for Growth',
+    title: 'Nearby Projects: Apollo, NIFT, Trade Centre | SHRINEVA',
+    description: 'What is being built within 350 m of SHRINEVA, Bada Lalpur: a planned 400-bed Apollo Medics hospital, the NIFT campus and the Trade Centre. Sourced, Oct 2026.',
+    h1: 'Nearby Projects and Footfall Potential',
     priority: 0.7,
     changefreq: 'monthly',
   },
@@ -111,7 +119,7 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'infrastructure',
     title: 'Infrastructure & Specifications | SHRINEVA, Varanasi',
-    description: `Planned power, DG backup, water, internet and HVAC provisions, an ${PLAN.lift.adjective} lift, ${PLAN.stilt.floorToFloor} stilt and ${PLAN.typical.floorToFloor} floor heights at SHRINEVA, Varanasi.`,
+    description: `Planned power, DG backup, water, internet and HVAC provisions, an ${PLAN.lift.adjective} lift, ${PLAN.stilt.floorToFloor} parking level and ${PLAN.typical.floorToFloor} floor heights at SHRINEVA, Varanasi.`,
     h1: 'Built for Serious Operators',
     priority: 0.6,
     changefreq: 'monthly',
@@ -119,7 +127,7 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'gallery',
     title: 'Gallery | 3D Renders of SHRINEVA, Bada Lalpur, Varanasi',
-    description: 'Indicative 3D renders of the SHRINEVA façade by day and night, the stilt court with its ghat mural and shrine, and the lift lobby. Design subject to change.',
+    description: 'Indicative 3D renders of the SHRINEVA façade by day and night, the parking-level court with its ghat mural and shrine, and the lift lobby. Design subject to change.',
     h1: 'Gallery',
     priority: 0.7,
     changefreq: 'monthly',

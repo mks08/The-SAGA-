@@ -36,7 +36,16 @@
               "src/assets",
               "src/robots.txt",
               "src/sitemap.xml",
-              "src/.htaccess"
+              "src/.htaccess",
+              {
+                "glob": "**/*",
+                "input": "src/api",
+                "output": "/api",
+                "ignore": [
+                  "config.local.php",
+                  "_data/**"
+                ]
+              }
             ],
             "styles": [
               "src/styles.scss"

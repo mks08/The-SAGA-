@@ -1,28 +1,35 @@
-<section class="section-py gallery-section" id="gallery-section" aria-label="Gallery" [class.no-intro]="!showIntro">
+<section id="gallery" data-rail="Gallery" class="relative overflow-hidden py-16 md:py-24" [ngClass]="isHome ? 'theme-dark bg-ink' : 'bg-paper'" [class.!pt-4]="!showIntro" aria-labelledby="gal-title">
   <div class="container-srineva">
-    <div class="gal-head" *ngIf="showIntro">
-      <div>
-        <span class="section-eyebrow">Gallery</span>
-        <h2 class="section-heading">The building, <em>as designed</em></h2>
-        <p class="section-sub">Façade, stilt court and lift lobby. Indicative 3D visualisations; finishes and surroundings are illustrative and subject to change.</p>
+    <div *ngIf="showIntro" appReveal class="mb-10 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-2xl">
+        <span class="eyebrow">Gallery</span>
+        <h2 id="gal-title" class="font-display text-display-lg" [ngClass]="isHome ? 'text-paper' : 'text-ink'">The building, <em [ngClass]="isHome ? 'text-brass-soft' : 'text-brass-deep'">as designed.</em></h2>
+        <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed" [ngClass]="isHome ? 'text-paper/75' : 'text-ink/70'">Façade, parking-level court and lift lobby. Indicative 3D renders.</p>
       </div>
-      <a *ngIf="showPageLink" routerLink="/gallery" class="btn-outline gal-all">View all {{ total }} →</a>
+      <a *ngIf="showPageLink" routerLink="/gallery" class="btn-outline shrink-0 self-start md:self-auto">View all {{ total }} <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+    <h2 *ngIf="!showIntro" id="gal-title" class="sr-only">Renders</h2>
+
+    <div *ngIf="!isHome" class="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Filter images">
+      <button type="button" role="tab" *ngFor="let g of groups" class="min-h-[44px] rounded-full border px-5 text-[0.86rem] font-bold transition-colors"
+              [ngClass]="g === active ? 'border-ink bg-ink text-paper' : 'border-ink/20 text-ink/70 hover:border-ink hover:text-ink'"
+              [attr.aria-selected]="g === active" (click)="select(g)">{{ g }}</button>
     </div>
 
-    <div class="gal-filters" role="tablist" aria-label="Filter images" *ngIf="!isHome">
-      <button type="button" role="tab" *ngFor="let g of groups" [class.active]="g === active" [attr.aria-selected]="g === active" (click)="select(g)">{{ g }}</button>
-    </div>
-
-    <ul class="gal-grid" [class.home]="isHome">
-      <li *ngFor="let r of items; let i = index" [class.hero]="i === 0">
-        <button type="button" (click)="open(i)">
-          <img [src]="i === 0 ? r.src : r.thumb" [alt]="r.alt" [attr.width]="i === 0 ? r.width : 560" [attr.height]="i === 0 ? r.height : (r.height * 560 / r.width | number:'1.0-0')" loading="lazy" decoding="async">
-          <span class="gal-cap"><em>{{ r.group }}</em><strong>{{ r.title }}</strong></span>
+    <ul class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 md:auto-rows-[13rem] lg:auto-rows-[15rem]">
+      <li *ngFor="let r of items; let i = index" appReveal="scale" [style.--i]="i % 4"
+          [ngClass]="spanClass(i)">
+        <button type="button" class="group relative block h-full w-full overflow-hidden rounded-3xl bg-ink-2 text-left" (click)="open(i)" [attr.aria-label]="r.group + ' ' + r.title + '. Enlarge'">
+          <img [src]="i === 0 ? r.src : r.thumb" [alt]="r.alt" [attr.width]="i === 0 ? r.width : 560" [attr.height]="i === 0 ? r.height : (r.height * 560 / r.width | number:'1.0-0')" loading="lazy" decoding="async"
+               class="aspect-[4/3] h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06] md:aspect-auto">
+          <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent p-4 pt-12 text-paper">
+            <em class="block font-mono text-[0.6rem] not-italic uppercase tracking-[0.16em] text-brass-soft">{{ r.group }}</em>{{ ' ' }}<strong class="mt-0.5 block text-[0.92rem] font-bold leading-snug">{{ r.title }}</strong>
+          </span>
         </button>
       </li>
     </ul>
 
-    <p class="gal-note">{{ property.legal.renderDisclaimer }}</p>
+    <p class="mt-6 text-[0.78rem]" [ngClass]="isHome ? 'text-paper/55' : 'text-ink/70'">{{ property.legal.renderDisclaimer }}</p>
   </div>
 </section>
 

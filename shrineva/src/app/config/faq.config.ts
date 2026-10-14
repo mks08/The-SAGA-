@@ -13,7 +13,15 @@ export interface Faq { q: string; a: string; }
 export const FAQS: Faq[] = [
   {
     q: 'What is SHRINEVA?',
-    a: `SHRINEVA is a commercial building at D-15, Bada Lalpur, Chandmari, Varanasi: an open stilt level plus three whole commercial floors on a ${PLAN.plot.areaSqM} sq m plot, with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m wide road.`,
+    a: `SHRINEVA is a commercial building at D-15, Bada Lalpur, Chandmari, Varanasi: an open parking level plus three whole commercial floors (Parking + 3) on a ${PLAN.plot.areaSqM} sq m plot, with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m wide road. The building is VDA approved.`,
+  },
+  {
+    q: 'Is SHRINEVA approved?',
+    a: 'Yes, the building is VDA approved (Varanasi Development Authority). For approval and sanction documents, ask the leasing team. Areas shown on this site are computed from the architect’s dimensions and are not certified.',
+  },
+  {
+    q: 'Can I walk through the building in 3D?',
+    a: 'Yes. The 3D walkthrough on the home page lets you orbit the building, step into the parking level and each floor, and look around with your mouse or finger. It is an indicative model built from the architect’s plan dimensions; finishes and fit-out shown are illustrative.',
   },
   {
     q: 'Where is SHRINEVA located?',
@@ -21,11 +29,11 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'What is being built near SHRINEVA?',
-    a: `As of ${FOOTFALL_AS_OF}: a 400-bed Apollo Medics hospital with a VDA-approved plan (about 60–70 m away), the NIFT Varanasi permanent campus on 7.5 acres under construction since January 2025 (about 60–70 m), the operating Deendayal Hastkala Sankul trade centre with a 1,000-seat convention hall (about 330 m), and the Bliss Emporio mall of about 6 lakh sq ft under construction on Ring Road Phase-1. Opening dates have not been announced for the hospital, campus or mall.`,
+    a: `As of ${FOOTFALL_AS_OF}: a 400-bed Apollo Medics hospital with a VDA-approved plan (about 60–70 m away), the NIFT Varanasi permanent campus on 7.5 acres under construction since January 2025 (about 60–70 m) and the operating Deendayal Hastkala Sankul trade centre with a 1,000-seat convention hall (about 330 m). Opening dates have not been announced for the hospital or the campus. Every project is listed with its source on the Nearby Projects page.`,
   },
   {
-    q: 'Will footfall near SHRINEVA increase?',
-    a: 'No footfall count has been published for this road, so no figure is claimed. What is documented is the demand each neighbour brings: hospital patients, attendants and staff, students and faculty, event delegates at the trade centre, and shoppers at the mall under construction. Those groups overlap through the week and create demand for diagnostics, pharmacy, cafés, banks, retail and short stays. Timing depends on the projects’ owners.',
+    q: 'What is the footfall potential near SHRINEVA?',
+    a: 'High potential, because three anchors of different kinds sit within about 350 m: a 400-bed hospital with an approved plan, a design campus under construction and an operating trade centre. No footfall count has been published for this road, so no figure is claimed. The groups they bring (patients and staff, students and faculty, event delegates, residents) overlap through the week and create demand for diagnostics, pharmacy, cafés, banks, retail and short stays. Timing depends on the projects’ owners.',
   },
   {
     q: 'How big is each floor?',
@@ -37,19 +45,19 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How many cars can be parked?',
-    a: 'Parking is on the open stilt level, and the number of cars and two-wheelers has not been fixed yet. It will be confirmed against the sanctioned layout, and the leasing team can share the current position on request.',
+    a: 'Parking is on the open ground level, and the number of cars and two-wheelers has not been fixed yet. It will be confirmed against the sanctioned layout, and the leasing team can share the current position on request.',
   },
   {
     q: 'When will Apollo Hospital and NIFT open?',
     a: 'Neither institution has announced an opening date in the sources reviewed on 14 October 2026. A VDA-approved plan for a 400-bed Apollo Medics hospital has been reported. NIFT Varanasi classes have run since July 2024, and construction of its permanent campus on 7.5 acres started in January 2025.',
   },
   {
-    q: 'What is the stilt level used for?',
-    a: `The stilt is an open ground level, ${PLAN.stilt.floorToFloor} floor to floor, with a ${n2(PLAN.stilt.structureZone.sqft)} sq ft structure zone. It holds parking and arrival, with west and east walkways to the lift and stair lobby. The road side is open at ground level; the entrance and boundary treatment follow the final drawings.`,
+    q: 'What is the parking level used for?',
+    a: `The parking level is an open ground level, ${PLAN.stilt.floorToFloor} floor to floor, with a ${n2(PLAN.stilt.structureZone.sqft)} sq ft structure zone. It holds parking and arrival, with west and east walkways to the lift and stair lobby. The road side is open at ground level; the entrance and boundary treatment follow the final drawings.`,
   },
   {
     q: 'What are the lift, staircase and floor height?',
-    a: `One passenger lift for ${PLAN.lift.capacity} (${PLAN.lift.clear} clear) and one staircase with 5′-3″ flights. Floor-to-floor height is ${PLAN.stilt.floorToFloor} at the stilt and ${PLAN.typical.floorToFloor} on the upper floors. Clear ceiling height is to be confirmed.`,
+    a: `One passenger lift for ${PLAN.lift.capacity} (${PLAN.lift.clear} clear) and one staircase with 5′-3″ flights. Floor-to-floor height is ${PLAN.stilt.floorToFloor} at the parking level and ${PLAN.typical.floorToFloor} on the upper floors. Clear ceiling height is to be confirmed.`,
   },
   {
     q: 'What power, water and HVAC provisions are planned?',
@@ -61,7 +69,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'Is signage possible?',
-    a: `Façade and projecting signage are possible, and building-level signage is planned subject to façade design finalisation. Each upper floor has a 40 ft glass-line frontage facing the ${PLAN.plot.roadWidthM} m road.`,
+    a: `Façade and projecting signage are possible, and building-level signage is planned subject to façade design finalisation. Each upper floor has a glass front facing the ${PLAN.plot.roadWidthM} m road.`,
   },
   {
     q: 'What businesses is SHRINEVA suited to?',

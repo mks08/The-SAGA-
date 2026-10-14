@@ -72,11 +72,6 @@ export const SOURCES = {
     source: 'District Varanasi / Government of Uttar Pradesh — Deendayal Hastkala Sankul page (land area listed as 7.93 acres).',
     url: 'https://varanasi.nic.in/dhs/',
   },
-  blissEmporio: {
-    claim: 'Bliss Emporio is a planned commercial / retail development on Ring Road Phase-1, Chandmari, Bada Lalpur.',
-    source: 'Developer project website (described as under construction; no opening date stated; not a SHRINEVA asset).',
-    url: 'https://blissemporio.com/',
-  },
   airportAai: {
     claim: 'Lal Bahadur Shastri Airport is listed by AAI as 18 km from Varanasi Railway Station.',
     source: 'Airports Authority of India — Lal Bahadur Shastri International Airport, Varanasi.',
@@ -95,8 +90,9 @@ export interface FloorDefinition {
 }
 
 /**
- * Architect's plan data — SHRINEVA Floor Plans sheets SH-01 (Stilt, R1) and SH-02 (First floor, R2),
- * dated 12.10.2026. Areas are computed from the dimensions shown and are NOT certified carpet areas.
+ * Architect's plan data — SHRINEVA Floor Plans sheets SH-01 (ground level, R1; the sheet itself is titled "Stilt")
+ * and SH-02 (First floor, R2), dated 12.10.2026. On the website the ground level is always called the
+ * "Parking level" and the building "Parking + 3"; the word "stilt" is kept only as the internal key below. Areas are computed from the dimensions shown and are NOT certified carpet areas.
  */
 export const PLAN = {
   sheetDate: '12.10.2026',
@@ -104,8 +100,11 @@ export const PLAN = {
   plot: {
     areaSqM: 525,
     areaSqFt: 5651,
-    frontage: '49′-5½″',
-    frontageFt: 49.46,
+    /** Marketing figure (owner's instruction: keep at 50 ft). The architect's sheet reads 49′-5½″. */
+    frontage: 'about 50 ft',
+    frontageShort: '50 ft',
+    frontageSheet: '49′-5½″',
+    frontageFt: 50,
     depth: '115′-6½″',
     facing: 'North',
     roadWidthM: 24,
@@ -136,7 +135,7 @@ export const PLAN = {
     externalWalls: { sqft: 148.69, sqm: 13.81 },
     carpet: { sqft: 3017.25, sqm: 280.31, pct: 85.7 },
     floorToFloor: '11′-6″ (3.51 m)',
-    frontage: '40 ft · 40′-6″ glass line',
+    frontage: '40′-6″ wide glass line, facing the road',
     projections: 'Front 5′-0″ glass line · Rear 5′-0″ · East 4′-0″ · West 1′-0″',
     daylight: 'Glass front, windows east and west, solid rear wall',
     staircase: '5′-3″ flights · 24 risers',
@@ -149,20 +148,23 @@ export const PROPERTY = {
   brand: {
     name: 'SHRINEVA',
     monogram: 'SG',
-    tagline: 'COMMERCIAL · STILT + 3 FLOORS',
+    tagline: 'COMMERCIAL · PARKING + 3 FLOORS',
     legalNote: 'A family-promoted commercial development in Bada Lalpur, Varanasi.',
   },
 
   domain: {
-    canonical: 'https://srineva.com',
+    canonical: 'https://shrineva.com',
     siteName: 'SHRINEVA',
   },
 
   contact: {
     /** Enquiry-form recipient only. Not shown on pages. */
     email: 'neerajsingh250@gmail.com',
-    /** Public leasing email. Leave empty until a domain mailbox (e.g. leasing@shrineva.com) exists and is tested. */
-    publicEmail: '',
+    /**
+     * Public leasing email shown on the site. The mailbox must exist (and have SPF/DKIM/DMARC) before launch,
+     * otherwise mail sent to it bounces. Form submissions do not depend on it: see `leadRecipients`.
+     */
+    publicEmail: 'leasing@shrineva.com',
     // Email and both phone numbers are taken from the owner's enquiry sheet (Floor Plans PDF, 12.10.2026).
     phoneDisplay: '+91 73557 70378',
     phoneE164: '+917355770378',
@@ -173,6 +175,12 @@ export const PROPERTY = {
     whatsappMessage:
       'Hello, I am interested in leasing space at SHRINEVA, D-15 Bada Lalpur, Varanasi. I would like to know the available floor/area options.',
     hours: 'Site visits by appointment',
+    /**
+     * Where enquiry forms are delivered (see src/api/lead.php and README "Enquiry forms"). This list documents the intent;
+     * the PHP handler on the web host reads its own copy in src/api/config.php. The browser-side FormSubmit fallback
+     * uses `email` above (an address that exists today), never the not-yet-created domain mailbox. Never shown on the site.
+     */
+    leadRecipients: ['leasing@shrineva.com', 'neerajsingh250@gmail.com'],
   },
 
   address: {
@@ -184,15 +192,27 @@ export const PROPERTY = {
     country: 'India',
     full: 'D-15, Bada Lalpur, Chandmari, near Apollo Hospital & NIFT, Varanasi, Uttar Pradesh 221003',
     // NOTE: insert the verified Google Maps place / plus-code once the exact pin is finalised.
+    /**
+     * Map pin. `lat`/`lng` are left null on purpose: no verified coordinates have been supplied, and a pin placed by guess
+     * would send people to the wrong spot. When the exact point is confirmed, set both and the site switches to a
+     * coordinate pin, a "Get directions" deep link and the map embed automatically (see `mapLinks()` below).
+     */
+    lat: null as number | null,
+    lng: null as number | null,
     googleMapsUrl: 'https://maps.google.com/?q=Bada+Lalpur+Chandmari+Varanasi',
-    embedSrc: 'https://maps.google.com/maps?q=Bada+Lalpur+Chandmari+Varanasi&t=&z=15&ie=UTF8&iwloc=&output=embed',
+    embedSrc: 'https://maps.google.com/maps?q=Bada+Lalpur+Chandmari+Varanasi&t=&z=16&ie=UTF8&iwloc=&output=embed',
   },
 
   structure: {
-    type: 'Commercial building · stilt + 3 floors',
-    configuration: 'Stilt + 3 commercial floors',
-    groundUse: 'Open stilt level for arrival, parking and brand visibility',
+    type: 'Commercial building · parking + 3 floors',
+    configuration: 'Parking + 3 commercial floors',
+    groundUse: 'Open parking level for arrival, parking and brand visibility',
     commercialFloors: 3,
+  },
+
+  /** Approvals the owner has stated. Shown as a small tag; sanction details are not published here. */
+  approvals: {
+    vda: { label: 'VDA approved', title: 'Approved by the Varanasi Development Authority', show: true },
   },
 
   /**
@@ -211,7 +231,7 @@ export const PROPERTY = {
   },
 
   site: {
-    roadFrontageFt: 49.46,
+    roadFrontageFt: PLAN.plot.frontageFt,
     roadFrontageDisplay: PLAN.plot.frontage,
     roadWidthM: PLAN.plot.roadWidthM,
     facing: PLAN.plot.facing,
@@ -219,9 +239,9 @@ export const PROPERTY = {
 
   parking: {
     totalCars: null as number | string | null, // not confirmed: needs a dimensioned layout against the sanctioned plan
-    summary: 'Stilt-level parking; car and two-wheeler capacity to be confirmed against the sanctioned layout',
+    summary: 'Parking on the open ground level; car and two-wheeler capacity to be confirmed against the sanctioned layout',
     covered: true,
-    level: 'Stilt',
+    level: 'Parking level',
     twoWheelerCount: null as number | null, // not yet confirmed — do not invent
   },
 
@@ -231,7 +251,7 @@ export const PROPERTY = {
     liftCapacity: PLAN.lift.capacity,
     staircases: '1 staircase with 5′-3″ flights',
     floorToFloorFt: 11.5,
-    stiltHeight: PLAN.stilt.floorToFloor,
+    stiltHeight: PLAN.stilt.floorToFloor, // ground (parking) level
     typicalHeight: PLAN.typical.floorToFloor,
   },
 
@@ -239,8 +259,8 @@ export const PROPERTY = {
     confirmed: [
       { label: 'Passenger Lift', value: '1 lift · 8 passengers · 6′-1½″ × 5′-5″', status: 'confirmed' },
       { label: 'Staircase', value: '5′-3″ flights', status: 'confirmed' },
-      { label: 'Floor-to-Floor Height', value: 'Stilt 9′-6″ · upper floors 11′-6″ (3.51 m)', status: 'confirmed' },
-      { label: 'Road Frontage', value: '49′-5½″ on a 24 m road', status: 'confirmed' },
+      { label: 'Floor-to-Floor Height', value: 'Parking level 9′-6″ · upper floors 11′-6″ (3.51 m)', status: 'confirmed' },
+      { label: 'Road Frontage', value: 'About 50 ft on a 24 m road (architect\'s sheet: 49′-5½″)', status: 'confirmed' },
     ] as TechnicalFact[],
     provisional: [
       { label: 'DG Backup', value: 'Planned provision', status: 'provision', note: 'Capacity and arrangement to be confirmed in the leasing pack.' },
@@ -434,44 +454,45 @@ export const PROPERTY = {
     },
   ] as LocationAnchor[],
 
+  /**
+   * The four-step story shown as a compact stepper (home) and in full on /growth.
+   * Short on purpose: one headline and two to three one-line points per step. No visitor numbers, no opening dates.
+   */
   growthTimeline: [
     {
       phase: 'TODAY',
-      title: 'An Operating Trade Anchor',
+      title: 'An operating trade anchor',
       status: 'confirmed',
       points: [
-        'Varanasi Trade Centre (Deendayal Hastkala Sankul) is operating about 330 m west: 1,000-seat convention hall, 50 marts, two-level basement parking',
-        'NIFT Varanasi classes have been running since July 2024',
-        'Existing residential catchment and local businesses; Ring Road about 1 km by road',
+        'Varanasi Trade Centre operating about 330 m west: 1,000-seat hall, 50 marts',
+        'NIFT Varanasi classes running since July 2024',
+        'Ring Road about 1 km by road; established residential catchment',
       ],
     },
     {
-      phase: 'UNDER CONSTRUCTION',
-      title: 'Institutional Anchors and a Mall, Same Locality',
+      phase: 'COMING UP',
+      title: 'Hospital and campus, 60–70 m away',
       status: 'under-construction',
       points: [
-        'Apollo Medics hospital, 400 beds, about 60–70 m north-east: VDA-approved plan reported with double basement, ground and 7 floors and 365 car parking spaces; opening date not announced',
-        'NIFT permanent campus on 7.5 acres, about 60–70 m north-west: main campus construction started January 2025; completion date not stated',
-        'Bliss Emporio mall, Ring Road Phase-1, Chandmari: about 6 lakh sq ft built, under construction per the developer',
+        'Apollo Medics, 400 beds: VDA building plan reported approved; opening date not announced',
+        'NIFT permanent campus on 7.5 acres: construction started January 2025',
       ],
     },
     {
       phase: 'EMERGING',
-      title: 'Commercialisation',
+      title: 'Daily demand follows',
       status: 'planned',
       points: [
-        'Patients and families, students and faculty, exhibitors and delegates will all pass this stretch of road',
-        'Potential demand for clinics, diagnostics, pharmacy, cafés, banks, retail, offices and premium stays such as studio apartments',
-        'Retail is arriving: a mall of about 6 lakh sq ft is under construction on Ring Road Phase-1, Chandmari',
+        'Patients, families, students, faculty and event delegates all pass this stretch of road',
+        'Demand for clinics, diagnostics, pharmacy, cafés, banks, offices and short stays',
       ],
     },
     {
       phase: 'POTENTIAL',
-      title: 'Multiple Demand Engines',
+      title: 'Several demand engines on one road',
       status: 'potential',
       points: [
         'Healthcare + education + trade and culture + residential catchment',
-        'City reference points within reach: Sarnath 7 km, Varanasi Junction 9 km, Kashi Vishwanath 12 km, airport 19 km',
         'A stronger institutional-commercial corridor is a possibility, not a guaranteed outcome',
       ],
     },
@@ -509,7 +530,7 @@ export const PROPERTY = {
   images: {
     hero: 'assets/images/renders/facade-golden.webp',
     logo: 'assets/images/shrineva-logo.webp',
-    og: 'https://srineva.com/assets/images/og-shrineva.jpg',
+    og: 'https://shrineva.com/assets/images/og-shrineva.jpg',
   },
 
   legal: {
@@ -531,3 +552,25 @@ export function waLink(message: string = PROPERTY.contact.whatsappMessage): stri
   return `https://wa.me/${PROPERTY.contact.whatsappE164}?text=${encodeURIComponent(message)}`;
 }
 
+
+/**
+ * Map links. With verified `lat`/`lng` the embed, "open" and "directions" links all point at the exact plot.
+ * Until then they point at the Bada Lalpur area by name, which is what Google Maps resolves reliably.
+ */
+export function mapLinks(): { pinned: boolean; embed: string; open: string; directions: string } {
+  const { lat, lng, googleMapsUrl, embedSrc } = PROPERTY.address;
+  if (lat !== null && lng !== null) {
+    return {
+      pinned: true,
+      embed: `https://maps.google.com/maps?q=${lat},${lng}&z=18&output=embed`,
+      open: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+      directions: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
+    };
+  }
+  return {
+    pinned: false,
+    embed: embedSrc,
+    open: googleMapsUrl,
+    directions: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent('Bada Lalpur, Chandmari, Varanasi')}`,
+  };
+}

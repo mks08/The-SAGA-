@@ -18,10 +18,12 @@ import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.componen
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
 import { DisclaimerPageComponent } from './pages/disclaimer-page/disclaimer-page.component';
 import { FaqPageComponent } from './pages/faq-page/faq-page.component';
+import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-page.component';
 
 const routes: Routes = [
   { path: '', component: MainLayoutComponent },
   { path: 'property', component: PropertyPageComponent },
+  { path: 'walkthrough', component: WalkthroughPageComponent },
   { path: 'spaces', component: SpacesPageComponent },
   { path: 'spaces/:floorId', component: FloorDetailPageComponent },
   { path: 'location', component: LocationPageComponent },

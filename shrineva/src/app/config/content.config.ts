@@ -15,27 +15,26 @@ export const CONTENT = {
   /** Property at a glance (home). Every figure is from the architect's sheets. */
   snapshot: [
     { value: `${PLAN.plot.areaSqM} sq m`, label: 'Plot area', sub: `≈ ${sqft(PLAN.plot.areaSqFt)} sq ft` },
-    { value: PLAN.plot.frontage, label: 'Frontage, north-facing', sub: `on a ${PLAN.plot.roadWidthM} m wide road` },
-    { value: 'Stilt + 3', label: 'Commercial floors', sub: 'Open stilt, three whole floors' },
+    { value: PLAN.plot.frontageShort, label: 'Frontage, north-facing', sub: `on a ${PLAN.plot.roadWidthM} m wide road` },
+    { value: 'Parking + 3', label: 'Commercial floors', sub: 'Open parking level, three whole floors' },
     { value: `${sqft(PLAN.typical.floorArea.sqft)} sq ft`, label: 'Floor area, each floor', sub: `${sqft(PLAN.typical.carpet.sqft)} sq ft carpet` },
     { value: '8 persons', label: 'Passenger lift', sub: 'One lift, one staircase' },
-    { value: 'Stilt', label: 'Parking level', sub: 'Capacity to be confirmed' },
+    { value: 'Open', label: 'Parking level', sub: 'Capacity to be confirmed' },
   ],
 
   demandEngineStrip: [
     { kicker: 'Healthcare', line: 'Planned 400-bed Apollo hospital nearby' },
     { kicker: 'Education', line: 'NIFT Varanasi' },
     { kicker: 'Trade & Culture', line: 'Varanasi Trade Centre' },
-    { kicker: 'Retail & F&B', line: 'Bliss Emporio mall under construction' },
     { kicker: 'Residential', line: 'Surrounding catchment' },
     { kicker: 'Connectivity', line: 'Ring Road · about 1 km' },
   ],
 
   occupierFactors: [
     { title: 'Location', copy: 'Apollo Hospital and NIFT about 60–70 m away, the Trade Centre about 330 m, Ring Road about 1 km by road.' },
-    { title: 'Visibility', copy: `${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road, plus a 40 ft glass-line frontage on each upper floor.` },
+    { title: 'Visibility', copy: `${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road, plus a glass front on each upper floor.` },
     { title: 'Access', copy: 'Open frontage with direct entry from the road, and east and west walkways to the lift and stair lobby.' },
-    { title: 'Parking', copy: 'Parking on the open stilt level. Car and two-wheeler capacity will be confirmed against the sanctioned layout.' },
+    { title: 'Parking', copy: 'Parking on the open ground level. Car and two-wheeler capacity will be confirmed against the sanctioned layout.' },
     { title: 'Flexibility', copy: 'One whole open floor plate, divided as required. Full-floor or subdivided occupation.' },
     { title: 'Infrastructure', copy: 'Planned provisions for power, DG backup, water, HVAC and internet; specifications in the leasing pack.' },
     { title: 'Brand presence', copy: 'Façade, projecting and building-level signage opportunities, subject to façade design finalisation.' },
@@ -45,7 +44,7 @@ export const CONTENT = {
   architectureLevels: [
     {
       id: 'ground',
-      label: 'Stilt',
+      label: 'Parking level',
       area: `${sqft(PLAN.stilt.structureZone.sqft)} sq ft structure zone`,
       note: `Open ground level, ${PLAN.stilt.floorToFloor} floor to floor. Lift and stair lobby, parking and arrival.`,
       route: '/floor-plans',
@@ -77,8 +76,8 @@ export const CONTENT = {
     'Planned provisions: DG backup, three-phase power, water and internet readiness (specifications in the leasing pack)',
     'HVAC provision for commercial occupation',
     `One ${PLAN.lift.adjective} lift (${PLAN.lift.clear} clear) and one staircase with 5′-3″ flights`,
-    `Floor-to-floor height ${PLAN.stilt.floorToFloor} at stilt and ${PLAN.typical.floorToFloor} on upper floors`,
-    'Parking on the open stilt level (capacity to be confirmed against the sanctioned layout)',
+    `Floor-to-floor height ${PLAN.stilt.floorToFloor} at the parking level and ${PLAN.typical.floorToFloor} on upper floors`,
+    'Parking on the open ground level (capacity to be confirmed against the sanctioned layout)',
     'Façade and projecting signage opportunities',
     'Toilets, pantry, handover condition and clear ceiling height are agreed with each occupier',
   ],

@@ -1,6 +1,5 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RevealService } from '../../services/reveal.service';
 import { PROPERTY, waLink } from '../../config/property.config';
 import { LeadService } from '../../core/services/lead.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -10,23 +9,22 @@ import { AnalyticsService } from '../../core/services/analytics.service';
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })
-export class ContactComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ContactComponent implements OnInit {
   @Input() showIntro = true;
   contactForm!: FormGroup;
   submitted = false;
   submitting = false;
   failed = false;
+  copied = false;
   property = PROPERTY;
   businessCategories = PROPERTY.businessCategories;
   spaceRequiredOptions = PROPERTY.spaceRequiredOptions;
   preferredFloorOptions = PROPERTY.preferredFloorOptions;
   waHref = waLink();
   waDossierHref = waLink(`Hi, I'd like to request the leasing information pack for SHRINEVA, ${PROPERTY.address.full}.`);
-  private io?: IntersectionObserver;
 
   constructor(
     private fb: FormBuilder,
-    private revealService: RevealService,
     private leads: LeadService,
     private analytics: AnalyticsService,
   ) {}
@@ -47,14 +45,6 @@ export class ContactComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit() {
-    this.io = this.revealService.observe();
-  }
-
-  ngOnDestroy() {
-    this.io?.disconnect();
-  }
-
   isInvalid(field: string): boolean {
     const ctrl = this.contactForm.get(field);
     return !!(ctrl && ctrl.invalid && (ctrl.dirty || ctrl.touched));
@@ -71,19 +61,19 @@ export class ContactComponent implements OnInit, AfterViewInit, OnDestroy {
     const result = await this.leads.submit('New Leasing Enquiry for SHRINEVA', {
       name: data.name,
       company: data.company,
-      designation: data.designation || 'Not provided',
+      designation: data.designation || '',
       business_category: data.businessCategory,
       phone: data.phone,
-      email: data.email || 'Not provided',
+      email: data.email || '',
       space_required: data.spaceRequired,
       preferred_floor: data.preferredFloor || 'Any',
-      expected_occupancy: data.occupancyDate || 'Not specified',
-      message: data.message || 'No message',
-    });
+      expected_occupancy: data.occupancyDate || '',
+      message: data.message || '',
+    }, 'leasing');
     this.submitting = false;
 
     if (result.ok) {
-      this.analytics.event('leasing_form_submit');
+      this.analytics.event('leasing_form_submit', { via: result.via });
       this.submitted = true;
       this.contactForm.reset({ preferredFloor: 'Any' });
     } else {
@@ -92,11 +82,15 @@ export class ContactComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Lightweight analytics hook. Wire this to GA4 (gtag) / Google Ads
-   * conversion tracking once measurement IDs are available — see
-   * README "Analytics & Conversion Tracking" section.
-   */
+  async copyEmail() {
+    try {
+      await navigator.clipboard.writeText(this.property.contact.publicEmail);
+      this.copied = true;
+      setTimeout(() => (this.copied = false), 2200);
+    } catch { /* clipboard blocked: the address is a normal mailto link anyway */ }
+    this.trackEvent('email_copy');
+  }
+
   trackEvent(eventName: string, params: Record<string, unknown> = {}): void {
     this.analytics.event(eventName, params);
   }

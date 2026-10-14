@@ -11,7 +11,6 @@ const fmt = (n: number) => n.toLocaleString('en-IN', { minimumFractionDigits: 2,
 @Component({
   selector: 'app-plans',
   templateUrl: './plans.component.html',
-  styleUrls: ['./plans.component.scss'],
 })
 export class PlansComponent {
   /** Shows the section heading (home). Inner pages already have an H1. */
@@ -38,7 +37,7 @@ export class PlansComponent {
     stilt: [
       { label: 'Structure zone (to column faces)', sqft: fmt(PLAN.stilt.structureZone.sqft), sqm: fmt(PLAN.stilt.structureZone.sqm) },
       { label: 'Lift and stair bay, 12′-9″ × 27′-9″', sqft: fmt(PLAN.stilt.liftStairBay.sqft), sqm: fmt(PLAN.stilt.liftStairBay.sqm) },
-      { label: 'Open stilt area excl. bay', sqft: fmt(PLAN.stilt.openArea.sqft), sqm: fmt(PLAN.stilt.openArea.sqm), strong: true },
+      { label: 'Open parking area excl. bay', sqft: fmt(PLAN.stilt.openArea.sqft), sqm: fmt(PLAN.stilt.openArea.sqm), strong: true },
     ],
     typical: [
       { label: 'Floor area, 40′-6″ × 89′-6″ less east recess', sqft: fmt(PLAN.typical.floorArea.sqft), sqm: fmt(PLAN.typical.floorArea.sqm) },
@@ -59,7 +58,7 @@ export class PlansComponent {
     ],
     typical: [
       { label: 'Floor to floor', value: PLAN.typical.floorToFloor },
-      { label: 'Road frontage', value: PLAN.typical.frontage },
+      { label: 'Glass line', value: PLAN.typical.frontage },
       { label: 'Daylight', value: PLAN.typical.daylight },
       { label: 'Lift', value: `${PLAN.lift.capacity} · ${PLAN.lift.clear} clear` },
       { label: 'Staircase', value: PLAN.typical.staircase },
@@ -73,7 +72,7 @@ export class PlansComponent {
   get isStilt(): boolean { return this.level.id === 'stilt'; }
   get headline(): { value: string; label: string; sub: string } {
     return this.isStilt
-      ? { value: fmt(PLAN.stilt.structureZone.sqft), label: 'sq ft · structure zone', sub: PLAN.stilt.structureZone.size }
+      ? { value: fmt(PLAN.stilt.structureZone.sqft), label: 'sq ft · structure zone, parking level', sub: PLAN.stilt.structureZone.size }
       : { value: fmt(PLAN.typical.floorArea.sqft), label: 'sq ft · floor area, each floor', sub: `Carpet area ${fmt(PLAN.typical.carpet.sqft)} sq ft (${PLAN.typical.carpet.sqm.toFixed(2)} sq m)` };
   }
 

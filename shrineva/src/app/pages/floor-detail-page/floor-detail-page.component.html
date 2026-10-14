@@ -1,43 +1,46 @@
 <main id="main-content" role="main">
 <ng-container *ngIf="floor">
   <app-page-header
-    eyebrow="Explore the Space"
+    eyebrow="Explore the space"
     [title]="floor.label"
-    [subtitle]="(plan.typical.floorArea.sqft | number:'1.2-2') + ' sq ft floor area (' + (plan.typical.carpet.sqft | number:'1.2-2') + ' sq ft carpet): one open floor plate with a 40 ft glass frontage on a ' + plan.plot.roadWidthM + ' m road.'">
+    [subtitle]="(plan.typical.floorArea.sqft | number:'1.2-2') + ' sq ft floor area (' + (plan.typical.carpet.sqft | number:'1.2-2') + ' sq ft carpet): one open floor plate with a glass front on a ' + plan.plot.roadWidthM + ' m road.'">
   </app-page-header>
 
-  <section class="section-py no-intro">
-    <div class="container-srineva floor-detail-grid">
-      <div class="fd-facts glass-card">
-        <h2>Floor facts</h2>
-        <dl>
-          <div><dt>Floor area</dt><dd>{{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.floorArea.sqm | number:'1.2-2' }} sq m)</dd></div>
-          <div><dt>Carpet area</dt><dd>{{ plan.typical.carpet.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.carpet.pct }}%)</dd></div>
-          <div><dt>Floor to floor</dt><dd>{{ plan.typical.floorToFloor }}</dd></div>
-          <div><dt>Daylight</dt><dd>{{ plan.typical.daylight }}</dd></div>
-          <div><dt>Lift and stairs</dt><dd>{{ plan.lift.adjective }} lift · {{ plan.typical.staircase }}</dd></div>
-          <div><dt>Lease format</dt><dd>{{ floor.leaseFormat.join(' · ') }}</dd></div>
-          <div><dt>Parking</dt><dd>Shared, stilt level; capacity to be confirmed</dd></div>
+  <section class="relative overflow-hidden bg-paper py-12 md:py-20" aria-labelledby="fd-title">
+    <div class="container-srineva grid gap-5 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-8">
+      <aside appReveal class="relative self-start overflow-hidden rounded-4xl bg-ink p-6 text-paper md:p-8 lg:sticky lg:top-28">
+        <div class="absolute -right-16 -top-16 size-56 rounded-full bg-brass/25 blur-[70px]" aria-hidden="true"></div>
+        <h2 id="fd-title" class="relative font-display text-[1.8rem] text-paper">Floor facts</h2>
+        <dl class="relative mt-4 divide-y divide-paper/12 text-[0.9rem]">
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Floor area</dt><dd class="text-right font-semibold">{{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.floorArea.sqm | number:'1.2-2' }} sq m)</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Carpet area</dt><dd class="text-right font-semibold">{{ plan.typical.carpet.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.carpet.pct }}%)</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Floor to floor</dt><dd class="text-right font-semibold">{{ plan.typical.floorToFloor }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Daylight</dt><dd class="text-right font-semibold">{{ plan.typical.daylight }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Lift and stairs</dt><dd class="text-right font-semibold">{{ plan.lift.adjective }} lift · {{ plan.typical.staircase }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Lease format</dt><dd class="text-right font-semibold">{{ floor.leaseFormat.join(' · ') }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Parking</dt><dd class="text-right font-semibold">Shared, ground level; capacity to be confirmed</dd></div>
         </dl>
-        <p class="fd-note">Computed from the architect's dimensions; certified areas will be issued by the architect. Handover condition, clear ceiling height, toilets and pantry are to be confirmed.</p>
-      </div>
+        <p class="relative mt-4 text-[0.78rem] leading-relaxed text-paper/55">Computed from the architect's dimensions; certified areas will be issued by the architect. Handover condition, clear ceiling height, toilets and pantry are to be confirmed.</p>
+      </aside>
 
-      <div class="fd-fit">
-        <h2>Possible occupier types</h2>
-        <p class="section-sub">The first-floor plan is typical for Floors 1, 2 and 3. These categories apply to the building, not to this floor exclusively.</p>
-        <div class="fd-chips">
-          <span class="fs-chip" *ngFor="let c of floor.suggestedFit">{{ c }}</span>
+      <div class="min-w-0">
+        <div appReveal>
+          <span class="eyebrow">Possible occupier types</span>
+          <p class="max-w-xl text-[0.98rem] leading-relaxed text-ink/70">The first-floor plan is typical for Floors 1, 2 and 3. These categories apply to the building, not to this floor exclusively.</p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            <li *ngFor="let c of floor.suggestedFit" class="rounded-full border border-brass-deep/30 bg-brass/10 px-3.5 py-1.5 text-[0.82rem] font-semibold text-brass-deep">{{ c }}</li>
+          </ul>
         </div>
 
-        <div class="fd-plan">
-          <p class="fd-plan-label">Typical floor plate</p>
-          <a routerLink="/floor-plans" class="fd-plan-link">
-            <img [src]="typical3d.thumb" [alt]="typical3d.alt" width="640" height="427" loading="lazy">
-          </a>
-        </div>
+        <a appReveal routerLink="/floor-plans" class="group mt-8 block overflow-hidden rounded-4xl border border-ink/10 bg-white p-3 transition-shadow duration-500 hover:shadow-lift md:p-4">
+          <img [src]="typical3d.thumb" [alt]="typical3d.alt" width="640" height="427" loading="lazy" decoding="async"
+               class="h-auto w-full rounded-3xl transition-transform duration-700 group-hover:scale-[1.015]">
+          <span class="mt-3 flex items-center justify-between px-1 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ink/60">Typical floor plate <span class="text-brass-deep">View plans →</span></span>
+        </a>
 
-        <div class="fd-actions">
-          <button class="btn-primary" (click)="openPopup()">Schedule a site visit →</button>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <button type="button" class="btn-primary" (click)="openPopup()">Schedule a site visit <span class="arrow" aria-hidden="true">→</span></button>
+          <a routerLink="/walkthrough" class="btn-outline">Walk through it in 3D</a>
           <a routerLink="/floor-plans" class="btn-outline">View floor plans</a>
           <a routerLink="/contact" class="btn-outline">Request leasing details</a>
         </div>

@@ -1,16 +1,20 @@
-<section class="section-py final-cta-section" aria-label="Final Call to Action">
-  <div class="container-srineva final-cta-inner">
-    <h2 class="section-heading">A Space for the <em>Next Business Move</em></h2>
-    <p class="section-sub" style="margin: 0 auto 2rem;">
-      Tell us what your business needs. We'll show you the right floor, configuration and leasing options at SHRINEVA.
-    </p>
-    <div class="final-cta-actions">
-      <button class="btn-primary" (click)="openPopup()">Schedule a Site Visit →</button>
-      <a routerLink="/contact" class="btn-outline">Request Leasing Details</a>
+<section class="theme-dark relative isolate overflow-hidden bg-ink py-16 md:py-24" aria-labelledby="fcta-title">
+  <img src="assets/images/hero/hero-golden-1000.webp" alt="" aria-hidden="true" width="1000" height="667" loading="lazy" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-30">
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/80 to-ink/60" aria-hidden="true"></div>
+  <div class="absolute left-1/2 top-0 -z-10 size-[30rem] -translate-x-1/2 rounded-full bg-brass/20 blur-[120px]" aria-hidden="true"></div>
+  <div class="container-srineva text-center">
+    <div appReveal>
+      <h2 id="fcta-title" class="mx-auto max-w-3xl font-display text-display-xl text-paper">A space for your <em class="text-brass-soft">next move.</em></h2>
+      <p class="mx-auto mt-5 max-w-xl text-[1.05rem] text-paper/75">Tell us what your business needs. We will show you the right floor and leasing options.</p>
+      <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <button type="button" class="btn-primary" (click)="openPopup()">Schedule a site visit <span class="arrow" aria-hidden="true">→</span></button>
+        <a routerLink="/contact" class="btn-outline">Request leasing details</a>
+      </div>
+      <p class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[0.92rem] text-paper/80">
+        <a [href]="waHref" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center font-bold text-brass-soft hover:underline">WhatsApp</a>
+        <a [href]="'tel:' + property.contact.phoneE164" class="inline-flex min-h-[44px] items-center hover:underline">{{ property.contact.phoneDisplay }}</a>
+        <a *ngIf="property.contact.publicEmail" [href]="'mailto:' + property.contact.publicEmail" class="inline-flex min-h-[44px] items-center hover:underline">{{ property.contact.publicEmail }}</a>
+      </p>
     </div>
-    <p class="final-cta-contact">
-      <a [href]="waHref" target="_blank" rel="noopener">WhatsApp</a>
-      · <a [href]="'tel:' + property.contact.phoneE164">{{ property.contact.phoneDisplay }}</a>
-    </p>
   </div>
 </section>

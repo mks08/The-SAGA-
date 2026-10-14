@@ -1,19 +1,24 @@
 <main id="main-content" role="main">
 <app-page-header
   eyebrow="Infrastructure"
-  title="Built for Serious Operators"
-  subtitle="Confirmed commercial infrastructure. Detailed MEP, electrical load and F&B provisions are shared in the leasing information pack.">
+  title="Built for serious operators"
+  subtitle="Commercial infrastructure at a glance. Detailed MEP, electrical load and F&B provisions are shared in the leasing information pack.">
 </app-page-header>
 
-<section class="section-py">
+<section class="relative overflow-hidden bg-paper py-14 md:py-20" aria-labelledby="infra-title">
   <div class="container-srineva">
-    <ul class="infra-essentials">
-      <li *ngFor="let item of essentials">{{ item }}</li>
+    <h2 id="infra-title" class="sr-only">Infrastructure essentials</h2>
+    <ul class="grid gap-3 sm:grid-cols-2 lg:gap-4">
+      <li *ngFor="let item of essentials; let i = index" appReveal [style.--i]="i % 2" appSpotlight
+          class="spot flex gap-4 rounded-3xl border border-ink/10 bg-white p-5 transition-shadow duration-500 hover:shadow-lift md:p-6">
+        <span class="grid size-9 shrink-0 place-items-center rounded-full bg-brass/15 font-mono text-[0.72rem] text-brass-deep" aria-hidden="true">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</span>
+        <p class="text-[0.97rem] leading-relaxed text-ink/80">{{ item }}</p>
+      </li>
     </ul>
-    <p class="section-sub">{{ property.legal.areaDisclaimer }}</p>
-    <div class="infra-actions">
-      <a class="btn-primary" [href]="dossierHref" target="_blank" rel="noopener">Request the Leasing Pack →</a>
-      <a class="btn-outline" routerLink="/contact">Talk to Leasing</a>
+    <p class="mt-8 max-w-3xl text-[0.85rem] leading-relaxed text-ink/60">{{ property.legal.areaDisclaimer }}</p>
+    <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+      <a class="btn-primary" [href]="dossierHref" target="_blank" rel="noopener">Request the leasing pack <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn-outline" routerLink="/contact">Talk to leasing</a>
     </div>
   </div>
 </section>

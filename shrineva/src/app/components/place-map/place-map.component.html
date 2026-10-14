@@ -1,0 +1,60 @@
+<section id="map" data-rail="Map" class="relative bg-paper-2 py-16 md:py-24" [class.!pt-4]="!showIntro" aria-labelledby="map-title">
+  <div class="container-srineva">
+    <div *ngIf="showIntro" appReveal class="mb-10 max-w-2xl md:mb-12">
+      <span class="eyebrow">Location</span>
+      <h2 id="map-title" class="font-display text-display-lg text-ink">On the map, <em class="text-brass-deep">on the road.</em></h2>
+      <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed text-ink/70">{{ property.address.line1 }}, {{ property.address.line2 }}, {{ property.address.city }} {{ property.address.pin }}.</p>
+    </div>
+    <h2 *ngIf="!showIntro" id="map-title" class="sr-only">Map and distances</h2>
+
+    <div class="grid gap-5 lg:grid-cols-[1.35fr_1fr] lg:gap-6">
+      <!-- Map -->
+      <div appReveal class="overflow-hidden rounded-4xl border border-ink/10 bg-white shadow-soft">
+        <div class="relative aspect-[4/3] min-h-[300px] w-full bg-paper-3 sm:aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[480px]">
+          <iframe [src]="embed" class="absolute inset-0 h-full w-full border-0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                  title="Map showing SHRINEVA's location at Bada Lalpur, Chandmari, Varanasi"></iframe>
+        </div>
+        <div class="flex flex-col gap-3 border-t border-ink/10 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+          <p class="flex items-start gap-2 text-[0.88rem] text-ink/75">
+            <svg viewBox="0 0 24 24" width="18" height="18" class="mt-0.5 shrink-0 text-brass-deep" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span>{{ property.address.full }}</span>
+          </p>
+          <div class="flex gap-2">
+            <a [href]="links.directions" target="_blank" rel="noopener" class="btn-primary !min-h-[44px] !px-5 !text-[0.84rem]" (click)="track('directions_click')">Get directions</a>
+            <a [href]="links.open" target="_blank" rel="noopener" class="btn-outline !min-h-[44px] !px-5 !text-[0.84rem]" (click)="track('map_open_click')">Open map</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distances -->
+      <div class="flex flex-col gap-4">
+        <div appReveal [style.--i]="1" class="rounded-4xl bg-ink p-6 text-paper md:p-7">
+          <p class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-brass-soft">Right here</p>
+          <ul class="mt-4 divide-y divide-paper/10">
+            <li *ngFor="let a of near" class="flex items-baseline justify-between gap-4 py-3">
+              <span class="min-w-0">
+                <span class="block text-[0.98rem] font-bold text-paper">{{ a.name.replace(' (Deendayal Hastkala Sankul)', '') }}</span>
+                <span class="block text-[0.8rem] text-paper/60">{{ a.relation }}</span>
+              </span>
+              <span class="shrink-0 font-display text-[1.5rem] leading-none text-brass-soft">{{ a.distanceDisplay?.replace('≈ ', '') }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div appReveal [style.--i]="2" class="rounded-4xl border border-ink/10 bg-white p-6 md:p-7">
+          <p class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-brass-deep">By road</p>
+          <ul class="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+            <li *ngFor="let a of far" class="flex items-baseline justify-between gap-3 border-b border-ink/10 pb-2">
+              <span class="text-[0.88rem] text-ink/80">{{ a.name.replace('Lal Bahadur Shastri International ', '').replace(' (Cantt) railway station', ' railway').replace('Ganjari International Cricket ', '') }}</span>
+              <span class="shrink-0 text-[0.92rem] font-bold text-ink">{{ a.distanceDisplay }}</span>
+            </li>
+          </ul>
+          <p class="mt-4 text-[0.76rem] leading-relaxed text-ink/70">Approximate. Measured from the plot on satellite imagery or by road, as noted on the owner's location sheet.</p>
+        </div>
+
+        <button type="button" class="btn-primary self-start" (click)="openPopup(); track('site_visit_click')">Schedule a site visit <span class="arrow" aria-hidden="true">→</span></button>
+      </div>
+    </div>
+    <p *ngIf="!links.pinned" class="mt-4 text-[0.78rem] text-ink/70">The map is centred on Bada Lalpur, Chandmari. Use "Get directions" or call us and we will guide you to the plot.</p>
+  </div>
+</section>

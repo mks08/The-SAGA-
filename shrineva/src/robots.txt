@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://srineva.com/sitemap.xml
+Sitemap: https://shrineva.com/sitemap.xml

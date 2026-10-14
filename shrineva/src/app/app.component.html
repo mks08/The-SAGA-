@@ -1,6 +1,9 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 <app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<app-section-rail></app-section-rail>
+<div [class.page-in]="fading" (animationend)="fadeDone($event)">
+  <router-outlet></router-outlet>
+</div>
 <app-site-footer></app-site-footer>
 <app-booking-popup></app-booking-popup>
 <app-whatsapp-fab></app-whatsapp-fab>

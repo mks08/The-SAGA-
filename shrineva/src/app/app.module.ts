@@ -11,16 +11,10 @@ import { SharedModule } from './shared/shared.module';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component';
-import { HeroComponent } from './components/hero/hero.component';
-import { SnapshotComponent } from './components/snapshot/snapshot.component';
-import { EcosystemComponent } from './components/ecosystem/ecosystem.component';
-import { GrowthComponent } from './components/growth/growth.component';
 import { ArchitectureComponent } from './components/architecture/architecture.component';
 import { IdealForComponent } from './components/ideal-for/ideal-for.component';
 import { OccupierFactorsComponent } from './components/occupier-factors/occupier-factors.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
-import { LeasingTeaserComponent } from './components/leasing-teaser/leasing-teaser.component';
-import { LocationComponent } from './components/location/location.component';
 import { BrandStoryComponent } from './components/brand-story/brand-story.component';
 import { FaqComponent } from './components/faq/faq.component';
 import { FinalCtaComponent } from './components/final-cta/final-cta.component';
@@ -47,22 +41,23 @@ import { TermsPageComponent } from './pages/terms-page/terms-page.component';
 import { DisclaimerPageComponent } from './pages/disclaimer-page/disclaimer-page.component';
 import { FaqPageComponent } from './pages/faq-page/faq-page.component';
 import { PlansComponent } from './components/plans/plans.component';
+import { HomeHeroComponent } from './components/home-hero/home-hero.component';
+import { FootfallComponent } from './components/footfall/footfall.component';
+import { WalkthroughComponent } from './components/walkthrough/walkthrough.component';
+import { HomeSpecsComponent } from './components/home-specs/home-specs.component';
+import { PlaceMapComponent } from './components/place-map/place-map.component';
+import { SectionRailComponent } from './components/section-rail/section-rail.component';
+import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     MainLayoutComponent,
-    HeroComponent,
-    SnapshotComponent,
-    EcosystemComponent,
-    GrowthComponent,
     ArchitectureComponent,
     IdealForComponent,
     OccupierFactorsComponent,
     GalleryComponent,
-    LeasingTeaserComponent,
-    LocationComponent,
     BrandStoryComponent,
     FaqComponent,
     FinalCtaComponent,
@@ -88,6 +83,13 @@ import { PlansComponent } from './components/plans/plans.component';
     DisclaimerPageComponent,
     FaqPageComponent,
     PlansComponent,
+    HomeHeroComponent,
+    FootfallComponent,
+    WalkthroughComponent,
+    HomeSpecsComponent,
+    PlaceMapComponent,
+    SectionRailComponent,
+    WalkthroughPageComponent,
   ],
   imports: [
     BrowserModule,

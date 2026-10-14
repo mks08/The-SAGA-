@@ -1,28 +1,36 @@
-<section class="section-py" id="ideal-for-section" aria-label="Business fit" [class.no-intro]="!showIntro">
+<section id="fit" data-rail="Fit" class="relative bg-paper py-16 md:py-24" [class.!pt-4]="!showIntro" aria-labelledby="fit-title">
   <div class="container-srineva">
-    <div class="sec-header" *ngIf="showIntro">
-      <span class="section-eyebrow">Business Fit</span>
-      <h2 class="section-heading">Built around <em>business needs</em></h2>
-      <p class="section-sub">
-        Whole floors of {{ plan.typical.floorArea.sqft | number:'1.0-0' }} sq ft, divided as required. These are suitability notes, not exclusive legal use permissions.
-      </p>
+    <div *ngIf="showIntro" appReveal class="mb-10 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-2xl">
+        <span class="eyebrow">Business fit</span>
+        <h2 id="fit-title" class="font-display text-display-lg text-ink">Who this road <em class="text-brass-deep">brings you.</em></h2>
+        <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed text-ink/70">Whole floors of {{ plan.typical.floorArea.sqft | number:'1.0-0' }} sq ft, divided as required. Suitability notes, not exclusive use permissions.</p>
+      </div>
+      <button type="button" class="btn-primary shrink-0 self-start md:self-auto" (click)="openPopup()">Tell us what you need <span class="arrow" aria-hidden="true">→</span></button>
     </div>
+    <h2 *ngIf="!showIntro" id="fit-title" class="sr-only">Business categories</h2>
 
-    <h2 class="sr-only" *ngIf="!showIntro">Business categories</h2>
-    <ul class="ideal-grid" [class.compact]="compact">
-      <li class="ideal-card" *ngFor="let item of categories">
-        <h3>{{ item.label }}</h3>
-        <p *ngIf="compact">{{ item.short }}</p>
-        <ng-container *ngIf="!compact">
-          <p>{{ item.description }}</p>
-          <span class="ic-benefit">{{ item.benefit }}</span>
-        </ng-container>
+    <ul class="gap-3 lg:gap-4" [ngClass]="compact
+          ? '-mx-[var(--container-px)] flex snap-x snap-mandatory overflow-x-auto scroll-pl-[var(--container-px)] px-[var(--container-px)] pb-4 scrollbar-none md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-5'
+          : 'grid sm:grid-cols-2'" [attr.tabindex]="compact ? 0 : null" [attr.aria-label]="compact ? 'Business categories, scroll sideways' : null">
+      <li *ngFor="let item of categories; let i = index" appReveal [style.--i]="i % 4"
+          class="spot group relative flex flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white p-5 transition-[transform,box-shadow,border-color] duration-500 ease-out hoverable:hover:-translate-y-1 hoverable:hover:border-brass-deep/40 hoverable:hover:shadow-lift md:p-6" [ngClass]="compact ? 'min-w-[78%] shrink-0 snap-start sm:min-w-[44%] md:min-w-0' : ''" appSpotlight>
+        <span class="font-mono text-[0.64rem] tracking-[0.18em] text-brass-deep">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
+        <h3 class="mt-2 font-display text-[1.55rem] leading-[1.1] text-ink">{{ item.label }}</h3>
+        <p class="mt-2 text-[0.92rem] leading-relaxed text-ink/70">{{ compact ? item.short : item.description }}</p>
+        <p class="mt-auto pt-4">
+          <span class="inline-flex max-w-full items-center gap-1.5 rounded-full border border-brass-deep/30 bg-brass/10 px-3 py-1 text-[0.72rem] font-bold text-brass-deep">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="truncate">{{ item.demand }}</span>
+          </span>
+          <span *ngIf="!compact" class="mt-2 block text-[0.78rem] text-ink/70">{{ item.benefit }}</span>
+        </p>
       </li>
     </ul>
 
-    <div class="ideal-cta">
-      <button type="button" class="btn-primary" (click)="openPopup()">Tell us what you need →</button>
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
       <a *ngIf="showPageLink" routerLink="/business-fit" class="text-link">How each category fits →</a>
+      <button *ngIf="!showIntro" type="button" class="btn-primary" (click)="openPopup()">Tell us what you need <span class="arrow" aria-hidden="true">→</span></button>
     </div>
   </div>
 </section>

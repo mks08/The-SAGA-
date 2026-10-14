@@ -5,7 +5,6 @@ import { FAQS, HOME_FAQ_COUNT } from '../../config/faq.config';
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
-  styleUrls: ['./faq.component.scss'],
 })
 export class FaqComponent {
   /** Home shows the top questions with a link to /faq. */

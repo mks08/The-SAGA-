@@ -1,17 +1,17 @@
-<section class="section-py occupier-section" id="advantage" aria-label="What matters to occupiers">
+<section id="advantage" class="theme-dark relative overflow-hidden bg-ink py-16 md:py-24" aria-labelledby="adv-title">
+  <div class="absolute -right-32 top-0 size-[28rem] rounded-full bg-brass/10 blur-[120px]" aria-hidden="true"></div>
   <div class="container-srineva">
-    <div class="occ-intro reveal">
-      <span class="section-eyebrow">The SHRINEVA Advantage</span>
-      <h2 class="section-heading">What Matters to <em>Occupiers</em></h2>
-      <p class="section-sub">Eight decision factors expansion teams typically evaluate before taking a commercial floor.</p>
-      <div class="gold-divider"></div>
+    <div appReveal class="mb-10 max-w-2xl md:mb-14">
+      <span class="eyebrow">The SHRINEVA advantage</span>
+      <h2 id="adv-title" class="font-display text-display-lg text-paper">What matters to <em class="text-brass-soft">occupiers.</em></h2>
+      <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed text-paper/75">Eight factors expansion teams usually weigh before taking a floor.</p>
     </div>
-
-    <ol class="occ-grid">
-      <li class="reveal" *ngFor="let f of factors; let i = index" [style.transitionDelay]="(i * 0.06) + 's'">
-        <span class="occ-num">0{{ i + 1 }}</span>
-        <h3>{{ f.title }}</h3>
-        <p>{{ f.copy }}</p>
+    <ol class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <li *ngFor="let f of factors; let i = index" appReveal [style.--i]="i % 4" appSpotlight
+          class="spot rounded-3xl border border-paper/12 bg-paper/[0.03] p-5 transition-colors hover:border-brass/50 md:p-6">
+        <span class="font-mono text-[0.68rem] tracking-[0.18em] text-brass-soft">0{{ i + 1 }}</span>
+        <h3 class="mt-3 font-display text-[1.5rem] text-paper">{{ f.title }}</h3>
+        <p class="mt-2 text-[0.9rem] leading-relaxed text-paper/70">{{ f.copy }}</p>
       </li>
     </ol>
   </div>

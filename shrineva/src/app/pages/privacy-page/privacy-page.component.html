@@ -4,11 +4,20 @@
   title="Privacy Policy"
   subtitle="How enquiry information submitted through this website is used.">
 </app-page-header>
-<section class="section-py generic-page-section">
+<section class="bg-paper py-12 md:py-20">
   <div class="container-srineva">
-    <p>SHRINEVA collects the information you submit through leasing, site-visit and broker enquiry forms — typically name, company, designation, business category, phone, email and requirement notes — in order to respond to your enquiry.</p>
-    <p>We do not sell personal data. Information is shared only with the SHRINEVA leasing team and service providers required to operate the website: FormSubmit (form delivery to the leasing inbox) and, once configured, Google Analytics. Analytics may be used to understand site performance once measurement IDs are configured.</p>
-    <p>To request deletion or a copy of your enquiry record, message the leasing team on WhatsApp or call <a [href]="'tel:' + property.contact.phoneE164">{{ property.contact.phoneDisplay }}</a><ng-container *ngIf="property.contact.publicEmail">, or email <a [href]="'mailto:' + property.contact.publicEmail">{{ property.contact.publicEmail }}</a></ng-container>.</p>
+    <div class="max-w-3xl space-y-5 text-[1.02rem] leading-[1.8] text-ink/80 [&_a]:font-semibold [&_a]:text-brass-deep [&_a]:underline [&_a]:underline-offset-4 [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-[1.7rem] [&_h2]:leading-tight [&_h2]:text-ink">
+      <h2>What we collect</h2>
+      <p>The details you type into a leasing, site-visit or broker enquiry form: typically name, company, designation, business category, phone number, email address, space required and your message. The form says which are optional.</p>
+      <h2>How it is used</h2>
+      <p>Only to answer your enquiry: to call or message you, send floor options and the information pack, and arrange a site visit. We do not sell personal data and we do not use it for unrelated marketing.</p>
+      <h2>Where it goes</h2>
+      <p>The form sends your enquiry to a small handler on this website's own hosting. The handler emails the leasing team and keeps a private copy on the server so that an enquiry is not lost if an email fails. If the handler is unavailable, the form falls back to FormSubmit, a third-party form-delivery service, which emails the leasing inbox. Access is limited to the SHRINEVA leasing team.</p>
+      <p>Anonymous usage statistics, such as which pages are viewed, may be collected once an analytics service is configured on this site. They do not include the contents of your enquiry.</p>
+      <h2>Your choices</h2>
+      <p>To see, correct or delete an enquiry you sent us, contact the leasing team using the details below and tell us the phone number you used.</p>
+      <p>Questions: message the leasing team on WhatsApp or call <a [href]="'tel:' + property.contact.phoneE164">{{ property.contact.phoneDisplay }}</a><ng-container *ngIf="property.contact.publicEmail">, or email <a [href]="'mailto:' + property.contact.publicEmail">{{ property.contact.publicEmail }}</a></ng-container>.</p>
+    </div>
   </div>
 </section>
 </main>

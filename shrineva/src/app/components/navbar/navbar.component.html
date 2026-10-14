@@ -1,75 +1,77 @@
-<header
-  class="navbar"
-  [class.scrolled]="scrolled"
-  [class.menu-open]="menuOpen"
-  role="banner">
+<header class="theme-dark fixed inset-x-0 top-0 z-50" role="banner">
+  <!-- Bar background lives on its own layer: a backdrop-filter on the header itself would trap the fixed mobile menu inside the 72px bar. -->
+  <div class="pointer-events-none absolute inset-0 -z-10 border-b transition-[background-color,border-color,backdrop-filter] duration-500 ease-out"
+       [ngClass]="scrolled || menuOpen ? 'bg-ink/80 backdrop-blur-xl border-paper/10' : 'bg-transparent border-transparent'" aria-hidden="true"></div>
 
-  <!-- Scroll progress -->
-  <div class="scroll-progress" [style.width.%]="scrollProgress"></div>
+  <!-- Reading progress -->
+  <div class="absolute bottom-[-1px] left-0 h-px bg-brass origin-left" [style.width.%]="scrollProgress" aria-hidden="true"></div>
 
-  <div class="nav-inner container-srineva">
+  <div class="container-srineva flex h-[var(--nav-h)] items-center justify-between gap-4">
     <!-- Logo -->
-    <a class="nav-logo" routerLink="/" (click)="closeMenu()">
-      <img class="nav-logo-img" [src]="property.images.logo" alt="" width="160" height="160">
-      <div class="logo-text">
-        <span class="logo-main">SHRINEVA</span>
-        <span class="logo-sub">Commercial &amp; Mixed-Use Spaces</span>
-        <span class="sr-only">, home</span>
-      </div>
+    <a routerLink="/" class="group flex items-center gap-3 min-h-[44px]" (click)="closeMenu()">
+      <img src="assets/images/logo-mark.webp" alt="" width="44" height="44"
+           class="size-11 rounded-xl ring-1 ring-brass/40 transition-transform duration-500 ease-out group-hover:rotate-[-4deg] group-hover:scale-105">
+      <span class="flex flex-col leading-none">
+        <span class="font-display text-[1.65rem] tracking-[0.14em] text-paper">SHRINEVA</span>
+        <span class="mt-1 whitespace-nowrap font-mono text-[0.58rem] uppercase tracking-[0.22em] text-brass-soft/80">Bada Lalpur · Varanasi</span>
+      </span>
+      <span class="sr-only">, home</span>
     </a>
 
-    <!-- Desktop Links -->
-    <nav class="nav-links" role="navigation" aria-label="Main Navigation">
-      <a *ngFor="let link of navLinks"
-         [routerLink]="link.path"
-         routerLinkActive="active">
+    <!-- Desktop links -->
+    <nav class="hidden xl:flex items-center gap-0.5" aria-label="Main navigation">
+      <a *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive="!text-paper [&>.bar]:scale-x-100"
+         class="relative inline-flex items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-[0.84rem] font-semibold text-paper/75 transition-colors hover:text-paper">
+        <span *ngIf="link.live" class="live-dot" aria-hidden="true"></span>
         {{ link.label }}
+        <span class="bar absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-brass transition-transform duration-500 ease-out" aria-hidden="true"></span>
       </a>
     </nav>
 
-    <!-- Nav CTAs -->
-    <div class="nav-actions">
-      <a [href]="waHref" class="nav-phone" target="_blank" rel="noopener" aria-label="WhatsApp">
-        WhatsApp
+    <!-- Actions -->
+    <div class="hidden xl:flex items-center gap-2">
+      <a [href]="'tel:' + property.contact.phoneE164" class="btn-ghost hidden whitespace-nowrap text-paper/85 text-[0.84rem] 2xl:inline-flex" (click)="track('phone_click')" aria-label="Call the leasing team">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+        {{ property.contact.phoneDisplay }}
       </a>
-      <button id="nav-book-cta" class="nav-book-btn" type="button" (click)="openPopup()">
-        Schedule a Site Visit
+      <button id="nav-book-cta" type="button" class="btn-primary !min-h-[42px] !whitespace-nowrap !px-5 !text-[0.84rem]" (click)="openPopup()">
+        Schedule a visit <span class="arrow" aria-hidden="true">→</span>
       </button>
     </div>
 
     <!-- Hamburger -->
-    <button
-      class="hamburger"
-      [class.open]="menuOpen"
-      (click)="toggleMenu()"
-      aria-label="Toggle navigation"
-      [attr.aria-expanded]="menuOpen">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button type="button" class="xl:hidden grid size-11 place-items-center rounded-full border border-paper/20 text-paper" [class.open]="menuOpen"
+            (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-controls="mobile-menu" aria-label="Toggle navigation">
+      <span class="grid gap-[5px]" aria-hidden="true">
+        <span class="hamburger-line block h-px w-5 bg-current"></span>
+        <span class="hamburger-line block h-px w-5 bg-current"></span>
+        <span class="hamburger-line block h-px w-5 bg-current"></span>
+      </span>
     </button>
   </div>
 
-  <!-- Mobile Drawer -->
-  <div class="mobile-drawer" [class.open]="menuOpen" [attr.aria-hidden]="!menuOpen">
-    <nav class="drawer-links" role="navigation">
-      <a *ngFor="let link of navLinks; let i = index"
-         [routerLink]="link.path"
-         routerLinkActive="active"
-         (click)="closeMenu()"
-         [style.animationDelay]="(i * 0.06) + 's'">
-        <span class="drawer-num">0{{ i + 1 }}</span>
-        {{ link.label }}
+  <!-- Mobile menu -->
+  <div id="mobile-menu"
+       class="xl:hidden fixed inset-x-0 top-[var(--nav-h)] bottom-0 overflow-y-auto bg-ink transition-[opacity,transform] duration-500 ease-out"
+       [ngClass]="menuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-3 pointer-events-none'"
+       [attr.aria-hidden]="!menuOpen" [attr.inert]="menuOpen ? null : ''">
+    <nav class="container-srineva pb-28 pt-6" aria-label="Mobile navigation">
+      <a *ngFor="let link of navLinks; let i = index" [routerLink]="link.path" routerLinkActive="!text-brass-soft" (click)="closeMenu()"
+         class="flex items-baseline gap-4 border-b border-paper/10 py-4 font-display text-[2rem] leading-none text-paper"
+         [style.transition-delay]="menuOpen ? (i * 40) + 'ms' : '0ms'">
+        <span class="font-mono text-[0.68rem] tracking-widest text-brass-soft/70">0{{ i + 1 }}</span>
+        <span>{{ link.label }}</span>
+        <span *ngIf="link.live" class="live-dot self-center" aria-hidden="true"></span>
       </a>
+      <div class="mt-8 grid gap-3">
+        <button type="button" class="btn-primary w-full" (click)="openPopup()">Schedule a site visit <span class="arrow" aria-hidden="true">→</span></button>
+        <a [href]="waHref" class="btn-whatsapp w-full" target="_blank" rel="noopener" (click)="track('whatsapp_click')">WhatsApp leasing</a>
+        <div class="mt-3 grid gap-2 text-[0.95rem] text-paper/80">
+          <a [href]="'tel:' + property.contact.phoneE164" class="min-h-[44px] flex items-center">{{ property.contact.phoneDisplay }}</a>
+          <a [href]="'tel:' + property.contact.phone2E164" class="min-h-[44px] flex items-center">{{ property.contact.phone2Display }}</a>
+          <a *ngIf="property.contact.publicEmail" [href]="'mailto:' + property.contact.publicEmail" class="min-h-[44px] flex items-center text-brass-soft">{{ property.contact.publicEmail }}</a>
+        </div>
+      </div>
     </nav>
-    <div class="drawer-cta">
-      <a [href]="waHref" class="drawer-whatsapp" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-        </svg>
-        WhatsApp Leasing
-      </a>
-      <button class="drawer-book" (click)="openPopup()">Schedule a Site Visit →</button>
-    </div>
   </div>
 </header>

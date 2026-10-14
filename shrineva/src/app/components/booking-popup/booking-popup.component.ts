@@ -99,11 +99,11 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
     const result = await this.leads.submit('New Site-Visit Enquiry for SHRINEVA', {
       name: data.name,
       phone: data.phone,
-      email: data.email || 'Not provided',
-      space_type: data.spaceType || 'Not specified',
-      other_details: data.otherDetails || 'N/A',
-      message: data.message || 'No message',
-    });
+      email: data.email || '',
+      space_type: this.spaceTypes.find((t) => t.id === data.spaceType)?.label ?? data.spaceType ?? '',
+      other_details: data.otherDetails || '',
+      message: data.message || '',
+    }, 'site-visit');
     this.submitting = false;
 
     if (result.ok) {

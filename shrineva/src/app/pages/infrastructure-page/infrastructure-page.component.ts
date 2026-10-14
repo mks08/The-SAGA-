@@ -6,7 +6,6 @@ import { CONTENT } from '../../config/content.config';
 @Component({
   selector: 'app-infrastructure-page',
   templateUrl: './infrastructure-page.component.html',
-  styleUrls: ['./infrastructure-page.component.scss'],
 })
 export class InfrastructurePageComponent implements OnInit {
   property = PROPERTY;

@@ -2,7 +2,7 @@
   <div class="lb-top" (click)="$event.stopPropagation()">
     <span class="lb-count" *ngIf="items.length > 1">{{ (index || 0) + 1 }} / {{ items.length }}</span>
     <div class="lb-actions">
-      <button type="button" class="lb-btn" *ngIf="c.zoomSrc" (click)="zoomed = !zoomed">{{ zoomed ? 'Fit to screen' : 'Zoom full sheet' }}</button>
+      <button type="button" class="lb-btn" *ngIf="c.zoomSrc" (click)="zoomed = !zoomed">{{ zoomed ? 'Fit to screen' : 'Zoom in' }}</button>
       <button type="button" class="lb-btn" (click)="close()" aria-label="Close viewer">Close ✕</button>
     </div>
   </div>

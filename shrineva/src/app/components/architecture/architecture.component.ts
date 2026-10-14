@@ -5,7 +5,6 @@ import { CONTENT } from '../../config/content.config';
 @Component({
   selector: 'app-architecture',
   templateUrl: './architecture.component.html',
-  styleUrls: ['./architecture.component.scss'],
 })
 export class ArchitectureComponent {
   @Input() showIntro = true;

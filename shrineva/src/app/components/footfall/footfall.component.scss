@@ -1,0 +1,8 @@
+:host { display: block; }
+.sweep { transform-origin: 300px 300px; animation: sweep 9s linear infinite; }
+.ring { stroke-dasharray: 3 7; }
+.road { stroke-dasharray: 10 8; }
+.marker-pulse { transform-box: fill-box; transform-origin: center; animation: ping2 2.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.marker { cursor: pointer; outline: none; }
+.marker:focus-visible .marker-ring { stroke: #e8cf96; stroke-width: 2.5; }
+@media (prefers-reduced-motion: reduce) { .sweep, .marker-pulse { animation: none; } }

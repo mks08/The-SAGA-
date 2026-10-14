@@ -1,0 +1,5 @@
+# Settings and stored enquiries are never served to the web; PHP can still include them.
+<FilesMatch "^(config|config\.local)\.php$">
+  Require all denied
+</FilesMatch>
+Options -Indexes

@@ -52,8 +52,8 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').repl
 const url = (p) => (p ? `${SEO_DOMAIN}/${p}` : `${SEO_DOMAIN}/`);
 
 const nav = [
-  ['', 'Home'], ['property', 'The Property'], ['floor-plans', 'Floor Plans'], ['gallery', 'Gallery'],
-  ['location', 'Location'], ['growth', 'Growth'], ['business-fit', 'Business Fit'], ['infrastructure', 'Infrastructure'],
+  ['', 'Home'], ['property', 'The Property'], ['walkthrough', '3D Walkthrough'], ['floor-plans', 'Floor Plans'], ['gallery', 'Gallery'],
+  ['location', 'Location'], ['growth', 'Nearby Projects'], ['business-fit', 'Business Fit'], ['infrastructure', 'Infrastructure'],
   ['spaces', 'Spaces'], ['leasing', 'Leasing'], ['brokers', 'Brokers'], ['faq', 'FAQ'], ['contact', 'Contact'],
 ];
 
@@ -66,9 +66,9 @@ function setMeta(html, attr, key, content) {
 function noscript(route) {
   const facts = [
     `${PLAN.plot.areaSqM} sq m plot, ${PLAN.plot.facing.toLowerCase()}-facing, ${PLAN.plot.frontage} frontage on a ${PLAN.plot.roadWidthM} m road`,
-    `Stilt plus three floors; each floor ${PLAN.typical.floorArea.sqft} sq ft floor area, ${PLAN.typical.carpet.sqft} sq ft carpet (computed, not certified)`,
-    `${PLAN.lift.capacity} passenger lift; parking on the open stilt level, capacity to be confirmed`,
-    `About 60–70 m from the Apollo Medics hospital site and NIFT Varanasi (neither has announced an opening date), about 330 m from the Varanasi Trade Centre, about 1 km by road from the Ring Road. Reviewed ${FOOTFALL_AS_OF}.`,
+    `VDA-approved Parking + 3 building: open parking level plus three floors; each floor ${PLAN.typical.floorArea.sqft} sq ft floor area, ${PLAN.typical.carpet.sqft} sq ft carpet (computed, not certified)`,
+    `${PLAN.lift.capacity} passenger lift; parking on the open ground level, capacity to be confirmed`,
+    `Footfall potential: a 400-bed hospital with an approved plan and NIFT Varanasi 60–70 m away (neither has announced an opening date) and the operating Varanasi Trade Centre about 330 m away; Ring Road about 1 km by road. Reviewed ${FOOTFALL_AS_OF}. No footfall figure is claimed.`,
   ];
   const links = nav.map(([p, l]) => `<li><a href="${url(p)}">${esc(l)}</a></li>`).join('');
   const faq = route.path === 'faq'
@@ -83,7 +83,7 @@ function noscript(route) {
     : '';
   return `<noscript><header><p>SHRINEVA</p><h1>${esc(route.h1)}</h1><p>${esc(route.description)}</p></header>` +
     `<ul>${facts.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>${growth}${faq}` +
-    `<p>${esc(PROPERTY.address.full)}. Call ${esc(PROPERTY.contact.phoneDisplay)} or ${esc(PROPERTY.contact.phone2Display)}; ${PROPERTY.contact.publicEmail ? `email ${esc(PROPERTY.contact.publicEmail)}.` : ''}</p>` +
+    `<p>${esc(PROPERTY.address.full)}. Call ${esc(PROPERTY.contact.phoneDisplay)} or ${esc(PROPERTY.contact.phone2Display)}${PROPERTY.contact.publicEmail ? `; email ${esc(PROPERTY.contact.publicEmail)}` : ''}.</p>` +
     `<nav aria-label="Site"><ul>${links}</ul></nav></noscript>`;
 }
 
@@ -92,6 +92,10 @@ function shell(route) {
   const image = route.image || PROPERTY.images.og;
   const alt = route.imageAlt || 'SHRINEVA commercial building, Bada Lalpur, Varanasi (indicative 3D render)';
   let html = base;
+  if (route.path === '') {
+    // Only the home page paints the hero straight away; other routes must not pay for it.
+    html = html.replace('</head>', '  <link rel="preload" as="image" href="assets/images/hero/hero-night-2000.webp" media="(min-width: 900px)" fetchpriority="high">\n  <link rel="preload" as="image" href="assets/images/hero/hero-night-1000.webp" media="(max-width: 899px)" fetchpriority="high">\n</head>');
+  }
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(route.title)}</title>`);
   html = setMeta(html, 'name', 'description', route.description);
   html = html.replace(/<link rel="canonical"[^>]*>/i, `<link rel="canonical" href="${canonical}">`);
@@ -104,7 +108,9 @@ function shell(route) {
   html = setMeta(html, 'name', 'twitter:description', route.description);
   html = setMeta(html, 'name', 'twitter:image', image);
   html = setMeta(html, 'name', 'twitter:image:alt', alt);
-  html = html.replace(/<noscript>[\s\S]*?<\/noscript>/i, noscript(route));
+  // Replace the <noscript> that sits in <body>. The one in <head> is Angular's stylesheet fallback and must stay.
+  const bodyAt = html.indexOf('<body');
+  html = html.slice(0, bodyAt) + html.slice(bodyAt).replace(/<noscript>[\s\S]*?<\/noscript>/i, () => noscript(route));
   // Structured data in the static HTML (the runtime SeoService updates this same element by id).
   const ld = JSON.stringify(buildGraph(route.path, canonical)).replace(/</g, '\\u003c');
   html = html.replace(/<script[^>]*id="shrineva-schema"[^>]*>[\s\S]*?<\/script>/i, '');
@@ -145,9 +151,9 @@ console.log('robots.txt written');
 const llms = [
   `# ${PROPERTY.brand.name}`,
   '',
-  `> Commercial building for lease at ${PROPERTY.address.full}. Open stilt level plus three whole floors on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road. Leasing enquiries: ${PROPERTY.contact.phoneDisplay} or ${PROPERTY.contact.phone2Display} (WhatsApp).`,
+  `> Commercial building for lease at ${PROPERTY.address.full}. VDA-approved Parking + 3 building: open parking level plus three whole floors on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road. Leasing enquiries: ${PROPERTY.contact.phoneDisplay} or ${PROPERTY.contact.phone2Display} (WhatsApp)${PROPERTY.contact.publicEmail ? `, ${PROPERTY.contact.publicEmail}` : ''}.`,
   '',
-  'Status notes: areas are computed from the architect\'s sheets and are not certified; parking capacity is not fixed; 3D images are indicative; nothing here is an offer, and no opening dates have been announced for the neighbouring projects listed below.',
+  'Status notes: areas are computed from the architect\'s sheets and are not certified; parking capacity is not fixed; 3D images and the 3D walkthrough are indicative; nothing here is an offer, and no opening dates have been announced for the hospital or campus listed below.',
   '',
   '## Pages',
   ...SEO_ROUTES.filter((r) => r.priority >= 0.5).map((r) => {
@@ -158,7 +164,7 @@ const llms = [
   `## Nearby projects (reviewed ${FOOTFALL_AS_OF})`,
   ...NEARBY_PROJECTS.map((p) => `- ${p.name} (${p.distance}): ${p.status}`),
   '',
-  `See ${url('growth')} for sources and confidence ratings.`,
+  `See ${url('growth')} for the source of each project. No footfall figure is claimed for this road.`,
   '',
 ].join('\n');
 fs.writeFileSync(path.join(distDir, 'llms.txt'), llms);

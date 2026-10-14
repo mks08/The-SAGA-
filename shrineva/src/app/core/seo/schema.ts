@@ -34,7 +34,7 @@ export function buildGraph(path: string, canonical: string) {
     '@type': 'Place',
     '@id': `${SEO_DOMAIN}/#place`,
     name: `${PROPERTY.brand.name} — commercial building, Bada Lalpur, Varanasi`,
-    description: `Stilt + 3 commercial building on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} frontage on a ${PLAN.plot.roadWidthM} m road, about 60–70 m from the Apollo Medics hospital site and NIFT Varanasi. Whole floors of ${PLAN.typical.floorArea.sqft} sq ft.`,
+    description: `VDA-approved Parking + 3 commercial building on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} frontage on a ${PLAN.plot.roadWidthM} m road, about 60–70 m from the Apollo Medics hospital site and NIFT Varanasi. Whole floors of ${PLAN.typical.floorArea.sqft} sq ft.`,
     url: `${SEO_DOMAIN}/`,
     telephone: PROPERTY.contact.phoneE164,
     hasMap: PROPERTY.address.googleMapsUrl,
@@ -54,7 +54,7 @@ export function buildGraph(path: string, canonical: string) {
       { '@type': 'PropertyValue', name: 'Plot area', value: PLAN.plot.areaSqM, unitText: 'square metres' },
       { '@type': 'PropertyValue', name: 'Floor area per floor', value: PLAN.typical.floorArea.sqft, unitText: 'square feet' },
       { '@type': 'PropertyValue', name: 'Carpet area per floor (computed)', value: PLAN.typical.carpet.sqft, unitText: 'square feet' },
-      { '@type': 'PropertyValue', name: 'Road frontage', value: PLAN.plot.frontage },
+      { '@type': 'PropertyValue', name: 'Road frontage', value: PLAN.plot.frontage, unitText: 'about 50 feet' },
       { '@type': 'PropertyValue', name: 'Road width', value: PLAN.plot.roadWidthM, unitText: 'metres' },
     ],
   };

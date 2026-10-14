@@ -1,161 +1,103 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
+/** Colours are CSS variables holding "R G B" triplets (see :root in src/styles.scss), so every utility
+ *  accepts an opacity suffix: bg-ink/80, border-paper/20, text-brass/90 … */
+const c = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 module.exports = {
-  content: [
-    "./src/**/*.{html,ts,scss}",
-  ],
+  content: ['./src/**/*.{html,ts,scss}'],
   theme: {
+    screens: {
+      xs: '420px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+      '3xl': '1800px',
+    },
     extend: {
       colors: {
-        // Warm dark backgrounds
-        'void':    '#0C0A08',
-        'deep':    '#141009',
-        'surface': '#1C160E',
-        'elevated':'#241D12',
-        'border':  '#3A2F1E',
-
-        // Gold palette (matches building warm tones)
-        'gold': {
-          DEFAULT: '#C9A84C',
-          50:  '#FDF8EC',
-          100: '#F9ECCC',
-          200: '#F2D88A',
-          300: '#E8C15A',
-          400: '#D4A83A',
-          500: '#C9A84C',
-          600: '#B8922E',
-          700: '#9A7520',
-          800: '#7C5A14',
-          900: '#5E420A',
-        },
-
-        // Cream / warm white
-        'cream': {
-          DEFAULT: '#F5F0E8',
-          50:  '#FEFCF8',
-          100: '#F5F0E8',
-          200: '#EDE4D2',
-          300: '#DDD2B8',
-          400: '#C8BA9A',
-          500: '#AFA07E',
-        },
-
-        // Stone / warm grays
-        'stone': {
-          50:  'rgba(245,240,232,0.05)',
-          100: 'rgba(245,240,232,0.08)',
-          200: 'rgba(245,240,232,0.12)',
-          300: 'rgba(245,240,232,0.20)',
-          400: 'rgba(245,240,232,0.35)',
-          500: 'rgba(245,240,232,0.55)',
-          600: 'rgba(245,240,232,0.70)',
-          700: 'rgba(245,240,232,0.85)',
-          800: 'rgba(245,240,232,0.95)',
-        },
+        ink: { DEFAULT: c('ink'), 2: c('ink-2'), 3: c('ink-3'), 4: c('ink-4') },
+        paper: { DEFAULT: c('paper'), 2: c('paper-2'), 3: c('paper-3') },
+        sand: c('sand'),
+        brass: { DEFAULT: c('brass'), deep: c('brass-deep'), soft: c('brass-soft') },
+        teak: c('teak'),
+        ghat: c('ghat'),
+        ok: c('ok'),
       },
-
       fontFamily: {
-        'display': ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        'sans':    ['"DM Sans"', 'system-ui', 'sans-serif'],
-        'mono':    ['"DM Mono"', 'monospace'],
+        display: ['"Instrument Serif"', 'Georgia', '"Times New Roman"', 'serif'],
+        sans: ['"Manrope Variable"', 'Manrope', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['"DM Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
-
       fontSize: {
-        'display-2xl': ['clamp(3.5rem, 10vw, 9rem)',  { lineHeight: '0.92', letterSpacing: '-0.02em' }],
-        'display-xl':  ['clamp(2.5rem, 7vw, 6rem)',   { lineHeight: '0.94', letterSpacing: '-0.02em' }],
-        'display-lg':  ['clamp(2rem, 5vw, 4rem)',     { lineHeight: '1',    letterSpacing: '-0.01em' }],
-        'display-md':  ['clamp(1.5rem, 3.5vw, 2.8rem)',{ lineHeight: '1.1', letterSpacing: '-0.01em' }],
-        'display-sm':  ['clamp(1.25rem, 2.5vw, 2rem)',{ lineHeight: '1.2',  letterSpacing: '0' }],
+        'display-2xl': ['clamp(2.9rem, 8.4vw, 7.25rem)', { lineHeight: '0.95', letterSpacing: '-0.028em' }],
+        'display-xl': ['clamp(2.4rem, 6vw, 5rem)', { lineHeight: '0.98', letterSpacing: '-0.025em' }],
+        'display-lg': ['clamp(2rem, 4.4vw, 3.6rem)', { lineHeight: '1.02', letterSpacing: '-0.022em' }],
+        'display-md': ['clamp(1.6rem, 3vw, 2.5rem)', { lineHeight: '1.08', letterSpacing: '-0.02em' }],
+        'display-sm': ['clamp(1.3rem, 2vw, 1.75rem)', { lineHeight: '1.15', letterSpacing: '-0.012em' }],
       },
-
-      spacing: {
-        'section': 'clamp(5rem, 10vw, 9rem)',
-        '18': '4.5rem',
-        '22': '5.5rem',
-        '26': '6.5rem',
-        '30': '7.5rem',
-      },
-
-      borderRadius: {
-        '2xl': '1rem',
-        '3xl': '1.5rem',
-        '4xl': '2rem',
-      },
-
-      backgroundImage: {
-        'gold-gradient': 'linear-gradient(135deg, #C9A84C 0%, #E8C15A 40%, #C9A84C 70%, #9A7520 100%)',
-        'warm-gradient': 'linear-gradient(135deg, #0C0A08 0%, #1C160E 50%, #141009 100%)',
-        'glass-gradient': 'linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 100%)',
-      },
-
-      animation: {
-        'fade-up':      'fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) backwards',
-        'fade-in':      'fadeIn 0.5s ease-out backwards',
-        'shimmer':      'shimmer 3s linear infinite',
-        'pulse-gold':   'pulseGold 2.5s ease-in-out infinite',
-        'float':        'float 6s ease-in-out infinite',
-        'slide-right':  'slideRight 0.6s cubic-bezier(0.16,1,0.3,1) backwards',
-        'count-up':     'countUp 1.5s cubic-bezier(0.16,1,0.3,1) forwards',
-      },
-
-      keyframes: {
-        fadeUp: {
-          '0%':   { opacity: '0', transform: 'translateY(30px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        fadeIn: {
-          '0%':   { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        shimmer: {
-          '0%':   { backgroundPosition: '200% center' },
-          '100%': { backgroundPosition: '-200% center' },
-        },
-        pulseGold: {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(201,168,76,0.4)' },
-          '50%':      { boxShadow: '0 0 0 12px rgba(201,168,76,0)' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%':      { transform: 'translateY(-16px)' },
-        },
-        slideRight: {
-          '0%':   { opacity: '0', transform: 'translateX(-20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        countUp: {
-          '0%':   { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-      },
-
+      maxWidth: { shell: '1320px' },
+      borderRadius: { '4xl': '2rem', '5xl': '2.5rem' },
       boxShadow: {
-        'gold-sm':  '0 2px 12px rgba(201,168,76,0.2)',
-        'gold-md':  '0 6px 30px rgba(201,168,76,0.25)',
-        'gold-lg':  '0 12px 60px rgba(201,168,76,0.3)',
-        'gold-xl':  '0 20px 80px rgba(201,168,76,0.35)',
-        'warm-sm':  '0 4px 20px rgba(12,10,8,0.4)',
-        'warm-lg':  '0 20px 60px rgba(12,10,8,0.6)',
-        'glass':    'inset 0 1px 0 rgba(201,168,76,0.15), 0 4px 20px rgba(0,0,0,0.3)',
+        soft: '0 1px 0 rgb(255 255 255 / 0.6) inset, 0 12px 40px -18px rgb(28 24 21 / 0.35)',
+        lift: '0 24px 60px -24px rgb(28 24 21 / 0.45)',
+        glow: '0 0 0 1px rgb(184 137 58 / 0.35), 0 18px 50px -18px rgb(184 137 58 / 0.55)',
+        'inner-line': 'inset 0 0 0 1px rgb(255 255 255 / 0.08)',
       },
-
-      backdropBlur: {
-        'xs': '4px',
+      backgroundImage: {
+        'brass-sheen': 'linear-gradient(135deg, #D8AE5E 0%, #B8893A 45%, #9A6F25 100%)',
+        'ink-fade': 'linear-gradient(to bottom, rgb(16 14 12 / 0) 0%, rgb(16 14 12 / 0.85) 100%)',
+        grid: 'linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px)',
       },
-
       transitionTimingFunction: {
-        'smooth': 'cubic-bezier(0.16, 1, 0.3, 1)',
-        'bounce-sm': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        out: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
-
-      transitionDuration: {
-        '400': '400ms',
+      keyframes: {
+        rise: { '0%': { opacity: '0', transform: 'translateY(22px)' }, '100%': { opacity: '1', transform: 'none' } },
+        fade: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+        sweep: { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } },
+        ping2: { '0%': { transform: 'scale(1)', opacity: '0.55' }, '80%, 100%': { transform: 'scale(2.6)', opacity: '0' } },
+        drift: { '0%, 100%': { transform: 'translate3d(0,0,0)' }, '50%': { transform: 'translate3d(0,-8px,0)' } },
+        marquee: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+        draw: { '0%': { strokeDashoffset: '1' }, '100%': { strokeDashoffset: '0' } },
+      },
+      animation: {
+        rise: 'rise 0.9s cubic-bezier(0.16,1,0.3,1) both',
+        fade: 'fade 1.2s ease-out both',
+        sweep: 'sweep 7s linear infinite',
+        ping2: 'ping2 2.4s cubic-bezier(0,0,0.2,1) infinite',
+        drift: 'drift 7s ease-in-out infinite',
+        marquee: 'marquee 40s linear infinite',
+        draw: 'draw 1.6s cubic-bezier(0.16,1,0.3,1) both',
       },
     },
   },
-  plugins: [],
-  // Don't purge Angular-generated classes
-  safelist: [
-    { pattern: /^delay-/ },
-    { pattern: /^animate-/ },
+  plugins: [
+    // Small project plugin: 3D-transform helpers, edge masks and a film-grain overlay, so templates stay utility-only.
+    plugin(function ({ addUtilities, addVariant, matchUtilities }) {
+      addVariant('hoverable', '@media (hover: hover) and (pointer: fine)');
+      addUtilities({
+        '.preserve-3d': { 'transform-style': 'preserve-3d' },
+        '.backface-hidden': { 'backface-visibility': 'hidden' },
+        '.text-balance': { 'text-wrap': 'balance' },
+        '.text-pretty': { 'text-wrap': 'pretty' },
+        '.mask-fade-b': { '-webkit-mask-image': 'linear-gradient(to bottom, #000 60%, transparent)', 'mask-image': 'linear-gradient(to bottom, #000 60%, transparent)' },
+        '.mask-fade-x': { '-webkit-mask-image': 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)', 'mask-image': 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)' },
+        '.bg-grain': {
+          'background-image':
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>\")",
+        },
+        '.scrollbar-none': { 'scrollbar-width': 'none', '&::-webkit-scrollbar': { display: 'none' } },
+      });
+      matchUtilities({ perspective: (v) => ({ perspective: v }) }, { values: { 600: '600px', 900: '900px', 1200: '1200px', 2000: '2000px' } });
+      matchUtilities(
+        { 'stagger': (v) => ({ '--stagger': v }) },
+        { values: { 40: '40ms', 60: '60ms', 80: '80ms', 120: '120ms' } },
+      );
+    }),
   ],
-}
+};
