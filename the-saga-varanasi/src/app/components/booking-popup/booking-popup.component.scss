@@ -27,7 +27,7 @@
   grid-template-columns: 1fr 1.2fr;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.15);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(197,161,90,0.15);
   animation: slideUp 0.45s cubic-bezier(0.16,1,0.3,1);
 
   @media (max-width: 700px) {
@@ -52,7 +52,7 @@
   height: 36px;
   border-radius: 50%;
   background: rgba(28,22,14,0.8);
-  border: 1px solid rgba(201,168,76,0.2);
+  border: 1px solid rgba(197,161,90,0.2);
   color: rgba(245,240,232,0.6);
   font-size: 0.9rem;
   display: flex;
@@ -63,7 +63,7 @@
   backdrop-filter: blur(8px);
 
   &:hover {
-    background: rgba(201,168,76,0.15);
+    background: rgba(197,161,90,0.15);
     color: rgba(245,240,232,0.9);
   }
 }
@@ -94,9 +94,19 @@
   padding: 2rem;
   text-align: center;
 
+  .plo-logo {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    object-position: 50% 28%;
+    border-radius: 50%;
+    background: #F3EEE5;
+    margin-bottom: 0.75rem;
+  }
+
   .plo-mark {
     font-size: 2rem;
-    color: rgba(201,168,76,0.6);
+    color: rgba(197,161,90,0.6);
     margin-bottom: 0.25rem;
   }
 
@@ -105,7 +115,7 @@
     font-size: 1.6rem;
     font-weight: 700;
     letter-spacing: 0.15em;
-    background: linear-gradient(135deg, #C9A84C, #E8C15A);
+    background: linear-gradient(135deg, #C5A15A, #D9BF82);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -132,7 +142,7 @@
         font-family: 'Cormorant Garamond', serif;
         font-size: 1.25rem;
         font-weight: 600;
-        background: linear-gradient(135deg, #C9A84C, #E8C15A);
+        background: linear-gradient(135deg, #C5A15A, #D9BF82);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -167,14 +177,14 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(201,168,76,0.7);
+  color: rgba(197,161,90,0.7);
 }
 
 h2 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.9rem;
   font-weight: 500;
-  color: #F5F0E8;
+  color: #F3EEE5;
   line-height: 1.15;
   margin: 0;
 }
@@ -201,7 +211,7 @@ h2 {
   gap: 0.25rem;
   padding: 0.6rem 0.4rem;
   background: rgba(20,16,9,0.6);
-  border: 1px solid rgba(201,168,76,0.1);
+  border: 1px solid rgba(197,161,90,0.1);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -217,15 +227,15 @@ h2 {
   }
 
   &:hover {
-    border-color: rgba(201,168,76,0.25);
+    border-color: rgba(197,161,90,0.25);
     .sb-label { color: rgba(245,240,232,0.75); }
   }
 
   &.selected {
-    background: rgba(201,168,76,0.12);
-    border-color: rgba(201,168,76,0.4);
-    box-shadow: 0 0 0 1px rgba(201,168,76,0.2);
-    .sb-label { color: #C9A84C; }
+    background: rgba(197,161,90,0.12);
+    border-color: rgba(197,161,90,0.4);
+    box-shadow: 0 0 0 1px rgba(197,161,90,0.2);
+    .sb-label { color: #C5A15A; }
   }
 }
 
@@ -240,7 +250,7 @@ h2 {
   input, textarea {
     width: 100%;
     background: rgba(20,16,9,0.7);
-    border: 1px solid rgba(201,168,76,0.12);
+    border: 1px solid rgba(197,161,90,0.12);
     border-radius: 8px;
     padding: 0.75rem 1rem;
     font-family: 'DM Sans', sans-serif;
@@ -251,7 +261,7 @@ h2 {
     transition: border-color 0.25s ease;
 
     &::placeholder { color: rgba(245,240,232,0.25); }
-    &:focus { border-color: rgba(201,168,76,0.4); }
+    &:focus { border-color: rgba(197,161,90,0.4); }
   }
 
   &.invalid input { border-color: rgba(239,68,68,0.4); }
@@ -266,9 +276,9 @@ h2 {
 .btn-popup-submit {
   flex: 1;
   padding: 0.875rem 1.25rem;
-  background: linear-gradient(135deg, #C9A84C 0%, #E8C15A 50%, #C9A84C 100%);
+  background: linear-gradient(135deg, #C5A15A 0%, #D9BF82 50%, #C5A15A 100%);
   background-size: 200% auto;
-  color: #0C0A08;
+  color: #0B0907;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.875rem;
   font-weight: 800;
@@ -278,12 +288,12 @@ h2 {
   border: none;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+  box-shadow: 0 4px 20px rgba(197,161,90,0.3);
 
   &:hover {
     background-position: right center;
     transform: translateY(-1px);
-    box-shadow: 0 8px 32px rgba(201,168,76,0.45);
+    box-shadow: 0 8px 32px rgba(197,161,90,0.45);
   }
 }
 
@@ -323,22 +333,22 @@ h2 {
   .ps-icon {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, #C9A84C, #E8C15A);
+    background: linear-gradient(135deg, #C5A15A, #D9BF82);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.75rem;
-    color: #0C0A08;
+    color: #0B0907;
     font-weight: 700;
-    box-shadow: 0 8px 32px rgba(201,168,76,0.35);
+    box-shadow: 0 8px 32px rgba(197,161,90,0.35);
   }
 
   h3 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2rem;
     font-weight: 500;
-    color: #F5F0E8;
+    color: #F3EEE5;
   }
 
   p {
@@ -373,14 +383,14 @@ h2 {
 .live-dot {
   width: 7px;
   height: 7px;
-  background: #C9A84C;
+  background: #C5A15A;
   border-radius: 50%;
   flex-shrink: 0;
   animation: pulseDot 2s ease-in-out infinite;
-  box-shadow: 0 0 0 0 rgba(201,168,76,0.5);
+  box-shadow: 0 0 0 0 rgba(197,161,90,0.5);
 }
 
 @keyframes pulseDot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.6); }
-  50%       { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(197,161,90,0.6); }
+  50%       { box-shadow: 0 0 0 8px rgba(197,161,90,0); }
 }

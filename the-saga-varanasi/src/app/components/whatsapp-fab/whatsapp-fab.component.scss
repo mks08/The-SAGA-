@@ -24,12 +24,7 @@
   }
 
   @media (max-width: 768px) {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    padding: 0.875rem;
-    border-radius: 50%;
-
-    .wa-label { display: none; }
+    display: none;
   }
 }
 

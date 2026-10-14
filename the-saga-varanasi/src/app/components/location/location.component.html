@@ -1,99 +1,38 @@
-<section class="location-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-tag">Location</div>
-      <h2>Prime Location in <span class="text-gold">Bada Lalpur</span></h2>
-      <p>Strategically positioned at Varanasi's most rapidly developing commercial intersection — where business meets opportunity.</p>
-      <div class="divider"></div>
+<section class="location-section" id="location-section" aria-label="Address and map" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="section-header" *ngIf="showIntro">
+      <span class="section-eyebrow">Address &amp; Map</span>
+      <h2 class="section-heading">Find <em>SHRINEVA</em></h2>
     </div>
 
     <div class="location-layout">
-      <!-- Info Panel -->
       <div class="location-info">
         <div class="loc-address-card">
-          <div class="loc-icon-wrap">📍</div>
           <div>
-            <div class="loc-label">Project Address</div>
-            <div class="loc-address">Bada Lalpur, Varanasi, Uttar Pradesh</div>
+            <div class="loc-label">Address</div>
+            <address class="loc-address">{{ property.address.full }}</address>
+            <p class="loc-meta">North-facing plot · {{ plan.plot.frontage }} frontage · {{ plan.plot.roadWidthM }} m wide road</p>
           </div>
         </div>
-
-        <div class="loc-landmarks">
-          <h4>Key Landmarks & Connectivity</h4>
-          <div class="landmark-list">
-            <div class="landmark-item">
-              <div class="lm-icon">🏥</div>
-              <div class="lm-body">
-                <div class="lm-name">Apollo Hospital (400 beds)</div>
-                <div class="lm-dist">Directly Opposite</div>
-              </div>
-              <div class="lm-badge near">Opposite</div>
-            </div>
-            <div class="landmark-item">
-              <div class="lm-icon">🎓</div>
-              <div class="lm-body">
-                <div class="lm-name">NIFT — National Institute of Fashion Technology</div>
-                <div class="lm-dist">Diagonal</div>
-              </div>
-              <div class="lm-badge near">Diagonal</div>
-            </div>
-            <div class="landmark-item">
-              <div class="lm-icon">✈️</div>
-              <div class="lm-body">
-                <div class="lm-name">Babatpur International Airport</div>
-                <div class="lm-dist">15 km away</div>
-              </div>
-              <div class="lm-badge">Connected</div>
-            </div>
-            <div class="landmark-item">
-              <div class="lm-icon">🛣️</div>
-              <div class="lm-body">
-                <div class="lm-name">Varanasi Ring Road</div>
-                <div class="lm-dist">1 km away</div>
-              </div>
-              <div class="lm-badge">Well Connected</div>
-            </div>
-            <div class="landmark-item">
-              <div class="lm-icon">🛣️</div>
-              <div class="lm-body">
-                <div class="lm-name">Major City Road Connectivity</div>
-                <div class="lm-dist">Direct Access</div>
-              </div>
-              <div class="lm-badge">Prime Zone</div>
-            </div>
-            <div class="landmark-item">
-              <div class="lm-icon">🏢</div>
-              <div class="lm-body">
-                <div class="lm-name">Emerging Business Hub</div>
-                <div class="lm-dist">City's fastest growing zone</div>
-              </div>
-              <div class="lm-badge">Prime Zone</div>
-            </div>
-          </div>
+        <div class="loc-actions">
+          <a [href]="property.address.googleMapsUrl" target="_blank" rel="noopener" class="btn-outline">Open in Google Maps</a>
+          <button type="button" class="btn-primary" (click)="openPopup()">Schedule a site visit →</button>
         </div>
-
-        <button class="btn-primary" (click)="openPopup()">
-          Get Location Details →
-        </button>
+        <p class="loc-note">The map shows the Bada Lalpur area. An exact pin is added once the final location is confirmed.</p>
       </div>
 
-      <!-- Map -->
       <div class="location-map">
         <div class="map-wrapper">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.5!2d82.9764!3d25.3226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e2db76febcf4f%3A0x970b0e1642b8ed0b!2sBada%20Lalpur%2C%20Varanasi%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1718000000000"
+            [src]="mapEmbedUrl"
             width="100%"
             height="100%"
             style="border:0;"
-            allowfullscreen=""
+            allowfullscreen="true"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="The SAGA Varanasi Location">
+            title="Map of Bada Lalpur, Chandmari, Varanasi, the area of SHRINEVA">
           </iframe>
-          <div class="map-overlay-label">
-            <span>📍</span>
-            <span>The SAGA, Bada Lalpur</span>
-          </div>
         </div>
       </div>
     </div>

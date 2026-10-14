@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
-import { ButtonComponent } from './components/button/button.component';
-import { IconComponent } from './components/icon/icon.component';
-import { ChatbotWidgetComponent } from './components/chatbot-widget/chatbot-widget.component';
+import { PageHeaderComponent } from './components/page-header/page-header.component';
+import { LightboxComponent } from './components/lightbox/lightbox.component';
 
 @NgModule({
-  declarations: [ButtonComponent, IconComponent, ChatbotWidgetComponent],
-  imports: [CommonModule, ReactiveFormsModule],
-  exports: [ButtonComponent, IconComponent, ChatbotWidgetComponent, CommonModule, ReactiveFormsModule],
+  declarations: [PageHeaderComponent, LightboxComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  exports: [PageHeaderComponent, LightboxComponent, CommonModule, ReactiveFormsModule, RouterModule],
 })
 export class SharedModule {}

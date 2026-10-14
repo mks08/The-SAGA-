@@ -1,28 +1,27 @@
-<section class="section-py" id="ideal-for-section" aria-label="Ideal For">
-  <div class="container-saga">
-    <div class="sec-header reveal">
-      <span class="section-eyebrow">Perfect For</span>
-      <h2 class="section-heading">What Can Be <em>Accommodated</em></h2>
-      <p class="section-sub">3,500 sq ft per floor — space enough to bring any commercial vision to life.</p>
-      <div class="gold-divider"></div>
+<section class="section-py" id="ideal-for-section" aria-label="Business fit" [class.no-intro]="!showIntro">
+  <div class="container-srineva">
+    <div class="sec-header" *ngIf="showIntro">
+      <span class="section-eyebrow">Business Fit</span>
+      <h2 class="section-heading">Built around <em>business needs</em></h2>
+      <p class="section-sub">
+        Whole floors of {{ plan.typical.floorArea.sqft | number:'1.0-0' }} sq ft, divided as required. These are suitability notes, not exclusive legal use permissions.
+      </p>
     </div>
 
-    <div class="ideal-grid">
-      <div class="ideal-card reveal"
-           *ngFor="let item of accommodations; let i = index"
-           [style.transitionDelay]="(i * 0.06) + 's'">
-        <div class="ic-icon">{{ item.icon }}</div>
-        <div class="ic-body">
-          <h3>{{ item.label }}</h3>
+    <ul class="ideal-grid" [class.compact]="compact">
+      <li class="ideal-card" *ngFor="let item of categories">
+        <h3>{{ item.label }}</h3>
+        <p *ngIf="compact">{{ item.short }}</p>
+        <ng-container *ngIf="!compact">
           <p>{{ item.description }}</p>
-        </div>
-        <div class="ic-arrow">→</div>
-      </div>
-    </div>
+          <span class="ic-benefit">{{ item.benefit }}</span>
+        </ng-container>
+      </li>
+    </ul>
 
-    <div class="ideal-cta reveal delay-300">
-      <p>Have a different requirement?</p>
-      <button class="btn-primary" (click)="openPopup()">Tell Us What You Need →</button>
+    <div class="ideal-cta">
+      <button type="button" class="btn-primary" (click)="openPopup()">Tell us what you need →</button>
+      <a *ngIf="showPageLink" routerLink="/business-fit" class="text-link">How each category fits →</a>
     </div>
   </div>
 </section>

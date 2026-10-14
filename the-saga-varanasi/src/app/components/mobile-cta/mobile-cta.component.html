@@ -1,0 +1,5 @@
+<nav class="mobile-cta" aria-label="Quick actions">
+  <a [href]="'tel:' + property.contact.phoneE164" (click)="track('phone_click')">Call</a>
+  <a [href]="waHref" target="_blank" rel="noopener" (click)="track('whatsapp_click')">WhatsApp</a>
+  <button type="button" (click)="openVisit()">Site Visit</button>
+</nav>

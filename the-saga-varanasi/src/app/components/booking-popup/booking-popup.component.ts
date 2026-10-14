@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PROPERTY } from '../../config/property.config';
 
 @Component({
   selector: 'app-booking-popup',
@@ -10,16 +11,17 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
   showPopup = false;
   popupSubmitted = false;
   bookingForm!: FormGroup;
+  property = PROPERTY;
 
   spaceTypes = [
-    { id: 'retail',     icon: '🛍️', label: 'Retail Store' },
-    { id: 'restaurant', icon: '🍽️', label: 'Restaurant / Café' },
-    { id: 'clinic',     icon: '🏥', label: 'Clinic / Medical' },
-    { id: 'pharmacy',   icon: '💊', label: 'Medical Store / Pharmacy' },
-    { id: 'office',     icon: '💼', label: 'Office / Corporate' },
-    { id: 'bank',       icon: '🏦', label: 'Bank / NBFC' },
-    { id: 'studio',     icon: '🏠', label: '1 BHK Studio' },
-    { id: 'others',     icon: '❓', label: 'Something Else' },
+    { id: 'healthcare', icon: '', label: 'Healthcare / Diagnostics' },
+    { id: 'restaurant', icon: '', label: 'F&B / Restaurant' },
+    { id: 'bfsi',       icon: '', label: 'Bank / BFSI / Insurance' },
+    { id: 'office',     icon: '', label: 'Corporate Office' },
+    { id: 'retail',     icon: '', label: 'Retail / Customer-Facing' },
+    { id: 'education',  icon: '', label: 'Education / Training' },
+    { id: 'fitness',    icon: '', label: 'Fitness / Wellness' },
+    { id: 'others',     icon: '', label: 'Other' },
   ];
 
   private popupListener!: EventListener;
@@ -36,14 +38,7 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
       message:     [''],
     });
 
-    // Auto-open after 3 s on first visit
-    const seen = sessionStorage.getItem('saga-popup-seen');
-    if (!seen) {
-      setTimeout(() => {
-        this.open();
-        sessionStorage.setItem('saga-popup-seen', '1');
-      }, 3000);
-    }
+    // Opens only on request (buttons dispatch 'open-booking-popup'); no auto-open interstitial.
 
     // Listen for programmatic open
     this.popupListener = () => this.open();
@@ -90,14 +85,14 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await fetch('https://formsubmit.co/ajax/immayank08@gmail.com', {
+      await fetch(`https://formsubmit.co/ajax/${PROPERTY.contact.email}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          _subject: 'New Booking Popup Enquiry for The SAGA Varanasi',
+          _subject: 'New Booking Popup Enquiry for SHRINEVA',
           name: data.name,
           phone: data.phone,
           email: data.email || 'Not provided',
@@ -111,7 +106,7 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
     }
 
     this.popupSubmitted = true;
-    setTimeout(() => this.close(), 3500);
+    setTimeout(() => this.close(), 3000);
   }
 
   ngOnDestroy() {

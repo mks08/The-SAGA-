@@ -7,9 +7,15 @@ export class RevealService {
    * and add .revealed when they enter the viewport.
    */
   observe(root?: HTMLElement) {
+    const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     const targets = (root || document).querySelectorAll(
       '.reveal, .reveal-left, .reveal-right'
     );
+
+    if (reduced) {
+      targets.forEach((el) => el.classList.add('revealed'));
+      return { disconnect() {} } as IntersectionObserver;
+    }
 
     const io = new IntersectionObserver(
       (entries) => {

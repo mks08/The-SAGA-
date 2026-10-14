@@ -1,109 +1,47 @@
-/* ── Ideal For ─────────────────────────────────────────────────────────────── */
-.sec-header { margin-bottom: 3rem; max-width: 640px; }
+.sec-header { margin-bottom: 1.75rem; max-width: 46rem; }
 
 .ideal-grid {
+  list-style: none;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  margin-bottom: 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: clamp(0.6rem, 1.4vw, 1rem);
+  margin: 0 0 1.75rem;
+
+  &.compact {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.6rem;
+    @media (max-width: 1100px) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 700px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ideal-card { padding: 0.9rem 1rem; h3 { font-size: 1.02rem; } p { font-size: 0.78rem; margin: 0; } }
+  }
 }
 
 .ideal-card {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, rgba(36,29,18,0.8), rgba(28,22,14,0.9));
-  border: 1px solid rgba(201,168,76,0.08);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.15rem 1.3rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+  &:hover { border-color: var(--color-border-strong); transform: translateY(-2px); }
 
-  &:hover {
-    border-color: rgba(201,168,76,0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-
-    .ic-arrow { opacity: 1; transform: translateX(0); color: #C9A84C; }
-  }
-
-  .ic-icon {
-    font-size: 1.75rem;
-    flex-shrink: 0;
-    line-height: 1;
-    margin-top: 0.1rem;
-  }
-
-  .ic-body { flex: 1; }
-
-  h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: rgba(245,240,232,0.9);
-    margin-bottom: 0.3rem;
-  }
-
-  p {
-    font-size: 0.8rem;
-    color: rgba(245,240,232,0.45);
-    line-height: 1.55;
-  }
-
-  .ic-arrow {
-    font-size: 1rem;
-    color: rgba(201,168,76,0.4);
-    opacity: 0;
-    transform: translateX(-6px);
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    align-self: center;
-  }
+  h3 { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; margin: 0; line-height: 1.2; }
+  p { margin: 0; font-size: 0.86rem; line-height: 1.6; color: var(--color-cream-muted); }
 }
-
-.ideal-cta {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-
-  p {
-    font-size: 0.95rem;
-    color: rgba(245,240,232,0.5);
-  }
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
-  background: linear-gradient(135deg, #C9A84C 0%, #E8C15A 50%, #C9A84C 100%);
-  background-size: 200% auto;
-  color: #0C0A08;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+.ic-benefit {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-radius: 7px;
-  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-  box-shadow: 0 4px 24px rgba(201,168,76,0.3);
-  cursor: pointer;
-  border: none;
-
-  &:hover {
-    background-position: right center;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 40px rgba(201,168,76,0.45);
-  }
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  color: var(--color-gold);
+  background: rgba(197, 161, 90, 0.1);
+  border: 1px solid rgba(197, 161, 90, 0.25);
 }
-
-/* Shared reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
-  &.revealed { opacity: 1; transform: translateY(0); }
-}
-.delay-300 { transition-delay: 0.3s; }
+.ideal-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; }

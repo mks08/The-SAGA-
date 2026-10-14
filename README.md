@@ -1,134 +1,105 @@
-# The SAGA Varanasi - Angular Landing Page
+# SRINEVA — Premium Commercial & Mixed-Use Spaces
 
-A modern, single-page scroll landing page for **The SAGA Varanasi** commercial real estate project, built with **Angular v16+** and **SCSS**.
+Official digital leasing website for **SRINEVA**, a Ground + 3 commercial building at D-15, Bada Lalpur, Chandmari, Varanasi.
 
-## Project Structure
+Angular 16 · TypeScript · SCSS · Tailwind 3
 
-```
-the-saga-varanasi/
-├── src/
-│   ├── app/
-│   │   ├── app.component.ts
-│   │   ├── app.module.ts
-│   │   ├── core/                    # Singleton services
-│   │   │   └── services/
-│   │   │       ├── lead.service.ts
-│   │   │       └── scroll.service.ts
-│   │   ├── shared/                  # Reusable UI components
-│   │   │   └── components/
-│   │   │       ├── button/
-│   │   │       ├── icon/
-│   │   │       └── chatbot-widget/
-│   │   └── components/              # Page sections
-│   │       ├── navbar/
-│   │       ├── main-layout/
-│   │       ├── hero/
-│   │       ├── highlights/
-│   │       ├── ideal-for/
-│   │       ├── location/
-│   │       └── contact/
-│   ├── index.html
-│   ├── main.ts
-│   └── styles.scss
-├── angular.json
-├── tsconfig.json
-├── tsconfig.app.json
-└── package.json
-```
+Canonical domain: [https://srineva.com/](https://srineva.com/)  
+Leasing: leasing@srineva.com
 
-## Features
-
-- **Modular Architecture**
-  - AppModule: Root bootstrapper
-  - CoreModule: Singleton services (LeadService, ScrollService)
-  - SharedModule: Reusable UI components
-  
-- **Responsive Components**
-  - Sticky navigation with active section highlighting
-  - Hero section with 3D canvas placeholder and parallax support
-  - Highlights grid with VDA approval badges
-  - Tabbed "Ideal For" section
-  - Google Maps embedded location
-  - Contact form with Reactive Forms validation
-  - Floating chatbot widget with quick email form
-  
-- **Technologies**
-  - Angular 16+
-  - Reactive Forms for form validation
-  - RxJS for state management
-  - SCSS for styling
-  - Angular Animations (@angular/animations)
-  - Google Maps integration (@angular/google-maps)
-
-## Setup
-
-### Prerequisites
-- Node.js v24.15.0+ (or run `nvm install 24.15.0`)
-- npm v8.0.0+
-
-### Installation
+## Local commands
 
 ```bash
 cd the-saga-varanasi
-npm install --legacy-peer-deps
+npm install
+npm start                 # http://localhost:4200
+npm run build             # production build → dist/the-saga-varanasi
 ```
 
-### Development Server
+Node 18.x is specified in `package.json`. If you are on a newer Node, the CLI may still work; prefer 18 for CI.
 
-```bash
-npm run start
+## Route map
+
+| Path | Page |
+|------|------|
+| `/` | Homepage |
+| `/property` | Building, areas, parking, visibility |
+| `/spaces` | Floor stack |
+| `/spaces/floor-1` `/floor-2` `/floor-3` | Floor detail |
+| `/location` | Address, map, anchors |
+| `/growth` | Bada Lalpur growth timeline |
+| `/business-fit` | Occupier categories |
+| `/infrastructure` | Technical specifications + F&B provisions |
+| `/floor-plans` | Plan placeholders (until drawings are issued) |
+| `/gallery` | Architecture / construction / location |
+| `/leasing` | Lease enquiry |
+| `/brokers` | Tenant-rep / broker desk |
+| `/contact` | Site visit + leasing form |
+| `/privacy` `/terms` `/disclaimer` | Legal |
+
+Thin SEO doorway pages were **not** created.
+
+## Canonical facts
+
+All public numbers come from `src/app/config/property.config.ts`. Do not hard-code areas, parking, contact or address in templates.
+
+Editorial copy lives in `src/app/config/content.config.ts`.  
+Route titles / descriptions live in `src/app/config/seo.config.ts`.
+
+## SEO
+
+- Per-route title, description, canonical, Open Graph, Twitter tags via `SeoService`
+- JSON-LD: Organization, WebSite, Place, BreadcrumbList, FAQPage (home)
+- `robots.txt` and `sitemap.xml` copied into the build
+- `src/index.html` holds the home fallback tags for first paint / crawlers
+- SPA fallback for Hostinger is `src/.htaccess`
+
+This build is a client-rendered Angular 16 app with a content-rich `index.html` and `noscript` block. Full HTML prerender / Angular Universal was **not** added, because Hostinger shared hosting serves static files and Universal would require a Node server. When a Node environment is available, add `@nguniversal/express-engine@16` and prerender the routes in `sitemap.xml`.
+
+### Search Console
+
+1. Verify `srineva.com` (DNS or HTML file).
+2. Submit `https://srineva.com/sitemap.xml`.
+3. Use URL Inspection on `/`, `/spaces`, `/location`, `/leasing`.
+4. Validate JSON-LD with [Google Rich Results Test](https://search.google.com/test/rich-results).
+
+### Analytics
+
+Set IDs in `src/environments/environment.prod.ts`:
+
+```
+ga4MeasurementId
+googleAdsConversionId
+googleAdsConversionLabel
 ```
 
-Navigate to **http://localhost:4200**. The app will automatically reload on source file changes.
+Then add the gtag snippet to `index.html`. Events already fire when `gtag` exists:
 
-### Build for Production
+`site_visit_click` · `leasing_form_start` · `leasing_form_submit` · `whatsapp_click` · `phone_click` · `email_click` · `dossier_download` · `floor_enquiry`
 
-```bash
-npm run build
-```
+## Hostinger deployment
 
-The build artifacts will be stored in the `dist/` directory.
+1. `npm run build`
+2. Upload the **contents** of `dist/the-saga-varanasi/` to `public_html`
+3. Confirm `.htaccess` is present (SPA fallback + HTTPS + www → apex)
+4. Point the domain to `srineva.com` (non-www canonical)
+5. Confirm `https://srineva.com/sitemap.xml` and `https://srineva.com/robots.txt`
 
-## Development Notes
+## Missing inputs (do not invent)
 
-1. **Adding New Components**
-   ```bash
-   ng generate component app/components/your-component --style=scss
-   ```
+Insert into `property.config.ts` when confirmed:
 
-2. **Adding Services**
-   ```bash
-   ng generate service app/core/services/your-service
-   ```
+- Built-up / super / common area
+- Exact sanctioned electrical load
+- Road width
+- Two-wheeler parking count
+- Signage zone width / projecting-signage limits
+- Verified Google Maps pin (replace `googleMapsUrl` / `embedSrc`)
+- Verified distances / drive times for Apollo, NIFT, Hastkala, Ring Road, airport, Cantt
+- Floor-plan PDF / SVG assets
+- Construction and site photography
+- Confirmed leasing phone if it should differ from the current line
 
-3. **Styling**
-   - All components use SCSS with the pattern `component.component.scss`
-   - Global styles are in `src/styles.scss`
-   - CSS variables defined in `app.component.scss`
+## Design notes
 
-4. **Form Validation**
-   - Contact form: `src/app/components/contact/contact.component.ts`
-   - Chatbot form: `src/app/shared/components/chatbot-widget/chatbot-widget.component.ts`
-   - Both use Reactive Forms with built-in validators
-
-## API Integration
-
-Update `src/app/core/services/lead.service.ts` with your backend API endpoint:
-
-```typescript
-private endpoint = 'your-api-endpoint/leads';
-```
-
-## Scroll Tracking
-
-The `ScrollService` tracks the active section as users scroll. Connected to the navbar for active link highlighting. Modify in:
-- `src/app/core/services/scroll.service.ts`
-- `src/app/components/navbar/navbar.component.ts`
-
-## License
-
-Private Project - The SAGA Varanasi
-
-## Support
-
-For issues or questions, reach out to the development team.
+Dark architectural luxury. Gold is an accent. Cormorant Garamond + DM Sans + DM Mono. Homepage is a long editorial narrative, not a card grid.

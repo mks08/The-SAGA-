@@ -1,0 +1,55 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container-srineva">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img class="fl-logo" [src]="property.images.logo" alt="SHRINEVA logo" width="72" height="72" loading="lazy">
+          <div>
+            <span class="fl-name">{{ property.brand.name }}</span>
+            <span class="fl-city">Commercial &amp; Mixed-Use Spaces</span>
+          </div>
+        </div>
+        <p>
+          Commercial space for lease in Bada Lalpur, Varanasi: stilt plus three floors of
+          {{ property.area.floorAreaPerFloorSqFt | number:'1.0-0' }} sq ft each, about 60–70 m from Apollo Hospital and NIFT.
+        </p>
+        <p class="footer-address">{{ property.address.full }}</p>
+      </div>
+
+      <nav class="footer-col" aria-label="Footer">
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a routerLink="/property">Property</a></li>
+          <li><a routerLink="/floor-plans">Floor Plans</a></li>
+          <li><a routerLink="/gallery">Gallery</a></li>
+          <li><a routerLink="/location">Location</a></li>
+          <li><a routerLink="/business-fit">Business Fit</a></li>
+          <li><a routerLink="/infrastructure">Infrastructure</a></li>
+          <li><a routerLink="/faq">FAQ</a></li>
+          <li><a routerLink="/leasing">Leasing</a></li>
+          <li><a routerLink="/contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2>Contact</h2>
+        <ul>
+          <li><a [href]="'mailto:' + property.contact.email">{{ property.contact.email }}</a></li>
+          <li><a [href]="'tel:' + property.contact.phoneE164">{{ property.contact.phoneDisplay }}</a></li>
+          <li><a [href]="'tel:' + property.contact.phone2E164">{{ property.contact.phone2Display }}</a></li>
+          <li><a [href]="waHref" target="_blank" rel="noopener">WhatsApp Leasing</a></li>
+          <li><a [href]="property.address.googleMapsUrl" target="_blank" rel="noopener">Open in Google Maps</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {{ year }} {{ property.brand.name }}. All rights reserved.</p>
+      <p class="footer-legal-links">
+        <a routerLink="/privacy">Privacy Policy</a>
+        <a routerLink="/terms">Terms</a>
+        <a routerLink="/disclaimer">Disclaimer</a>
+      </p>
+    </div>
+  </div>
+</footer>

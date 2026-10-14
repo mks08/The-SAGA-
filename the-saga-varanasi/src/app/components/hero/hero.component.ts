@@ -1,28 +1,28 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { PLAN, PROPERTY } from '../../config/property.config';
 
 @Component({
   selector: 'app-hero',
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.scss'],
 })
-export class HeroComponent implements OnInit, AfterViewInit {
-  loaded = false;
+export class HeroComponent {
+  property = PROPERTY;
+  plan = PLAN;
 
   stats = [
-    { value: 'G+4',    label: 'Floors' },
-    { value: '3,500',  label: 'Sq Ft / Floor' },
-    { value: 'Oct\'26', label: 'Possession' },
-    { value: 'VDA',    label: 'Approved' },
+    { value: `${PLAN.typical.floorArea.sqft.toLocaleString('en-IN', { maximumFractionDigits: 0 })} sq ft`, label: 'Floor area, each floor' },
+    { value: PLAN.plot.frontage, label: `Frontage · ${PLAN.plot.roadWidthM} m road` },
+    { value: '60–70 m', label: 'To Apollo & NIFT' },
+    { value: 'Stilt + 3', label: 'Commercial floors' },
   ];
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {
-    // Trigger reveal after slight delay (ensures fonts loaded)
-    setTimeout(() => { this.loaded = true; }, 120);
-  }
 
   openPopup() {
     window.dispatchEvent(new CustomEvent('open-booking-popup'));
+  }
+
+  track(eventName: string) {
+    const w = window as any;
+    if (typeof w.gtag === 'function') w.gtag('event', eventName);
   }
 }

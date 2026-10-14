@@ -1,31 +1,30 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   THE SAGA VARANASI — Global Design System
-   Warm Luxury Editorial · Inspired by Apple + 111 West 57th + JLL
+   SHRINEVA — Global Design System
+   Dark Architectural Luxury · Institutional CRE · Subtle Varanasi Character
+   Reference: JLL / CBRE / DLF institutional credibility + premium architecture
+   editorial design + restrained Indian warmth.
    ───────────────────────────────────────────────────────────────────────────── */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Google Fonts ──────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
-
 /* ── CSS Custom Properties ─────────────────────────────────────────────────── */
 :root {
-  /* Colors */
-  --color-void:     #0C0A08;
-  --color-deep:     #141009;
-  --color-surface:  #1C160E;
-  --color-elevated: #241D12;
-  --color-border:   rgba(201,168,76,0.15);
-  --color-border-strong: rgba(201,168,76,0.3);
+  /* Colors — SHRINEVA palette (gold is an ACCENT, not a surround) */
+  --color-void:     #0B0907;
+  --color-deep:     #15110D;
+  --color-surface:  #211A14;
+  --color-elevated: #2A2118;
+  --color-border:   rgba(197,161,90,0.20);
+  --color-border-strong: rgba(197,161,90,0.35);
 
-  --color-gold:     #C9A84C;
-  --color-gold-lt:  #E8C15A;
-  --color-gold-dk:  #9A7520;
-  --color-cream:    #F5F0E8;
-  --color-cream-muted: rgba(245,240,232,0.6);
-  --color-cream-dim:   rgba(245,240,232,0.35);
+  --color-gold:     #C5A15A;
+  --color-gold-lt:  #D9BF82;
+  --color-gold-dk:  #937444;
+  --color-cream:    #F3EEE5;
+  --color-cream-muted: rgba(243,238,229,0.62);
+  --color-cream-dim:   rgba(243,238,229,0.38);
 
   /* Typography */
   --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -33,7 +32,7 @@
   --font-mono:    'DM Mono', monospace;
 
   /* Spacing */
-  --section-py: clamp(5rem, 10vw, 9rem);
+  --section-py: clamp(3rem, 6vw, 5.25rem);
   --container-px: clamp(1.25rem, 5vw, 3rem);
   --container-max: 1280px;
 
@@ -51,11 +50,16 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  section[id],
+  [id$='-section'] {
+    scroll-margin-top: 88px;
   }
 
   body {
@@ -94,7 +98,7 @@
   }
 
   ::selection {
-    background: rgba(201,168,76,0.25);
+    background: rgba(197,161,90,0.25);
     color: var(--color-cream);
   }
 
@@ -106,11 +110,11 @@
     background: var(--color-void);
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(201,168,76,0.3);
+    background: rgba(197,161,90,0.3);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(201,168,76,0.6);
+    background: rgba(197,161,90,0.6);
   }
 }
 
@@ -118,7 +122,7 @@
 @layer components {
 
   /* Container */
-  .container-saga {
+  .container-srineva {
     width: 100%;
     max-width: var(--container-max);
     margin-left: auto;
@@ -131,6 +135,16 @@
   .section-py {
     padding-top: var(--section-py);
     padding-bottom: var(--section-py);
+
+    @media (max-width: 640px) {
+      padding-top: 2.75rem;
+      padding-bottom: 2.75rem;
+    }
+
+    &.no-intro {
+      padding-top: 1.25rem;
+      @media (max-width: 640px) { padding-top: 0.5rem; }
+    }
   }
 
   /* Section Labels */
@@ -144,7 +158,7 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-gold);
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.9rem;
 
     &::before {
       content: '';
@@ -158,12 +172,13 @@
   /* Section Heading */
   .section-heading {
     font-family: var(--font-display);
-    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-size: clamp(1.75rem, 5.2vw, 3rem);
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: -0.02em;
     color: var(--color-cream);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    overflow-wrap: anywhere;
 
     em {
       font-style: italic;
@@ -173,10 +188,11 @@
 
   /* Section Sub */
   .section-sub {
-    font-size: clamp(1rem, 2vw, 1.125rem);
+    font-size: clamp(0.95rem, 2vw, 1.125rem);
     color: var(--color-cream-muted);
     line-height: 1.7;
     max-width: 56ch;
+    overflow-wrap: anywhere;
   }
 
   /* Buttons */
@@ -185,23 +201,20 @@
     align-items: center;
     gap: 0.625rem;
     padding: 0.875rem 2rem;
-    background: linear-gradient(135deg, #C9A84C 0%, #E8C15A 50%, #C9A84C 100%);
-    background-size: 200% auto;
-    color: #0C0A08;
+    background: var(--color-gold);
+    color: #0B0907;
     font-family: var(--font-sans);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    border-radius: 6px;
-    transition: all 0.4s var(--ease-smooth);
-    box-shadow: 0 4px 24px rgba(201,168,76,0.3);
+    border-radius: 2px;
+    transition: transform 0.35s var(--ease-smooth), box-shadow 0.35s var(--ease-smooth);
     white-space: nowrap;
 
     &:hover {
-      background-position: right center;
       transform: translateY(-2px);
-      box-shadow: 0 8px 40px rgba(201,168,76,0.45);
+      box-shadow: 0 8px 24px rgba(197,161,90,0.28);
     }
 
     &:active {
@@ -230,7 +243,7 @@
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    border: 1px solid rgba(201,168,76,0.4);
+    border: 1px solid rgba(197,161,90,0.4);
     border-radius: 6px;
     transition: all 0.35s var(--ease-smooth);
     backdrop-filter: blur(8px);
@@ -238,7 +251,7 @@
 
     &:hover {
       border-color: var(--color-gold);
-      background: rgba(201,168,76,0.08);
+      background: rgba(197,161,90,0.08);
       transform: translateY(-2px);
     }
   }
@@ -270,26 +283,41 @@
     background: linear-gradient(135deg,
       rgba(36,29,18,0.9) 0%,
       rgba(28,22,14,0.95) 100%);
-    border: 1px solid rgba(201,168,76,0.12);
-    border-radius: 16px;
+    border: 1px solid rgba(197,161,90,0.12);
+    border-radius: 4px;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(201,168,76,0.1);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(197,161,90,0.1);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
-      border-color: rgba(201,168,76,0.25);
-      box-shadow: 0 12px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.1), inset 0 1px 0 rgba(201,168,76,0.15);
+      border-color: rgba(197,161,90,0.25);
+      box-shadow: 0 12px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(197,161,90,0.1), inset 0 1px 0 rgba(197,161,90,0.15);
     }
   }
 
   /* Gold Text */
   .text-gold-gradient {
-    background: linear-gradient(135deg, #C9A84C 0%, #E8C15A 40%, #C9A84C 70%, #9A7520 100%);
+    background: linear-gradient(135deg, #C5A15A 0%, #D9BF82 40%, #C5A15A 70%, #937444 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Inline link with arrow */
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-right: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-gold);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s, color 0.2s;
+    &:hover { color: var(--color-gold-lt); border-bottom-color: var(--color-gold); }
   }
 
   /* Gold Divider */
@@ -344,17 +372,28 @@
     border-radius: 50%;
     flex-shrink: 0;
     animation: pulseDot 2s ease-in-out infinite;
-    box-shadow: 0 0 0 0 rgba(201,168,76,0.5);
+    box-shadow: 0 0 0 0 rgba(197,161,90,0.5);
   }
 
   /* VDA Badge */
+  /* Chip — used across page-level components for tag lists */
+  .fs-chip {
+    display: inline-flex;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(197,161,90,0.1);
+    border: 1px solid rgba(197,161,90,0.25);
+    color: var(--color-gold);
+  }
+
   .badge-vda {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.4rem 1rem;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(197,161,90,0.1);
+    border: 1px solid rgba(197,161,90,0.3);
     border-radius: 100px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -369,10 +408,10 @@
 @layer utilities {
   @keyframes pulseDot {
     0%, 100% {
-      box-shadow: 0 0 0 0 rgba(201,168,76,0.6);
+      box-shadow: 0 0 0 0 rgba(197,161,90,0.6);
     }
     50% {
-      box-shadow: 0 0 0 8px rgba(201,168,76,0);
+      box-shadow: 0 0 0 8px rgba(197,161,90,0);
     }
   }
 
@@ -402,10 +441,145 @@
   }
 }
 
+/* ── Generic page-level utility layout (used by routed page components) ─────── */
+.floor-detail-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 3rem;
+  align-items: start;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-facts {
+  padding: 2rem;
+
+  h2 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 1.25rem; }
+  .fd-note { margin-top: 1rem; font-size: 0.75rem; color: var(--color-cream-dim); line-height: 1.55; }
+
+  dl {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin: 0;
+
+    div { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem; }
+    dt { color: var(--color-cream-dim); font-size: 0.8rem; }
+    dd { margin: 0; color: var(--color-cream); font-weight: 600; text-align: right; font-size: 0.85rem; }
+  }
+}
+
+.fd-fit h2 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.5rem; }
+
+.fd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.fd-plan {
+  margin: 0 0 2rem;
+
+  .fd-plan-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 0.75rem;
+  }
+
+  img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+  }
+}
+
+.fd-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    a, button { width: 100%; justify-content: center; }
+  }
+}
+
+.generic-page-section {
+  h2 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 1rem; }
+  p { color: var(--color-cream-muted); line-height: 1.7; margin-bottom: 1.5rem; max-width: 68ch; }
+}
+
+.two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+  @media (max-width: 860px) { grid-template-columns: 1fr; }
+}
+
+.info-card {
+  padding: 1.75rem;
+
+  h3 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--color-cream); }
+  p { color: var(--color-cream-muted); font-size: 0.88rem; line-height: 1.6; margin: 0; }
+  ul { margin: 0.75rem 0 0; padding-left: 1.1rem; color: var(--color-cream-muted); font-size: 0.85rem; line-height: 1.7; }
+}
+
 /* ── Delay utilities for staggered reveals ─────────────────────────────────── */
 .delay-100 { transition-delay: 100ms; }
 .delay-150 { transition-delay: 150ms; }
-.delay-200 { transition-delay: 200ms; }
+.delay-250 { transition-delay: 250ms; }
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 2000;
+  background: var(--color-gold);
+  color: var(--color-void);
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+
+  &:focus { top: 1rem; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  body { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); }
+
+  .btn-primary,
+  .btn-outline,
+  .btn-whatsapp {
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal, .reveal-left, .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .live-dot { animation: none; }
+}
 .delay-300 { transition-delay: 300ms; }
 .delay-400 { transition-delay: 400ms; }
 .delay-500 { transition-delay: 500ms; }
