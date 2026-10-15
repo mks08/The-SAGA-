@@ -17,7 +17,6 @@ import { ContactPageComponent } from './pages/contact-page/contact-page.componen
 import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
 import { DisclaimerPageComponent } from './pages/disclaimer-page/disclaimer-page.component';
-import { FaqPageComponent } from './pages/faq-page/faq-page.component';
 import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-page.component';
 
 const routes: Routes = [
@@ -34,7 +33,6 @@ const routes: Routes = [
   { path: 'gallery', component: GalleryPageComponent },
   { path: 'leasing', component: LeasingPageComponent },
   { path: 'brokers', component: BrokersPageComponent },
-  { path: 'faq', component: FaqPageComponent },
   { path: 'contact', component: ContactPageComponent },
   { path: 'privacy', component: PrivacyPageComponent },
   { path: 'terms', component: TermsPageComponent },

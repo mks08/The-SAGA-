@@ -1,4 +1,4 @@
-<section id="footfall" data-rail="Footfall" class="theme-dark relative isolate overflow-hidden bg-ink-2 py-16 md:py-24" aria-labelledby="ff-title">
+<section id="footfall" data-rail="Footfall" class="theme-soft relative isolate overflow-hidden bg-ink py-9 md:py-14" aria-labelledby="ff-title">
   <div class="absolute inset-0 -z-10 bg-grid bg-[length:64px_64px] opacity-50 [mask-image:radial-gradient(ellipse_at_70%_40%,#000,transparent_70%)]" aria-hidden="true"></div>
   <div class="absolute -left-32 bottom-0 -z-10 size-[30rem] rounded-full bg-brass/10 blur-[120px]" aria-hidden="true"></div>
 
@@ -10,8 +10,8 @@
         <h2 id="ff-title" class="font-display text-display-lg text-paper">{{ headline.title }}</h2>
         <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed text-paper/75">{{ headline.sub }}</p>
       </div>
-      <a *ngIf="!detailed" routerLink="/growth" appReveal class="btn-outline shrink-0 self-start md:self-auto" (click)="track('nearby_projects_click', { source: 'footfall' })">
-        All nearby projects, with sources <span class="arrow" aria-hidden="true">→</span>
+      <a *ngIf="!detailed" routerLink="/growth" appReveal class="btn-outline btn-sm shrink-0 self-start md:self-auto" (click)="track('nearby_projects_click', { source: 'footfall' })">
+        All nearby projects <span class="arrow" aria-hidden="true">→</span>
       </a>
     </div>
 
@@ -19,7 +19,7 @@
     <div *ngIf="!detailed" class="mb-8 inline-flex rounded-full border border-paper/15 bg-paper/[0.04] p-1" role="tablist" aria-label="Footfall views" (keydown)="onTabKey($event)">
       <button *ngFor="let t of tabs" type="button" role="tab" [id]="'ff-tab-' + t.id" [attr.aria-selected]="tab === t.id" [attr.aria-controls]="'ff-panel-' + t.id" [attr.tabindex]="tab === t.id ? 0 : -1"
               class="min-h-[44px] rounded-full px-4 text-[0.84rem] font-bold transition-colors sm:px-5"
-              [ngClass]="tab === t.id ? 'bg-brass-sheen text-ink' : 'text-paper/75 hover:text-paper'" (click)="setTab(t.id)">{{ t.label }}</button>
+              [ngClass]="tab === t.id ? 'bg-brass-sheen text-[#1b1714]' : 'text-paper/75 hover:text-paper'" (click)="setTab(t.id)">{{ t.label }}</button>
     </div>
 
     <!-- ANCHORS: radar + cards -->
@@ -30,41 +30,43 @@
           <desc id="ff-radar-d">Apollo Medics hospital and NIFT Varanasi about 60 to 70 metres away across the road, the Varanasi Trade Centre about 330 metres west. Not to scale.</desc>
           <defs>
             <radialGradient id="ff-core" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#be8e3e" stop-opacity="0.35"/><stop offset="1" stop-color="#be8e3e" stop-opacity="0"/></radialGradient>
-            <linearGradient id="ff-sweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e8cf96" stop-opacity="0"/><stop offset="1" stop-color="#e8cf96" stop-opacity="0.32"/></linearGradient>
+            <linearGradient id="ff-sweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#be8e3e" stop-opacity="0"/><stop offset="1" stop-color="#be8e3e" stop-opacity="0.32"/></linearGradient>
           </defs>
           <circle cx="300" cy="300" r="276" fill="url(#ff-core)" opacity="0.5"/>
-          <g fill="none" stroke="#f6f1e8" stroke-opacity="0.22" stroke-width="1">
+          <g fill="none" stroke="#231f1b" stroke-opacity="0.22" stroke-width="1">
             <circle *ngFor="let ring of rings" class="ring" cx="300" cy="300" [attr.r]="ring.r"/>
           </g>
-          <g font-family="DM Mono, monospace" font-size="10" fill="#f6f1e8" fill-opacity="0.55" letter-spacing="1">
+          <g font-family="DM Mono, monospace" font-size="10" fill="#231f1b" fill-opacity="0.55" letter-spacing="1">
             <text *ngFor="let ring of rings" x="300" [attr.y]="300 + ring.r + 14" text-anchor="middle">{{ ring.label }}</text>
           </g>
           <!-- the road the plot faces -->
-          <line class="road" x1="14" [attr.y1]="roadY" x2="586" [attr.y2]="roadY" stroke="#f6f1e8" stroke-opacity="0.35" stroke-width="2"/>
-          <text x="586" [attr.y]="roadY - 8" text-anchor="end" font-family="DM Mono, monospace" font-size="10" fill="#f6f1e8" fill-opacity="0.6" letter-spacing="1">24 M ROAD</text>
+          <line class="road" x1="14" [attr.y1]="roadY" x2="586" [attr.y2]="roadY" stroke="#231f1b" stroke-opacity="0.35" stroke-width="2"/>
+          <text x="586" [attr.y]="roadY - 8" text-anchor="end" font-family="DM Mono, monospace" font-size="10" fill="#231f1b" fill-opacity="0.6" letter-spacing="1">24 M ROAD</text>
           <!-- sweep -->
           <g class="sweep" aria-hidden="true"><path d="M300 300 L300 24 A276 276 0 0 1 531 148 Z" fill="url(#ff-sweep)"/></g>
           <!-- links from the plot -->
-          <g stroke="#e8cf96" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="2 5">
+          <g stroke="#9e7124" stroke-opacity="0.45" stroke-width="1" stroke-dasharray="2 5">
             <line *ngFor="let pt of points" x1="300" y1="300" [attr.x2]="pt.x" [attr.y2]="pt.y"/>
           </g>
           <!-- the plot -->
           <g>
             <circle class="marker-pulse" cx="300" cy="300" r="14" fill="#be8e3e" fill-opacity="0.5"/>
             <rect x="288" y="288" width="24" height="24" rx="5" fill="#be8e3e" transform="rotate(45 300 300)"/>
-            <text x="300" y="342" text-anchor="middle" font-family="Instrument Serif, serif" font-size="22" fill="#f6f1e8" letter-spacing="3">SHRINEVA</text>
+            <text x="300" y="342" text-anchor="middle" font-family="Instrument Serif, serif" font-size="22" fill="#231f1b" letter-spacing="3">SHRINEVA</text>
           </g>
           <!-- anchors -->
-          <g *ngFor="let pt of points" class="marker" tabindex="0" role="button" [attr.aria-label]="pt.p.name + ', ' + pt.p.distance + ' away, ' + pt.p.state"
+          <g *ngFor="let pt of points" class="marker" tabindex="0" role="button" [attr.aria-label]="pt.p.short + ' ' + pt.p.distance.replace('About ', '')" [attr.aria-description]="pt.p.name + ', ' + pt.p.state"
              [attr.aria-pressed]="activeId === pt.p.id" (click)="select(pt.p.id)" (keydown.enter)="select(pt.p.id)" (keydown.space)="select(pt.p.id); $event.preventDefault()">
-            <circle *ngIf="activeId === pt.p.id" class="marker-pulse" [attr.cx]="pt.x" [attr.cy]="pt.y" r="14" fill="#e8cf96" fill-opacity="0.45"/>
-            <circle class="marker-ring" [attr.cx]="pt.x" [attr.cy]="pt.y" r="13" [attr.fill]="activeId === pt.p.id ? '#e8cf96' : '#1b1714'" stroke="#e8cf96" stroke-width="1.5"/>
-            <circle [attr.cx]="pt.x" [attr.cy]="pt.y" r="4.5" [attr.fill]="activeId === pt.p.id ? '#1b1714' : '#e8cf96'"/>
-            <text [attr.x]="pt.lx" [attr.y]="pt.ly - 8" [attr.text-anchor]="pt.anchor" font-family="Manrope Variable, sans-serif" font-size="15" font-weight="700" fill="#f6f1e8">{{ pt.p.short }}</text>
-            <text [attr.x]="pt.lx" [attr.y]="pt.ly + 10" [attr.text-anchor]="pt.anchor" font-family="DM Mono, monospace" font-size="11" fill="#e8cf96">{{ pt.p.distance.replace('About ', '') }}</text>
+            <circle *ngIf="activeId === pt.p.id" class="marker-pulse" [attr.cx]="pt.x" [attr.cy]="pt.y" r="14" fill="#be8e3e" fill-opacity="0.3"/>
+            <circle class="marker-ring" [attr.cx]="pt.x" [attr.cy]="pt.y" r="13" [attr.fill]="activeId === pt.p.id ? '#be8e3e' : '#ffffff'" stroke="#9e7124" stroke-width="1.5"/>
+            <circle [attr.cx]="pt.x" [attr.cy]="pt.y" r="4.5" [attr.fill]="activeId === pt.p.id ? '#ffffff' : '#9e7124'"/>
+          </g>
+          <g *ngFor="let pt of points" class="marker-label" aria-hidden="true" (click)="select(pt.p.id)">
+            <text aria-hidden="true" [attr.x]="pt.lx" [attr.y]="pt.ly - 8" [attr.text-anchor]="pt.anchor" font-family="Manrope Variable, sans-serif" font-size="15" font-weight="700" fill="#231f1b">{{ pt.p.short }}</text>
+            <text aria-hidden="true" [attr.x]="pt.lx" [attr.y]="pt.ly + 10" [attr.text-anchor]="pt.anchor" font-family="DM Mono, monospace" font-size="11" fill="#7a5614">{{ pt.p.distance.replace('About ', '') }}</text>
           </g>
         </svg>
-        <p class="mt-1 text-center font-mono text-[0.64rem] uppercase tracking-[0.16em] text-paper/50">Schematic, not to scale · bearings from the owner's location sheet</p>
+        <p class="mt-1 text-center font-mono text-[0.64rem] uppercase tracking-[0.16em] text-paper/70">Schematic, not to scale · bearings from the owner's location sheet</p>
       </div>
 
       <div class="grid gap-3">
@@ -72,7 +74,7 @@
                  class="spot cursor-pointer rounded-3xl border p-5 transition-colors md:p-6" appSpotlight
                  [ngClass]="activeId === p.id ? 'border-brass/70 bg-paper/[0.07]' : 'border-paper/12 bg-paper/[0.03] hover:border-paper/30'">
           <header class="flex flex-wrap items-center justify-between gap-2">
-            <p class="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-paper/60">{{ p.kind }} · {{ p.distance }}</p>
+            <p class="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-paper/70">{{ p.kind }} · {{ p.distance }}</p>
             <span class="rounded-full border px-2.5 py-0.5 font-mono text-[0.64rem] uppercase tracking-[0.1em]" [ngClass]="stateClass(p.state)">{{ p.state }}</span>
           </header>
           <h3 class="mt-2 font-display text-[1.7rem] leading-tight text-paper">{{ p.name }}</h3>
@@ -80,10 +82,6 @@
           <ul *ngIf="activeId === p.id || detailed" class="mt-3 grid gap-1 text-[0.86rem] text-paper/70">
             <li *ngFor="let f of p.facts.slice(0, detailed ? 4 : 2)" class="flex gap-2"><span class="mt-[0.55em] size-1 shrink-0 rounded-full bg-brass" aria-hidden="true"></span>{{ f }}</li>
           </ul>
-          <p class="mt-3 text-[0.82rem]">
-            <span class="text-paper/55">Source:</span>
-            <a [href]="p.source.url" target="_blank" rel="noopener" class="ml-1 font-bold text-brass-soft underline decoration-brass/50 underline-offset-4 hover:decoration-brass" (click)="$event.stopPropagation(); track('source_click', { id: p.id })">{{ p.source.label }} ↗</a>
-          </p>
         </article>
       </div>
     </div>
@@ -106,7 +104,7 @@
           <p class="mt-3 text-[0.88rem] leading-relaxed text-paper/70">Looks for: {{ l.needs }}.</p>
         </li>
       </ul>
-      <p class="mt-4 text-[0.82rem] text-paper/55">Reasoning from the facilities listed, not a measured count.</p>
+      <p class="mt-4 text-[0.82rem] text-paper/70">Reasoning from the facilities listed, not a measured count.</p>
     </div>
 
     <!-- TIMELINE -->
@@ -126,15 +124,13 @@
 
     <!-- City-level drivers and what we do not claim (full page only) -->
     <div *ngIf="detailed" class="mt-16">
-      <h3 class="font-display text-display-md text-paper">City-level projects <span class="text-paper/50">(indirect)</span></h3>
+      <h3 class="font-display text-display-md text-paper">City-level projects <span class="text-paper/70">(indirect)</span></h3>
       <p class="mt-2 max-w-2xl text-paper/70">These raise visits to Varanasi as a whole. They are listed for context and are not counted as footfall at SHRINEVA.</p>
       <ul class="mt-6 grid gap-3 md:grid-cols-2">
         <li *ngFor="let c of cityDrivers" class="rounded-3xl border border-paper/12 bg-paper/[0.03] p-5 md:p-6">
           <h4 class="font-display text-[1.45rem] text-paper">{{ c.name }}</h4>
           <p class="mt-2 text-[0.9rem] leading-relaxed text-paper/75">{{ c.facts }}</p>
-          <p class="mt-2 text-[0.86rem] text-paper/60"><strong class="text-paper/80">Why indirect:</strong> {{ c.whyIndirect }}</p>
-          <p class="mt-3 text-[0.82rem]"><span class="text-paper/55">Source:</span>
-            <a [href]="c.source.url" target="_blank" rel="noopener" class="ml-1 font-bold text-brass-soft underline decoration-brass/50 underline-offset-4" (click)="track('source_click', { id: c.id })">{{ c.source.label }} ↗</a></p>
+          <p class="mt-2 text-[0.86rem] text-paper/70"><strong class="text-paper/80">Why indirect:</strong> {{ c.whyIndirect }}</p>
         </li>
       </ul>
 
@@ -146,6 +142,13 @@
       </div>
     </div>
 
-    <p class="mt-8 text-[0.78rem] leading-relaxed text-paper/50">{{ note }}</p>
+    <details *ngIf="detailed" class="mt-8 text-[0.84rem] text-paper/70">
+      <summary class="cursor-pointer font-bold text-paper/85">Where this comes from</summary>
+      <ul class="mt-2 grid gap-1">
+        <li *ngFor="let p of projects">{{ p.name }}: <a [href]="p.source.url" target="_blank" rel="noopener" class="font-bold text-brass-soft underline underline-offset-4" (click)="track('source_click', { id: p.id })">{{ p.source.label }} ↗</a></li>
+        <li *ngFor="let c of cityDrivers">{{ c.name }}: <a [href]="c.source.url" target="_blank" rel="noopener" class="font-bold text-brass-soft underline underline-offset-4" (click)="track('source_click', { id: c.id })">{{ c.source.label }} ↗</a></li>
+      </ul>
+    </details>
+    <p class="mt-4 text-[0.78rem] leading-relaxed text-paper/70">{{ note }}</p>
   </div>
 </section>

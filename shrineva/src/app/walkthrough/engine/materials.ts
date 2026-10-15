@@ -1,5 +1,5 @@
 import { Color, DoubleSide, MeshStandardMaterial, Texture } from 'three';
-import { asphaltTexture, jaaliTexture, signTexture, tileTexture, timberTexture } from './textures';
+import { asphaltTexture, ghatTexture, jaaliTexture, jaliStoneTexture, signTexture, tileTexture, timberTexture, warmGlowTexture } from './textures';
 
 /** Every material the model uses, created once. Colours follow the façade renders: cream stone, taupe spine, copper screens, brass. */
 export class Mats {
@@ -25,6 +25,18 @@ export class Mats {
   neighbourWarm = new MeshStandardMaterial({ color: '#d6c3a5', roughness: 1, metalness: 0 });
   neighbourWin = new MeshStandardMaterial({ color: '#7f8d98', roughness: 0.3, metalness: 0.1 });
 
+  /* ground-floor walls: Varanasi sandstone tones, lit niches, planting */
+  sandstone = new MeshStandardMaterial({ color: '#cdb088', roughness: 0.9, metalness: 0 });
+  sandstoneDark = new MeshStandardMaterial({ color: '#a98a5f', roughness: 0.92, metalness: 0 });
+  sandstoneLight = new MeshStandardMaterial({ color: '#e0cfae', roughness: 0.88, metalness: 0 });
+  stoneTread = new MeshStandardMaterial({ color: '#ddd4c2', roughness: 0.55, metalness: 0.04 });
+  soil = new MeshStandardMaterial({ color: '#4a3a2c', roughness: 1, metalness: 0 });
+  leafLight = new MeshStandardMaterial({ color: '#6f9c57', roughness: 0.95, metalness: 0 });
+  /** Warm light behind niches and jali: emissive level is driven by time of day. */
+  glowTex: Texture = warmGlowTexture();
+  glowWarm = new MeshStandardMaterial({ map: this.glowTex, color: '#ffffff', emissive: new Color('#ffffff'), emissiveMap: this.glowTex, emissiveIntensity: 0.35, roughness: 0.6 });
+  lampGlow = new MeshStandardMaterial({ color: '#fff0cf', emissive: new Color('#ffd187'), emissiveIntensity: 0.5, roughness: 0.4 });
+
   glass = new MeshStandardMaterial({ color: '#86aec6', roughness: 0.05, metalness: 0.15, transparent: true, opacity: 0.36, depthWrite: false, emissive: new Color('#ffcf85'), emissiveIntensity: 0 });
   glassPartition = new MeshStandardMaterial({ color: '#b9d6e0', roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.22, depthWrite: false });
   /** Ceiling light strips and shop-front glow: emissive intensity is driven by time of day. */
@@ -40,6 +52,10 @@ export class Mats {
   jaaliTex: Texture = jaaliTexture();
   asphaltTex: Texture = asphaltTexture();
   signTex: Texture = signTexture('SHRINEVA', false);
+  ghatTex: Texture = ghatTexture();
+  jaliStoneTex: Texture = jaliStoneTexture();
+  liftSignTex: Texture = signTexture('LIFT', false);
+  stairSignTex: Texture = signTexture('STAIRS', false);
 
   floor = new MeshStandardMaterial({ map: this.floorTex, roughness: 0.42, metalness: 0.05 });
   paving = new MeshStandardMaterial({ map: this.pavingTex, roughness: 0.85, metalness: 0 });
@@ -47,6 +63,10 @@ export class Mats {
   jaali = new MeshStandardMaterial({ map: this.jaaliTex, roughness: 0.6, metalness: 0.25, side: DoubleSide });
   sign = new MeshStandardMaterial({ map: this.signTex, roughness: 0.5, metalness: 0.2, emissive: new Color('#c9a15a'), emissiveMap: this.signTex, emissiveIntensity: 0.05 });
   asphalt = new MeshStandardMaterial({ map: this.asphaltTex, roughness: 0.95, metalness: 0 });
+  ghat = new MeshStandardMaterial({ map: this.ghatTex, roughness: 0.85, metalness: 0, emissive: new Color('#ffcf8a'), emissiveMap: this.ghatTex, emissiveIntensity: 0.04 });
+  jaliStone = new MeshStandardMaterial({ map: this.jaliStoneTex, roughness: 0.85, metalness: 0, side: DoubleSide, alphaTest: 0.5 });
+  liftSign = new MeshStandardMaterial({ map: this.liftSignTex, roughness: 0.5, metalness: 0.2, emissive: new Color('#c9a15a'), emissiveMap: this.liftSignTex, emissiveIntensity: 0.4 });
+  stairSign = new MeshStandardMaterial({ map: this.stairSignTex, roughness: 0.5, metalness: 0.2, emissive: new Color('#c9a15a'), emissiveMap: this.stairSignTex, emissiveIntensity: 0.4 });
   footpath = new MeshStandardMaterial({ color: '#c8c1b3', roughness: 1, metalness: 0 });
   ground = new MeshStandardMaterial({ color: '#c2b79f', roughness: 1, metalness: 0 });
   roadLine = new MeshStandardMaterial({ color: '#e5dcc3', roughness: 0.9, metalness: 0 });
@@ -63,6 +83,6 @@ export class Mats {
 
   dispose(): void {
     this.all().forEach((m) => m.dispose());
-    [this.floorTex, this.pavingTex, this.timberTex, this.jaaliTex, this.asphaltTex, this.signTex].forEach((t) => t.dispose());
+    [this.floorTex, this.pavingTex, this.timberTex, this.jaaliTex, this.asphaltTex, this.signTex, this.ghatTex, this.glowTex, this.jaliStoneTex, this.liftSignTex, this.stairSignTex].forEach((t) => t.dispose());
   }
 }

@@ -7,7 +7,7 @@
  *  2. Regenerates sitemap.xml, robots.txt and llms.txt from the same route list and domain (property.config.ts → domain.canonical).
  *  3. Writes 404.html (served with a real 404 status by .htaccess for unknown URLs) and checks that every route is
  *     covered by the route whitelist in src/.htaccess, so a new page cannot be added without updating it.
- * Source of truth: src/app/config/seo.config.ts (+ property.config.ts, faq.config.ts).
+ * Source of truth: src/app/config/seo.config.ts (+ property.config.ts, highlights.config.ts, location.config.ts, footfall.config.ts).
  */
 const fs = require('fs');
 const path = require('path');
@@ -37,7 +37,8 @@ function load(file) {
 
 const { SEO_ROUTES, SEO_DOMAIN } = load(path.join(cfgDir, 'seo.config.ts'));
 const { PROPERTY, PLAN } = load(path.join(cfgDir, 'property.config.ts'));
-const { FAQS, HOME_FAQ_COUNT } = load(path.join(cfgDir, 'faq.config.ts'));
+const { PROJECT_STATUS, KEY_FEATURES, BUILDING_SERVICES } = load(path.join(cfgDir, 'highlights.config.ts'));
+const { NEARBY_DISTANCES } = load(path.join(cfgDir, 'location.config.ts'));
 const { FOOTFALL_AS_OF, NEARBY_PROJECTS, CITY_DRIVERS, FOOTFALL_NOT_CLAIMED } = load(path.join(cfgDir, 'footfall.config.ts'));
 // Same JSON-LD builder the runtime SeoService uses (src/app/core/seo/schema.ts).
 const { buildGraph } = load(path.join(root, 'src/app/core/seo/schema.ts'));
@@ -54,7 +55,7 @@ const url = (p) => (p ? `${SEO_DOMAIN}/${p}` : `${SEO_DOMAIN}/`);
 const nav = [
   ['', 'Home'], ['property', 'The Property'], ['walkthrough', '3D Walkthrough'], ['floor-plans', 'Floor Plans'], ['gallery', 'Gallery'],
   ['location', 'Location'], ['growth', 'Nearby Projects'], ['business-fit', 'Business Fit'], ['infrastructure', 'Infrastructure'],
-  ['spaces', 'Spaces'], ['leasing', 'Leasing'], ['brokers', 'Brokers'], ['faq', 'FAQ'], ['contact', 'Contact'],
+  ['spaces', 'Spaces'], ['leasing', 'Leasing'], ['brokers', 'Brokers'], ['contact', 'Contact'],
 ];
 
 function setMeta(html, attr, key, content) {
@@ -65,15 +66,14 @@ function setMeta(html, attr, key, content) {
 
 function noscript(route) {
   const facts = [
+    `Commercial and mixed-use building, ${PROJECT_STATUS.stage.toLowerCase()}: ${PROJECT_STATUS.progress.toLowerCase()}, handover ${PROJECT_STATUS.handover} (owner's plan). ${PROJECT_STATUS.modifications}`,
     `${PLAN.plot.areaSqM} sq m plot, ${PLAN.plot.facing.toLowerCase()}-facing, ${PLAN.plot.frontage} frontage on a ${PLAN.plot.roadWidthM} m road`,
     `VDA-approved Parking + 3 building: open parking level plus three floors; each floor ${PLAN.typical.floorArea.sqft} sq ft floor area, ${PLAN.typical.carpet.sqft} sq ft carpet (computed, not certified)`,
-    `${PLAN.lift.capacity} passenger lift; parking on the open ground level, capacity to be confirmed`,
-    `Footfall potential: a 400-bed hospital with an approved plan and NIFT Varanasi 60–70 m away (neither has announced an opening date) and the operating Varanasi Trade Centre about 330 m away; Ring Road about 1 km by road. Reviewed ${FOOTFALL_AS_OF}. No footfall figure is claimed.`,
+    `Key features (owner-specified): ${KEY_FEATURES.map((f) => f.title).join(', ')}. Services: ${BUILDING_SERVICES.join(', ')}.`,
+    `Nearby (approximate): ${NEARBY_DISTANCES.map((d) => `${d.name} ${d.value}`).join('; ')}.`,
+    `Footfall potential: the Apollo hospital (under construction, OPD expected 2027) and NIFT Varanasi (classes since 2024, campus expected ready 2027) are 60–70 m away and the operating Varanasi Trade Centre about 330 m away. Reviewed ${FOOTFALL_AS_OF}. No footfall figure is claimed.`,
   ];
   const links = nav.map(([p, l]) => `<li><a href="${url(p)}">${esc(l)}</a></li>`).join('');
-  const faq = route.path === 'faq'
-    ? `<h2>Frequently asked questions</h2>${FAQS.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}`
-    : '';
   const growth = route.path === 'growth'
     ? `<h2>What is being built near SHRINEVA (reviewed ${esc(FOOTFALL_AS_OF)})</h2>` +
       NEARBY_PROJECTS.map((p) => `<h3>${esc(p.name)} — ${esc(p.distance)}</h3><p>${esc(p.status)} ${esc(p.facts.join('; '))}.</p>`).join('') +
@@ -82,7 +82,7 @@ function noscript(route) {
       `<h2>What we do not claim</h2><ul>${FOOTFALL_NOT_CLAIMED.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>`
     : '';
   return `<noscript><header><p>SHRINEVA</p><h1>${esc(route.h1)}</h1><p>${esc(route.description)}</p></header>` +
-    `<ul>${facts.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>${growth}${faq}` +
+    `<ul>${facts.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>${growth}` +
     `<p>${esc(PROPERTY.address.full)}. Call ${esc(PROPERTY.contact.phoneDisplay)} or ${esc(PROPERTY.contact.phone2Display)}${PROPERTY.contact.publicEmail ? `; email ${esc(PROPERTY.contact.publicEmail)}` : ''}.</p>` +
     `<nav aria-label="Site"><ul>${links}</ul></nav></noscript>`;
 }
@@ -94,7 +94,7 @@ function shell(route) {
   let html = base;
   if (route.path === '') {
     // Only the home page paints the hero straight away; other routes must not pay for it.
-    html = html.replace('</head>', '  <link rel="preload" as="image" href="assets/images/hero/hero-night-2000.webp" media="(min-width: 900px)" fetchpriority="high">\n  <link rel="preload" as="image" href="assets/images/hero/hero-night-1000.webp" media="(max-width: 899px)" fetchpriority="high">\n</head>');
+    html = html.replace('</head>', '  <link rel="preload" as="image" href="assets/images/hero/hero-golden-1000.webp" imagesrcset="assets/images/hero/hero-golden-1000.webp 1000w, assets/images/hero/hero-golden-2000.webp 2000w" imagesizes="(min-width: 1024px) 560px, 92vw" fetchpriority="high">\n</head>');
   }
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(route.title)}</title>`);
   html = setMeta(html, 'name', 'description', route.description);
@@ -151,9 +151,16 @@ console.log('robots.txt written');
 const llms = [
   `# ${PROPERTY.brand.name}`,
   '',
-  `> Commercial building for lease at ${PROPERTY.address.full}. VDA-approved Parking + 3 building: open parking level plus three whole floors on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road. Leasing enquiries: ${PROPERTY.contact.phoneDisplay} or ${PROPERTY.contact.phone2Display} (WhatsApp)${PROPERTY.contact.publicEmail ? `, ${PROPERTY.contact.publicEmail}` : ''}.`,
+  `> Commercial and mixed-use building for lease at ${PROPERTY.address.full}. VDA-approved Parking + 3 building: open parking level plus three whole floors on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road. Leasing enquiries: ${PROPERTY.contact.phoneDisplay} or ${PROPERTY.contact.phone2Display} (WhatsApp)${PROPERTY.contact.publicEmail ? `, ${PROPERTY.contact.publicEmail}` : ''}.`,
   '',
-  'Status notes: areas are computed from the architect\'s sheets and are not certified; parking capacity is not fixed; 3D images and the 3D walkthrough are indicative; nothing here is an offer, and no opening dates have been announced for the hospital or campus listed below.',
+  `Status (owner, ${PROJECT_STATUS.asOf}): ${PROJECT_STATUS.stage}; ${PROJECT_STATUS.progress.toLowerCase()}; handover ${PROJECT_STATUS.handover}. ${PROJECT_STATUS.modifications}`,
+  '',
+  `Key features (owner-specified, not certificates): ${KEY_FEATURES.map((f) => f.title).join('; ')}. Services: ${BUILDING_SERVICES.join(', ')}.`,
+  '',
+  'Notes: areas are computed from the architect\'s sheets and are not certified; parking capacity is not fixed; 3D images and the 3D walkthrough are indicative and subject to change; nothing here is an offer. Opening years for the Apollo hospital (OPD 2027) and the NIFT campus (2027) are the owner\'s expectations.',
+  '',
+  '## Approximate distances',
+  ...NEARBY_DISTANCES.map((d) => `- ${d.name}: ${d.value}${d.note ? ` (${d.note})` : ''}`),
   '',
   '## Pages',
   ...SEO_ROUTES.filter((r) => r.priority >= 0.5).map((r) => {

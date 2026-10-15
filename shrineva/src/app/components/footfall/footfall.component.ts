@@ -81,6 +81,6 @@ export class FootfallComponent {
   track(name: string, params: Record<string, unknown> = {}) { this.analytics.event(name, params); }
 
   stateClass(s: string): string {
-    return s === 'Operating' ? 'bg-ok/20 text-[#7fe0a8] border-ok/50' : s === 'Plan approved' ? 'bg-brass/15 text-brass-soft border-brass/50' : 'bg-ghat/25 text-[#9fd4dd] border-ghat/60';
+    return s === 'Operating' ? 'bg-ok/10 text-ok border-ok/40' : s === 'Plan approved' ? 'bg-brass/10 text-brass-deep border-brass-deep/40' : 'bg-ghat/10 text-ghat border-ghat/40';
   }
 }

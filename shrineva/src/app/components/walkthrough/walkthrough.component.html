@@ -1,15 +1,15 @@
 <section [attr.id]="variant === 'embed' ? 'walkthrough' : null" [attr.data-rail]="variant === 'embed' ? '3D' : null"
-         class="theme-dark relative isolate overflow-hidden bg-ink" [ngClass]="variant === 'embed' ? 'py-16 md:py-24' : 'pb-14 md:pb-20'" aria-labelledby="wt-title">
+         class="theme-soft relative isolate overflow-hidden bg-ink" [ngClass]="variant === 'embed' ? 'py-10 md:py-14' : 'pb-10 md:pb-14'" aria-labelledby="wt-title">
   <div class="absolute -right-40 top-10 -z-10 size-[34rem] rounded-full bg-brass/10 blur-[130px]" aria-hidden="true"></div>
 
   <div class="container-srineva">
-    <div *ngIf="variant === 'embed'" class="mb-8 flex flex-col gap-5 md:mb-10 md:flex-row md:items-end md:justify-between">
+    <div *ngIf="variant === 'embed'" class="mb-5 flex flex-col gap-4 md:mb-6 md:flex-row md:items-end md:justify-between">
       <div appReveal class="max-w-2xl">
         <span class="eyebrow">3D walkthrough</span>
-        <h2 id="wt-title" class="font-display text-display-lg text-paper">Walk through it <em class="text-brass-soft">before</em> you visit.</h2>
-        <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed text-paper/75">Orbit the building, open any floor, then step inside and look around. Move your mouse to look.</p>
+        <h2 id="wt-title" class="font-display text-display-sm text-paper">Walk through it <em class="text-brass-soft">before</em> you visit.</h2>
+        <p class="mt-2 max-w-xl text-[0.94rem] leading-relaxed text-paper/70">Orbit the building, open any floor, step inside.</p>
       </div>
-      <a routerLink="/walkthrough" appReveal class="btn-outline shrink-0 self-start md:self-auto" (click)="analytics.event('walkthrough_page_click')">
+      <a routerLink="/walkthrough" appReveal class="btn-outline btn-sm shrink-0 self-start md:self-auto" (click)="analytics.event('walkthrough_page_click')">
         Open the full page <span class="arrow" aria-hidden="true">→</span>
       </a>
     </div>
@@ -21,7 +21,7 @@
 
       <div #host class="wt-host absolute inset-0" role="application"
            aria-label="Interactive 3D model of the SHRINEVA building. Drag to look around. Arrow keys or W A S D to move. This is an optional visual; the facts and plans are on this page."
-           [class.invisible]="phase !== 'live'" (pointerdown)="hintDismissed = true"></div>
+           [class.invisible]="phase !== 'live'" (pointerdown)="helpOpen = false"></div>
 
       <!-- Poster and states -->
       <div *ngIf="phase !== 'live'" class="absolute inset-0 grid place-items-center">
@@ -46,7 +46,7 @@
                 <a routerLink="/gallery" class="btn-primary">See the renders</a>
                 <a routerLink="/floor-plans" class="btn-outline">Floor plans</a>
               </div>
-              <button *ngIf="loadError" type="button" class="mt-4 text-[0.8rem] text-paper/60 underline" (click)="start()">Try again</button>
+              <button *ngIf="loadError" type="button" class="mt-4 text-[0.8rem] text-paper/70 underline" (click)="start()">Try again</button>
             </ng-container>
             <ng-container *ngSwitchDefault>
               <button type="button" class="wt-play group" (click)="start()" aria-label="Start the 3D walkthrough">
@@ -72,6 +72,16 @@
             <svg *ngIf="state.touring" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
             {{ state.touring ? 'Stop tour' : 'Guided tour' }}
           </button>
+          <button type="button" class="chip chip-icon wt-help" [class.on]="helpOpen" [attr.aria-pressed]="helpOpen" [attr.aria-expanded]="helpOpen" aria-controls="wt-help-card" aria-label="How to move" (click)="helpOpen = !helpOpen">?</button>
+        </div>
+
+        <!-- how to move: small card, opens from the ? chip -->
+        <div id="wt-help-card" class="wt-helpcard" *ngIf="helpOpen" role="dialog" aria-label="How to move">
+          <p class="wt-help-title">How to move</p>
+          <ul>
+            <li *ngFor="let h of legend"><b>{{ h.k }}</b><span>{{ h.v }}</span></li>
+          </ul>
+          <button type="button" class="wt-help-close" (click)="helpOpen = false">Got it</button>
         </div>
 
         <!-- top-right: light, full screen -->
@@ -94,51 +104,49 @@
 
         <!-- bottom row -->
         <div class="wt-bottom">
-          <!-- floors -->
-          <div class="wt-floors" role="group" aria-label="Floors">
-            <button type="button" *ngIf="!inside" class="chip wt-floor" [attr.aria-pressed]="state.level === null" (click)="setLevel(null)" aria-label="All floors">
-              <span>All</span>
-            </button>
-            <button type="button" *ngFor="let l of levelsDesc; trackBy: trackLevel" class="chip wt-floor" [attr.aria-pressed]="state.level === l.id" (click)="setLevel(l.id)" [attr.aria-label]="l.label">
-              <span class="sm:hidden">{{ l.id === 0 ? 'P' : l.id }}</span>
-              <span class="hidden sm:inline">{{ l.id === 0 ? 'Parking' : 'Floor ' + l.id }}</span>
-            </button>
-            <button type="button" *ngIf="!inside" class="chip wt-floor" [attr.aria-pressed]="state.explode" (click)="toggleExplode()" aria-label="Pull apart the floors">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4zM4 13l8 4 8-4M4 18l8 4 8-4"/></svg>
-              <span class="hidden sm:inline">Pull apart</span>
-            </button>
-          </div>
-
-          <!-- centre: tour card, or layouts and spots, plus the hint -->
-          <div class="wt-centre">
-            <div *ngIf="state.touring && tourStop" class="wt-tour" role="status" aria-live="polite">
-              <p class="wt-tour-kicker">Stop {{ state.tourIndex + 1 }} of {{ tourTotal }}</p>
-              <p class="wt-tour-title">{{ tourStop.title }}</p>
-              <p class="wt-tour-text">{{ tourStop.text }}</p>
-              <div class="wt-tour-bar">
-                <span class="wt-dots" aria-hidden="true"><i *ngFor="let d of tourDots; let i = index" [class.on]="i === state.tourIndex"></i></span>
-                <span class="flex gap-1.5">
-                  <button type="button" class="chip chip-icon" (click)="tourStep(-1)" aria-label="Previous stop">‹</button>
-                  <button type="button" class="chip chip-icon" (click)="tourStep(1)" aria-label="Next stop">›</button>
-                </span>
+          <div class="wt-bl">
+            <!-- tour card, or spots and layouts -->
+            <div class="wt-centre">
+              <div *ngIf="state.touring && tourStop" class="wt-tour" role="status" aria-live="polite">
+                <p class="wt-tour-kicker">Stop {{ state.tourIndex + 1 }} of {{ tourTotal }}</p>
+                <p class="wt-tour-title">{{ tourStop.title }}</p>
+                <p class="wt-tour-text">{{ tourStop.text }}</p>
+                <div class="wt-tour-bar">
+                  <span class="wt-dots" aria-hidden="true"><i *ngFor="let d of tourDots; let i = index" [class.on]="i === state.tourIndex"></i></span>
+                  <span class="flex gap-1.5">
+                    <button type="button" class="chip chip-icon" (click)="tourStep(-1)" aria-label="Previous stop">‹</button>
+                    <button type="button" class="chip chip-icon" (click)="tourStep(1)" aria-label="Next stop">›</button>
+                  </span>
+                </div>
               </div>
+
+              <ng-container *ngIf="!state.touring">
+                <div *ngIf="inside" class="wt-chips" role="group" aria-label="Go to">
+                  <button *ngFor="let w of waypoints" type="button" class="chip chip-sm" [hidden]="!levelAvailable(w.levels)" (click)="goTo(w.id)">{{ w.label }}</button>
+                  <button type="button" class="chip chip-sm sm:hidden" [attr.aria-pressed]="showPlan" (click)="showPlan = !showPlan">Plan</button>
+                </div>
+                <div *ngIf="canPreset" class="wt-chips" role="group" aria-label="Try a layout (illustrative)">
+                  <span class="wt-chips-label">Try a layout</span>
+                  <button *ngFor="let p of presets" type="button" class="chip chip-sm" [attr.aria-pressed]="state.preset === p.id" (click)="setPreset(p.id)">{{ p.label }}</button>
+                </div>
+                <p *ngIf="canPreset && state.preset !== 'open'" class="wt-note">{{ activePresetNote }}</p>
+              </ng-container>
             </div>
 
-            <ng-container *ngIf="!state.touring">
-              <div *ngIf="inside" class="wt-chips" role="group" aria-label="Go to">
-                <button *ngFor="let w of waypoints" type="button" class="chip chip-sm" [hidden]="!levelAvailable(w.levels)" (click)="goTo(w.id)">{{ w.label }}</button>
-                <button type="button" class="chip chip-sm sm:hidden" [attr.aria-pressed]="showPlan" (click)="showPlan = !showPlan">Plan</button>
+            <!-- floors -->
+            <div class="wt-floorbar">
+              <div class="wt-seg wt-floors" role="group" aria-label="Floors">
+                <button type="button" *ngIf="!inside" [attr.aria-pressed]="state.level === null" (click)="setLevel(null)" aria-label="All floors">All</button>
+                <button type="button" *ngFor="let l of levels; trackBy: trackLevel" [attr.aria-pressed]="state.level === l.id" (click)="setLevel(l.id)" [attr.aria-label]="l.label">
+                  <span class="sm:hidden">{{ l.id === 0 ? 'P' : l.id }}</span>
+                  <span class="hidden sm:inline">{{ l.id === 0 ? 'Parking' : 'Floor ' + l.id }}</span>
+                </button>
               </div>
-              <div *ngIf="canPreset" class="wt-chips" role="group" aria-label="Try a layout (illustrative)">
-                <span class="wt-chips-label">Try a layout</span>
-                <button *ngFor="let p of presets" type="button" class="chip chip-sm" [attr.aria-pressed]="state.preset === p.id" (click)="setPreset(p.id)">{{ p.label }}</button>
-              </div>
-              <p *ngIf="canPreset && state.preset !== 'open'" class="wt-note">{{ activePresetNote }}</p>
-              <p *ngIf="!hintDismissed" class="wt-hint">
-                <span class="hidden hoverable:inline">{{ hint }}</span>
-                <span class="hoverable:hidden">{{ hintTouch }}</span>
-              </p>
-            </ng-container>
+              <button type="button" *ngIf="!inside" class="chip" [attr.aria-pressed]="state.explode" (click)="toggleExplode()" aria-label="Pull the floors apart" title="Pull the floors apart">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4zM4 13l8 4 8-4M4 18l8 4 8-4"/></svg>
+                <span class="hidden sm:inline">Pull apart</span>
+              </button>
+            </div>
           </div>
 
           <!-- plan inset -->
@@ -176,6 +184,9 @@
       </ng-container>
     </div>
 
-    <p class="mt-4 max-w-3xl text-[0.8rem] leading-relaxed text-paper/55">{{ note }}</p>
+    <ul class="wt-legend" aria-label="How to move">
+      <li *ngFor="let h of legend"><b>{{ h.k }}</b> {{ h.v }}</li>
+    </ul>
+    <p class="mt-2 max-w-3xl text-[0.74rem] leading-relaxed text-paper/70">{{ note }}</p>
   </div>
 </section>

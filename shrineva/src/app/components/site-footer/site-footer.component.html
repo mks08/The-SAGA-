@@ -1,67 +1,79 @@
-<footer class="theme-dark relative overflow-hidden bg-ink text-paper" role="contentinfo">
-  <div class="pointer-events-none absolute inset-0 bg-grain opacity-[0.05] mix-blend-overlay" aria-hidden="true"></div>
-  <div class="container-srineva relative pt-16 pb-8 md:pt-20">
+<footer class="theme-soft relative overflow-hidden border-t border-paper/10 bg-ink text-paper" role="contentinfo">
+  <div class="container-srineva relative pt-10 pb-6 md:pt-14">
 
-    <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr_1fr]">
+    <div class="grid gap-9 lg:grid-cols-[1.25fr_1fr_1fr]">
       <div appReveal>
-        <a routerLink="/" class="inline-flex items-center gap-3 min-h-[44px]">
-          <img src="assets/images/logo-mark.webp" alt="" width="56" height="56" class="size-14 rounded-2xl ring-1 ring-brass/40" loading="lazy">
-          <span class="font-display text-3xl tracking-[0.14em]">{{ property.brand.name }}</span>
+        <a routerLink="/" class="inline-flex min-h-[44px] items-center gap-3">
+          <img src="assets/images/logo-mark.webp" alt="" width="44" height="44" class="size-11 rounded-xl ring-1 ring-brass/40" loading="lazy">
+          <span class="font-display text-[1.9rem] tracking-[0.14em]">{{ property.brand.name }}</span>
         </a>
-        <p class="mt-5 max-w-md text-[0.98rem] leading-relaxed text-paper/75">
-          Commercial space for lease in Bada Lalpur, Varanasi: Parking + 3 floors of
-          {{ property.area.floorAreaPerFloorSqFt | number:'1.0-0' }} sq ft each, 60–70 m from the Apollo hospital site and NIFT.
+        <p class="mt-3 max-w-sm text-[0.92rem] leading-relaxed text-paper/70">
+          Commercial and mixed-use space in Bada Lalpur, Varanasi: Parking + 3 floors of
+          {{ property.area.floorAreaPerFloorSqFt | number:'1.0-0' }} sq ft each.
         </p>
-        <p *ngIf="property.approvals.vda.show" class="mt-5">
+        <p *ngIf="property.approvals.vda.show" class="mt-3">
           <span class="badge-vda" [attr.title]="property.approvals.vda.title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
             {{ property.approvals.vda.label }}
           </span>
         </p>
-        <address class="mt-6 max-w-sm text-[0.9rem] leading-relaxed text-paper/60">{{ property.address.full }}</address>
+        <address class="mt-4 max-w-sm text-[0.84rem] leading-relaxed text-paper/70">{{ property.address.full }}</address>
       </div>
 
       <nav aria-label="Footer" appReveal [style.--i]="1">
-        <h2 class="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-brass-soft">Explore</h2>
-        <ul class="mt-5 grid grid-cols-2 gap-x-6 text-[0.95rem]">
-          <li><a routerLink="/property" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Property</a></li>
-          <li><a routerLink="/walkthrough" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">3D Walkthrough</a></li>
-          <li><a routerLink="/floor-plans" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floor Plans</a></li>
-          <li><a routerLink="/growth" class="flex min-h-[44px] items-center gap-2 text-paper/80 transition-colors hover:text-brass-soft">Nearby Projects</a></li>
-          <li><a routerLink="/location" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location</a></li>
-          <li><a routerLink="/gallery" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Gallery</a></li>
-          <li><a routerLink="/spaces" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floors</a></li>
-          <li><a routerLink="/business-fit" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Business Fit</a></li>
-          <li><a routerLink="/infrastructure" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Infrastructure</a></li>
-          <li><a routerLink="/faq" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">FAQ</a></li>
-          <li><a routerLink="/leasing" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Leasing</a></li>
-          <li><a routerLink="/brokers" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">For Brokers</a></li>
+        <h2 class="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-brass-soft">Explore</h2>
+        <ul class="mt-3 grid grid-cols-2 gap-x-6 text-[0.9rem]">
+          <li><a routerLink="/" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Home</a></li>
+          <li><a routerLink="/property" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Property</a></li>
+          <li><a routerLink="/walkthrough" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">3D Walkthrough</a></li>
+          <li><a routerLink="/floor-plans" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floor Plans</a></li>
+          <li><a routerLink="/growth" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Nearby Projects</a></li>
+          <li><a routerLink="/location" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location</a></li>
+          <li><a routerLink="/gallery" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">3D Renders</a></li>
+          <li><a routerLink="/spaces" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floors</a></li>
+          <li><a routerLink="/business-fit" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Business Fit</a></li>
+          <li><a routerLink="/leasing" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Leasing</a></li>
+          <li><a routerLink="/brokers" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">For Brokers</a></li>
         </ul>
       </nav>
 
       <div appReveal [style.--i]="2">
-        <h2 class="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-brass-soft">Leasing desk</h2>
-        <ul class="mt-5 grid gap-1 text-[0.95rem]">
-          <li *ngIf="property.contact.publicEmail"><a [href]="'mailto:' + property.contact.publicEmail" class="flex min-h-[44px] items-center font-semibold text-brass-soft hover:underline">{{ property.contact.publicEmail }}</a></li>
-          <li><a [href]="'tel:' + property.contact.phoneE164" class="flex min-h-[44px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phoneDisplay }}</a></li>
-          <li><a [href]="'tel:' + property.contact.phone2E164" class="flex min-h-[44px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phone2Display }}</a></li>
-          <li><a [href]="waHref" target="_blank" rel="noopener" class="flex min-h-[44px] items-center text-paper/85 hover:text-brass-soft">WhatsApp leasing ↗</a></li>
-          <li><a [href]="property.address.googleMapsUrl" target="_blank" rel="noopener" class="flex min-h-[44px] items-center text-paper/85 hover:text-brass-soft">Open in Google Maps ↗</a></li>
+        <h2 class="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-brass-soft">Leasing desk</h2>
+        <ul class="mt-3 grid gap-0.5 text-[0.92rem]">
+          <li *ngIf="property.contact.publicEmail"><a [href]="'mailto:' + property.contact.publicEmail" class="flex min-h-[40px] items-center font-semibold text-brass-soft hover:underline">{{ property.contact.publicEmail }}</a></li>
+          <li><a [href]="'tel:' + property.contact.phoneE164" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phoneDisplay }}</a></li>
+          <li><a [href]="'tel:' + property.contact.phone2E164" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phone2Display }}</a></li>
+          <li><a [href]="waHref" target="_blank" rel="noopener" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">WhatsApp leasing ↗</a></li>
         </ul>
       </div>
     </div>
 
-    <p class="mt-14 max-w-4xl text-[0.74rem] leading-relaxed text-paper/50">
-      Areas are computed from the architect's dimensions and are not certified. 3D images and the 3D walkthrough are indicative; finishes, fit-out and surroundings are illustrative and the design is subject to change.
-      Development references are from public sources reviewed on 14 October 2026 and may change. Nothing on this site is an offer.
+    <!-- Small location strip: the 3D map and the distances -->
+    <div appReveal class="mt-8 grid items-center gap-4 rounded-2xl border border-paper/10 bg-ink-3/70 p-3 sm:grid-cols-[13rem_1fr] md:p-3.5" aria-label="Where SHRINEVA is">
+      <a [href]="links.directions" target="_blank" rel="noopener" class="block overflow-hidden rounded-xl" aria-label="Get directions to SHRINEVA">
+        <img [src]="map.thumb" [alt]="map.alt" width="760" height="400" loading="lazy" decoding="async" class="aspect-[2/1] w-full object-cover object-[60%_55%]">
+      </a>
+      <div>
+        <ul class="grid gap-x-6 gap-y-0.5 text-[0.82rem] sm:grid-cols-2" aria-label="Distances from SHRINEVA">
+          <li *ngFor="let r of rows" class="flex items-baseline justify-between gap-3 border-b border-paper/10 py-1.5">
+            <span class="min-w-0 truncate text-paper/75">{{ r.name }}</span><span class="shrink-0 font-bold text-paper">{{ r.value }}</span>
+          </li>
+        </ul>
+        <a [href]="links.directions" target="_blank" rel="noopener" class="mt-1.5 inline-flex min-h-[40px] items-center text-[0.82rem] font-bold text-brass-soft hover:underline">Get directions ↗</a>
+      </div>
+    </div>
+
+    <p class="mt-6 max-w-4xl text-[0.72rem] leading-relaxed text-paper/70">
+      Areas are computed from the architect's dimensions and are not certified. 3D images and the 3D walkthrough are indicative and subject to change for the better; finishes, fit-out and surroundings are illustrative.
+      Project status, key features and timelines are as stated by the owner. Development references are from public sources reviewed on 15 October 2026 and may change. Nothing on this site is an offer.
     </p>
 
-    <div class="mt-8 flex flex-col gap-3 border-t border-paper/10 pt-6 text-[0.8rem] text-paper/55 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mt-5 flex flex-col gap-1 border-t border-paper/10 pt-4 text-[0.78rem] text-paper/70 sm:flex-row sm:items-center sm:justify-between">
       <p>© {{ year }} {{ property.brand.name }}. All rights reserved.</p>
       <p class="flex gap-5">
-        <a routerLink="/privacy" class="flex min-h-[44px] items-center hover:text-paper">Privacy Policy</a>
-        <a routerLink="/terms" class="flex min-h-[44px] items-center hover:text-paper">Terms</a>
-        <a routerLink="/disclaimer" class="flex min-h-[44px] items-center hover:text-paper">Disclaimer</a>
+        <a routerLink="/privacy" class="flex min-h-[40px] items-center hover:text-paper">Privacy Policy</a>
+        <a routerLink="/terms" class="flex min-h-[40px] items-center hover:text-paper">Terms</a>
+        <a routerLink="/disclaimer" class="flex min-h-[40px] items-center hover:text-paper">Disclaimer</a>
       </p>
     </div>
   </div>

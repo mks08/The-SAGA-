@@ -365,8 +365,8 @@ export const PROPERTY = {
       distanceKm: 0.065,
       distanceDisplay: '≈ 60–70 m',
       direction: 'North-east',
-      status: 'Plan approved · opening date not announced',
-      detail: '400 beds. Multi-specialty hospital; VDA-approved plan reported: double basement, ground and 7 floors; 365 car parking spaces.',
+      status: 'Under construction · OPD expected to start in 2027',
+      detail: '400 beds. Multi-specialty hospital under construction; OPD expected to start in 2027 (owner\'s expectation). VDA-approved plan reported: double basement, ground and 7 floors; 365 car parking spaces.',
       driveMinutes: null,
       source: 'SHRINEVA location sheet (12.10.2026). Digital Health News (Apollo plan approval, Sept 2025).',
     },
@@ -377,8 +377,8 @@ export const PROPERTY = {
       distanceKm: 0.065,
       distanceDisplay: '≈ 60–70 m',
       direction: 'North-west',
-      status: 'Classes since July 2024 · campus under construction',
-      detail: 'Permanent campus on 7.5 acres; main campus construction started January 2025; completion date not stated.',
+      status: 'Classes since July 2024 · campus under construction, expected ready in 2027',
+      detail: 'Permanent campus on 7.5 acres; main campus construction started January 2025; expected ready in 2027 (owner\'s expectation).',
       driveMinutes: null,
       source: 'SHRINEVA location sheet (12.10.2026). NBM&CW, Realty n More, NIFT.',
     },
@@ -474,7 +474,7 @@ export const PROPERTY = {
       title: 'Hospital and campus, 60–70 m away',
       status: 'under-construction',
       points: [
-        'Apollo Medics, 400 beds: VDA building plan reported approved; opening date not announced',
+        'Apollo Medics, 400 beds: under construction, OPD expected to start in 2027',
         'NIFT permanent campus on 7.5 acres: construction started January 2025',
       ],
     },
@@ -539,7 +539,7 @@ export const PROPERTY = {
     useDisclaimer:
       'Tenant use is subject to applicable approvals, building regulations, fire and safety requirements and technical feasibility.',
       futureDisclaimer:
-      'Development references are based on publicly available information reviewed on 14 October 2026 and may change. No opening dates are stated for projects whose owners have not announced them. No footfall figure is published for this building or road.',
+      'Development references are based on publicly available information reviewed on 14 October 2026 and may change. Opening years for the Apollo hospital (OPD, 2027) and the NIFT campus (2027) are the owner\'s expectations, not announced dates. No footfall figure is published for this building or road.',
     renderDisclaimer:
       'Indicative 3D visualisation. Finishes and surroundings are illustrative and the design is subject to change. Dimensions are as per the floor plans.',
   },

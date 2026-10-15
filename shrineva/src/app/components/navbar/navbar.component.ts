@@ -20,6 +20,7 @@ export class NavbarComponent implements OnDestroy {
 
   /** "Nearby Projects" is deliberately a top-level, marked link: it is the evidence behind the footfall claim. */
   readonly navLinks: NavLink[] = [
+    { path: '/', label: 'Home' },
     { path: '/property', label: 'Property' },
     { path: '/walkthrough', label: '3D Walkthrough' },
     { path: '/floor-plans', label: 'Floor Plans' },

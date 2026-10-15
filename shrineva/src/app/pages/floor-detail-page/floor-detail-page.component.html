@@ -8,19 +8,19 @@
 
   <section class="relative overflow-hidden bg-paper py-12 md:py-20" aria-labelledby="fd-title">
     <div class="container-srineva grid gap-5 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-8">
-      <aside appReveal class="relative self-start overflow-hidden rounded-4xl bg-ink p-6 text-paper md:p-8 lg:sticky lg:top-28">
+      <aside appReveal class="relative self-start overflow-hidden theme-soft rounded-4xl border border-paper/10 bg-ink p-6 text-paper shadow-soft md:p-8 lg:sticky lg:top-28">
         <div class="absolute -right-16 -top-16 size-56 rounded-full bg-brass/25 blur-[70px]" aria-hidden="true"></div>
         <h2 id="fd-title" class="relative font-display text-[1.8rem] text-paper">Floor facts</h2>
         <dl class="relative mt-4 divide-y divide-paper/12 text-[0.9rem]">
-          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Floor area</dt><dd class="text-right font-semibold">{{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.floorArea.sqm | number:'1.2-2' }} sq m)</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Carpet area</dt><dd class="text-right font-semibold">{{ plan.typical.carpet.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.carpet.pct }}%)</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Floor to floor</dt><dd class="text-right font-semibold">{{ plan.typical.floorToFloor }}</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Daylight</dt><dd class="text-right font-semibold">{{ plan.typical.daylight }}</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Lift and stairs</dt><dd class="text-right font-semibold">{{ plan.lift.adjective }} lift · {{ plan.typical.staircase }}</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Lease format</dt><dd class="text-right font-semibold">{{ floor.leaseFormat.join(' · ') }}</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/60">Parking</dt><dd class="text-right font-semibold">Shared, ground level; capacity to be confirmed</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/70">Floor area</dt><dd class="text-right font-semibold">{{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.floorArea.sqm | number:'1.2-2' }} sq m)</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/70">Carpet area</dt><dd class="text-right font-semibold">{{ plan.typical.carpet.sqft | number:'1.2-2' }} sq ft ({{ plan.typical.carpet.pct }}%)</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/70">Floor to floor</dt><dd class="text-right font-semibold">{{ plan.typical.floorToFloor }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/70">Daylight</dt><dd class="text-right font-semibold">{{ plan.typical.daylight }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/70">Lift and stairs</dt><dd class="text-right font-semibold">{{ plan.lift.adjective }} lift · {{ plan.typical.staircase }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/70">Lease format</dt><dd class="text-right font-semibold">{{ floor.leaseFormat.join(' · ') }}</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-paper/70">Parking</dt><dd class="text-right font-semibold">Shared, ground level; capacity to be confirmed</dd></div>
         </dl>
-        <p class="relative mt-4 text-[0.78rem] leading-relaxed text-paper/55">Computed from the architect's dimensions; certified areas will be issued by the architect. Handover condition, clear ceiling height, toilets and pantry are to be confirmed.</p>
+        <p class="relative mt-4 text-[0.78rem] leading-relaxed text-paper/70">Computed from the architect's dimensions; certified areas will be issued by the architect. Handover condition, clear ceiling height, toilets and pantry are to be confirmed.</p>
       </aside>
 
       <div class="min-w-0">
@@ -35,7 +35,7 @@
         <a appReveal routerLink="/floor-plans" class="group mt-8 block overflow-hidden rounded-4xl border border-ink/10 bg-white p-3 transition-shadow duration-500 hover:shadow-lift md:p-4">
           <img [src]="typical3d.thumb" [alt]="typical3d.alt" width="640" height="427" loading="lazy" decoding="async"
                class="h-auto w-full rounded-3xl transition-transform duration-700 group-hover:scale-[1.015]">
-          <span class="mt-3 flex items-center justify-between px-1 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ink/60">Typical floor plate <span class="text-brass-deep">View plans →</span></span>
+          <span class="mt-3 flex items-center justify-between px-1 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ink/70">Typical floor plate <span class="text-brass-deep">View plans →</span></span>
         </a>
 
         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">

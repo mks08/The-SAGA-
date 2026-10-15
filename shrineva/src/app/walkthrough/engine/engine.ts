@@ -413,6 +413,12 @@ export class Engine {
     this.mats.strip.emissiveIntensity = t.strips;
     this.mats.plaqueGlow.emissiveIntensity = t.plaque;
     this.mats.sign.emissiveIntensity = t.plaque * 0.5;
+    this.mats.glowWarm.emissiveIntensity = 0.35 + t.lamps * 1.0;
+    this.mats.lampGlow.emissiveIntensity = 0.5 + t.lamps * 2.2;
+    this.mats.ghat.emissiveIntensity = 0.04 + t.lamps * 0.3;
+    this.mats.liftSign.emissiveIntensity = 0.4 + t.plaque * 0.8;
+    this.mats.stairSign.emissiveIntensity = 0.4 + t.plaque * 0.8;
+    this.model.accent.forEach((l) => { l.intensity = 0.5 + t.lamps * 6.5; });
     this.model.levels.forEach((l) => { l.light.intensity = t.interiorLight * (l.info.id === 0 ? 0.6 : 1); });
   }
 

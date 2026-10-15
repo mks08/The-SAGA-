@@ -9,14 +9,24 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 export class Batcher {
   private buckets = new Map<Material, BufferGeometry[]>();
 
-  box(mat: Material, cx: number, cy: number, cz: number, sx: number, sy: number, sz: number, ry = 0): void {
+  box(mat: Material, cx: number, cy: number, cz: number, sx: number, sy: number, sz: number, ry = 0, rx = 0): void {
     if (sx <= 0 || sy <= 0 || sz <= 0) return;
     const g = new BoxGeometry(sx, sy, sz);
+    if (rx) g.rotateX(rx);
     if (ry) g.rotateY(ry);
     g.translate(cx, cy, cz);
+    this.geo(mat, g);
+  }
+
+  /** Any geometry, already placed in world coordinates. Indexed and non-indexed geometries can be mixed. */
+  geo(mat: Material, g: BufferGeometry): void {
+    const flat = g.index ? g.toNonIndexed() : g;
+    if (flat !== g) g.dispose();
+    for (const k of Object.keys(flat.attributes)) if (k !== 'position' && k !== 'normal' && k !== 'uv') flat.deleteAttribute(k);
+    flat.clearGroups();
     let list = this.buckets.get(mat);
     if (!list) { list = []; this.buckets.set(mat, list); }
-    list.push(g);
+    list.push(flat);
   }
 
   /** Box from two corners. */

@@ -1,37 +1,37 @@
-<section id="gallery" data-rail="Gallery" class="relative overflow-hidden py-16 md:py-24" [ngClass]="isHome ? 'theme-dark bg-ink' : 'bg-paper'" [class.!pt-4]="!showIntro" aria-labelledby="gal-title">
+<section id="gallery" data-rail="Gallery" class="relative overflow-hidden bg-paper py-9 md:py-14" [class.!pt-4]="!showIntro" aria-labelledby="gal-title">
   <div class="container-srineva">
-    <div *ngIf="showIntro" appReveal class="mb-10 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
-      <div class="max-w-2xl">
-        <span class="eyebrow">Gallery</span>
-        <h2 id="gal-title" class="font-display text-display-lg" [ngClass]="isHome ? 'text-paper' : 'text-ink'">The building, <em [ngClass]="isHome ? 'text-brass-soft' : 'text-brass-deep'">as designed.</em></h2>
-        <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed" [ngClass]="isHome ? 'text-paper/75' : 'text-ink/70'">Façade, parking-level court and lift lobby. Indicative 3D renders.</p>
+    <div *ngIf="showIntro" appReveal class="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-xl">
+        <span class="eyebrow">3D renders</span>
+        <h2 id="gal-title" class="font-display text-display-md text-ink">The building, <em class="text-brass-deep">as designed.</em></h2>
+        <p class="mt-2 text-[0.94rem] text-ink/65">Indicative renders. <strong class="font-semibold text-ink/80">Subject to change for the better.</strong></p>
       </div>
-      <a *ngIf="showPageLink" routerLink="/gallery" class="btn-outline shrink-0 self-start md:self-auto">View all {{ total }} <span class="arrow" aria-hidden="true">→</span></a>
+      <a *ngIf="showPageLink" routerLink="/gallery" class="text-link !mr-0 shrink-0 self-start md:self-auto">View all {{ total }} renders →</a>
     </div>
     <h2 *ngIf="!showIntro" id="gal-title" class="sr-only">Renders</h2>
 
-    <div *ngIf="!isHome" class="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Filter images">
-      <button type="button" role="tab" *ngFor="let g of groups" class="min-h-[44px] rounded-full border px-5 text-[0.86rem] font-bold transition-colors"
+    <div *ngIf="!isHome" class="mb-5 flex flex-wrap gap-2" role="tablist" aria-label="Filter images">
+      <button type="button" role="tab" *ngFor="let g of groups" class="min-h-[40px] rounded-full border px-4 text-[0.84rem] font-bold transition-colors"
               [ngClass]="g === active ? 'border-ink bg-ink text-paper' : 'border-ink/20 text-ink/70 hover:border-ink hover:text-ink'"
               [attr.aria-selected]="g === active" (click)="select(g)">{{ g }}</button>
     </div>
 
-    <ul class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 md:auto-rows-[13rem] lg:auto-rows-[15rem]">
+    <ul class="grid grid-cols-2 gap-2.5 md:grid-cols-4 md:gap-3 md:auto-rows-[11.5rem] lg:auto-rows-[13rem]">
       <li *ngFor="let r of items; let i = index" appReveal="scale" [style.--i]="i % 4"
           [ngClass]="spanClass(i)">
-        <button type="button" class="group relative block h-full w-full overflow-hidden rounded-3xl bg-ink-2 text-left" (click)="open(i)" [attr.aria-label]="r.group + ' ' + r.title + '. Enlarge'">
+        <button type="button" class="group relative block h-full w-full overflow-hidden rounded-2xl bg-paper-3 text-left" (click)="open(i)" [attr.aria-label]="r.group + ' ' + r.title + '. Enlarge'">
           <img [src]="i === 0 ? r.src : r.thumb" [alt]="r.alt" [attr.width]="i === 0 ? r.width : 560" [attr.height]="i === 0 ? r.height : (r.height * 560 / r.width | number:'1.0-0')" loading="lazy" decoding="async"
-               class="aspect-[4/3] h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06] md:aspect-auto">
-          <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent p-4 pt-12 text-paper">
-            <em class="block font-mono text-[0.6rem] not-italic uppercase tracking-[0.16em] text-brass-soft">{{ r.group }}</em>{{ ' ' }}<strong class="mt-0.5 block text-[0.92rem] font-bold leading-snug">{{ r.title }}</strong>
+               class="aspect-[4/3] h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05] md:aspect-auto">
+          <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1b1714]/85 via-[#1b1714]/30 to-transparent p-3.5 pt-10 text-[#f6f1e8]">
+            <em class="block font-mono text-[0.58rem] not-italic uppercase tracking-[0.14em] text-[#e8cf96]">{{ r.group }}</em>{{ ' ' }}<strong class="mt-0.5 block text-[0.88rem] font-bold leading-snug">{{ r.title }}</strong>
           </span>
         </button>
       </li>
     </ul>
 
-    <p class="mt-6 text-[0.78rem]" [ngClass]="isHome ? 'text-paper/55' : 'text-ink/70'">{{ property.legal.renderDisclaimer }}</p>
+    <p class="mt-4 text-[0.76rem] leading-relaxed text-ink/70">Indicative 3D renders, subject to change for the better. {{ property.legal.renderDisclaimer }}</p>
   </div>
 </section>
 
-<app-lightbox [items]="items" [index]="lightboxIndex" [disclaimer]="'Indicative 3D visualisation. Subject to change.'"
+<app-lightbox [items]="items" [index]="lightboxIndex" [disclaimer]="'Indicative 3D visualisation. Subject to change for the better.'"
               (indexChange)="lightboxIndex = $event" (closed)="lightboxIndex = null"></app-lightbox>

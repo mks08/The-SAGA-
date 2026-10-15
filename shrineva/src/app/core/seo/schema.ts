@@ -1,7 +1,7 @@
 import { seoForPath, SEO_DOMAIN, SEO_ROUTES } from '../../config/seo.config';
 import { PROPERTY, PLAN } from '../../config/property.config';
-import { FAQS, HOME_FAQ_COUNT } from '../../config/faq.config';
-import { RENDERS } from '../../config/media.config';
+import { RENDERS, TOUR_VIDEO } from '../../config/media.config';
+import { NEARBY_DISTANCES } from '../../config/location.config';
 
 /**
  * Structured data (JSON-LD) for every route. Pure functions with no Angular imports so the same
@@ -83,8 +83,7 @@ export function buildGraph(path: string, canonical: string) {
 
   const graph: unknown[] = [org, website, place, webpage, breadcrumbs(path, canonical)];
 
-  if (!path) graph.push(faqSchema(HOME_FAQ_COUNT));
-  if (path === 'faq') graph.push(faqSchema(FAQS.length));
+  if (!path) graph.push(...homeExtras());
   if (path === 'gallery') graph.push(gallerySchema());
 
   return { '@context': 'https://schema.org', '@graph': graph.filter(Boolean) };
@@ -106,18 +105,6 @@ function breadcrumbs(path: string, canonical: string) {
   return { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: items };
 }
 
-/** FAQPage schema from the same list the visitor sees. */
-function faqSchema(count: number) {
-  return {
-    '@type': 'FAQPage',
-    mainEntity: FAQS.slice(0, count).map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
-}
-
 function gallerySchema() {
   return {
     '@type': 'ImageGallery',
@@ -131,5 +118,41 @@ function gallerySchema() {
       width: r.width,
       height: r.height,
     })),
+  };
+}
+
+/** Home only: the project status and the short distance list, as plain structured facts (no FAQ markup). */
+function homeExtras() {
+  return [
+    {
+      '@type': 'ItemList',
+      '@id': `${SEO_DOMAIN}/#nearby`,
+      name: 'Nearby places and approximate distances from SHRINEVA',
+      itemListElement: NEARBY_DISTANCES.map((d, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: d.name,
+        description: `${d.value}${d.note ? ` (${d.note})` : ''}`,
+      })),
+    },
+    ...(TOUR_VIDEO.available ? [videoSchema()] : []),
+  ];
+}
+
+/** The short film, once it is published (TOUR_VIDEO.available). */
+function videoSchema() {
+  const v = TOUR_VIDEO, m = Math.floor(v.durationSec / 60), sec = Math.round(v.durationSec % 60);
+  return {
+    '@type': 'VideoObject',
+    '@id': `${SEO_DOMAIN}/#film`,
+    name: v.title,
+    description: v.description,
+    thumbnailUrl: `${SEO_DOMAIN}/${v.poster}`,
+    contentUrl: `${SEO_DOMAIN}/${v.src}`,
+    uploadDate: v.uploadDate,
+    duration: `PT${m ? `${m}M` : ''}${sec}S`,
+    width: v.posterWidth,
+    height: v.posterHeight,
+    inLanguage: 'en-IN',
   };
 }

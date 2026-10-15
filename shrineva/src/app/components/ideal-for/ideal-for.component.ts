@@ -18,7 +18,7 @@ export class IdealForComponent {
       label: 'Healthcare & Diagnostics',
       demand: 'Apollo site, 60–70 m',
       short: 'Clinics, diagnostics, pharmacy',
-      description: 'Clinics, diagnostics and pharmacies sit about 60–70 m from the planned 400-bed Apollo Medics hospital (plan approval reported; opening date not announced).',
+      description: 'Clinics, diagnostics and pharmacies sit about 60–70 m from the planned 400-bed Apollo Medics hospital (under construction; OPD expected to start in 2027).',
       benefit: 'Near a planned 400-bed hospital',
     },
     {

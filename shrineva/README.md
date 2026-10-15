@@ -17,14 +17,14 @@ Output: `dist/shrineva/`. `postbuild` writes, from the same route list and domai
 - one `index.html` per route (20 routes, e.g. `/walkthrough/index.html`, `/spaces/floor-1/index.html`)
 - `sitemap.xml`, `robots.txt` and `llms.txt` (a plain-text summary for AI assistants, built from the same config)
 - `404.html`, which `.htaccess` serves with a real 404 status for unknown URLs
-- JSON-LD (Organization, WebSite, Place, WebPage, BreadcrumbList, plus FAQPage on `/` and `/faq`, ImageGallery on `/gallery`) inside each shell; the runtime `SeoService` updates the same element when visitors navigate
+- JSON-LD (Organization, WebSite, Place, WebPage, BreadcrumbList, plus an ItemList of the nearby distances and the film's VideoObject on `/`, ImageGallery on `/gallery`) inside each shell, with no FAQ page or markup; the runtime `SeoService` updates the same element when visitors navigate
 - the hero-image preload, on the home shell only
 
 ## What the site does
 
 | Page | Purpose |
 |---|---|
-| `/` | Hero with the footfall case first, "Nearby projects" with sources, 3D walkthrough, specs, floor plans, business fit, gallery, map pin, FAQ, contact |
+| `/` | Compact light hero (commercial and mixed-use), footfall strip, key features and project status, 3D walkthrough, floor plans, six renders, location (3D map and distance list), short film, short enquiry form |
 | `/growth` | Detailed nearby projects: each card dated and linked to its source |
 | `/walkthrough` | Full 3D model: orbit, open any floor, pull the floors apart, step inside, guided tour, day / golden hour / night, illustrative layouts |
 | `/floor-plans`, `/spaces/floor-N` | The architect's plans (repainted for web) with computed area statement |
@@ -39,6 +39,14 @@ Output: `dist/shrineva/`. `postbuild` writes, from the same route list and domai
 - Controls: drag to look (hover leans the view on desktop), W A S D / arrows to walk, Q E to turn, click or tap the floor to walk there, scroll or pinch to zoom outside, Esc leaves full screen. On touch screens the page still scrolls over the canvas until the visitor goes full screen.
 - Falls back to the static renders and plans when WebGL is unavailable. Respects `prefers-reduced-motion`.
 - Debug handle `window.__wt` exists only when the URL contains `?wtdebug`.
+
+### Short film
+
+`src/assets/video/shrineva-tour.mp4` (about 1 min 27 s, H.264, no sound) and its poster `shrineva-tour-poster.webp`. It shows an illustrative drive from Ring Road past Vardhan Hospital (position approximate), the Trade Centre, NIFT and the Apollo site to the plot, then the ground and first floors in the indicative 3D model. The home page shows only the poster until a visitor presses play (`preload="none"`), so it costs no bandwidth otherwise. Set `TOUR_VIDEO.available` to `false` to hide the section; change `chapters` (start seconds) if the file is re-cut. The film was rendered under a software renderer from `window.__wt`; re-render after changing the 3D model.
+
+### Look and feel
+
+The site is light and warm. `.theme-soft` (in `styles.scss`) swaps the ink and paper colour tokens so older dark-styled blocks render light; `.theme-light` restores the base tokens. New blocks use plain `bg-paper` / `text-ink`. Buttons come in `btn-primary`, `btn-outline` and a smaller `btn-sm`.
 
 ### Map pin
 
@@ -56,7 +64,9 @@ The small "VDA approved" tag comes from `PROPERTY.approvals.vda`. It reflects th
 | 3D geometry, tour stops, presets | `src/app/config/building.config.ts` |
 | Nearby projects and the dated footfall evidence | `src/app/config/footfall.config.ts` |
 | Page titles, descriptions, routes | `src/app/config/seo.config.ts` |
-| FAQ (visible list **and** FAQPage schema) | `src/app/config/faq.config.ts` |
+| Key features, project status, "I am looking for" choices (owner-stated) | `src/app/config/highlights.config.ts` |
+| Short distance list (location block, footer, structured data) | `src/app/config/location.config.ts` |
+| Short film: file names, chapters, `available` switch | `TOUR_VIDEO` in `src/app/config/media.config.ts` |
 | Marketing copy that is not a measured fact | `src/app/config/content.config.ts` |
 | Images, renders, plan sheets | `src/app/config/media.config.ts`, `src/assets/` |
 | Motion (reveal, count-up, tilt, spotlight, parallax) | `src/app/shared/directives/` |
@@ -65,7 +75,7 @@ The small "VDA approved" tag comes from `PROPERTY.approvals.vda`. It reflects th
 | Lead form delivery | `src/app/core/services/lead.service.ts`, `src/api/lead.php` |
 | Apache rules (HTTPS, www → apex, SPA fallback, caching, headers) | `src/.htaccess` |
 
-**Rule for editing:** change a fact in `property.config.ts` once; pages, FAQ, schema, sitemap text and `<noscript>` all read from it. Do not type areas or distances into templates.
+**Rule for editing:** change a fact in `property.config.ts` once; pages, schema, sitemap text and `<noscript>` all read from it. Do not type areas or distances into templates.
 
 ## Add a page
 
@@ -124,7 +134,7 @@ Recipients are never displayed on any page. (The backup route's address does hav
 
 1. `npm run build`.
 2. In hPanel → File Manager (or FTP), open `public_html/`, remove the old site files, and upload the **contents** of `dist/shrineva/` (including the hidden `.htaccess` and the `api/` folder).
-3. Confirm SSL is active, then open `/`, `/walkthrough`, `/floor-plans`, `/faq`, `/does-not-exist` (should show the app's 404 page, not a server error).
+3. Confirm SSL is active, then open `/`, `/walkthrough`, `/floor-plans`, `/location`, `/does-not-exist` (should show the app's 404 page, not a server error).
 4. Follow "Where enquiries go" above.
 5. In Google Search Console add the domain, submit `https://<domain>/sitemap.xml`, and inspect `/` and `/growth`.
 

@@ -16,7 +16,6 @@ import { IdealForComponent } from './components/ideal-for/ideal-for.component';
 import { OccupierFactorsComponent } from './components/occupier-factors/occupier-factors.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { BrandStoryComponent } from './components/brand-story/brand-story.component';
-import { FaqComponent } from './components/faq/faq.component';
 import { FinalCtaComponent } from './components/final-cta/final-cta.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { BookingPopupComponent } from './components/booking-popup/booking-popup.component';
@@ -39,10 +38,12 @@ import { ContactPageComponent } from './pages/contact-page/contact-page.componen
 import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
 import { DisclaimerPageComponent } from './pages/disclaimer-page/disclaimer-page.component';
-import { FaqPageComponent } from './pages/faq-page/faq-page.component';
 import { PlansComponent } from './components/plans/plans.component';
 import { HomeHeroComponent } from './components/home-hero/home-hero.component';
 import { FootfallComponent } from './components/footfall/footfall.component';
+import { FootfallStripComponent } from './components/footfall-strip/footfall-strip.component';
+import { KeyFeaturesComponent } from './components/key-features/key-features.component';
+import { VideoTourComponent } from './components/video-tour/video-tour.component';
 import { WalkthroughComponent } from './components/walkthrough/walkthrough.component';
 import { HomeSpecsComponent } from './components/home-specs/home-specs.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
@@ -59,7 +60,6 @@ import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-p
     OccupierFactorsComponent,
     GalleryComponent,
     BrandStoryComponent,
-    FaqComponent,
     FinalCtaComponent,
     ContactComponent,
     BookingPopupComponent,
@@ -81,10 +81,12 @@ import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-p
     PrivacyPageComponent,
     TermsPageComponent,
     DisclaimerPageComponent,
-    FaqPageComponent,
     PlansComponent,
     HomeHeroComponent,
     FootfallComponent,
+    FootfallStripComponent,
+    KeyFeaturesComponent,
+    VideoTourComponent,
     WalkthroughComponent,
     HomeSpecsComponent,
     PlaceMapComponent,

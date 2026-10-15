@@ -1,29 +1,17 @@
-<main id="main-content" role="main" class="theme-dark bg-ink">
-  <header class="relative isolate overflow-hidden pt-[calc(var(--nav-h)+1.25rem)] pb-5 md:pb-6">
-    <div class="absolute -top-32 right-[-10%] -z-10 size-[30rem] rounded-full bg-brass/20 blur-[110px]" aria-hidden="true"></div>
-    <div class="container-srineva flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
+<main id="main-content" role="main" class="theme-soft bg-ink">
+  <header class="relative isolate overflow-hidden pt-[calc(var(--nav-h)+1rem)] pb-3 md:pb-4">
+    <div class="container-srineva flex flex-col gap-1 md:flex-row md:items-end md:justify-between md:gap-8">
       <div>
-        <span class="eyebrow">3D walkthrough</span>
-        <h1 class="max-w-4xl font-display text-display-lg text-paper animate-rise">Walk through <em class="text-brass-soft">SHRINEVA</em> before you visit.</h1>
+        <span class="eyebrow !mb-1">3D walkthrough</span>
+        <h1 class="font-display text-display-sm text-paper animate-rise">Walk through <em class="text-brass-soft">SHRINEVA</em> before you visit.</h1>
       </div>
-      <p class="max-w-md text-[0.98rem] leading-relaxed text-paper/75 animate-rise [animation-delay:120ms] md:pb-1.5">
-        Orbit the building, open any floor, step inside and look around. It runs in your browser, nothing to install.
+      <p class="hidden max-w-sm text-[0.9rem] leading-snug text-paper/70 animate-rise [animation-delay:120ms] md:block md:pb-1">
+        Orbit the building, open any floor, step inside. Runs in your browser.
       </p>
     </div>
   </header>
 
   <app-walkthrough variant="page"></app-walkthrough>
-
-  <section class="pb-10 pt-1 md:pb-14" aria-label="How to move">
-    <div class="container-srineva">
-      <ul class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-        <li *ngFor="let c of controls" class="rounded-2xl border border-paper/12 bg-paper/[0.04] px-4 py-3">
-          <span class="block font-mono text-[0.66rem] uppercase tracking-[0.14em] text-brass-soft">{{ c.k }}</span>
-          <span class="mt-0.5 block text-[0.88rem] text-paper/75">{{ c.v }}</span>
-        </li>
-      </ul>
-    </div>
-  </section>
 
   <section class="relative pb-16 md:pb-24" aria-labelledby="wt-levels">
     <div class="container-srineva">
@@ -38,7 +26,7 @@
           </ul>
         </li>
       </ol>
-      <p class="mt-6 max-w-3xl text-[0.8rem] leading-relaxed text-paper/55">{{ note }} Parking capacity, clear ceiling height and handover condition are to be confirmed.</p>
+      <p class="mt-6 max-w-3xl text-[0.8rem] leading-relaxed text-paper/70">{{ note }} Parking capacity, clear ceiling height and handover condition are to be confirmed.</p>
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         <button type="button" class="btn-primary" (click)="openPopup()">Schedule a site visit <span class="arrow" aria-hidden="true">→</span></button>
         <a routerLink="/floor-plans" class="btn-outline">See the architect's plans</a>

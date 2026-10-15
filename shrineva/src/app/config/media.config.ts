@@ -124,3 +124,36 @@ export const TOP_VIEW: MediaItem = {
 };
 
 export const FLOOR_PLANS_PDF = 'assets/shrineva-floor-plans.pdf';
+
+/** The illustrated 3D location map (not to scale): Ring Road, Trade Centre, NIFT, Apollo and the plot. */
+export const LOCATION_MAP: MediaItem = {
+  id: 'location-3d', group: 'Location', title: 'Location map (3D, not to scale)',
+  caption: 'Illustrative 3D map: Ring Road, Trade Centre, NIFT, Apollo hospital site and SHRINEVA on the 24 m road. Not to scale.',
+  alt: 'Illustrative 3D map of Bada Lalpur showing the Varanasi Ring Road, the Varanasi Trade Centre, NIFT, the Apollo hospital site and SHRINEVA on the 24 m wide road',
+  src: 'assets/images/map/location-3d.webp', thumb: 'assets/images/map/location-3d-sm.webp', width: 1800, height: 947,
+};
+
+/**
+ * Short drive-in and floor-tour film (home page, after the location block).
+ * `available` stays false until assets/video/shrineva-tour.mp4 and the poster exist; chapters are seconds into the film.
+ * The film is an illustrative animation over the 3D map plus the indicative 3D model. Locations are approximate.
+ */
+export interface TourChapter { id: string; label: string; start: number; }
+export const TOUR_VIDEO = {
+  available: true,
+  src: 'assets/video/shrineva-tour.mp4',
+  poster: 'assets/video/shrineva-tour-poster.webp',
+  posterWidth: 1280,
+  posterHeight: 720,
+  durationSec: 87,
+  uploadDate: '2026-10-15',
+  title: 'SHRINEVA: drive-in from Ring Road and floor tour',
+  description: 'An illustrative drive from Ring Road past Vardhan Hospital, the Trade Centre, NIFT and the Apollo hospital site to SHRINEVA in Bada Lalpur, Varanasi, then a tour of the ground and first floors in 3D.',
+  chapters: [
+    { id: 'drive', label: 'Drive in from Ring Road', start: 0 },
+    { id: 'nearby', label: 'Vardhan Hospital · Trade Centre', start: 13 },
+    { id: 'anchors', label: 'NIFT · Apollo · the plot', start: 24 },
+    { id: 'ground', label: 'Ground floor', start: 37 },
+    { id: 'first', label: 'First floor', start: 64 },
+  ] as TourChapter[],
+};

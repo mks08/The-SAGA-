@@ -12,12 +12,5 @@ export class WalkthroughPageComponent {
   levels = LEVELS;
   note = WALKTHROUGH_NOTE;
 
-  controls = [
-    { k: 'Move the mouse', v: 'Leans the view. Drag to look around.' },
-    { k: 'W A S D · arrows', v: 'Walk inside. Q and E turn.' },
-    { k: 'Click the floor', v: 'Walk to that spot.' },
-    { k: 'Scroll · pinch', v: 'Zoom in and out.' },
-  ];
-
   openPopup() { window.dispatchEvent(new CustomEvent('open-booking-popup')); }
 }

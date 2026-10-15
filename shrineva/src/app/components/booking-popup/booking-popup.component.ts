@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PROPERTY, waLink } from '../../config/property.config';
+import { NEED_OPTIONS } from '../../config/highlights.config';
 import { LeadService } from '../../core/services/lead.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
 
@@ -19,16 +20,7 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
   waHref = waLink();
   waSubmittedHref = waLink('Hi, I just sent a site-visit enquiry for SHRINEVA, Bada Lalpur, Varanasi.');
 
-  spaceTypes = [
-    { id: 'healthcare', icon: '', label: 'Healthcare / Diagnostics' },
-    { id: 'restaurant', icon: '', label: 'F&B / Restaurant' },
-    { id: 'bfsi',       icon: '', label: 'Bank / BFSI / Insurance' },
-    { id: 'office',     icon: '', label: 'Corporate Office' },
-    { id: 'retail',     icon: '', label: 'Retail / Customer-Facing' },
-    { id: 'education',  icon: '', label: 'Education / Training' },
-    { id: 'fitness',    icon: '', label: 'Fitness / Wellness' },
-    { id: 'others',     icon: '', label: 'Other' },
-  ];
+  needs = NEED_OPTIONS;
 
   private popupListener!: EventListener;
   private returnFocusTo: HTMLElement | null = null;
@@ -37,13 +29,10 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.bookingForm = this.fb.group({
-      name:        ['', Validators.required],
-      phone:       ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
-      email:       ['', Validators.email],
-      spaceType:   ['', Validators.required],
-      otherDetails: [''],
-      message:     [''],
-      website:     [''], // honeypot
+      name:    ['', [Validators.required, Validators.minLength(2)]],
+      phone:   ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
+      need:    [''],
+      website: [''], // honeypot
     });
 
     // Opens only on request (buttons dispatch 'open-booking-popup'); no auto-open interstitial.
@@ -78,11 +67,6 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectSpace(id: string) {
-    this.bookingForm.patchValue({ spaceType: id });
-    this.bookingForm.get('spaceType')!.markAsTouched();
-  }
-
   isInvalid(field: string) {
     const c = this.bookingForm.get(field);
     return c && c.invalid && (c.dirty || c.touched);
@@ -99,17 +83,14 @@ export class BookingPopupComponent implements OnInit, OnDestroy {
     const result = await this.leads.submit('New Site-Visit Enquiry for SHRINEVA', {
       name: data.name,
       phone: data.phone,
-      email: data.email || '',
-      space_type: this.spaceTypes.find((t) => t.id === data.spaceType)?.label ?? data.spaceType ?? '',
-      other_details: data.otherDetails || '',
-      message: data.message || '',
+      space_type: data.need || '',
     }, 'site-visit');
     this.submitting = false;
 
     if (result.ok) {
       this.analytics.event('site_visit_submit');
       this.popupSubmitted = true;
-      this.bookingForm.reset();
+      this.bookingForm.reset({ need: '' });
     } else {
       this.failed = true;
       this.analytics.event('site_visit_error', { reason: result.reason });

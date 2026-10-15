@@ -46,7 +46,7 @@ export class WalkthroughComponent implements AfterViewInit, OnDestroy {
   tourTotal = TOUR.length;
   immersive = false;
   showPlan = true;
-  hintDismissed = false;
+  helpOpen = false;
   loadError = '';
 
   levels = LEVELS;
@@ -147,16 +147,21 @@ export class WalkthroughComponent implements AfterViewInit, OnDestroy {
   get activeLevelLabel(): string { return this.state.level === null ? 'Whole building' : LEVELS[this.state.level].label; }
   get activePresetNote(): string { return PRESETS.find((p) => p.id === this.state.preset)?.note ?? ''; }
   get canPreset(): boolean { return this.state.level !== null && this.state.level > 0; }
-  get hint(): string {
-    if (this.inside) return 'Move to look · drag to turn · click the floor to walk · W A S D to move';
-    return 'Move your mouse to look · drag to orbit · click a floor to open it';
-  }
-  get hintTouch(): string {
-    return this.inside ? 'Drag to look · tap the floor to walk' : 'Swipe sideways to orbit · tap ⤢ for full screen';
+  /** One short list, worded for the device and for where the visitor is. Shown under the model and in the ? card. */
+  get legend(): { k: string; v: string }[] {
+    const touch = !matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (this.inside) {
+      return touch
+        ? [{ k: 'Drag', v: 'to look around' }, { k: 'Tap the floor', v: 'to walk there' }, { k: 'Plan', v: 'tap it to jump' }]
+        : [{ k: 'Drag', v: 'to look around' }, { k: 'W A S D', v: 'or arrows to walk' }, { k: 'Click', v: 'the floor or the plan to go there' }];
+    }
+    return touch
+      ? [{ k: 'Swipe', v: 'to orbit' }, { k: 'Pinch', v: 'to zoom' }, { k: 'Tap a floor', v: 'to open it' }]
+      : [{ k: 'Drag', v: 'to orbit' }, { k: 'Scroll', v: 'to zoom' }, { k: 'Click a floor', v: 'to open it' }];
   }
 
   setMode(m: 'outside' | 'inside'): void {
-    this.engine?.setMode(m, m === 'inside' ? (this.state.level ?? 1) : null);
+    this.engine?.setMode(m, m === 'inside' ? (this.state.level ?? 0) : null);
     this.analytics.event('walkthrough_mode', { mode: m });
   }
 

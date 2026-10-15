@@ -1,4 +1,4 @@
-<section id="property" class="relative bg-paper py-16 md:py-24" [class.!pt-4]="!showIntro" aria-labelledby="arch-title">
+<section id="property" class="relative bg-paper py-11 md:py-16" [class.!pt-4]="!showIntro" aria-labelledby="arch-title">
   <div class="container-srineva">
     <div *ngIf="showIntro" appReveal class="mb-10 max-w-2xl md:mb-12">
       <span class="eyebrow">The property</span>
@@ -24,18 +24,18 @@
         </li>
       </ol>
 
-      <div appReveal [style.--i]="2" class="self-start rounded-4xl bg-ink p-6 text-paper md:p-8">
+      <div appReveal [style.--i]="2" class="theme-soft self-start rounded-4xl border border-paper/10 bg-ink p-6 text-paper shadow-soft md:p-8">
         <h3 class="font-display text-[1.8rem] text-paper">Understanding the space</h3>
         <p class="mt-3 text-[0.95rem] leading-relaxed text-paper/75">Each floor is {{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft of floor area with {{ plan.typical.carpet.sqft | number:'1.2-2' }} sq ft of carpet area ({{ plan.typical.carpet.pct }}%). The first-floor plan is typical for Floors 1, 2 and 3.</p>
         <dl class="mt-5 grid gap-3 text-[0.9rem]">
-          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/60">Plot</dt><dd class="text-right font-semibold">{{ plan.plot.areaSqM }} sq m (≈ {{ plan.plot.areaSqFt | number }} sq ft)</dd></div>
-          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/60">Frontage</dt><dd class="text-right font-semibold">{{ plan.plot.frontage }} · {{ plan.plot.roadWidthM }} m road</dd></div>
-          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/60">Total carpet, 3 floors</dt><dd class="text-right font-semibold">≈ {{ property.area.totalCommercialCarpetSqFt | number }} sq ft</dd></div>
-          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/60">Floor to floor</dt><dd class="text-right font-semibold">Parking {{ plan.stilt.floorToFloor }} · floors {{ plan.typical.floorToFloor }}</dd></div>
-          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/60">Lift</dt><dd class="text-right font-semibold">{{ plan.lift.capacity }}</dd></div>
-          <div class="flex justify-between gap-4"><dt class="text-paper/60">Parking</dt><dd class="text-right font-semibold">Ground level; capacity to be confirmed</dd></div>
+          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/70">Plot</dt><dd class="text-right font-semibold">{{ plan.plot.areaSqM }} sq m (≈ {{ plan.plot.areaSqFt | number }} sq ft)</dd></div>
+          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/70">Frontage</dt><dd class="text-right font-semibold">{{ plan.plot.frontage }} · {{ plan.plot.roadWidthM }} m road</dd></div>
+          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/70">Total carpet, 3 floors</dt><dd class="text-right font-semibold">≈ {{ property.area.totalCommercialCarpetSqFt | number }} sq ft</dd></div>
+          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/70">Floor to floor</dt><dd class="text-right font-semibold">Parking {{ plan.stilt.floorToFloor }} · floors {{ plan.typical.floorToFloor }}</dd></div>
+          <div class="flex justify-between gap-4 border-b border-paper/10 pb-2"><dt class="text-paper/70">Lift</dt><dd class="text-right font-semibold">{{ plan.lift.capacity }}</dd></div>
+          <div class="flex justify-between gap-4"><dt class="text-paper/70">Parking</dt><dd class="text-right font-semibold">Ground level; capacity to be confirmed</dd></div>
         </dl>
-        <p class="mt-5 text-[0.76rem] leading-relaxed text-paper/50">{{ property.legal.areaDisclaimer }}</p>
+        <p class="mt-5 text-[0.76rem] leading-relaxed text-paper/70">{{ property.legal.areaDisclaimer }}</p>
         <div class="mt-4 flex flex-wrap gap-x-6">
           <a routerLink="/floor-plans" class="text-link !text-brass-soft">View floor plans →</a>
           <a routerLink="/walkthrough" class="text-link !text-brass-soft">Walk it in 3D →</a>

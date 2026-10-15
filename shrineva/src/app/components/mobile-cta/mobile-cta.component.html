@@ -1,4 +1,4 @@
-<nav class="theme-dark md:hidden fixed inset-x-3 z-[950] grid grid-cols-[1fr_1fr_1.25fr] gap-1.5 rounded-full border border-paper/15 bg-ink/85 p-1.5 shadow-lift backdrop-blur-xl"
+<nav class="theme-soft md:hidden fixed inset-x-3 z-[950] grid grid-cols-[1fr_1fr_1.25fr] gap-1.5 rounded-full border border-paper/15 bg-ink-3/95 p-1.5 shadow-lift backdrop-blur-xl"
      style="bottom: calc(0.6rem + env(safe-area-inset-bottom))" aria-label="Quick actions">
   <a [href]="'tel:' + property.contact.phoneE164" (click)="track('phone_click')"
      class="flex min-h-[46px] items-center justify-center gap-2 rounded-full text-[0.8rem] font-bold text-paper active:bg-paper/10">
@@ -11,7 +11,7 @@
     WhatsApp
   </a>
   <button type="button" (click)="openVisit()"
-          class="flex min-h-[46px] items-center justify-center rounded-full bg-brass-sheen text-[0.8rem] font-extrabold text-ink">
-    Site visit
+          class="flex min-h-[46px] items-center justify-center rounded-full bg-brass-sheen text-[0.8rem] font-extrabold text-[#1b1714]">
+    Book a visit
   </button>
 </nav>

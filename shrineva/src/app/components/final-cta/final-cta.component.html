@@ -1,19 +1,16 @@
-<section class="theme-dark relative isolate overflow-hidden bg-ink py-16 md:py-24" aria-labelledby="fcta-title">
-  <img src="assets/images/hero/hero-golden-1000.webp" alt="" aria-hidden="true" width="1000" height="667" loading="lazy" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-30">
-  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/80 to-ink/60" aria-hidden="true"></div>
-  <div class="absolute left-1/2 top-0 -z-10 size-[30rem] -translate-x-1/2 rounded-full bg-brass/20 blur-[120px]" aria-hidden="true"></div>
+<section class="theme-soft relative isolate overflow-hidden bg-ink py-9 md:py-12" aria-labelledby="fcta-title">
+  <div class="absolute left-1/2 top-0 -z-10 size-[26rem] -translate-x-1/2 rounded-full bg-brass/15 blur-[110px]" aria-hidden="true"></div>
   <div class="container-srineva text-center">
     <div appReveal>
-      <h2 id="fcta-title" class="mx-auto max-w-3xl font-display text-display-xl text-paper">A space for your <em class="text-brass-soft">next move.</em></h2>
-      <p class="mx-auto mt-5 max-w-xl text-[1.05rem] text-paper/75">Tell us what your business needs. We will show you the right floor and leasing options.</p>
-      <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-        <button type="button" class="btn-primary" (click)="openPopup()">Schedule a site visit <span class="arrow" aria-hidden="true">→</span></button>
+      <h2 id="fcta-title" class="mx-auto max-w-2xl font-display text-display-md text-paper">A space for your <em class="text-brass-soft">next move.</em></h2>
+      <p class="mx-auto mt-3 max-w-md text-[0.98rem] text-paper/70">Tell us what your business needs and we will suggest the right floor.</p>
+      <div class="mt-6 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <button type="button" class="btn-primary" (click)="openPopup()">Schedule a visit <span class="arrow" aria-hidden="true">→</span></button>
         <a routerLink="/contact" class="btn-outline">Request leasing details</a>
       </div>
-      <p class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-[0.92rem] text-paper/80">
+      <p class="mt-4 flex flex-wrap items-center justify-center gap-x-5 text-[0.9rem] text-paper/80">
         <a [href]="waHref" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center font-bold text-brass-soft hover:underline">WhatsApp</a>
         <a [href]="'tel:' + property.contact.phoneE164" class="inline-flex min-h-[44px] items-center hover:underline">{{ property.contact.phoneDisplay }}</a>
-        <a *ngIf="property.contact.publicEmail" [href]="'mailto:' + property.contact.publicEmail" class="inline-flex min-h-[44px] items-center hover:underline">{{ property.contact.publicEmail }}</a>
       </p>
     </div>
   </div>

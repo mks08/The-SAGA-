@@ -1,4 +1,4 @@
-<header class="theme-dark fixed inset-x-0 top-0 z-50" role="banner">
+<header class="theme-soft fixed inset-x-0 top-0 z-50" role="banner">
   <!-- Bar background lives on its own layer: a backdrop-filter on the header itself would trap the fixed mobile menu inside the 72px bar. -->
   <div class="pointer-events-none absolute inset-0 -z-10 border-b transition-[background-color,border-color,backdrop-filter] duration-500 ease-out"
        [ngClass]="scrolled || menuOpen ? 'bg-ink/80 backdrop-blur-xl border-paper/10' : 'bg-transparent border-transparent'" aria-hidden="true"></div>
@@ -12,29 +12,29 @@
       <img src="assets/images/logo-mark.webp" alt="" width="44" height="44"
            class="size-11 rounded-xl ring-1 ring-brass/40 transition-transform duration-500 ease-out group-hover:rotate-[-4deg] group-hover:scale-105">
       <span class="flex flex-col leading-none">
-        <span class="font-display text-[1.65rem] tracking-[0.14em] text-paper">SHRINEVA</span>
-        <span class="mt-1 whitespace-nowrap font-mono text-[0.58rem] uppercase tracking-[0.22em] text-brass-soft/80">Bada Lalpur · Varanasi</span>
+        <span class="font-display text-[1.55rem] tracking-[0.14em] text-paper">SHRINEVA</span>
+        <span class="mt-1 whitespace-nowrap font-mono text-[0.56rem] uppercase tracking-[0.2em] text-brass-soft/90">Commercial &amp; mixed-use · Varanasi</span>
       </span>
       <span class="sr-only">, home</span>
     </a>
 
     <!-- Desktop links -->
     <nav class="hidden xl:flex items-center gap-0.5" aria-label="Main navigation">
-      <a *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive="!text-paper [&>.bar]:scale-x-100"
-         class="relative inline-flex items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-[0.84rem] font-semibold text-paper/75 transition-colors hover:text-paper">
+      <a *ngFor="let link of navLinks" [routerLink]="link.path" routerLinkActive="!text-paper [&>.bar]:scale-x-100" [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+         class="relative inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-[0.84rem] font-semibold text-paper/70 transition-colors hover:text-paper">
         <span *ngIf="link.live" class="live-dot" aria-hidden="true"></span>
         {{ link.label }}
-        <span class="bar absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-brass transition-transform duration-500 ease-out" aria-hidden="true"></span>
+        <span class="bar absolute inset-x-2.5 -bottom-0.5 h-px origin-left scale-x-0 bg-brass transition-transform duration-500 ease-out" aria-hidden="true"></span>
       </a>
     </nav>
 
     <!-- Actions -->
     <div class="hidden xl:flex items-center gap-2">
-      <a [href]="'tel:' + property.contact.phoneE164" class="btn-ghost hidden whitespace-nowrap text-paper/85 text-[0.84rem] 2xl:inline-flex" (click)="track('phone_click')" aria-label="Call the leasing team">
+      <a [href]="'tel:' + property.contact.phoneE164" class="btn-ghost btn-sm hidden whitespace-nowrap text-paper/85 2xl:inline-flex" (click)="track('phone_click')" aria-label="Call the leasing team">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
         {{ property.contact.phoneDisplay }}
       </a>
-      <button id="nav-book-cta" type="button" class="btn-primary !min-h-[42px] !whitespace-nowrap !px-5 !text-[0.84rem]" (click)="openPopup()">
+      <button id="nav-book-cta" type="button" class="btn-primary btn-sm !whitespace-nowrap" (click)="openPopup()">
         Schedule a visit <span class="arrow" aria-hidden="true">→</span>
       </button>
     </div>
@@ -56,15 +56,15 @@
        [ngClass]="menuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-3 pointer-events-none'"
        [attr.aria-hidden]="!menuOpen" [attr.inert]="menuOpen ? null : ''">
     <nav class="container-srineva pb-28 pt-6" aria-label="Mobile navigation">
-      <a *ngFor="let link of navLinks; let i = index" [routerLink]="link.path" routerLinkActive="!text-brass-soft" (click)="closeMenu()"
-         class="flex items-baseline gap-4 border-b border-paper/10 py-4 font-display text-[2rem] leading-none text-paper"
+      <a *ngFor="let link of navLinks; let i = index" [routerLink]="link.path" routerLinkActive="!text-brass-soft" [routerLinkActiveOptions]="{ exact: link.path === '/' }" (click)="closeMenu()"
+         class="flex items-baseline gap-4 border-b border-paper/10 py-3.5 font-display text-[1.7rem] leading-none text-paper"
          [style.transition-delay]="menuOpen ? (i * 40) + 'ms' : '0ms'">
-        <span class="font-mono text-[0.68rem] tracking-widest text-brass-soft/70">0{{ i + 1 }}</span>
+        <span class="font-mono text-[0.66rem] tracking-widest text-brass-soft">0{{ i + 1 }}</span>
         <span>{{ link.label }}</span>
         <span *ngIf="link.live" class="live-dot self-center" aria-hidden="true"></span>
       </a>
       <div class="mt-8 grid gap-3">
-        <button type="button" class="btn-primary w-full" (click)="openPopup()">Schedule a site visit <span class="arrow" aria-hidden="true">→</span></button>
+        <button type="button" class="btn-primary w-full" (click)="openPopup()">Schedule a visit <span class="arrow" aria-hidden="true">→</span></button>
         <a [href]="waHref" class="btn-whatsapp w-full" target="_blank" rel="noopener" (click)="track('whatsapp_click')">WhatsApp leasing</a>
         <div class="mt-3 grid gap-2 text-[0.95rem] text-paper/80">
           <a [href]="'tel:' + property.contact.phoneE164" class="min-h-[44px] flex items-center">{{ property.contact.phoneDisplay }}</a>

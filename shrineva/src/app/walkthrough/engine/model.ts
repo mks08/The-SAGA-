@@ -5,6 +5,7 @@ import {
 import { BUILDING, BUILDING_TOP, LEVELS, LevelId, LevelInfo, STAIR_HOLE, plateOutline } from '../../config/building.config';
 
 import { Batcher } from './batch';
+import { groundWalls, liftPortal, lobbyFinish, stairDetail } from './ground';
 import { Mats } from './materials';
 
 /** Plot feet → world metres. World: x east, y up, z south; the road is on the north (−z). Origin: plot centre line, road-side boundary. */
@@ -35,6 +36,8 @@ export interface BuildingModel {
   root: Group;
   levels: LevelRig[];
   roof: Group;
+  /** Warm accent lights along the parking-level walls: their intensity follows the time of day. */
+  accent: PointLight[];
   dispose(): void;
 }
 
@@ -122,7 +125,7 @@ function columns(B: Batcher, m: Mats, y0: number, h: number): void {
   for (let i = 1; i <= 5; i++) B.box(m.cream, wx(c.A), y0 + h / 2, wz(rows[i]), cw, h, cd);
 }
 
-function lobbyAndCore(B: Batcher, m: Mats, y0: number, H: number, levelId: LevelId): void {
+function lobbyAndCore(B: Batcher, Bg: Batcher, m: Mats, y0: number, H: number, levelId: LevelId): void {
   const bay = B_.bay, lb = B_.lobby;
   const t = 0.2;
   const west: Opening[] = [{ a: wz(lb.z0), b: wz(lb.z1) }];
@@ -156,6 +159,9 @@ function lobbyAndCore(B: Batcher, m: Mats, y0: number, H: number, levelId: Level
   // services door and partition
   B.span(m.woodDark, wx(30), y0, zl + 0.02, wx(31.2), y0 + 2.1, zl + 0.06);
   B.span(m.cream, wx(33.45) - 0.08, y0, wz(bay.z0), wx(33.45) + 0.08, y0 + H, zl);
+  // stone portal round the lift, and on the parking level a finished lobby
+  liftPortal(B, Bg, m, y0, zl, lcx, lw);
+  if (levelId === 0) lobbyFinish(B, m, zl, wx(bay.x0), wx(bay.x1), [wx(30), wx(31.2)], [lcx - 0.72, lcx + 0.72], H);
 
   // stair: two flights and a landing, solid steps
   const n = levelId === 0 ? 19 : 24;
@@ -176,6 +182,7 @@ function lobbyAndCore(B: Batcher, m: Mats, y0: number, H: number, levelId: Level
     const za = zBot - idx * runDown, zb = zBot - (idx - 1) * runDown;
     B.span(m.concrete, wx(westX[0]), y0, wz(za), wx(westX[1]), y0 + j * rH, wz(zb));
   }
+  stairDetail(B, Bg, m, { y0, H, n, L, rH, zTop, zBot, eastX, westX, ground: levelId === 0 });
 }
 
 /* ── the building ─────────────────────────────────────────────────────────────── */
@@ -183,6 +190,7 @@ function lobbyAndCore(B: Batcher, m: Mats, y0: number, H: number, levelId: Level
 export function buildBuilding(m: Mats): BuildingModel {
   const root = new Group();
   const levels: LevelRig[] = [];
+  const accent: PointLight[] = [];
   const x0 = wx(B_.plate.x0), x1 = wx(B_.plate.x1);
   const zF = wz(B_.plate.zGlass);
   const cx = (x0 + x1) / 2;
@@ -192,6 +200,7 @@ export function buildBuilding(m: Mats): BuildingModel {
     const ceilingGroup = new Group();
     const furniture = new Group();
     const B = new Batcher();
+    const Bg = new Batcher();
     const y0 = info.baseY;
     const H = info.id === 0 ? B_.h.parking : B_.h.floor;
     const yTop = y0 + H;
@@ -207,10 +216,13 @@ export function buildBuilding(m: Mats): BuildingModel {
       B.span(m.cream, wx(0) - WALL / 2, 0, wz(0), wx(0) + WALL / 2, bw, wz(pd));
       B.span(m.cream, wx(pw) - WALL / 2, 0, wz(0), wx(pw) + WALL / 2, bw, wz(pd));
       B.span(m.cream, wx(0), 0, wz(pd) - WALL / 2, wx(pw), bw, wz(pd) + WALL / 2);
-      B.span(m.brass, wx(0) - WALL / 2 - 0.01, bw, wz(0), wx(0) + WALL / 2 + 0.01, bw + 0.03, wz(pd));
-      B.span(m.brass, wx(pw) - WALL / 2 - 0.01, bw, wz(0), wx(pw) + WALL / 2 + 0.01, bw + 0.03, wz(pd));
+      // road-side stretch of the boundary walls keeps a brass coping line; the decorated stretches (ground.ts) have their own
+      B.span(m.brass, wx(0) - WALL / 2 - 0.01, bw, wz(0), wx(0) + WALL / 2 + 0.01, bw + 0.03, wz(2.6));
+      B.span(m.brass, wx(pw) - WALL / 2 - 0.01, bw, wz(0), wx(pw) + WALL / 2 + 0.01, bw + 0.03, wz(6.4));
       columns(B, m, 0, H - SLAB);
-      lobbyAndCore(B, m, 0, H, 0);
+      lobbyAndCore(B, Bg, m, 0, H, 0);
+      const gw = groundWalls(B, Bg, m);
+      gw.lights.forEach((l) => { g.add(l); accent.push(l); });
 
       // two entrance pillars with brass plaques
       for (const px of [9, 41]) {
@@ -261,7 +273,7 @@ export function buildBuilding(m: Mats): BuildingModel {
       B.span(m.glass, x0, y0, zF, x0 + 0.04, yTop - 0.55, wz(B_.rows[0]));
       B.span(m.glass, x1 - 0.04, y0, zF, x1, yTop - 0.55, wz(B_.rows[0]));
       columns(B, m, y0, H - SLAB);
-      lobbyAndCore(B, m, y0, H, info.id);
+      lobbyAndCore(B, Bg, m, y0, H, info.id);
       facade(g, B, m, info.id, y0, yTop, x0, x1, zF, cx);
 
       // ceiling plane at the nominal height + light strips
@@ -274,6 +286,7 @@ export function buildBuilding(m: Mats): BuildingModel {
     }
 
     B.build(g);
+    Bg.build(g, { cast: false });
     g.add(ceilingGroup);
     g.add(furniture);
 
@@ -320,7 +333,7 @@ export function buildBuilding(m: Mats): BuildingModel {
   levels[3].group.add(roof);
 
   return {
-    root, levels, roof,
+    root, levels, roof, accent,
     dispose: () => root.traverse((o) => { (o as Mesh).geometry?.dispose(); }),
   };
 }

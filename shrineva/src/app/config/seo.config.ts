@@ -29,9 +29,9 @@ const floorDesc = (n: number) =>
 export const SEO_ROUTES: RouteSeo[] = [
   {
     path: '',
-    title: 'Commercial Space for Lease, Bada Lalpur Varanasi | SHRINEVA',
-    description: `VDA-approved Parking + 3 building for lease on a ${PLAN.plot.roadWidthM} m road in Bada Lalpur, Varanasi, 60–70 m from the Apollo Medics site and NIFT. ${floorSqFt} sq ft floors, 3D walkthrough.`,
-    h1: 'SHRINEVA — Commercial space for lease in Bada Lalpur, Varanasi',
+    title: 'Commercial & Mixed-Use Space for Lease, Varanasi | SHRINEVA',
+    description: `Commercial and mixed-use building for lease in Bada Lalpur, Varanasi, 60–70 m from the Apollo hospital site and NIFT. Parking + 3, ${floorSqFt} sq ft floors, handover March 2027. 3D walkthrough and plans.`,
+    h1: 'SHRINEVA — Commercial & mixed-use space for lease in Varanasi',
     priority: 1.0,
     changefreq: 'weekly',
   },
@@ -147,14 +147,6 @@ export const SEO_ROUTES: RouteSeo[] = [
     description: 'Available floors, plans and a direct leasing channel for tenant-representation consultants and commercial brokers at SHRINEVA, Bada Lalpur, Varanasi.',
     h1: 'For Tenant Representatives & Brokers',
     priority: 0.6,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'faq',
-    title: 'FAQ | Leasing, Floors, Parking & Location at SHRINEVA',
-    description: 'Answers on floor size, carpet area, parking, lift, F&B provisions, hotel and studio-apartment possibilities, and what is being built near SHRINEVA, Varanasi.',
-    h1: 'Frequently Asked Questions',
-    priority: 0.7,
     changefreq: 'monthly',
   },
   {

@@ -1,96 +1,57 @@
-<div class="popup-overlay fixed inset-0 z-[1200] grid place-items-end bg-ink/70 backdrop-blur-md sm:place-items-center sm:p-6" *ngIf="showPopup" (click)="onOverlayClick($event)" role="dialog" aria-modal="true" aria-label="Schedule a site visit at SHRINEVA">
-  <div class="popup-card theme-light relative grid max-h-[94dvh] w-full max-w-4xl overflow-hidden rounded-t-4xl bg-paper text-ink shadow-lift animate-rise sm:rounded-4xl md:grid-cols-[0.82fr_1.18fr]">
+<div class="popup-overlay fixed inset-0 z-[1200] grid place-items-end bg-ink/55 backdrop-blur-sm sm:place-items-center sm:p-6" *ngIf="showPopup" (click)="onOverlayClick($event)" role="dialog" aria-modal="true" aria-label="Schedule a visit at SHRINEVA">
+  <div class="popup-card theme-light relative w-full max-w-[26rem] overflow-hidden rounded-t-3xl bg-white text-ink shadow-lift animate-rise sm:rounded-3xl">
 
-    <button type="button" class="popup-close absolute right-3 top-3 z-20 grid size-11 place-items-center rounded-full bg-ink/70 text-paper backdrop-blur hover:bg-ink md:bg-ink/10 md:text-ink md:hover:bg-ink/20" (click)="close()" aria-label="Close">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    <button type="button" class="popup-close absolute right-2.5 top-2.5 z-20 grid size-10 place-items-center rounded-full bg-ink/[0.08] text-ink hover:bg-ink/15" (click)="close()" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
 
-    <!-- Left: night façade -->
-    <div class="relative hidden min-h-[480px] md:block">
-      <img src="assets/images/hero/hero-night-1000.webp" alt="Indicative render of the SHRINEVA façade at night" width="1000" height="667" class="absolute inset-0 h-full w-full object-cover object-[50%_40%]">
-      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/10"></div>
-      <div class="absolute inset-x-0 bottom-0 p-7 text-paper">
-        <span class="badge-vda" *ngIf="property.approvals.vda.show">{{ property.approvals.vda.label }}</span>
-        <p class="mt-4 font-display text-4xl leading-none tracking-[0.1em]">SHRINEVA</p>
-        <p class="mt-1 font-mono text-[0.62rem] uppercase tracking-[0.26em] text-brass-soft">Bada Lalpur · Varanasi</p>
-        <dl class="mt-6 grid grid-cols-3 gap-3 border-t border-paper/20 pt-5 text-center">
-          <div><dt class="font-display text-2xl">Parking + 3</dt><dd class="text-[0.68rem] uppercase tracking-wider text-paper/70">Floors</dd></div>
-          <div><dt class="font-display text-2xl">3,520</dt><dd class="text-[0.68rem] uppercase tracking-wider text-paper/70">Sq ft / floor</dd></div>
-          <div><dt class="font-display text-2xl">50 ft</dt><dd class="text-[0.68rem] uppercase tracking-wider text-paper/70">Frontage</dd></div>
-        </dl>
-      </div>
-    </div>
-
-    <!-- Right -->
-    <div class="popup-right max-h-[94dvh] overflow-y-auto p-6 pt-8 sm:p-9">
-      <div *ngIf="popupSubmitted" class="grid min-h-[320px] place-content-center text-center" role="status">
-        <div class="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-ok/15 text-3xl text-ok" aria-hidden="true">✓</div>
-        <h3 class="font-display text-4xl text-ink">Enquiry sent</h3>
-        <p class="mx-auto mt-3 max-w-sm text-ink/75">Thank you. The leasing team will contact you. For a faster reply, message us on WhatsApp.</p>
-        <a [href]="waSubmittedHref" class="btn-whatsapp mx-auto mt-6" target="_blank" rel="noopener">WhatsApp now</a>
+    <div class="popup-right max-h-[92dvh] overflow-y-auto p-5 pt-6 sm:p-7">
+      <div *ngIf="popupSubmitted" class="grid min-h-[260px] place-content-center text-center" role="status">
+        <div class="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-ok/15 text-2xl text-ok" aria-hidden="true">✓</div>
+        <h3 class="font-display text-[2rem] text-ink">Enquiry sent</h3>
+        <p class="mx-auto mt-2 max-w-xs text-[0.95rem] text-ink/70">Thank you. The leasing team will call you to confirm a time. For a faster reply, message us on WhatsApp.</p>
+        <a [href]="waSubmittedHref" class="btn-whatsapp mx-auto mt-5" target="_blank" rel="noopener">WhatsApp now</a>
       </div>
 
       <ng-container *ngIf="!popupSubmitted">
-        <span class="eyebrow !text-brass-deep">Schedule a site visit</span>
-        <h2 class="font-display text-[2.1rem] leading-none text-ink">Tell us what you need</h2>
-        <p class="mt-2 text-[0.92rem] text-ink/70">Our leasing team will confirm floor options and a convenient visit time.</p>
+        <span class="eyebrow !mb-1.5 !text-brass-deep">Schedule a visit</span>
+        <h2 class="font-display text-[1.7rem] leading-tight text-ink">When can we show you around?</h2>
+        <p class="mt-1.5 text-[0.88rem] text-ink/65">Leave your name and number. We will call to fix a time.</p>
 
-        <form [formGroup]="bookingForm" (ngSubmit)="submit()" novalidate class="mt-6 grid gap-4">
-          <fieldset>
-            <legend class="field-label">What is the space for? *</legend>
-            <div class="grid grid-cols-2 gap-2">
-              <button type="button" *ngFor="let s of spaceTypes"
-                      class="min-h-[46px] rounded-xl border px-3 py-2 text-left text-[0.82rem] font-semibold leading-tight transition-colors"
-                      [ngClass]="bookingForm.get('spaceType')?.value === s.id ? 'border-brass-deep bg-brass/20 text-ink' : 'border-ink/15 bg-white text-ink/80 hover:border-ink/40'"
-                      [attr.aria-pressed]="bookingForm.get('spaceType')?.value === s.id"
-                      (click)="selectSpace(s.id)">{{ s.label }}</button>
-            </div>
-            <p class="field-error" *ngIf="isInvalid('spaceType')">Please select a space type</p>
-          </fieldset>
-
-          <div *ngIf="bookingForm.get('spaceType')?.value === 'others'">
-            <label class="field-label" for="b-other">Describe your requirement</label>
-            <input id="b-other" type="text" class="field-input" formControlName="otherDetails">
-          </div>
-
-          <div class="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label class="field-label" for="b-name">Your name *</label>
-              <input id="b-name" type="text" class="field-input" [class.is-invalid]="isInvalid('name')" formControlName="name" autocomplete="name">
-              <p class="field-error" *ngIf="isInvalid('name')">Please enter your name</p>
-            </div>
-            <div>
-              <label class="field-label" for="b-phone">Phone *</label>
-              <input id="b-phone" type="tel" inputmode="numeric" class="field-input" [class.is-invalid]="isInvalid('phone')" formControlName="phone" autocomplete="tel" placeholder="10-digit mobile">
-              <p class="field-error" *ngIf="isInvalid('phone')">Enter a valid 10-digit mobile number</p>
-            </div>
-          </div>
-
+        <form [formGroup]="bookingForm" (ngSubmit)="submit()" novalidate class="mt-4 grid gap-3.5" aria-label="Schedule a visit">
           <div>
-            <label class="field-label" for="b-email">Email (optional)</label>
-            <input id="b-email" type="email" class="field-input" formControlName="email" autocomplete="email">
+            <label class="field-label" for="b-name">Name *</label>
+            <input id="b-name" type="text" class="field-input" [class.is-invalid]="isInvalid('name')" formControlName="name" autocomplete="name" enterkeyhint="next">
+            <p class="field-error" *ngIf="isInvalid('name')">Please enter your name</p>
           </div>
-
           <div>
-            <label class="field-label" for="b-msg">Anything specific?</label>
-            <textarea id="b-msg" class="field-input" formControlName="message" rows="2"></textarea>
+            <label class="field-label" for="b-phone">Mobile *</label>
+            <input id="b-phone" type="tel" inputmode="numeric" class="field-input" [class.is-invalid]="isInvalid('phone')" formControlName="phone" autocomplete="tel-national" maxlength="10" placeholder="10-digit number" enterkeyhint="send">
+            <p class="field-error" *ngIf="isInvalid('phone')">Enter a valid 10-digit mobile number</p>
+          </div>
+          <div>
+            <label class="field-label" for="b-need">I am looking for</label>
+            <select id="b-need" class="field-input" formControlName="need">
+              <option value="">Select (optional)</option>
+              <option *ngFor="let n of needs" [value]="n">{{ n }}</option>
+            </select>
           </div>
 
           <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
             <input type="text" formControlName="website" tabindex="-1" autocomplete="off" aria-label="Leave empty">
           </div>
 
-          <div class="rounded-2xl border border-red-800/30 bg-red-50 p-4 text-[0.9rem] text-red-900" role="alert" *ngIf="failed">
+          <div class="rounded-2xl border border-red-800/30 bg-red-50 p-3.5 text-[0.88rem] text-red-900" role="alert" *ngIf="failed">
             <strong>Your enquiry was not sent.</strong> Please try again, or call {{ property.contact.phoneDisplay }} or use WhatsApp. What you typed is still here.
           </div>
 
-          <div class="flex flex-col gap-3 sm:flex-row">
+          <div class="flex flex-col gap-2.5 sm:flex-row">
             <button type="submit" class="btn-primary sm:flex-1" id="popup-submit-btn" [disabled]="submitting">
               {{ submitting ? 'Sending…' : 'Send enquiry' }} <span class="arrow" aria-hidden="true" *ngIf="!submitting">→</span>
             </button>
             <a [href]="waHref" class="btn-outline" target="_blank" rel="noopener">WhatsApp</a>
           </div>
-          <p class="text-[0.74rem] text-ink/60">See our <a routerLink="/privacy" (click)="close()" class="underline">privacy policy</a>.</p>
+          <p class="text-[0.72rem] text-ink/70">We use these details only to reply. <a routerLink="/privacy" (click)="close()" class="underline">Privacy policy</a>.</p>
         </form>
       </ng-container>
     </div>

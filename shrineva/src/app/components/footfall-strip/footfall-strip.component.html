@@ -1,0 +1,23 @@
+<section id="footfall" data-rail="Footfall" class="relative bg-paper pb-8 pt-2 md:pb-12" aria-labelledby="ff-title">
+  <div class="container-srineva">
+    <div appReveal class="flex flex-col gap-1 md:flex-row md:items-end md:justify-between md:gap-8">
+      <div class="max-w-2xl">
+        <span class="eyebrow !mb-2">{{ headline.kicker }}</span>
+        <h2 id="ff-title" class="font-display text-display-sm text-ink">{{ headline.title }}</h2>
+        <p class="mt-2 max-w-xl text-[0.94rem] leading-relaxed text-ink/65">{{ headline.sub }}</p>
+      </div>
+      <a routerLink="/growth" class="text-link !mr-0 shrink-0 self-start md:self-auto" (click)="track()">Nearby projects →</a>
+    </div>
+
+    <ul class="mt-5 grid gap-3 md:grid-cols-3">
+      <li *ngFor="let a of anchors; let i = index" appReveal [style.--i]="i" class="flex items-center gap-4 rounded-2xl border border-ink/10 bg-white px-4 py-3.5">
+        <p class="shrink-0 text-center leading-none"><span class="block font-display text-[1.55rem] text-ink">{{ a.distance.replace('About ', '').replace(' m', '') }}</span><span class="mt-1 block font-mono text-[0.58rem] uppercase tracking-[0.12em] text-ink/70">m away</span></p>
+        <div class="min-w-0">
+          <h3 class="truncate font-body text-[0.98rem] font-bold leading-snug text-ink" style="font-family: var(--font-sans); letter-spacing: 0;">{{ a.short }}</h3>
+          <p class="mt-0.5 text-[0.82rem] leading-snug text-ink/70">{{ a.strip.line }}</p>
+          <span class="mt-1.5 inline-block rounded-full border px-2 py-px font-mono text-[0.58rem] uppercase tracking-[0.08em]" [ngClass]="chipClass(a.state)">{{ a.strip.chip }}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>

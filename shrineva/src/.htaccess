@@ -26,11 +26,14 @@ RewriteRule ^ - [L]
 # 4. Known app routes fall back to the app if their static folder is missing. Anything else is a real 404
 #    (see ErrorDocument below), so crawlers do not index junk URLs as copies of the home page.
 #    Keep this list in step with src/app/config/seo.config.ts; `npm run build` fails if a route is missing.
-RewriteRule ^(property|spaces|spaces/floor-[1-3]|floor-plans|walkthrough|location|growth|business-fit|infrastructure|gallery|leasing|brokers|faq|contact|privacy|terms|disclaimer)/?$ index.html [L]
+RewriteRule ^(property|spaces|spaces/floor-[1-3]|floor-plans|walkthrough|location|growth|business-fit|infrastructure|gallery|leasing|brokers|contact|privacy|terms|disclaimer)/?$ index.html [L]
 </IfModule>
 
 # Unknown URLs: real 404 status with the app shell (404.html), which sends visitors to the home page.
 ErrorDocument 404 /404.html
+
+# Video
+AddType video/mp4 .mp4
 
 # Compression
 <IfModule mod_deflate.c>
@@ -52,6 +55,7 @@ ExpiresByType font/woff "access plus 1 year"
 ExpiresByType text/css "access plus 1 year"
 ExpiresByType application/javascript "access plus 1 year"
 ExpiresByType application/pdf "access plus 1 week"
+ExpiresByType video/mp4 "access plus 1 month"
 </IfModule>
 
 # Security headers (no inline-script CSP yet: Angular injects inline styles; see README)

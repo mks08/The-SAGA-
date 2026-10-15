@@ -5,12 +5,12 @@
  *
  * Rules for editing:
  *  - Do not add a visitor, footfall or growth number for this building or road. None is sourced.
- *  - Do not add an opening date unless the owning institution has published it.
+ *  - Opening years are shown only when the owner has stated them, and are labelled "expected" (Apollo OPD 2027, NIFT campus 2027).
  *  - City-level items stay labelled "indirect".
  *  - Distances for the three anchors come from the owner's location sheet (property.config.ts → locationAnchors).
  */
 
-export const FOOTFALL_AS_OF = '14 October 2026';
+export const FOOTFALL_AS_OF = '15 October 2026';
 
 export interface NearbyProject {
   id: string;
@@ -25,6 +25,8 @@ export interface NearbyProject {
   bearing: number;
   /** One state word shown as a pill: what is true today. */
   state: 'Operating' | 'Under construction' | 'Plan approved';
+  /** Short status for the home strip: what is true today and what is expected. */
+  strip: { chip: string; line: string };
   /** One line for the radar card and the home page. */
   line: string;
   status: string;
@@ -51,16 +53,17 @@ export const NEARBY_PROJECTS: NearbyProject[] = [
     distance: 'About 60–70 m',
     distanceM: 65,
     bearing: 45,
-    state: 'Plan approved',
+    state: 'Under construction',
+    strip: { chip: 'Under construction', line: 'OPD expected to start in 2027' },
     line: '400-bed hospital: patients, families and staff, every day.',
-    status: 'VDA building plan approved (reported September 2025). No opening date announced.',
+    status: 'Under construction. OPD expected to start in 2027 (the owner\'s expectation; no opening date found in published reports). VDA building plan approved, reported September 2025.',
     facts: [
       '400 beds, multi-specialty',
       'Double basement, ground and 7 floors; 365 car parking spaces',
       'Estimated investment about ₹189 crore',
     ],
     brings: 'Patients, attendants, doctors and hospital staff every day of the week.',
-    caveat: 'The published report names Varanasi, not Bada Lalpur; the position opposite the plot is from the owner\'s location sheet.',
+    caveat: 'The published report names Varanasi, not Bada Lalpur; the position opposite the plot and the 2027 OPD expectation are from the owner.',
     source: { label: 'Digital Health News', url: 'https://www.digitalhealthnews.com/vda-approves-400-bed-apollo-medics-hospital-in-varanasi' },
   },
   {
@@ -72,12 +75,13 @@ export const NEARBY_PROJECTS: NearbyProject[] = [
     distanceM: 65,
     bearing: 315,
     state: 'Under construction',
+    strip: { chip: 'Classes since 2024', line: 'Campus under construction, ready by 2027' },
     line: 'Design campus on 7.5 acres: classes run today, campus rising.',
-    status: 'Classes since July 2024 in temporary space. Main campus construction started January 2025.',
+    status: 'Classes since July 2024 in temporary space. Main campus under construction since January 2025; expected ready in 2027 (the owner\'s expectation; NIFT has not published a completion date).',
     facts: [
       'Permanent campus on 7.5 acres',
       'Foundation programme and B.Des. in Fashion Communication, Fashion Design and Fashion Interiors',
-      'Completion date not stated by NIFT',
+      'Campus expected ready in 2027 (owner\'s expectation)',
     ],
     brings: 'Students, faculty, visiting parents, guest lecturers and exhibition visitors.',
     source: { label: 'NIFT Varanasi', url: 'https://nift.ac.in/varanasi' },
@@ -91,6 +95,7 @@ export const NEARBY_PROJECTS: NearbyProject[] = [
     distanceM: 330,
     bearing: 280, // west along the same road (schematic: drawn on the road line)
     state: 'Operating',
+    strip: { chip: 'Operating', line: 'Exhibitions, delegates and buyers' },
     line: '1,000-seat hall and 50 marts: delegates and buyers, in bursts.',
     status: 'Operating. First phase opened December 2016, fully dedicated September 2017.',
     facts: [
@@ -147,7 +152,7 @@ export const FOOTFALL_LAYERS = [
 /** What the site must not claim. Shown on the Nearby Projects page and used as an editing checklist. */
 export const FOOTFALL_NOT_CLAIMED = [
   'No footfall or visitor figure for this building or road. None is published by any source reviewed.',
-  'No opening year for Apollo or NIFT. Neither institution has announced one in the sources reviewed.',
+  'Apollo OPD in 2027 and the NIFT campus in 2027 are the owner\'s expectations; neither institution has published a date in the sources reviewed.',
   'No claim that city-level projects will raise footfall at the building.',
 ];
 
@@ -160,4 +165,4 @@ export const FOOTFALL_HEADLINE = {
 };
 
 export const FOOTFALL_NOTE =
-  `Reviewed ${FOOTFALL_AS_OF} from public sources linked on each card. Plans and forecasts can change; nothing here is a footfall count.`;
+  `Reviewed ${FOOTFALL_AS_OF} from the public sources listed on the Nearby Projects page. Plans and forecasts can change; nothing here is a footfall count.`;
