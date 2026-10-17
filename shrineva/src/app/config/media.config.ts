@@ -68,7 +68,7 @@ export const PLAN_LEVELS = [
         item: {
           id: 'parking-2d', group: 'Parking level', title: 'Parking-Level Floor Plan — 2D',
           caption: 'Open ground level, north-facing plot. Sheet SH-01, 12.10.2026.',
-          alt: 'Architect\'s 2D parking-level floor plan of SHRINEVA with column grid, lift and stair bay, setbacks and dimensions',
+          alt: 'Architect\'s 2D parking-level floor plan of SHRINEVA with column grid, lift and stair bay and dimensions',
           src: `${P}parking-2d.webp`, thumb: `${P}parking-2d-sm.webp`, width: 1400, height: 2581,
           zoomSrc: `${P}parking-2d.webp`, zoomWidth: 1400,
         } as MediaItem,
@@ -130,7 +130,7 @@ export const DOSSIER = {
   href: 'assets/shrineva-dossier.pdf',
   plansHref: FLOOR_PLANS_PDF,
   cover: 'assets/images/dossier-cover.webp',
-  size: '9 MB',
+  size: '4 MB',
 };
 
 /** The illustrated 3D location map (not to scale): Ring Road, Trade Centre, NIFT, Apollo and the plot. */
@@ -153,15 +153,15 @@ export const TOUR_VIDEO = {
   poster: 'assets/video/shrineva-tour-poster.webp',
   posterWidth: 1280,
   posterHeight: 720,
-  durationSec: 87,
+  durationSec: 88,
   uploadDate: '2026-10-15',
   title: 'SHRINEVA: drive-in from Ring Road and floor tour',
-  description: 'An illustrative drive from Ring Road past Vardhan Hospital, the Trade Centre, NIFT and the Apollo hospital site to SHRINEVA in Bada Lalpur, Varanasi, then a tour of the ground and first floors in 3D.',
+  description: 'An illustrative map flight from Ring Road to Stadium Road in Bada Lalpur, Varanasi: the Trade Centre and Vardhan Hospital facing each other, NIFT, the Apollo hospital site and SHRINEVA, followed by an indicative 3D tour of the ground and first floors.',
   chapters: [
     { id: 'drive', label: 'Drive in from Ring Road', start: 0 },
-    { id: 'nearby', label: 'Vardhan Hospital · Trade Centre', start: 13 },
-    { id: 'anchors', label: 'NIFT · Apollo · the plot', start: 24 },
+    { id: 'nearby', label: 'Trade Centre · Vardhan Hospital', start: 12 },
+    { id: 'anchors', label: 'NIFT · Apollo · the plot', start: 19 },
     { id: 'ground', label: 'Ground floor', start: 37 },
-    { id: 'first', label: 'First floor', start: 64 },
+    { id: 'first', label: 'First floor', start: 65 },
   ] as TourChapter[],
 };
