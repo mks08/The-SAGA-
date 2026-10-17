@@ -21,9 +21,9 @@
   --ink-2: 27 23 20;
   --ink-3: 40 34 29;
   --ink-4: 58 50 43;
-  --paper: 249 246 240;
-  --paper-2: 239 232 220;
-  --paper-3: 229 220 204;
+  --paper: 240 234 222;
+  --paper-2: 230 222 207;
+  --paper-3: 219 209 190;
   --sand: 214 199 172;
   --brass: 190 142 62;       /* brass on dark */
   --brass-deep: 122 86 20;   /* brass text on paper (5.8:1) */
@@ -33,13 +33,13 @@
   --ok: 38 120 78;
 
   /* Legacy names kept so older components restyle automatically. */
-  --rgb-bg: 246, 241, 232;
+  --rgb-bg: 238, 232, 219;
   --rgb-fg: 16, 14, 12;
   --rgb-accent: 122, 86, 20;
   --color-void: rgb(var(--paper));
   --color-deep: rgb(var(--paper-2));
-  --color-surface: #fbf8f2;
-  --color-elevated: #ffffff;
+  --color-surface: #f4efe4;
+  --color-elevated: #faf7f0;
   --color-border: rgb(var(--ink) / 0.12);
   --color-border-strong: rgb(var(--ink) / 0.28);
   --color-gold: rgb(var(--brass-deep));
@@ -66,10 +66,10 @@
    markup written as bg-ink / text-paper / border-paper/10 renders as a warm light surface with dark text.
    Higher ink-N = more elevated = lighter (cards sit above the band). */
 .theme-soft {
-  --ink: 243 237 226;
-  --ink-2: 250 247 241;
-  --ink-3: 255 253 250;
-  --ink-4: 230 221 204;
+  --ink: 233 226 212;
+  --ink-2: 241 235 223;
+  --ink-3: 247 243 234;
+  --ink-4: 218 209 190;
   --paper: 34 29 25;
   --paper-2: 60 53 46;
   --paper-3: 90 80 70;
@@ -97,15 +97,15 @@
   --ink-2: 27 23 20;
   --ink-3: 40 34 29;
   --ink-4: 58 50 43;
-  --paper: 249 246 240;
-  --paper-2: 239 232 220;
-  --paper-3: 229 220 204;
+  --paper: 240 234 222;
+  --paper-2: 230 222 207;
+  --paper-3: 219 209 190;
   --brass: 190 142 62;
   --brass-soft: 232 207 150;
   --color-void: rgb(var(--paper));
   --color-deep: rgb(var(--paper-2));
-  --color-surface: #fbf8f2;
-  --color-elevated: #ffffff;
+  --color-surface: #f4efe4;
+  --color-elevated: #faf7f0;
   --color-border: rgb(var(--ink) / 0.12);
   --color-border-strong: rgb(var(--ink) / 0.28);
   --color-gold: rgb(var(--brass-deep));
@@ -223,11 +223,11 @@
   .btn-outline {
     color: rgb(var(--ink));
     border: 1px solid rgb(var(--ink) / 0.28);
-    background: rgb(255 255 255 / 0.5);
-    &:hover { border-color: rgb(var(--ink)); background: #fff; transform: translateY(-1px); }
+    background: rgb(250 247 240 / 0.55);
+    &:hover { border-color: rgb(var(--ink)); background: #faf7f0; transform: translateY(-1px); }
   }
-  .theme-soft .btn-outline { color: rgb(var(--paper)); border-color: rgb(var(--paper) / 0.28); background: rgb(255 255 255 / 0.55); }
-  .theme-soft .btn-outline:hover { border-color: rgb(var(--paper)); background: #fff; }
+  .theme-soft .btn-outline { color: rgb(var(--paper)); border-color: rgb(var(--paper) / 0.28); background: rgb(250 247 240 / 0.6); }
+  .theme-soft .btn-outline:hover { border-color: rgb(var(--paper)); background: #faf7f0; }
   .theme-soft .btn-ghost:hover { background: rgb(var(--paper) / 0.07); }
 
   /* Compact button: header, secondary actions */
@@ -294,7 +294,7 @@
   .field-input {
     width: 100%; min-height: 48px; padding: 0.65rem 1rem;
     border: 1px solid rgb(var(--ink) / 0.18); border-radius: 0.85rem;
-    background: #fff; color: rgb(var(--ink)); font-size: 0.97rem; font-family: var(--font-sans);
+    background: #faf7f0; color: rgb(var(--ink)); font-size: 0.97rem; font-family: var(--font-sans);
     transition: border-color 0.2s, box-shadow 0.2s;
     &::placeholder { color: rgb(var(--ink) / 0.42); }
     &:hover { border-color: rgb(var(--ink) / 0.4); }

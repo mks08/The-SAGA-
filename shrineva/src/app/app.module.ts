@@ -44,6 +44,7 @@ import { FootfallComponent } from './components/footfall/footfall.component';
 import { FootfallStripComponent } from './components/footfall-strip/footfall-strip.component';
 import { KeyFeaturesComponent } from './components/key-features/key-features.component';
 import { VideoTourComponent } from './components/video-tour/video-tour.component';
+import { DossierCardComponent } from './components/dossier-card/dossier-card.component';
 import { WalkthroughComponent } from './components/walkthrough/walkthrough.component';
 import { HomeSpecsComponent } from './components/home-specs/home-specs.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
@@ -87,6 +88,7 @@ import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-p
     FootfallStripComponent,
     KeyFeaturesComponent,
     VideoTourComponent,
+    DossierCardComponent,
     WalkthroughComponent,
     HomeSpecsComponent,
     PlaceMapComponent,

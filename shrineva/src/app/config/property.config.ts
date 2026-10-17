@@ -199,7 +199,8 @@ export const PROPERTY = {
      */
     lat: null as number | null,
     lng: null as number | null,
-    googleMapsUrl: 'https://maps.google.com/?q=Bada+Lalpur+Chandmari+Varanasi',
+    /** The owner's own Google Maps share link for the exact plot (15–18 Oct 2026). Opens the pin in Google Maps on any device. */
+    googleMapsUrl: 'https://maps.app.goo.gl/UGerjaEDeKVnrnYw5',
     embedSrc: 'https://maps.google.com/maps?q=Bada+Lalpur+Chandmari+Varanasi&t=&z=16&ie=UTF8&iwloc=&output=embed',
   },
 
@@ -567,10 +568,12 @@ export function mapLinks(): { pinned: boolean; embed: string; open: string; dire
       directions: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
     };
   }
+  // The share link opens the exact plot in Google Maps (and its Directions button), so both buttons use it.
+  // Only the inline embed stays area-centred until coordinates are added above.
   return {
     pinned: false,
     embed: embedSrc,
     open: googleMapsUrl,
-    directions: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent('Bada Lalpur, Chandmari, Varanasi')}`,
+    directions: googleMapsUrl,
   };
 }

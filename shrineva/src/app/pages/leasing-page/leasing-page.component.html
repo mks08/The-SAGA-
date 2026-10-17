@@ -31,6 +31,7 @@
         <div class="mt-6 flex flex-col gap-3">
           <a routerLink="/contact" class="btn-primary justify-center">Request leasing details <span class="arrow" aria-hidden="true">→</span></a>
           <a [href]="waHref" target="_blank" rel="noopener" class="btn-whatsapp justify-center">Ask on WhatsApp</a>
+          <a href="assets/shrineva-dossier.pdf" target="_blank" rel="noopener" download class="btn-outline justify-center">Download the leasing dossier (PDF)</a>
           <a href="assets/shrineva-floor-plans.pdf" target="_blank" rel="noopener" download class="btn-outline justify-center">Download floor plans (PDF)</a>
         </div>
         <p *ngIf="property.contact.publicEmail" class="mt-5 text-[0.88rem] text-paper/70">Or write to <a [href]="'mailto:' + property.contact.publicEmail" class="font-semibold text-brass-soft underline-offset-4 hover:underline">{{ property.contact.publicEmail }}</a></p>

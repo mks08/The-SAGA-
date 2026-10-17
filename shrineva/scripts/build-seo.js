@@ -168,6 +168,10 @@ const llms = [
     return `- [${label}](${url(r.path)}): ${r.description}`;
   }),
   '',
+  '## Downloads',
+  `- [Leasing dossier (PDF, 7 pages)](${url('assets/shrineva-dossier.pdf')}): opportunity, location and distances, key features, floor plans, 3D views and contacts.`,
+  `- [Floor plans (PDF, A3 sheets)](${url('assets/shrineva-floor-plans.pdf')}): parking level, typical floor and building summary with area statements.`,
+  '',
   `## Nearby projects (reviewed ${FOOTFALL_AS_OF})`,
   ...NEARBY_PROJECTS.map((p) => `- ${p.name} (${p.distance}): ${p.status}`),
   '',

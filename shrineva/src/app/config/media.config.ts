@@ -125,6 +125,14 @@ export const TOP_VIEW: MediaItem = {
 
 export const FLOOR_PLANS_PDF = 'assets/shrineva-floor-plans.pdf';
 
+/** The short leasing dossier (A4 landscape PDF) and its website card. Built by scripts/pdf/build_pdfs.py. */
+export const DOSSIER = {
+  href: 'assets/shrineva-dossier.pdf',
+  plansHref: FLOOR_PLANS_PDF,
+  cover: 'assets/images/dossier-cover.webp',
+  size: '9 MB',
+};
+
 /** The illustrated 3D location map (not to scale): Ring Road, Trade Centre, NIFT, Apollo and the plot. */
 export const LOCATION_MAP: MediaItem = {
   id: 'location-3d', group: 'Location', title: 'Location map (3D, not to scale)',

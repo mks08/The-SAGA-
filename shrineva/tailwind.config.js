@@ -19,6 +19,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        white: '#faf7f0',
         ink: { DEFAULT: c('ink'), 2: c('ink-2'), 3: c('ink-3'), 4: c('ink-4') },
         paper: { DEFAULT: c('paper'), 2: c('paper-2'), 3: c('paper-3') },
         sand: c('sand'),
