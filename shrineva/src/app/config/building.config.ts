@@ -94,8 +94,8 @@ const hf = BUILDING.h.floor;
 export const LEVELS: LevelInfo[] = [
   {
     id: 0, label: 'Parking level', short: 'Parking', baseY: 0,
-    blurb: 'Open to the road. Arrival, parking, a planted east walk and the lift and stair lobby.',
-    facts: ['Open frontage, about 50 ft', '9′-6″ floor to floor', 'Lift and stair lobby, west and east entries'],
+    blurb: 'Open to the road. Arrival, parking, a planted east walk with water walls, and the glass lift and stair lobby.',
+    facts: ['Open frontage, about 50 ft', '9′-6″ floor to floor', 'Glass lift and stair lobby, west and east entries'],
   },
   {
     id: 1, label: 'Floor 1', short: 'Floor 1', baseY: hp,
@@ -166,17 +166,17 @@ export const TOUR: TourStop[] = [
   {
     id: 'east', title: 'East walk', mode: 'inside', level: 0,
     eye: { x: 44.4, z: 20, yaw: 158 * D, pitch: -0.03 },
-    text: 'A Varanasi-inspired ghat wall with lit arches and painted panels, and planting along the walk.', dwell: 5200,
+    text: 'Carved jali arches, lit water walls with a small shrine niche, and planting along the walk.', dwell: 5200,
   },
   {
     id: 'west', title: 'West passage', mode: 'inside', level: 0,
     eye: { x: 3, z: 20, yaw: -158 * D, pitch: -0.02 },
-    text: 'A light stone jali with a warm glow behind it. Quieter than the east wall.', dwell: 4600,
+    text: 'Arched jali and green walls under a softly lit cornice. Quieter than the east wall.', dwell: 4600,
   },
   {
     id: 'lobby', title: 'Lift and stair', mode: 'inside', level: 0,
     eye: { x: 34, z: 56.2, yaw: 8 * D, pitch: 0 },
-    text: 'A stone-framed 8-person lift and a railed staircase. West and east entries lead to the same lobby.', dwell: 5000,
+    text: 'An open glass lift, visible from the court, and a railed staircase. West and east entries lead to the same lobby.', dwell: 5000,
   },
   {
     id: 'floor', title: 'A whole floor', mode: 'inside', level: 2,
@@ -199,7 +199,9 @@ export const TOUR: TourStop[] = [
 export const WAYPOINTS: { id: string; label: string; eye: { x: number; z: number; yaw: number }; levels: LevelId[] }[] = [
   { id: 'front', label: 'Front', eye: { x: 24, z: 6, yaw: 0 }, levels: [0] },
   { id: 'east', label: 'East walk', eye: { x: 44.4, z: 20, yaw: 158 * D }, levels: [0] },
-  { id: 'west', label: 'West jali', eye: { x: 3, z: 20, yaw: -158 * D }, levels: [0] },
+  { id: 'west', label: 'West wall', eye: { x: 3, z: 20, yaw: -158 * D }, levels: [0] },
+  { id: 'water', label: 'Water wall', eye: { x: 36, z: 54, yaw: 85 * D }, levels: [0] },
+  { id: 'back', label: 'Back wall', eye: { x: 22, z: 80, yaw: 180 * D }, levels: [0] },
   { id: 'entry', label: 'Lift', eye: { x: 34, z: 56.2, yaw: 8 * D }, levels: [0, 1, 2, 3] },
   { id: 'stair', label: 'Stair', eye: { x: 34, z: 51.4, yaw: 180 * D }, levels: [0, 1, 2, 3] },
   { id: 'glass', label: 'Road view', eye: { x: 14, z: 19, yaw: 14 * D }, levels: [1, 2, 3] },

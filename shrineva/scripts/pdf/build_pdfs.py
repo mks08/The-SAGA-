@@ -18,6 +18,7 @@ from playwright.async_api import async_playwright
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 A = ROOT / 'src' / 'assets'
 IMG = A / 'images'
+PDFIMG = pathlib.Path(__file__).resolve().parent / 'img'   # PDF-only pictures, not shipped with the site
 TMP = pathlib.Path(os.environ.get('PDF_TMP', '/tmp/shrineva-pdf')); TMP.mkdir(parents=True, exist_ok=True)
 
 MAPS_URL = 'https://maps.app.goo.gl/UGerjaEDeKVnrnYw5'
@@ -30,6 +31,14 @@ DISCLAIMER_PLANS = ("Dimensions follow the architect&rsquo;s CAD plan dated 27.0
 # ── assets ────────────────────────────────────────────────────────────────────
 def uri(p):
     return pathlib.Path(p).resolve().as_uri()
+
+def juri(p, q=88):
+    """Photographic pictures go into the PDF as JPEG: Chromium would otherwise embed a WebP losslessly and the dossier would be several MB heavier."""
+    p = pathlib.Path(p)
+    out = TMP / f'{p.parent.name}-{p.stem}.jpg'
+    if not out.exists():
+        Image.open(p).convert('RGB').save(out, 'JPEG', quality=q, optimize=True, progressive=True, subsampling=0)
+    return uri(out)
 
 def font_css():
     nm = ROOT / 'node_modules'
@@ -244,7 +253,7 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
     def foot(n):
         return f"""<div class="pg mono"><span>SHRINEVA &middot; Bada Lalpur, Varanasi</span><span>{n} / 7</span></div>"""
 
-    hero = uri(IMG / 'hero/hero-golden-2000.webp')
+    hero = juri(IMG / 'hero/hero-golden-2000.webp')
     pages = []
 
     # 1 cover
@@ -275,10 +284,10 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
 <div class="card tile"><div class="n">Mar 2027</div><div class="l">planned handover</div></div>
 <div class="card" style="grid-column:1/-1;padding:5mm 6mm;display:grid;grid-template-columns:auto 1fr;gap:6mm;align-items:center"><div class="mono b">Status<br>15 Oct 2026</div><div style="font-size:9.4pt;color:var(--ink2)">Structure almost complete. Timeline as planned by the owner; subject to approvals and site conditions.</div></div>
 </div></div>
-<div class="img" style="position:absolute;left:16mm;right:16mm;bottom:17mm;height:50mm"><img src="{uri(IMG / 'renders/facade-night.webp')}" alt="" style="object-position:50% 62%"><span class="cap">FA&Ccedil;ADE AT NIGHT &middot; ILLUSTRATIVE</span></div>{foot(2)}</section>""")
+<div class="img" style="position:absolute;left:16mm;right:16mm;bottom:17mm;height:50mm"><img src="{juri(IMG / 'renders/facade-night.webp')}" alt="" style="object-position:50% 62%"><span class="cap">FA&Ccedil;ADE AT NIGHT &middot; ILLUSTRATIVE</span></div>{foot(2)}</section>""")
 
     # 3 location
-    mp = uri(IMG / 'map/location-3d.webp')
+    mp = juri(IMG / 'map/location-3d.webp')
     qr = qr_svg(MAPS_URL)
     pages.append(f"""<section class="page">{top(3,'Location')}
 <div style="display:grid;grid-template-columns:1.18fr 1fr;gap:10mm;margin-top:9mm">
@@ -298,7 +307,7 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
 {foot(3)}</section>""")
 
     # 4 the building
-    r1 = uri(IMG / 'renders/facade-golden.webp'); r2 = uri(IMG / 'renders/entry-portal.webp'); r3 = uri(IMG / 'renders/parking-night.webp')
+    r1 = juri(IMG / 'renders/facade-golden.webp'); r2 = juri(IMG / 'renders/entry-portal.webp'); r3 = juri(IMG / 'renders/parking-night.webp')
     feats = [('Vastu compliant','Planned to Vastu principles'),('Column-free structure','Open plates, columns kept to the edges'),('Fire safety','Provisions built in'),('24&times;7 safety','Round-the-clock security'),
              ('Fine dining','Planned for restaurants'),('Offices','Whole floors, one or many'),('4-side open plot','Light, air and access'),('Parking, internet, DG backup','Building services')]
     fh = ''.join(f"<div class='card ft2'><b>{a}</b><span>{b}</span></div>" for a, b in feats)
@@ -326,14 +335,18 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
     # 6 3D cutaways + use
     pages.append(f"""<section class="page">{top(6,'In 3D')}
 <div class="mono b" style="margin-top:9mm">In three dimensions</div><h2 class="s" style="margin-top:2.4mm">See how each floor <em>opens up.</em></h2>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:6mm">
-<div><div class="img" style="height:88mm"><img src="{uri(IMG / 'plans/parking-3d.webp')}" alt=""></div><div class="mono" style="margin-top:2mm">Parking level &middot; 3D cutaway</div></div>
-<div><div class="img" style="height:88mm"><img src="{uri(IMG / 'plans/typical-3d.webp')}" alt=""></div><div class="mono" style="margin-top:2mm">Floors 1&ndash;3 &middot; 3D cutaway</div></div></div>
-<div class="stp" style="margin-top:6mm">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-top:5mm">
+<div><div class="img" style="height:60mm"><img src="{juri(IMG / 'plans/parking-3d.webp')}" alt=""></div><div class="mono" style="margin-top:1.6mm">Parking level &middot; 3D cutaway</div></div>
+<div><div class="img" style="height:60mm"><img src="{juri(IMG / 'plans/typical-3d.webp')}" alt=""></div><div class="mono" style="margin-top:1.6mm">Floors 1&ndash;3 &middot; 3D cutaway</div></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;margin-top:4mm">
+<div><div class="img" style="height:33mm"><img src="{juri(PDFIMG / 'wt-east-wall.webp')}" alt=""></div><div class="mono" style="margin-top:1.4mm">Entry court &middot; east wall</div></div>
+<div><div class="img" style="height:33mm"><img src="{juri(PDFIMG / 'wt-water-shrine.webp')}" alt=""></div><div class="mono" style="margin-top:1.4mm">Water walls &amp; small shrine</div></div>
+<div><div class="img" style="height:33mm"><img src="{juri(PDFIMG / 'wt-glass-lift.webp')}" alt=""></div><div class="mono" style="margin-top:1.4mm">Glass lift at the lobby</div></div></div>
+<div class="stp" style="margin-top:4.5mm">
 <div class="card"><div class="k">Whole-floor office</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">One open 3,520 sq ft plate with a glass front on the road, daylight east and west.</p></div>
 <div class="card"><div class="k">Dining &amp; hospitality</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">A full floor for a restaurant or fine dining, with road presence and a lift to the door.</p></div>
 <div class="card"><div class="k">Clinic, retail, studio stay</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">Divide a floor as required. Patients, students and delegates pass this road all week.</p></div></div>
-<p class="small" style="position:absolute;left:16mm;right:16mm;bottom:15mm">Indicative 3D, drawn from the architect&rsquo;s dimensions; subject to change for the better. Uses are suggestions, not legal use restrictions, and depend on approvals.</p>{foot(6)}</section>""")
+<p class="small" style="position:absolute;left:16mm;right:16mm;bottom:15mm">Indicative 3D and walkthrough views, drawn from the architect&rsquo;s dimensions; the ground-floor court design is a concept and subject to change for the better. Uses are suggestions, not legal use restrictions, and depend on approvals.</p>{foot(6)}</section>""")
 
     # 7 next steps
     pages.append(f"""<section class="page">{top(7,'Next steps')}
@@ -348,7 +361,7 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
 <div class="serif" style="font-size:24pt;margin-top:2mm">{PH1}</div><div class="serif" style="font-size:24pt">{PH2}</div>
 <div style="margin-top:3mm;font-weight:700;color:var(--brass)">{MAIL}</div><p style="font-size:8.6pt;color:var(--ink2);margin-top:2mm">WhatsApp: {PH2}</p>
 <div class="rule" style="margin:5mm 0"></div><div style="display:grid;grid-template-columns:1fr auto;gap:6mm;align-items:center"><p style="font-size:8.6pt;color:var(--ink2)">{ADDR}<br><span class="small">Scan to open the exact plot in Google Maps.</span></p><div class="qr">{qr_svg(MAPS_URL)}</div></div></div></div>
-<div class="img" style="position:absolute;left:16mm;right:16mm;bottom:24mm;height:46mm"><img src="{uri(IMG / 'renders/facade-golden.webp')}" alt="" style="object-position:50% 70%"><span class="cap">SHRINEVA &middot; ILLUSTRATIVE RENDER</span></div>
+<div class="img" style="position:absolute;left:16mm;right:16mm;bottom:24mm;height:46mm"><img src="{juri(IMG / 'renders/facade-golden.webp')}" alt="" style="object-position:50% 70%"><span class="cap">SHRINEVA &middot; ILLUSTRATIVE RENDER</span></div>
 <p class="small" style="position:absolute;left:16mm;right:16mm;bottom:15mm">This dossier is for information only and is not an offer or a contract. Areas, dimensions, specifications, timelines and images are indicative, as stated by the owner, and subject to change, approvals and final documents.</p>{foot(7)}</section>""")
 
     html = f"<!doctype html><meta charset='utf-8'><title>SHRINEVA &mdash; Leasing dossier</title><style>{font_css()}{css}</style>" + ''.join(pages)

@@ -93,6 +93,8 @@ export class Engine {
   private last = 0;
   private running = false;
   private visible = true;
+  /** Film capture only: drives the lift from its own clock so a shot can be timed to the car. */
+  liftClock: number | null = null;
   private tourTimer = 0;
   private poseTimer = 0;
   private frameTimes: number[] = [];
@@ -826,9 +828,9 @@ export class Engine {
     }
 
     this.world.update(dt, this.time);
-    this.model.animate(reduce ? 1.6 : this.time);
+    this.model.animate(reduce ? 1.6 : (this.liftClock ?? this.time));
     if (!reduce) {
-      this.mats.waterfallTex.offset.y = -((this.time * 0.42) % 1);
+      this.mats.waterfallTex.offset.y = -((this.time * 0.9) % 1);
       this.mats.rippleTex.offset.x = (this.time * 0.03) % 1;
       this.mats.rippleTex.offset.y = (this.time * 0.015) % 1;
     }
