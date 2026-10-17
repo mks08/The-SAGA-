@@ -1,5 +1,5 @@
 import { Color, DoubleSide, MeshStandardMaterial, Texture } from 'three';
-import { asphaltTexture, ghatTexture, jaaliTexture, jaliStoneTexture, signTexture, tileTexture, timberTexture, warmGlowTexture } from './textures';
+import { asphaltTexture, ghatTexture, graniteTexture, jaaliTexture, jaliStoneTexture, rippleTexture, signTexture, tileTexture, timberTexture, warmGlowTexture, waterfallTexture } from './textures';
 
 /** Every material the model uses, created once. Colours follow the façade renders: cream stone, taupe spine, copper screens, brass. */
 export class Mats {
@@ -67,6 +67,20 @@ export class Mats {
   jaliStone = new MeshStandardMaterial({ map: this.jaliStoneTex, roughness: 0.85, metalness: 0, side: DoubleSide, alphaTest: 0.5 });
   liftSign = new MeshStandardMaterial({ map: this.liftSignTex, roughness: 0.5, metalness: 0.2, emissive: new Color('#c9a15a'), emissiveMap: this.liftSignTex, emissiveIntensity: 0.4 });
   stairSign = new MeshStandardMaterial({ map: this.stairSignTex, roughness: 0.5, metalness: 0.2, emissive: new Color('#c9a15a'), emissiveMap: this.stairSignTex, emissiveIntensity: 0.4 });
+  /* water walls, glass lift */
+  waterfallTex: Texture = waterfallTexture();
+  rippleTex: Texture = rippleTexture();
+  graniteTex: Texture = graniteTexture();
+  granite = new MeshStandardMaterial({ map: this.graniteTex, roughness: 0.3, metalness: 0.2 });
+  waterfall = new MeshStandardMaterial({ map: this.waterfallTex, transparent: true, opacity: 0.9, depthWrite: false, roughness: 0.15, metalness: 0.1, emissive: new Color('#bfe4ff'), emissiveMap: this.waterfallTex, emissiveIntensity: 0.3 });
+  basin = new MeshStandardMaterial({ map: this.rippleTex, color: '#8ac4cb', transparent: true, opacity: 0.86, depthWrite: false, roughness: 0.08, metalness: 0.2, emissive: new Color('#6fcbd6'), emissiveIntensity: 0.22 });
+  /** Leaves of the green walls: a slight self-glow so the planting still reads under the soft evening light. */
+  wallLeaf = new MeshStandardMaterial({ color: '#5f9356', roughness: 0.95, metalness: 0, emissive: new Color('#2f7a35'), emissiveIntensity: 0.15 });
+  wallLeafDark = new MeshStandardMaterial({ color: '#376b3d', roughness: 0.95, metalness: 0, emissive: new Color('#1d5a26'), emissiveIntensity: 0.15 });
+  wallLeafLight = new MeshStandardMaterial({ color: '#7bab5e', roughness: 0.95, metalness: 0, emissive: new Color('#3f8a3a'), emissiveIntensity: 0.15 });
+  bronze = new MeshStandardMaterial({ color: '#3d3128', roughness: 0.38, metalness: 0.78 });
+  liftGlass = new MeshStandardMaterial({ color: '#a9d3e3', roughness: 0.04, metalness: 0.2, transparent: true, opacity: 0.22, depthWrite: false, side: DoubleSide });
+  cabinLight = new MeshStandardMaterial({ color: '#fff3d6', emissive: new Color('#ffe4a8'), emissiveIntensity: 0.8, roughness: 0.4 });
   footpath = new MeshStandardMaterial({ color: '#c8c1b3', roughness: 1, metalness: 0 });
   ground = new MeshStandardMaterial({ color: '#c2b79f', roughness: 1, metalness: 0 });
   roadLine = new MeshStandardMaterial({ color: '#e5dcc3', roughness: 0.9, metalness: 0 });
@@ -75,6 +89,9 @@ export class Mats {
     for (const t of [this.floorTex, this.pavingTex]) t.repeat.set(1 / 2.4, 1 / 2.4);
     this.timberTex.repeat.set(1, 1);
     this.asphaltTex.repeat.set(30, 30);
+    this.waterfallTex.repeat.set(5, 2);
+    this.rippleTex.repeat.set(3, 1);
+    this.graniteTex.repeat.set(3, 2);
   }
 
   all(): MeshStandardMaterial[] {
@@ -83,6 +100,6 @@ export class Mats {
 
   dispose(): void {
     this.all().forEach((m) => m.dispose());
-    [this.floorTex, this.pavingTex, this.timberTex, this.jaaliTex, this.asphaltTex, this.signTex, this.ghatTex, this.glowTex, this.jaliStoneTex, this.liftSignTex, this.stairSignTex].forEach((t) => t.dispose());
+    [this.floorTex, this.pavingTex, this.timberTex, this.jaaliTex, this.asphaltTex, this.signTex, this.ghatTex, this.glowTex, this.jaliStoneTex, this.liftSignTex, this.stairSignTex, this.waterfallTex, this.rippleTex, this.graniteTex].forEach((t) => t.dispose());
   }
 }

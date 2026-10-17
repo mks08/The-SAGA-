@@ -417,6 +417,10 @@ export class Engine {
     this.mats.lampGlow.emissiveIntensity = 0.5 + t.lamps * 2.2;
     this.mats.ghat.emissiveIntensity = 0.04 + t.lamps * 0.3;
     this.mats.liftSign.emissiveIntensity = 0.4 + t.plaque * 0.8;
+    this.mats.waterfall.emissiveIntensity = 0.3 + t.lamps * 0.9;
+    this.mats.basin.emissiveIntensity = 0.22 + t.lamps * 0.8;
+    this.mats.cabinLight.emissiveIntensity = 0.6 + t.lamps * 1.2;
+    for (const lm of [this.mats.wallLeaf, this.mats.wallLeafDark, this.mats.wallLeafLight]) lm.emissiveIntensity = 0.12 + t.lamps * 0.5;
     this.mats.stairSign.emissiveIntensity = 0.4 + t.plaque * 0.8;
     this.model.accent.forEach((l) => { l.intensity = 0.5 + t.lamps * 6.5; });
     this.model.levels.forEach((l) => { l.light.intensity = t.interiorLight * (l.info.id === 0 ? 0.6 : 1); });
@@ -822,6 +826,12 @@ export class Engine {
     }
 
     this.world.update(dt, this.time);
+    this.model.animate(reduce ? 1.6 : this.time);
+    if (!reduce) {
+      this.mats.waterfallTex.offset.y = -((this.time * 0.42) % 1);
+      this.mats.rippleTex.offset.x = (this.time * 0.03) % 1;
+      this.mats.rippleTex.offset.y = (this.time * 0.015) % 1;
+    }
     this.updateHoverRing();
 
     // hand the pose to the UI at about 10 Hz

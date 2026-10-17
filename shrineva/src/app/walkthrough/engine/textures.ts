@@ -201,3 +201,68 @@ export function warmGlowTexture(): Texture {
     c.fillStyle = e; c.fillRect(0, 0, w, h);
   });
 }
+
+/** Falling water: a pale sheet with fine vertical streaks and small bright flecks, tiling without a seam. Scrolled by the engine. */
+export function waterfallTexture(): Texture {
+  return make(128, 512, (c, w, h) => {
+    c.clearRect(0, 0, w, h);
+    let seed = 11;
+    const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+    c.fillStyle = 'rgba(222,242,255,0.42)';
+    c.fillRect(0, 0, w, h);
+    const streak = (x: number, y0: number, len: number, wd: number, a: number, dy: number): void => {
+      const gr = c.createLinearGradient(0, y0 + dy, 0, y0 + dy + len);
+      gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(0.3, `rgba(255,255,255,${a})`); gr.addColorStop(0.7, `rgba(236,248,255,${a * 0.8})`); gr.addColorStop(1, 'rgba(255,255,255,0)');
+      c.fillStyle = gr;
+      c.fillRect(x, y0 + dy, wd, len);
+    };
+    for (let i = 0; i < 90; i++) {
+      const x = rnd() * w, wd = 0.9 + rnd() * 2.8, a = 0.4 + rnd() * 0.5;
+      const y0 = rnd() * h, len = 120 + rnd() * 300;
+      for (const dy of [-h, 0, h]) streak(x, y0, len, wd, a, dy); // draw the copies above and below so the tile wraps cleanly
+    }
+    for (let i = 0; i < 60; i++) { // bright flecks where the sheet breaks into drops
+      const x = rnd() * w, y = rnd() * h, r = 0.6 + rnd() * 1.1;
+      c.fillStyle = `rgba(255,255,255,${0.45 + rnd() * 0.45})`;
+      c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fill();
+    }
+  }, true);
+}
+
+/** Calm pool: teal with soft light ripples. */
+export function rippleTexture(): Texture {
+  return make(256, 256, (c, w, h) => {
+    c.fillStyle = '#7bbcc4'; c.fillRect(0, 0, w, h);
+    let seed = 5;
+    const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+    for (let i = 0; i < 46; i++) {
+      const x = rnd() * w, y = rnd() * h, r = 8 + rnd() * 26;
+      for (const ox of [-w, 0, w]) for (const oy of [-h, 0, h]) {
+        c.strokeStyle = `rgba(255,255,255,${0.1 + rnd() * 0.2})`; c.lineWidth = 1 + rnd() * 1.4;
+        c.beginPath(); c.ellipse(x + ox, y + oy, r, r * 0.55, 0, 0, Math.PI * 2); c.stroke();
+      }
+    }
+  }, true);
+}
+
+/** Dark polished slate-granite: soft cloudy veins and a very light speckle, the backing of the water walls. */
+export function graniteTexture(): Texture {
+  return make(256, 256, (c, w, h) => {
+    c.fillStyle = '#3b3733'; c.fillRect(0, 0, w, h);
+    noise(c, w, h, 14);
+    let seed = 3;
+    const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+    for (let i = 0; i < 14; i++) { // wide soft veins, wrapped so the tile is seamless
+      const x = rnd() * w, y = rnd() * h, len = 80 + rnd() * 160, ang = -0.5 + rnd() * 1.0;
+      for (const ox of [-w, 0, w]) {
+        c.strokeStyle = `rgba(${rnd() > 0.5 ? '190,170,140' : '20,18,16'},${0.07 + rnd() * 0.08})`;
+        c.lineWidth = 5 + rnd() * 16;
+        c.beginPath(); c.moveTo(x + ox, y); c.quadraticCurveTo(x + ox + Math.cos(ang) * len * 0.5, y + 30 + rnd() * 20, x + ox + Math.cos(ang) * len, y + Math.sin(ang) * len); c.stroke();
+      }
+    }
+    for (let i = 0; i < 110; i++) {
+      c.fillStyle = `rgba(${200 + rnd() * 55},${185 + rnd() * 50},${160 + rnd() * 40},${0.1 + rnd() * 0.22})`;
+      c.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 1.1, 1 + rnd() * 1.1);
+    }
+  }, true);
+}

@@ -215,7 +215,7 @@ export class World {
       this.group.add(tree(this.m, x, -1.5, rand(4.6, 6)));
     }
     for (let x = -72; x <= 72; x += 14) this.group.add(tree(this.m, x + rand(-3, 3), -28.8, rand(4.4, 6)));
-    for (const [x, z] of [[-34, 26], [30, 26], [-30, 62], [36, 58], [0, 34]]) this.group.add(tree(this.m, x, z, rand(5, 7)));
+    for (const [x, z] of [[-34, 26], [30, 26], [-30, 62], [36, 58], [0, 44]]) this.group.add(tree(this.m, x, z, rand(5, 7)));
   }
 
   private buildTraffic(): void {

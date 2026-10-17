@@ -5,7 +5,7 @@ import {
 import { BUILDING, BUILDING_TOP, LEVELS, LevelId, LevelInfo, STAIR_HOLE, plateOutline } from '../../config/building.config';
 
 import { Batcher } from './batch';
-import { groundWalls, liftPortal, lobbyFinish, stairDetail } from './ground';
+import { buildLiftCar, glassLeaf, groundWalls, liftPortal, liftShaftGlass, lobbyFinish, stairDetail } from './ground';
 import { Mats } from './materials';
 
 /** Plot feet → world metres. World: x east, y up, z south; the road is on the north (−z). Origin: plot centre line, road-side boundary. */
@@ -38,12 +38,17 @@ export interface BuildingModel {
   roof: Group;
   /** Warm accent lights along the parking-level walls: their intensity follows the time of day. */
   accent: PointLight[];
+  /** Moves the glass lift car and its doors. `t` is seconds. */
+  animate(t: number): void;
   dispose(): void;
 }
 
 /* ── geometry helpers ─────────────────────────────────────────────────────────── */
 
-function plateShape(flipZ: boolean, withHole: boolean): Shape {
+/** Opening for the glass lift in the slabs and ceilings it passes through, plot feet. */
+const LIFT_HOLE = { x0: 33.75, x1: 40.3, z0: 43.2, z1: 49.15 };
+
+function plateShape(flipZ: boolean, withHole: boolean, withLift = false): Shape {
   const s = new Shape();
   plateOutline().forEach(([x, z], i) => {
     const X = wx(x), Z = flipZ ? -wz(z) : wz(z);
@@ -53,6 +58,17 @@ function plateShape(flipZ: boolean, withHole: boolean): Shape {
   if (withHole) {
     const h = new Path();
     const a = STAIR_HOLE;
+    const pts: [number, number][] = [[a.x0, a.z0], [a.x1, a.z0], [a.x1, a.z1], [a.x0, a.z1]];
+    pts.forEach(([x, z], i) => {
+      const X = wx(x), Z = flipZ ? -wz(z) : wz(z);
+      if (i === 0) h.moveTo(X, Z); else h.lineTo(X, Z);
+    });
+    h.closePath();
+    s.holes.push(h);
+  }
+  if (withLift) {
+    const h = new Path();
+    const a = LIFT_HOLE;
     const pts: [number, number][] = [[a.x0, a.z0], [a.x1, a.z0], [a.x1, a.z1], [a.x0, a.z1]];
     pts.forEach(([x, z], i) => {
       const X = wx(x), Z = flipZ ? -wz(z) : wz(z);
@@ -125,26 +141,30 @@ function columns(B: Batcher, m: Mats, y0: number, h: number): void {
   for (let i = 1; i <= 5; i++) B.box(m.cream, wx(c.A), y0 + h / 2, wz(rows[i]), cw, h, cd);
 }
 
-function lobbyAndCore(B: Batcher, Bg: Batcher, m: Mats, y0: number, H: number, levelId: LevelId): void {
+function lobbyAndCore(B: Batcher, Bg: Batcher, m: Mats, y0: number, H: number, levelId: LevelId): Group[] {
   const bay = B_.bay, lb = B_.lobby;
   const t = 0.2;
   const west: Opening[] = [{ a: wz(lb.z0), b: wz(lb.z1) }];
-  // bay perimeter: north, south, east, west (with the lobby opening)
-  B.span(m.cream, wx(bay.x0), y0, wz(bay.z0) - t / 2, wx(bay.x1), y0 + H, wz(bay.z0) + t / 2);
+  // bay perimeter: north (open glass lift shaft east of the lift partition), south, east, west (with the lobby opening)
+  const zN = wz(bay.z0), zl = wz(49.5);
+  const gx0 = wx(33.45) + 0.08, gx1 = wx(bay.x1);
+  B.span(m.cream, wx(bay.x0), y0, zN - t / 2, gx0, y0 + H, zN + t / 2);
+  B.span(m.cream, gx0, y0 + H - SLAB, zN - t / 2, gx1 + t / 2, y0 + H, zN + t / 2);
   B.span(m.cream, wx(bay.x0), y0, wz(bay.z1) - t / 2, wx(bay.x1), y0 + H, wz(bay.z1) + t / 2);
+  liftShaftGlass(B, m, y0, H, SLAB, gx0, gx1, zN, zl);
   // west wall with the lobby opening
   B.span(m.cream, wx(bay.x0) - t / 2, y0, wz(bay.z0), wx(bay.x0) + t / 2, y0 + H, west[0].a);
   B.span(m.cream, wx(bay.x0) - t / 2, y0, west[0].b, wx(bay.x0) + t / 2, y0 + H, wz(bay.z1));
   // east wall: solid on the floors, with the east entry on the parking level
+  B.span(m.cream, wx(bay.x1) - t / 2, y0 + H - SLAB, zN, wx(bay.x1) + t / 2, y0 + H, zl); // slab band over the glass
   if (levelId === 0) {
-    B.span(m.cream, wx(bay.x1) - t / 2, y0, wz(bay.z0), wx(bay.x1) + t / 2, y0 + H, west[0].a);
+    B.span(m.cream, wx(bay.x1) - t / 2, y0, zl, wx(bay.x1) + t / 2, y0 + H, west[0].a);
     B.span(m.cream, wx(bay.x1) - t / 2, y0, west[0].b, wx(bay.x1) + t / 2, y0 + H, wz(bay.z1));
     B.span(m.cream, wx(bay.x1) - t / 2, y0 + 2.4, west[0].a, wx(bay.x1) + t / 2, y0 + H, west[0].b);
   } else {
-    B.span(m.cream, wx(bay.x1) - t / 2, y0, wz(bay.z0), wx(bay.x1) + t / 2, y0 + H, wz(bay.z1));
+    B.span(m.cream, wx(bay.x1) - t / 2, y0, zl, wx(bay.x1) + t / 2, y0 + H, wz(bay.z1));
   }
   // wall between the lobby and the lift / services, with the lift door
-  const zl = wz(49.5);
   const lx0 = wx(B_.lift.x0), lx1 = wx(B_.lift.x1);
   const lw = 1.1, lcx = (lx0 + lx1) / 2;
   B.span(m.cream, wx(bay.x0), y0, zl - 0.1, lcx - lw / 2, y0 + H, zl + 0.1);
@@ -154,8 +174,18 @@ function lobbyAndCore(B: Batcher, Bg: Batcher, m: Mats, y0: number, H: number, l
   B.span(m.brass, lcx - lw / 2 - 0.06, y0, zl + 0.08, lcx - lw / 2, y0 + 2.2, zl + 0.14);
   B.span(m.brass, lcx + lw / 2, y0, zl + 0.08, lcx + lw / 2 + 0.06, y0 + 2.2, zl + 0.14);
   B.span(m.brass, lcx - lw / 2 - 0.06, y0 + 2.15, zl + 0.08, lcx + lw / 2 + 0.06, y0 + 2.22, zl + 0.14);
-  B.span(m.liftDoor, lcx - lw / 2, y0, zl + 0.02, lcx - 0.01, y0 + 2.15, zl + 0.06);
-  B.span(m.liftDoor, lcx + 0.01, y0, zl + 0.02, lcx + lw / 2, y0 + 2.15, zl + 0.06);
+  B.span(m.bronze, lcx - lw / 2, y0 + 2.08, zl + 0.015, lcx + lw / 2, y0 + 2.15, zl + 0.065);
+  B.span(m.stoneTread, lcx - lw / 2, y0, zl + 0.0, lcx + lw / 2, y0 + 0.012, zl + 0.1);
+  // two glass landing leaves that slide into the wall when the car is at this level
+  const leaves: Group[] = [];
+  const lh = 2.08;
+  for (const sgn of [-1, 1] as const) {
+    const leaf = glassLeaf(m, lw / 2 - 0.005, lh, sgn === -1 ? 1 : -1);
+    leaf.position.set(lcx + sgn * (lw / 4 + 0.0025), y0, zl + 0.04);
+    leaf.userData['closedX'] = leaf.position.x;
+    leaf.userData['dir'] = sgn;
+    leaves.push(leaf);
+  }
   // services door and partition
   B.span(m.woodDark, wx(30), y0, zl + 0.02, wx(31.2), y0 + 2.1, zl + 0.06);
   B.span(m.cream, wx(33.45) - 0.08, y0, wz(bay.z0), wx(33.45) + 0.08, y0 + H, zl);
@@ -183,6 +213,7 @@ function lobbyAndCore(B: Batcher, Bg: Batcher, m: Mats, y0: number, H: number, l
     B.span(m.concrete, wx(westX[0]), y0, wz(za), wx(westX[1]), y0 + j * rH, wz(zb));
   }
   stairDetail(B, Bg, m, { y0, H, n, L, rH, zTop, zBot, eastX, westX, ground: levelId === 0 });
+  return leaves;
 }
 
 /* ── the building ─────────────────────────────────────────────────────────────── */
@@ -191,6 +222,7 @@ export function buildBuilding(m: Mats): BuildingModel {
   const root = new Group();
   const levels: LevelRig[] = [];
   const accent: PointLight[] = [];
+  const landings: Group[][] = [];
   const x0 = wx(B_.plate.x0), x1 = wx(B_.plate.x1);
   const zF = wz(B_.plate.zGlass);
   const cx = (x0 + x1) / 2;
@@ -204,6 +236,7 @@ export function buildBuilding(m: Mats): BuildingModel {
     const y0 = info.baseY;
     const H = info.id === 0 ? B_.h.parking : B_.h.floor;
     const yTop = y0 + H;
+    let landing: Group[] = [];
 
     if (info.id === 0) {
       // paved plot, boundary walls on west / east / south, open to the road
@@ -220,7 +253,7 @@ export function buildBuilding(m: Mats): BuildingModel {
       B.span(m.brass, wx(0) - WALL / 2 - 0.01, bw, wz(0), wx(0) + WALL / 2 + 0.01, bw + 0.03, wz(2.6));
       B.span(m.brass, wx(pw) - WALL / 2 - 0.01, bw, wz(0), wx(pw) + WALL / 2 + 0.01, bw + 0.03, wz(6.4));
       columns(B, m, 0, H - SLAB);
-      lobbyAndCore(B, Bg, m, 0, H, 0);
+      landing = lobbyAndCore(B, Bg, m, 0, H, 0);
       const gw = groundWalls(B, Bg, m);
       gw.lights.forEach((l) => { g.add(l); accent.push(l); });
 
@@ -246,9 +279,9 @@ export function buildBuilding(m: Mats): BuildingModel {
       // planters along the frontage and two trees
       B.span(m.cream, wx(14), 0, wz(1.2), wx(36), 0.45, wz(1.2) + 0.45);
       B.span(m.green, wx(14) + 0.04, 0.45, wz(1.2) + 0.05, wx(36) - 0.04, 0.62, wz(1.2) + 0.4);
-      for (const tx of [17, 33]) g.add(tree(m, wx(tx), wz(9.5), 3.5));
+      for (const tx of [15, 26]) g.add(tree(m, wx(tx), wz(9.5), 3.5));
       // timber soffit under the first-floor slab, with the stair opening
-      const soff = new Mesh(new ShapeGeometry(plateShape(false, true)), m.timber);
+      const soff = new Mesh(new ShapeGeometry(plateShape(false, true, true)), m.timber);
       soff.rotation.x = Math.PI / 2;
       soff.position.y = H - SLAB - 0.004;
       // ShapeGeometry lies in XY; rotating +90° about X turns its normal downwards and maps shape y to world z
@@ -258,7 +291,7 @@ export function buildBuilding(m: Mats): BuildingModel {
       lightStrips(ceilingGroup, m, H - SLAB - 0.03);
     } else {
       const withHole = true;
-      const slab = slabMesh(plateShape(true, withHole), y0, SLAB, m.floor, m.concrete);
+      const slab = slabMesh(plateShape(true, withHole, true), y0, SLAB, m.floor, m.concrete);
       g.add(slab);
       const wh = { y0, h: H };
       // west wall, east wall (north and south of the recess), rear wall
@@ -273,12 +306,12 @@ export function buildBuilding(m: Mats): BuildingModel {
       B.span(m.glass, x0, y0, zF, x0 + 0.04, yTop - 0.55, wz(B_.rows[0]));
       B.span(m.glass, x1 - 0.04, y0, zF, x1, yTop - 0.55, wz(B_.rows[0]));
       columns(B, m, y0, H - SLAB);
-      lobbyAndCore(B, Bg, m, y0, H, info.id);
+      landing = lobbyAndCore(B, Bg, m, y0, H, info.id);
       facade(g, B, m, info.id, y0, yTop, x0, x1, zF, cx);
 
       // ceiling plane at the nominal height + light strips
       const cy = y0 + B_.h.ceiling;
-      const ceil = new Mesh(new ShapeGeometry(plateShape(false, true)), m.ceiling);
+      const ceil = new Mesh(new ShapeGeometry(plateShape(false, true, info.id < 3)), m.ceiling);
       ceil.rotation.x = Math.PI / 2; ceil.position.y = cy;
       ceil.receiveShadow = true;
       ceilingGroup.add(ceil);
@@ -287,6 +320,8 @@ export function buildBuilding(m: Mats): BuildingModel {
 
     B.build(g);
     Bg.build(g, { cast: false });
+    landing.forEach((l) => g.add(l));
+    landings.push(landing);
     g.add(ceilingGroup);
     g.add(furniture);
 
@@ -332,8 +367,42 @@ export function buildBuilding(m: Mats): BuildingModel {
   }
   levels[3].group.add(roof);
 
+  /* glass lift car: runs the height of the building, stopping at each level with the doors open */
+  const car = buildLiftCar(m);
+  const lcx = wx((B_.lift.x0 + B_.lift.x1) / 2);
+  car.group.position.set(lcx, 0, wz(49.5) - 0.16 - 0.775);
+  root.add(car.group);
+  const stops = LEVELS.map((l) => l.baseY);
+  const route = [0, 1, 2, 3, 2, 1];
+  const dwell = 3.6, travel = 2.8, seg = dwell + travel;
+  const ease = (k: number): number => k * k * (3 - 2 * k);
+  const animate = (t: number): void => {
+    const assembled = levels.every((l) => Math.abs(l.target) < 0.001 && Math.abs(l.offset) < 0.001);
+    car.group.visible = assembled;
+    if (!assembled) return;
+    const cycle = route.length * seg;
+    const ph = ((t % cycle) + cycle) % cycle;
+    const i = Math.floor(ph / seg), u = ph - i * seg;
+    const from = stops[route[i]], to = stops[route[(i + 1) % route.length]];
+    let y = from, open = 0, at = -1;
+    if (u < dwell) {
+      at = route[i];
+      open = ease(Math.max(0, Math.min(1, Math.min(u / 0.8, (dwell - u) / 0.8))));
+    } else {
+      y = from + (to - from) * ease((u - dwell) / travel);
+    }
+    car.group.position.y = y;
+    car.leaves[0].position.x = -car.closedX - car.openBy * open;
+    car.leaves[1].position.x = car.closedX + car.openBy * open;
+    landings.forEach((pair, k) => {
+      const o = k === at ? open : 0;
+      for (const leaf of pair) leaf.position.x = (leaf.userData['closedX'] as number) + (leaf.userData['dir'] as number) * 0.3 * o;
+    });
+  };
+  animate(0);
+
   return {
-    root, levels, roof, accent,
+    root, levels, roof, accent, animate,
     dispose: () => root.traverse((o) => { (o as Mesh).geometry?.dispose(); }),
   };
 }
