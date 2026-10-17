@@ -86,12 +86,10 @@ export class PlansComponent implements OnDestroy {
   }
 
   /** Teaser cards for the home page. */
-  get teasers() {
-    return [
+  readonly teasers = [
       { id: 'stilt', title: 'Parking level', value: fmt(PLAN.stilt.structureZone.sqft), unit: 'sq ft structure zone', lines: ['Open to the road, no gate', 'West and east entries to the lift lobby'], img: PLAN_LEVELS[0].views[1].item },
       { id: 'typical', title: 'Floors 1 – 3', value: fmt(PLAN.typical.floorArea.sqft), unit: 'sq ft on every floor', lines: ['One open plate, glass front on a 24 m road', 'Divide as required'], img: PLAN_LEVELS[1].views[1].item },
-    ];
-  }
+  ];
 
   selectLevel(i: number) { this.levelIdx = i; }
   openLevel(i: number) { this.selectLevel(i); }

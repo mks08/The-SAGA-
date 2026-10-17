@@ -14,7 +14,7 @@
           ? '-mx-[var(--container-px)] flex snap-x snap-mandatory overflow-x-auto scroll-pl-[var(--container-px)] px-[var(--container-px)] pb-4 scrollbar-none md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-5'
           : 'grid sm:grid-cols-2'" [attr.tabindex]="compact ? 0 : null" [attr.aria-label]="compact ? 'Business categories, scroll sideways' : null">
       <li *ngFor="let item of categories; let i = index" appReveal [style.--i]="i % 4"
-          class="spot group relative flex flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white p-5 transition-[transform,box-shadow,border-color] duration-500 ease-out hoverable:hover:-translate-y-1 hoverable:hover:border-brass-deep/40 hoverable:hover:shadow-lift md:p-6" [ngClass]="compact ? 'min-w-[78%] shrink-0 snap-start sm:min-w-[44%] md:min-w-0' : ''" appSpotlight>
+          class="spot group relative flex flex-col overflow-hidden rounded-3xl border border-ink/10 bg-white p-5 transition-[transform,box-shadow,border-color] duration-500 ease-out hoverable:hover:-translate-y-1 hoverable:hover:border-brass-deep/40 hoverable:hover:shadow-lift md:p-6" [ngClass]="compact ? 'min-w-[78%] shrink-0 snap-start max-md:!opacity-100 max-md:![transform:none] sm:min-w-[44%] md:min-w-0' : ''" appSpotlight>
         <span class="font-mono text-[0.64rem] tracking-[0.18em] text-brass-deep">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
         <h3 class="mt-2 font-display text-[1.55rem] leading-[1.1] text-ink">{{ item.label }}</h3>
         <p class="mt-2 text-[0.92rem] leading-relaxed text-ink/70">{{ compact ? item.short : item.description }}</p>
