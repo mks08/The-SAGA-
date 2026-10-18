@@ -437,9 +437,13 @@ export class Engine {
     this.state.level = s.level;
     this.state.explode = false;
     if (s.mode === 'outside' && s.orbit) {
-      this.state.level = null;
       this.orbitGoal.theta = s.orbit.theta; this.orbitGoal.phi = s.orbit.phi; this.orbitGoal.r = s.orbit.r;
-      this.orbitGoal.tx = wx(B.plate.x0 + 20); this.orbitGoal.ty = s.orbit.phi < 0.2 ? 5.5 : 6.8; this.orbitGoal.tz = 13;
+      if (s.level === null) {
+        this.orbitGoal.tx = wx(B.plate.x0 + 20); this.orbitGoal.ty = s.orbit.phi < 0.2 ? 5.5 : 6.8; this.orbitGoal.tz = 13;
+      } else {
+        // one floor opened from above: aim at the middle of its plate
+        this.orbitGoal.tx = wx(B.plate.x0 + 20.7); this.orbitGoal.ty = LEVELS[s.level].baseY + 0.5; this.orbitGoal.tz = wz(58);
+      }
     } else if (s.eye) {
       this.setEye(s.eye.x, s.eye.z, s.eye.yaw, s.eye.pitch ?? 0);
     }

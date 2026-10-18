@@ -156,12 +156,13 @@ export const TOUR_VIDEO = {
   durationSec: 88,
   uploadDate: '2026-10-15',
   title: 'SHRINEVA: drive-in from Ring Road and floor tour',
-  description: 'An illustrative map flight from Ring Road to Stadium Road in Bada Lalpur, Varanasi: the Trade Centre and Vardhan Hospital facing each other, NIFT, the Apollo hospital site and SHRINEVA, followed by an indicative 3D tour of the ground and first floors.',
+  description: 'An illustrative map flight from Ring Road to Stadium Road in Bada Lalpur, Varanasi: the Trade Centre and Vardhan Hospital facing each other, NIFT, the Apollo hospital site and SHRINEVA, followed by an indicative 3D tour of the ground floor and of the column-free first floor, from the front, from the back and from above.',
   chapters: [
     { id: 'drive', label: 'Drive in from Ring Road', start: 0 },
-    { id: 'nearby', label: 'Trade Centre · Vardhan Hospital', start: 12 },
-    { id: 'anchors', label: 'NIFT · Apollo · the plot', start: 19 },
-    { id: 'ground', label: 'Ground floor', start: 37 },
-    { id: 'first', label: 'First floor', start: 65 },
+    { id: 'nearby', label: 'Trade Centre · Vardhan Hospital', start: 11 },
+    { id: 'anchors', label: 'NIFT · Apollo · the plot', start: 17 },
+    { id: 'ground', label: 'Ground floor', start: 34 },
+    { id: 'first', label: 'First floor, column-free', start: 59 },
+    { id: 'aerial', label: 'Aerial view of the floor', start: 76 },
   ] as TourChapter[],
 };

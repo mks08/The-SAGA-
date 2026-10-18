@@ -22,7 +22,8 @@ PDFIMG = pathlib.Path(__file__).resolve().parent / 'img'   # PDF-only pictures, 
 TMP = pathlib.Path(os.environ.get('PDF_TMP', '/tmp/shrineva-pdf')); TMP.mkdir(parents=True, exist_ok=True)
 
 MAPS_URL = 'https://maps.app.goo.gl/UGerjaEDeKVnrnYw5'
-PH1, PH2, MAIL = '+91 73557 70378', '+91 81140 80609', 'leasing@shrineva.com'
+PH1, PH2 = '+91 73557 70378', '+91 81140 80609'
+MAIL = 'neerajsingh250@gmail.com'   # shown on the PDFs as of 18 Oct 2026 at the owner's instruction (the leasing@shrineva.com mailbox is not confirmed live)
 ADDR = 'D-15, Bada Lalpur, Chandmari, near Apollo Hospital &amp; NIFT, Varanasi, Uttar Pradesh 221003'
 DISCLAIMER_PLANS = ("Dimensions follow the architect&rsquo;s CAD plan dated 27.04.26 and the owner&rsquo;s brief. Areas are computed from the "
                     "dimensions shown and are not certified; certified areas will be issued by the architect. 3D views are indicative and subject to change "
@@ -268,23 +269,23 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
 <div style="display:flex;gap:7mm;margin-top:5mm"><div><div class="mono">Status</div><b>Under construction</b></div><div><div class="mono">Planned handover</div><b>March 2027</b></div><div><div class="mono">Each floor</div><b>3,520 sq ft</b></div></div></div>
 <div class="mono" style="position:absolute;right:16mm;bottom:12mm;color:#f4efe4">Illustrative render &middot; subject to change</div></section>""")
 
-    # 2 at a glance
+    # 2 at a glance: a tall night view of the whole building beside the facts (the 2000 px render, cropped to the building, not a thin banner)
+    night = juri(IMG / 'hero/hero-night-2000.webp', 90)
     pages.append(f"""<section class="page">{top(2,'At a glance')}
-<div style="display:grid;grid-template-columns:100mm 1fr;gap:14mm;margin-top:12mm">
-<div><div class="mono b">The opportunity</div><h2 style="margin-top:3mm">A new commercial address, <em>built around footfall.</em></h2>
-<p class="lead" style="max-width:96mm">Bada Lalpur is gaining a 400-bed hospital, a design campus and an operating trade centre on one road. SHRINEVA offers four open levels, a glass-fronted floor plate and a four-side open plot right there.</p>
-<div style="margin-top:7mm"><div class="mono" style="margin-bottom:2.4mm">Suited to</div><span class="tag">Offices</span><span class="tag">Restaurants &amp; fine dining</span><span class="tag">Clinics &amp; diagnostics</span><span class="tag">Retail &amp; showrooms</span><span class="tag">Studio &amp; serviced stay</span></div>
-<p class="small" style="margin-top:8mm">Use is subject to applicable approvals, building regulations and fire and safety requirements. Floor-wise modifications can be considered as per your requirement.</p></div>
-<div class="tiles" style="align-content:start">
+<div style="display:grid;grid-template-columns:121mm 1fr;gap:11mm;margin-top:8mm">
+<div class="img" style="height:152mm"><img src="{night}" alt="" style="object-position:50% 38%"><span class="cap">FA&Ccedil;ADE AT NIGHT &middot; ILLUSTRATIVE</span></div>
+<div><div class="mono b">The opportunity</div><h2 class="s" style="margin-top:2.6mm">A new commercial address, <em>built around footfall.</em></h2>
+<p class="lead" style="max-width:none;font-size:10pt">Bada Lalpur is gaining a 400-bed hospital, a design campus and an operating trade centre on one road. SHRINEVA offers four open levels, a glass-fronted floor plate and a four-side open plot right there.</p>
+<div class="tiles" style="margin-top:5mm;gap:3.4mm">
 <div class="card tile"><div class="n">3,520</div><div class="l">sq ft on every floor</div></div>
 <div class="card tile"><div class="n">Parking + 3</div><div class="l">four open levels</div></div>
 <div class="card tile"><div class="n">50 ft</div><div class="l">frontage on a 24 m road</div></div>
 <div class="card tile"><div class="n">4 sides</div><div class="l">open plot: light, air, access</div></div>
 <div class="card tile"><div class="n">60&ndash;70 m</div><div class="l">to Apollo and NIFT</div></div>
-<div class="card tile"><div class="n">Mar 2027</div><div class="l">planned handover</div></div>
-<div class="card" style="grid-column:1/-1;padding:5mm 6mm;display:grid;grid-template-columns:auto 1fr;gap:6mm;align-items:center"><div class="mono b">Status<br>15 Oct 2026</div><div style="font-size:9.4pt;color:var(--ink2)">Structure almost complete. Timeline as planned by the owner; subject to approvals and site conditions.</div></div>
-</div></div>
-<div class="img" style="position:absolute;left:16mm;right:16mm;bottom:17mm;height:50mm"><img src="{juri(IMG / 'renders/facade-night.webp')}" alt="" style="object-position:50% 62%"><span class="cap">FA&Ccedil;ADE AT NIGHT &middot; ILLUSTRATIVE</span></div>{foot(2)}</section>""")
+<div class="card tile"><div class="n">Mar 2027</div><div class="l">planned handover</div></div></div>
+<div class="card" style="margin-top:3.4mm;padding:4mm 5mm;display:grid;grid-template-columns:auto 1fr;gap:5mm;align-items:center"><div class="mono b">Status<br>15 Oct 2026</div><div style="font-size:9pt;color:var(--ink2)">Structure almost complete. Timeline as planned by the owner; subject to approvals and site conditions.</div></div>
+<div style="margin-top:5mm"><div class="mono" style="margin-bottom:2mm">Suited to</div><span class="tag">Offices</span><span class="tag">Restaurants &amp; fine dining</span><span class="tag">Clinics &amp; diagnostics</span><span class="tag">Retail &amp; showrooms</span><span class="tag">Studio &amp; serviced stay</span></div>
+<p class="small" style="margin-top:3mm">Use is subject to applicable approvals, building regulations and fire and safety requirements. Floor-wise modifications can be considered as per your requirement.</p></div></div>{foot(2)}</section>""")
 
     # 3 location
     mp = juri(IMG / 'map/location-3d.webp')
@@ -307,15 +308,15 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
 {foot(3)}</section>""")
 
     # 4 the building
-    r1 = juri(IMG / 'renders/facade-golden.webp'); r2 = juri(IMG / 'renders/entry-portal.webp'); r3 = juri(IMG / 'renders/parking-night.webp')
+    r1 = juri(IMG / 'renders/parking-night.webp', 90); r2 = juri(IMG / 'renders/entry-portal.webp', 90); r3 = juri(IMG / 'renders/east-shrine.webp', 90)
     feats = [('Vastu compliant','Planned to Vastu principles'),('Column-free structure','Open plates, columns kept to the edges'),('Fire safety','Provisions built in'),('24&times;7 safety','Round-the-clock security'),
              ('Fine dining','Planned for restaurants'),('Offices','Whole floors, one or many'),('4-side open plot','Light, air and access'),('Parking, internet, DG backup','Building services')]
     fh = ''.join(f"<div class='card ft2'><b>{a}</b><span>{b}</span></div>" for a, b in feats)
     pages.append(f"""<section class="page">{top(4,'The building')}
 <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:9mm;margin-top:9mm">
 <div><div class="mono b">The building</div><h2 class="s" style="margin-top:2.4mm">Open floors, <em>clearly planned.</em></h2>
-<div class="img" style="height:76mm;margin-top:5mm"><img src="{r1}" alt=""><span class="cap">FA&Ccedil;ADE AT GOLDEN HOUR</span></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-top:4mm"><div class="img" style="height:42mm"><img src="{r2}" alt=""><span class="cap">ENTRY PORTAL</span></div><div class="img" style="height:42mm"><img src="{r3}" alt=""><span class="cap">PARKING LEVEL AT NIGHT</span></div></div></div>
+<div class="img" style="height:86mm;margin-top:5mm"><img src="{r1}" alt=""><span class="cap">ENTRY COURT AT NIGHT</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-top:4mm"><div class="img" style="height:46mm"><img src="{r2}" alt=""><span class="cap">ENTRY PORTAL</span></div><div class="img" style="height:46mm"><img src="{r3}" alt=""><span class="cap">EAST WALK &middot; SMALL SHRINE</span></div></div></div>
 <div style="padding-top:6mm"><div class="mono" style="margin-bottom:3mm">Key features, as stated by the owner</div><div class="fl">{fh}</div>
 <p class="small" style="margin-top:5mm">As specified by the owner; subject to final design and approvals. Renders are indicative and subject to change for the better; finishes and surroundings are illustrative.</p></div></div>{foot(4)}</section>""")
 
@@ -348,20 +349,21 @@ p.lead{font-size:10.5pt;color:var(--ink2);max-width:118mm;margin-top:3.4mm}
 <div class="card"><div class="k">Clinic, retail, studio stay</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">Divide a floor as required. Patients, students and delegates pass this road all week.</p></div></div>
 <p class="small" style="position:absolute;left:16mm;right:16mm;bottom:15mm">Indicative 3D and walkthrough views, drawn from the architect&rsquo;s dimensions; the ground-floor court design is a concept and subject to change for the better. Uses are suggestions, not legal use restrictions, and depend on approvals.</p>{foot(6)}</section>""")
 
-    # 7 next steps
+    # 7 next steps: text and cards left, a properly cropped golden-hour view under them, contact card right
+    hero7 = juri(IMG / 'hero/hero-golden-2000.webp', 90)
     pages.append(f"""<section class="page">{top(7,'Next steps')}
-<div style="display:grid;grid-template-columns:1.1fr 1fr;gap:14mm;margin-top:12mm">
+<div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12mm;margin-top:9mm">
 <div><div class="mono b">Next steps</div><h2 style="margin-top:3mm">Let&rsquo;s plan your floor <em>together.</em></h2>
-<p class="lead" style="max-width:112mm">The structure is almost complete and floor-wise modifications can be considered, so now is the time to shape the space around your requirement.</p>
-<div class="stp" style="grid-template-columns:1fr 1fr 1fr;margin-top:8mm">
+<p class="lead" style="max-width:128mm">The structure is almost complete and floor-wise modifications can be considered, so now is the time to shape the space around your requirement.</p>
+<div class="stp" style="grid-template-columns:1fr 1fr 1fr;margin-top:6mm">
 <div class="card"><div class="k">Now</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">Enquiries and site visits by appointment.</p></div>
 <div class="card"><div class="k">On request</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">Certified areas, approvals, services and a term sheet, once finalised.</p></div>
-<div class="card"><div class="k">March 2027</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">Planned handover, subject to approvals and site conditions.</p></div></div></div>
-<div class="card" style="padding:9mm 10mm"><div class="mono b">Leasing desk</div>
+<div class="card"><div class="k">March 2027</div><p style="margin-top:1.4mm;font-size:8.4pt;color:var(--ink2)">Planned handover, subject to approvals and site conditions.</p></div></div>
+<div class="img" style="height:56mm;margin-top:6mm"><img src="{hero7}" alt="" style="object-position:50% 74%"><span class="cap">SHRINEVA &middot; ILLUSTRATIVE RENDER</span></div></div>
+<div class="card" style="padding:9mm 10mm;align-self:start"><div class="mono b">Leasing desk</div>
 <div class="serif" style="font-size:24pt;margin-top:2mm">{PH1}</div><div class="serif" style="font-size:24pt">{PH2}</div>
 <div style="margin-top:3mm;font-weight:700;color:var(--brass)">{MAIL}</div><p style="font-size:8.6pt;color:var(--ink2);margin-top:2mm">WhatsApp: {PH2}</p>
 <div class="rule" style="margin:5mm 0"></div><div style="display:grid;grid-template-columns:1fr auto;gap:6mm;align-items:center"><p style="font-size:8.6pt;color:var(--ink2)">{ADDR}<br><span class="small">Scan to open the exact plot in Google Maps.</span></p><div class="qr">{qr_svg(MAPS_URL)}</div></div></div></div>
-<div class="img" style="position:absolute;left:16mm;right:16mm;bottom:24mm;height:46mm"><img src="{juri(IMG / 'renders/facade-golden.webp')}" alt="" style="object-position:50% 70%"><span class="cap">SHRINEVA &middot; ILLUSTRATIVE RENDER</span></div>
 <p class="small" style="position:absolute;left:16mm;right:16mm;bottom:15mm">This dossier is for information only and is not an offer or a contract. Areas, dimensions, specifications, timelines and images are indicative, as stated by the owner, and subject to change, approvals and final documents.</p>{foot(7)}</section>""")
 
     html = f"<!doctype html><meta charset='utf-8'><title>SHRINEVA &mdash; Leasing dossier</title><style>{font_css()}{css}</style>" + ''.join(pages)

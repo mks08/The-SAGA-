@@ -42,7 +42,7 @@ Output: `dist/shrineva/`. `postbuild` writes, from the same route list and domai
 
 ### Short film
 
-`src/assets/video/shrineva-tour.mp4` (about 1 min 27 s, H.264, no sound) and its poster `shrineva-tour-poster.webp`. It shows an illustrative drive from Ring Road past Vardhan Hospital (position approximate), the Trade Centre, NIFT and the Apollo site to the plot, then the ground and first floors in the indicative 3D model. The home page shows only the poster until a visitor presses play (`preload="none"`), so it costs no bandwidth otherwise. Set `TOUR_VIDEO.available` to `false` to hide the section; change `chapters` (start seconds) if the file is re-cut. The film was rendered under a software renderer from `window.__wt`; re-render after changing the 3D model.
+`src/assets/video/shrineva-tour.mp4` (about 1 min 28 s, H.264, no sound) and its poster `shrineva-tour-poster.webp`. It shows an illustrative drive from Ring Road past Vardhan Hospital (position approximate), the Trade Centre, NIFT and the Apollo site to the plot, then the ground floor and the column-free first floor (from the front, from the back and from above) in the indicative 3D model. The home page shows only the poster until a visitor presses play (`preload="none"`), so it costs no bandwidth otherwise. Set `TOUR_VIDEO.available` to `false` to hide the section; change `chapters` (start seconds) if the file is re-cut. The film was rendered under a software renderer from `window.__wt`; re-render after changing the 3D model.
 
 ### Look and feel
 

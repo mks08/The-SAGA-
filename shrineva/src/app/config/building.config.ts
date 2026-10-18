@@ -179,14 +179,24 @@ export const TOUR: TourStop[] = [
     text: 'An open glass lift, visible from the court, and a railed staircase. West and east entries lead to the same lobby.', dwell: 5000,
   },
   {
-    id: 'floor', title: 'A whole floor', mode: 'inside', level: 2,
-    eye: { x: 24, z: 52, yaw: -62 * D, pitch: -0.03 },
-    text: 'One open plate, 3,519.75 sq ft. Divide it as your business needs.', dwell: 5400,
+    id: 'floor', title: 'Column-free floor', mode: 'inside', level: 1,
+    eye: { x: 22, z: 49, yaw: -3 * D, pitch: -0.02 },
+    text: 'Floor 1 is one open plate of 3,519.75 sq ft. Columns stay at the edges, so the floor between is clear. Divide it as your business needs.', dwell: 6200,
   },
   {
     id: 'glass', title: 'The road view', mode: 'inside', level: 1,
     eye: { x: 14, z: 19, yaw: 14 * D, pitch: 0.02 },
     text: 'Floor-to-ceiling glass on the road, with the Apollo and NIFT sites across the way.', dwell: 5400,
+  },
+  {
+    id: 'rear', title: 'From the back', mode: 'inside', level: 1,
+    eye: { x: 24, z: 93, yaw: 3 * D, pitch: 0 },
+    text: 'The same floor from the rear wall: the full depth is open, all the way to the glass front.', dwell: 5800,
+  },
+  {
+    id: 'aerial', title: 'Aerial view of the floor', mode: 'outside', level: 1,
+    orbit: { theta: -62 * D, phi: 1.02, r: 48 },
+    text: 'The upper floors lifted away: one open plate, the lift and stair core, and columns kept to the edges.', dwell: 6200,
   },
   {
     id: 'sky', title: 'Parking + 3', mode: 'outside', level: null,
