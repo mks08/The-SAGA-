@@ -9,12 +9,7 @@
   <div class="container-srineva flex h-[var(--nav-h)] items-center justify-between gap-4">
     <!-- Logo -->
     <a routerLink="/" class="group flex items-center gap-3 min-h-[44px]" (click)="closeMenu()">
-      <img src="assets/images/logo-mark.webp" alt="" width="44" height="44" loading="eager"
-           class="size-11 rounded-xl ring-1 ring-brass/40 transition-transform duration-500 ease-out group-hover:rotate-[-4deg] group-hover:scale-105">
-      <span class="flex flex-col leading-none">
-        <span class="font-display text-[1.55rem] tracking-[0.14em] text-paper">SHRINEVA</span>
-        <span class="mt-1 whitespace-nowrap font-mono text-[0.56rem] uppercase tracking-[0.2em] text-brass-soft/90">Commercial space · Varanasi</span>
-      </span>
+      <app-brand-logo variant="lockup" [tagline]="true" class="transition-transform duration-500 ease-out group-hover:scale-[1.02]"></app-brand-logo>
       <span class="sr-only">, home</span>
     </a>
 

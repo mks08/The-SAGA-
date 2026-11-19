@@ -4,8 +4,7 @@
     <div class="grid gap-9 lg:grid-cols-[1.25fr_1fr_1fr]">
       <div appReveal>
         <a routerLink="/" class="inline-flex min-h-[44px] items-center gap-3">
-          <img src="assets/images/logo-mark.webp" alt="" width="44" height="44" class="size-11 rounded-xl ring-1 ring-brass/40" loading="lazy">
-          <span class="font-display text-[1.9rem] tracking-[0.14em]">{{ property.brand.name }}</span>
+          <app-brand-logo variant="lockup" [tagline]="true"></app-brand-logo>
         </a>
         <p class="mt-3 max-w-sm text-[0.92rem] leading-relaxed text-paper/70">
           Commercial space for lease in Bada Lalpur, Varanasi: three open floors of {{ area.gross }} each, opposite the upcoming Apollo Hospital.
@@ -23,16 +22,10 @@
         <h2 class="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-brass-soft">Explore</h2>
         <ul class="mt-3 grid grid-cols-2 gap-x-6 text-[0.9rem]">
           <li><a routerLink="/" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Home</a></li>
-          <li><a routerLink="/property" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Property</a></li>
-          <li><a routerLink="/walkthrough" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">3D Walkthrough</a></li>
+          <li><a routerLink="/walkthrough" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Walkthrough</a></li>
           <li><a routerLink="/floor-plans" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floor Plans</a></li>
-          <li><a routerLink="/growth" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Nearby Projects</a></li>
-          <li><a routerLink="/location-contact" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location</a></li>
-          <li><a routerLink="/gallery" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">3D Renders</a></li>
-          <li><a routerLink="/spaces" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floors</a></li>
-          <li><a routerLink="/business-fit" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Business Fit</a></li>
+          <li><a routerLink="/location-contact" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location &amp; Visit</a></li>
           <li><a routerLink="/leasing" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Leasing</a></li>
-          <li><a routerLink="/brokers" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">For Brokers</a></li>
           <li><a routerLink="/healthcare-diagnostic-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Healthcare &amp; Diagnostics</a></li>
           <li><a routerLink="/office-bank-coaching-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Office, Bank &amp; Coaching</a></li>
           <li><a routerLink="/retail-showroom-cafe-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Retail, Showroom &amp; Café</a></li>
@@ -46,29 +39,14 @@
           <li><a [href]="'tel:' + property.contact.phoneE164" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phoneDisplay }}</a></li>
           <li><a [href]="'tel:' + property.contact.phone2E164" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phone2Display }}</a></li>
           <li><a [href]="waHref" target="_blank" rel="noopener" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">WhatsApp leasing ↗</a></li>
-          <li><a [href]="dossier.href" target="_blank" rel="noopener" download class="flex min-h-[40px] items-center font-semibold text-paper/85 hover:text-brass-soft">Leasing dossier (PDF) ↓</a></li>
+          <li><a [href]="brochure.href" target="_blank" rel="noopener" download class="flex min-h-[40px] items-center font-semibold text-paper/85 hover:text-brass-soft">Brochure (PDF) ↓</a></li>
         </ul>
-      </div>
-    </div>
-
-    <!-- Small location strip: the 3D map and the distances -->
-    <div appReveal class="mt-8 grid items-center gap-4 rounded-2xl border border-paper/10 bg-ink-3/70 p-3 sm:grid-cols-[13rem_1fr] md:p-3.5" aria-label="Where SHRINEVA is">
-      <a [href]="links.directions" target="_blank" rel="noopener" class="block overflow-hidden rounded-xl" aria-label="Get directions to SHRINEVA">
-        <img [src]="map.thumb" [alt]="map.alt" width="760" height="400" loading="lazy" decoding="async" class="aspect-[2/1] w-full object-cover object-[60%_55%]">
-      </a>
-      <div>
-        <ul class="grid gap-x-6 gap-y-0.5 text-[0.82rem] sm:grid-cols-2" aria-label="Distances from SHRINEVA">
-          <li *ngFor="let r of rows" class="flex items-baseline justify-between gap-3 border-b border-paper/10 py-1.5">
-            <span class="min-w-0 truncate text-paper/75">{{ r.name }}</span><span class="shrink-0 font-bold text-paper">{{ r.value }}</span>
-          </li>
-        </ul>
-        <a [href]="links.directions" target="_blank" rel="noopener" class="mt-1.5 inline-flex min-h-[40px] items-center text-[0.82rem] font-bold text-brass-soft hover:underline">Get directions ↗</a>
       </div>
     </div>
 
     <p class="mt-6 max-w-4xl text-[0.72rem] leading-relaxed text-paper/70">
-      Areas are computed from the architect's dimensions and are not certified. 3D images and the 3D walkthrough are indicative and subject to change for the better; finishes, fit-out and surroundings are illustrative.
-      Project status, key features and timelines are as stated by the owner. Development references are from public sources reviewed on 15 October 2026 and may change. Nothing on this site is an offer.
+      Areas are approximate and subject to final measurement. 3D renders are indicative and subject to change; finishes, signage, planting and surroundings are illustrative, and site photographs show construction progress.
+      The Apollo Hospital opposite is upcoming and under construction. Use of any floor is subject to approvals. Nothing on this site is an offer.
     </p>
 
     <div class="mt-5 flex flex-col gap-1 border-t border-paper/10 pt-4 text-[0.78rem] text-paper/70 sm:flex-row sm:items-center sm:justify-between">

@@ -1,129 +1,98 @@
-<section id="plans" data-rail="Floors" class="relative bg-paper-2 py-9 md:py-14" [class.!pt-4]="!showIntro" aria-labelledby="plans-title">
+<section id="plans" data-rail="Floors" class="relative bg-paper py-9 md:py-14" [class.!pt-4]="!showIntro" aria-labelledby="plans-title">
   <div class="container-srineva">
-    <div *ngIf="showIntro" appReveal class="mb-6 flex flex-col gap-3 md:mb-9 md:flex-row md:items-end md:justify-between">
+    <div *ngIf="showIntro" appReveal class="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-end md:justify-between">
       <div class="max-w-xl">
         <span class="eyebrow">Floor plans</span>
         <h2 id="plans-title" class="font-display text-display-md text-ink">Open floors, <em class="text-brass-deep">clearly drawn.</em></h2>
+        <p class="mt-2 text-[0.94rem] text-ink/65">One ground level and three identical upper floors, as drawn by the architect.</p>
       </div>
       <a routerLink="/floor-plans" class="text-link shrink-0 self-start md:self-auto" (click)="track('plans_all_click')">All plans and areas →</a>
     </div>
     <h2 *ngIf="!showIntro" id="plans-title" class="sr-only">Floor plans and areas</h2>
 
-    <!-- ── Home teaser: two short cards ── -->
+    <!-- Home teaser: two cards -->
     <ng-container *ngIf="compact; else full">
       <ul class="grid gap-4 md:grid-cols-2 md:gap-5">
         <li *ngFor="let t of teasers; let i = index" appReveal [style.--i]="i" class="overflow-hidden rounded-3xl border border-ink/10 bg-white">
           <a routerLink="/floor-plans" (click)="track('plans_teaser_click')" class="group block">
             <div class="overflow-hidden bg-paper-2">
-              <img [src]="t.img.thumb" [alt]="t.img.alt" width="640" height="427" loading="lazy" decoding="async" class="aspect-[3/2] w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]">
+              <img [src]="t.img.thumb" [alt]="t.img.alt" width="640" height="401" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]">
             </div>
             <div class="flex items-end justify-between gap-4 p-4 md:p-5">
               <div class="min-w-0">
                 <h3 class="font-display text-[1.45rem] leading-tight text-ink">{{ t.title }}</h3>
-                <p class="mt-1 text-[0.86rem] leading-snug text-ink/70">{{ t.lines[0] }}.</p>
+                <p class="mt-1 text-[0.86rem] leading-snug text-ink/70">{{ t.unit }}</p>
               </div>
-              <p class="shrink-0 text-right"><span class="block font-display text-[1.7rem] leading-none text-brass-deep">{{ t.value }}</span><span class="mt-1 block font-mono text-[0.6rem] uppercase tracking-[0.12em] text-ink/70">{{ t.unit }}</span></p>
+              <p class="shrink-0 text-right font-display text-[1.45rem] leading-none text-brass-deep">{{ t.value }}</p>
             </div>
           </a>
         </li>
       </ul>
       <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
-        <a routerLink="/floor-plans" class="btn-outline btn-sm" (click)="track('plans_all_click')">See plans and areas <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="text-link !mr-0" [href]="pdf" target="_blank" rel="noopener" download (click)="track('plan_pdf_download')">Download plans (PDF) ↓</a>
+        <a routerLink="/floor-plans" class="btn-outline btn-sm" (click)="track('plans_all_click')">See the plans <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="text-link !mr-0" [href]="pdf" target="_blank" rel="noopener" download (click)="track('plan_pdf_download')">Download floor plans (PDF) ↓</a>
       </div>
     </ng-container>
 
-    <!-- ── Full: level tabs, vector drawing, areas ── -->
+    <!-- Full: level tabs, plan or 3D view, areas -->
     <ng-template #full>
-      <div class="mb-5 inline-flex rounded-full border border-ink/15 bg-white p-1" role="tablist" aria-label="Choose a level">
-        <button type="button" role="tab" *ngFor="let l of levels; let i = index" [id]="'plan-tab-' + l.id"
+      <div class="mb-5 inline-flex rounded-full border border-ink/15 bg-white p-1" role="group" aria-label="Choose a level">
+        <button type="button" *ngFor="let l of levels; let i = index" [id]="'plan-tab-' + l.id"
                 class="min-h-[40px] rounded-full px-5 text-[0.86rem] font-bold transition-colors"
                 [ngClass]="i === levelIdx ? 'bg-ink text-paper' : 'text-ink/70 hover:text-ink'"
-                [attr.aria-selected]="i === levelIdx" aria-controls="plan-panel" (click)="selectLevel(i)">{{ l.tab }}</button>
+                [attr.aria-pressed]="i === levelIdx" (click)="selectLevel(i)">{{ l.tab }}</button>
       </div>
 
-      <div id="plan-panel" role="tabpanel" [attr.aria-labelledby]="'plan-tab-' + level.id" class="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
-        <!-- Media: 2D plan or 3D cutaway -->
+      <div id="plan-panel" class="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
         <div appReveal class="self-start rounded-3xl border border-ink/10 bg-white p-3 shadow-soft sm:p-4">
           <div class="mb-3 flex items-center justify-between gap-3">
-            <div class="inline-flex rounded-full bg-paper-2 p-1" role="tablist" aria-label="Choose a view">
-              <button type="button" role="tab" *ngFor="let v of level.views; let j = index"
+            <div class="inline-flex rounded-full bg-paper-2 p-1" role="group" aria-label="Choose a view">
+              <button type="button" *ngFor="let v of level.views; let j = index"
                       class="min-h-[40px] whitespace-nowrap rounded-full px-4 text-[0.82rem] font-bold transition-colors"
                       [ngClass]="j === viewIdx ? 'bg-white text-ink shadow-sm' : 'text-ink/70 hover:text-ink'"
-                      [attr.aria-selected]="j === viewIdx" (click)="selectView(j)">{{ v.label }}</button>
+                      [attr.aria-pressed]="j === viewIdx" (click)="selectView(j)">{{ v.label }}</button>
             </div>
             <span class="hidden font-mono text-[0.64rem] uppercase tracking-[0.14em] text-ink/70 sm:inline">{{ level.title }}</span>
           </div>
-          <button type="button" class="group relative block w-full overflow-hidden rounded-2xl bg-paper focus-visible:outline-offset-2" (click)="open(view.item); track('plan_open')">
+          <button type="button" class="group relative block w-full overflow-hidden rounded-2xl bg-paper focus-visible:outline-offset-2" (click)="open(view.item); track('plan_open')" [attr.aria-label]="view.item.title + '. Enlarge'">
             <img [src]="view.item.src" [alt]="view.item.alt" [attr.width]="view.item.width" [attr.height]="view.item.height" loading="lazy" decoding="async"
-                 class="mx-auto block transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                 class="mx-auto block transition-transform duration-700 ease-out group-hover:scale-[1.015]"
                  [ngClass]="view.id === '3d' ? 'w-full' : 'max-h-[78vh] w-auto max-w-full'">
             <span class="pointer-events-none absolute bottom-3 right-3 rounded-full bg-ink/80 px-3 py-1.5 font-mono text-[0.66rem] uppercase tracking-[0.12em] text-paper backdrop-blur" aria-hidden="true">Enlarge ⤢</span>
           </button>
           <p class="mt-3 px-1 text-[0.82rem] text-ink/70">{{ view.item.caption }}</p>
         </div>
 
-        <!-- Numbers -->
         <div class="flex flex-col gap-4">
           <div appReveal [style.--i]="1" class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
-            <p class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-brass-deep">{{ headline.label }}</p>
-            <p class="mt-1 font-display text-[clamp(2.4rem,5vw,3.3rem)] leading-none text-ink">{{ headline.value }}</p>
-            <p class="mt-2 text-[0.88rem] text-ink/70">{{ headline.sub }}</p>
+            <p class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-brass-deep">{{ now.label }}</p>
+            <p class="mt-1 font-display text-[clamp(2.2rem,4.6vw,3rem)] leading-none text-ink">{{ now.value }}</p>
+            <p class="mt-2 text-[0.9rem] text-ink/70">{{ now.sub }}</p>
           </div>
 
-          <div appReveal [style.--i]="2" class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
-            <table class="w-full text-left text-[0.88rem]">
-              <caption class="sr-only">Area statement, {{ level.title }}</caption>
-              <thead>
-                <tr class="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink/70">
-                  <th scope="col" class="pb-2 font-normal">Item</th><th scope="col" class="pb-2 pl-3 text-right font-normal">Sq ft</th><th scope="col" class="pb-2 pl-3 text-right font-normal">Sq m</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-ink/10">
-                <tr *ngFor="let r of rowsNow" [class.font-bold]="r.strong" [class.text-ink]="r.strong" class="text-ink/75">
-                  <th scope="row" class="py-2.5 pr-3 font-normal" [class.!font-bold]="r.strong">{{ r.label }}</th>
-                  <td class="whitespace-nowrap py-2.5 pl-3 text-right tabular-nums">{{ r.sqft }}</td><td class="whitespace-nowrap py-2.5 pl-3 text-right tabular-nums">{{ r.sqm }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <dl appReveal [style.--i]="3" class="grid gap-x-6 gap-y-3 rounded-3xl border border-ink/10 bg-white p-5 sm:grid-cols-2 md:p-6">
-            <div *ngFor="let f of factsNow" class="border-b border-ink/10 pb-2">
+          <dl appReveal [style.--i]="2" class="grid gap-x-6 gap-y-3 rounded-3xl border border-ink/10 bg-white p-5 sm:grid-cols-2 md:p-6">
+            <div *ngFor="let f of now.facts" class="border-b border-ink/10 pb-2">
               <dt class="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink/70">{{ f.label }}</dt>
-              <dd class="mt-0.5 text-[0.9rem] font-semibold text-ink">{{ f.value }}</dd>
+              <dd class="mt-0.5 text-[0.92rem] font-semibold text-ink">{{ f.value }}</dd>
             </div>
           </dl>
 
-          <details appReveal [style.--i]="4" class="group rounded-3xl border border-ink/10 bg-white p-5 md:px-6">
-            <summary class="flex min-h-[32px] cursor-pointer list-none items-center justify-between gap-3 font-display text-[1.25rem] text-ink [&::-webkit-details-marker]:hidden">
-              How to read the areas <span class="text-brass-deep transition-transform group-open:rotate-45" aria-hidden="true">+</span>
-            </summary>
-            <dl class="mt-3 grid gap-3 text-[0.88rem]">
-              <div><dt class="font-bold text-ink">Floor area (gross)</dt><dd class="text-ink/70">{{ plan.typical.floorArea.sqft | number:'1.2-2' }} sq ft per floor, computed from the architect's dimensions.</dd></div>
-              <div><dt class="font-bold text-ink">Carpet area</dt><dd class="text-ink/70">{{ plan.typical.carpet.sqft | number:'1.2-2' }} sq ft per floor: floor area less the lift and stair bay and the external walls. Computed, not certified.</dd></div>
-              <div><dt class="font-bold text-ink">Leasable area</dt><dd class="text-ink/70">Not yet defined. It depends on the measurement basis agreed in the lease and will be confirmed with the certified areas.</dd></div>
-            </dl>
-          </details>
-
-          <p *ngIf="!isStilt" class="px-1 text-[0.8rem] text-ink/70">Handover condition, clear ceiling height, toilets and pantry are to be confirmed and agreed with each occupier.</p>
-
-          <div class="mt-auto flex flex-col gap-3 sm:flex-row">
-            <a class="btn-primary" [href]="pdf" target="_blank" rel="noopener" download (click)="track('plan_pdf_download')">Download plans (PDF) <span aria-hidden="true">↓</span></a>
-            <button type="button" class="btn-outline" (click)="openPopup()">Ask about availability</button>
+          <div appReveal [style.--i]="3" class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
+            <p class="font-display text-[1.25rem] text-ink">Take the plans with you</p>
+            <p class="mt-1 text-[0.88rem] text-ink/70">The floor plans as a short PDF, or the full six-page brochure.</p>
+            <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+              <a class="btn-primary" [href]="pdf" target="_blank" rel="noopener" download (click)="track('plan_pdf_download')">Floor plans (PDF) <span aria-hidden="true">↓</span></a>
+              <a class="btn-outline" [href]="brochure.href" target="_blank" rel="noopener" download (click)="track('brochure_download')">Full brochure ({{ brochure.size }})</a>
+            </div>
           </div>
+
+          <button type="button" class="btn-outline self-start" (click)="openPopup()">Ask about availability</button>
         </div>
       </div>
-
-
-      <button type="button" appReveal class="group mx-auto mt-6 block w-full max-w-3xl overflow-hidden rounded-3xl border border-ink/10 bg-white p-3 text-left md:p-4" (click)="open(topView); track('plan_top_view_open')">
-        <img [src]="topView.thumb" [alt]="topView.alt" width="640" height="662" loading="lazy" decoding="async" class="w-full rounded-2xl object-contain transition-transform duration-700 group-hover:scale-[1.01]">
-        <span class="mt-3 flex items-center justify-between gap-3 px-1 text-[0.82rem] text-ink/70"><span><strong class="text-ink">{{ topView.title }}.</strong> {{ topView.caption }}</span><span class="shrink-0 font-mono text-[0.64rem] uppercase tracking-[0.12em] text-brass-deep" aria-hidden="true">Enlarge ⤢</span></span>
-      </button>
     </ng-template>
 
-    <p *ngIf="!compact" class="mt-6 text-[0.76rem] leading-relaxed text-ink/70">{{ plan.note }}</p>
+    <p *ngIf="!compact" class="mt-6 max-w-4xl text-[0.76rem] leading-relaxed text-ink/70">Areas are approximate and subject to final measurement. Plans and 3D views are indicative, may change, and are not for construction. The floors are offered as open shells; layout, ceiling height and handover condition are agreed with each tenant.</p>
   </div>
 </section>
 
-<app-lightbox [items]="gallery" [index]="lightboxIndex" (indexChange)="lightboxIndex = $event" (closed)="lightboxIndex = null"></app-lightbox>
+<app-lightbox [items]="gallery" [index]="lightboxIndex" [disclaimer]="'Indicative plan, subject to change. Areas are approximate.'" (indexChange)="lightboxIndex = $event" (closed)="lightboxIndex = null"></app-lightbox>

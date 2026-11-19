@@ -1,8 +1,8 @@
 /**
- * SHRINEVA — image catalogue (renders and architect's drawings).
- * Every render is an indicative 3D visualisation and is subject to change.
+ * SHRINEVA — image catalogue: the finalised 3D renders, the architect's floor plans (as printed in the brochure),
+ * the real photographs of the building as it stands today, the location map and the brochure download.
+ * Every render is an indicative 3D visualisation and is subject to change. Photographs show construction progress.
  */
-import { PLAN } from './property.config';
 
 export interface MediaItem {
   id: string;
@@ -23,146 +23,128 @@ export interface MediaItem {
 
 const R = 'assets/images/renders/';
 const P = 'assets/images/plans/';
+const F = 'assets/images/photos/';
+const H = 'assets/images/hero/';
 
-const render = (id: string, group: string, title: string, caption: string, alt: string, height = 639): MediaItem => ({
-  id, group, title, caption, alt,
-  src: `${R}${id}.webp`,
-  thumb: `${R}${id}-sm.webp`,
-  width: 1024,
-  height,
+/** Hero: the finalised building by day and by night (960 / 1920 px wide, same framing). */
+export const HERO_VIEWS = [
+  {
+    id: 'day', label: 'Day',
+    src960: `${H}hero-day-960.webp`, src1920: `${H}hero-day-1920.webp`,
+    alt: 'Indicative 3D render of the SHRINEVA commercial building by day: open ground level and three floors with glass fronts and a sandstone-clad side, Bada Lalpur, Varanasi',
+  },
+  {
+    id: 'night', label: 'Night',
+    src960: `${H}hero-night-960.webp`, src1920: `${H}hero-night-1920.webp`,
+    alt: 'Indicative 3D render of the SHRINEVA commercial building at night: lit floors, glass fronts and illuminated crown, Bada Lalpur, Varanasi',
+  },
+] as const;
+export const HERO_W = 1920;
+export const HERO_H = 995;
+
+const render = (id: string, title: string, caption: string, alt: string, height = 829): MediaItem => ({
+  id, group: 'Walkthrough', title, caption, alt,
+  src: `${R}${id}.webp`, thumb: `${R}${id}-sm.webp`, width: 1600, height,
 });
 
-export const RENDER_GROUPS = ['Exterior', 'Parking-level court', 'Lift lobby'];
-
-export const RENDERS: MediaItem[] = [
-  render('facade-golden', 'Exterior', 'Façade at golden hour', 'The façade when the sun goes low.',
-    'Indicative render of the SHRINEVA façade at golden hour: parking plus three floors with glass fronts, timber screens and the SHRINEVA sign, Bada Lalpur, Varanasi'),
-  render('facade-night', 'Exterior', 'Façade at night', 'Warm and secure: lit ledges, brass lockup, crown blade.',
-    'Indicative night render of the lit SHRINEVA façade with brass lettering and illuminated floors'),
-  render('entry-portal', 'Exterior', 'East entry portal', 'The primary entrance: flat canopy with teak-slat soffit.',
-    'Indicative render of the SHRINEVA east entry portal with a flat canopy and teak-slat soffit', 489),
-  render('parking-night', 'Parking-level court', 'Parking-level court at night', 'Lit timber soffit, backlit ghat mural, light slots on the west wall.',
-    'Indicative render of the open parking-level court at night with a lit timber soffit, planters and a backlit ghat mural'),
-  render('east-mural', 'Parking-level court', 'Ghat mural wall', 'Backlit sandstone artwork in a Ganga-wave pattern.',
-    'Indicative render of a backlit sandstone mural with Varanasi ghats and a Ganga-wave pattern on the east wall'),
-  render('east-shrine', 'Parking-level court', 'Hanuman ji shrine', 'Small temple on the east wall, opposite the lift-lobby entrance.',
-    'Indicative render of a small Hanuman ji shrine set into the east wall of the parking-level walkway'),
-  render('west-side', 'Parking-level court', 'West side', 'Same palette, quieter: the wall steps up and gets heavier towards the south.',
-    'Indicative render of the quieter west-side walkway with sandstone columns and slot lighting'),
-  render('east-lobby', 'Lift lobby', 'Lift lobby entrance', 'Open to the walk: stair, lift and stone floor with brass inlay.',
-    'Indicative render of the lift lobby entrance with a stair, lift and stone floor with brass inlay'),
-  render('lift-lobby', 'Lift lobby', 'Lift lobby', 'Brass-framed lift and a stone floor with inlay.',
-    'Indicative render of the brass-framed passenger lift in the ground-level lift lobby'),
+/**
+ * The guided walkthrough: from the road to the upper floor. Final renders, unretouched; order tells the story.
+ * `day` marks the daylight view so the tour can show a small Day / Night chip.
+ */
+export const TOUR_STOPS: MediaItem[] = [
+  render('facade-day', 'From the road, by day', 'The building from Stadium Road: open ground level, three glass floors and a sandstone side wall.',
+    'Indicative 3D render of the SHRINEVA building seen from the road by day, with three glass floors above an open ground level'),
+  render('facade-night', 'From the road, at night', 'Lit floors and a lit crown, so the building reads clearly after dark.',
+    'Indicative 3D render of the SHRINEVA building at night with lit glass floors and an illuminated crown'),
+  render('entrance', 'The entrance', 'A planted forecourt and an entrance sign at the foot of the building.',
+    'Indicative 3D render of the SHRINEVA entrance with a planted forecourt, sign pylon and lit canopy'),
+  render('east-walkway', 'East walkway', 'A covered, lit walkway along the east side of the ground level.',
+    'Indicative 3D render of the covered east walkway with a timber-slat ceiling, stone cladding and a planted wall'),
+  render('ground-level', 'The ground level', 'Open ground level with parking for 12+ cars and clear sight lines to the road.',
+    'Indicative 3D render of the open ground level with columns, linear lighting and parking space'),
+  render('lift-lobby', 'Lift and stair lobby', 'The lift and stair core that serves every floor, with a clearly marked first-floor entry.',
+    'Indicative 3D render of the lift and stair lobby with a stone-clad staircase and the first-floor lift entrance'),
+  render('night-street', 'The road at night', 'Frontage of about 50 ft on a 24 m wide road.',
+    'Indicative 3D render of the SHRINEVA building on its road at night', 705),
 ];
+
+/** The finalised renders, for structured data and landing pages. */
+export const RENDERS: MediaItem[] = TOUR_STOPS;
+
+const plan = (id: string, group: string, title: string, caption: string, alt: string, width: number, height: number): MediaItem => ({
+  id, group, title, caption, alt, src: `${P}${id}.webp`, thumb: `${P}${id}-sm.webp`, width, height,
+  // The drawings are tall and detailed: the lightbox can open them at full width.
+  ...(height > 2000 ? { zoomSrc: `${P}${id}.webp`, zoomWidth: width } : {}),
+});
 
 export const PLAN_LEVELS = [
   {
-    id: 'stilt',
-    tab: 'Parking level',
-    title: 'Parking-Level Floor Plan',
-    sheet: PLAN.stilt.sheet,
+    id: 'ground',
+    tab: 'Ground level',
+    title: 'Ground level',
     views: [
-      {
-        id: '2d',
-        label: '2D plan',
-        item: {
-          id: 'parking-2d', group: 'Parking level', title: 'Parking-Level Floor Plan — 2D',
-          caption: 'Open ground level, north-facing plot. Sheet SH-01, 12.10.2026.',
-          alt: 'Architect\'s 2D parking-level floor plan of SHRINEVA with column grid, lift and stair bay and dimensions',
-          src: `${P}parking-2d.webp`, thumb: `${P}parking-2d-sm.webp`, width: 1400, height: 2581,
-          zoomSrc: `${P}parking-2d.webp`, zoomWidth: 1400,
-        } as MediaItem,
-      },
-      {
-        id: '3d',
-        label: '3D cutaway',
-        item: {
-          id: 'parking-3d', group: 'Parking level', title: 'Parking Level — 3D cutaway',
-          caption: 'Structure zone, lift and stair bay, west and east entries, open frontage.',
-          alt: '3D cutaway of the SHRINEVA parking level showing the structure zone, lift and stair bay, entries and open frontage',
-          src: `${P}parking-3d.webp`, thumb: `${P}parking-3d-sm.webp`, width: 1600, height: 1067,
-        } as MediaItem,
-      },
+      { id: '2d', label: 'Floor plan', item: plan('plan-ground', 'Ground level', 'Ground level: floor plan',
+        'Ground-level plan with the lift and stair core, entries and the open frontage. About 3,000 sq ft.',
+        'Architect\'s floor plan of the SHRINEVA ground level with column grid, lift and stair core and entries', 1819, 2451) },
+      { id: '3d', label: '3D view', item: plan('ground-3d', 'Ground level', 'Ground level: 3D view',
+        'Open ground level with the lift and stair core, west and east entries and the open frontage.',
+        '3D cutaway of the SHRINEVA ground level showing the lift and stair core, entries and open frontage', 1300, 814) },
     ],
   },
   {
     id: 'typical',
     tab: 'Floors 1–3',
-    title: 'First Floor Plan (typical for Floors 1, 2 and 3)',
-    sheet: PLAN.typical.sheet,
+    title: 'Floors 1, 2 and 3 (identical)',
     views: [
-      {
-        id: '2d',
-        label: '2D plan',
-        item: {
-          id: 'typical-2d', group: 'Typical floor', title: 'First Floor Plan — 2D',
-          caption: 'Whole floor with a glass front on the road. Sheet SH-02, 12.10.2026. Typical for Floors 1, 2 and 3.',
-          alt: 'Architect\'s 2D first-floor plan of SHRINEVA showing the open floor plate, column grid, lift and stair bay and area statement',
-          src: `${P}typical-2d.webp`, thumb: `${P}typical-2d-sm.webp`, width: 1400, height: 2581,
-          zoomSrc: `${P}typical-2d.webp`, zoomWidth: 1400,
-        } as MediaItem,
-      },
-      {
-        id: '3d',
-        label: '3D cutaway',
-        item: {
-          id: 'typical-3d', group: 'Typical floor', title: 'First Floor — 3D cutaway',
-          caption: 'Open floor plate, east recess, 5′-0″ glass-line projection, lift and staircase.',
-          alt: '3D cutaway of the SHRINEVA first floor showing the open floor plate, glass-line projection, east recess, lift and staircase',
-          src: `${P}typical-3d.webp`, thumb: `${P}typical-3d-sm.webp`, width: 1600, height: 1067,
-        } as MediaItem,
-      },
+      { id: '2d', label: 'Floor plan', item: plan('plan-typical', 'Floors 1–3', 'Floors 1–3: floor plan',
+        'One open floor plate, about 3,500 sq ft gross and about 3,100 sq ft carpet, repeated on Floors 1, 2 and 3.',
+        'Architect\'s typical floor plan of SHRINEVA for Floors 1 to 3 showing the open floor plate, lift and stair core and area statement', 1819, 2451) },
+      { id: '3d', label: '3D view', item: plan('typical-3d', 'Floors 1–3', 'Floors 1–3: 3D view',
+        'Open floor plate with a glass front on the road, lift and staircase.',
+        '3D cutaway of a typical SHRINEVA upper floor showing the open floor plate, glass front, lift and staircase', 1300, 814) },
     ],
   },
 ];
 
-export const TOP_VIEW: MediaItem = {
-  id: 'top-view', group: 'Top view', title: 'Top view — parking level and first floor',
-  caption: 'Parking level (9′-6″ floor to floor, fully open frontage) beside the first floor (11′-6″ floor to floor, open floor plate).',
-  alt: 'Top view of the SHRINEVA parking level beside the first floor, with areas and dimensions',
-  src: `${P}top-view.webp`, thumb: `${P}top-view-sm.webp`, width: 1600, height: 1656,
-};
-
 export const FLOOR_PLANS_PDF = 'assets/shrineva-floor-plans.pdf';
 
-/** The short leasing dossier (A4 landscape PDF) and its website card. Built by scripts/pdf/build_pdfs.py. */
-export const DOSSIER = {
-  href: 'assets/shrineva-dossier.pdf',
+/** The brochure (PDF, 6 pages, A4) and its website card. */
+export const BROCHURE = {
+  href: 'assets/shrineva-brochure.pdf',
   plansHref: FLOOR_PLANS_PDF,
-  cover: 'assets/images/dossier-cover.webp',
-  size: '4 MB',
+  cover: 'assets/images/brochure-cover.webp',
+  coverWidth: 910,
+  coverHeight: 1226,
+  size: '9 MB',
+  pages: 6,
 };
+
+/** Real photographs, taken on site. They show construction progress, not the finished building. */
+const photo = (id: string, title: string, caption: string, alt: string, width: number, height: number): MediaItem => ({
+  id, group: 'On site', title, caption, alt, src: `${F}${id}.webp`, thumb: `${F}${id}-sm.webp`, width, height,
+});
+
+export const SITE_PHOTOS: MediaItem[] = [
+  photo('front-day', 'The building today', 'The concrete frame of the upper floors, seen from the road.',
+    'Photograph of the SHRINEVA building under construction, seen from the road: concrete frame of three upper floors', 1088, 1500),
+  photo('ground-level', 'Ground level', 'The open ground level as built so far.',
+    'Photograph of the open ground level of the SHRINEVA building under construction', 1600, 1200),
+  photo('upper-floor-south', 'Upper floor, looking south', 'An upper floor as built so far, looking south.',
+    'Photograph of an upper floor of the SHRINEVA building under construction, looking south', 1600, 1200),
+  photo('upper-floor-north', 'Upper floor, looking north', 'The same floor, looking north.',
+    'Photograph of an upper floor of the SHRINEVA building under construction looking north', 1200, 750),
+  photo('apollo-side', 'View towards the Apollo Hospital site', 'The upcoming Apollo Hospital is under construction opposite the plot.',
+    'Photograph from the SHRINEVA building towards the road and the construction site of the upcoming Apollo Hospital', 1200, 750),
+  photo('nift-side', 'View towards NIFT', 'NIFT Varanasi is about 100 m away.',
+    'Photograph from the SHRINEVA building towards the NIFT Varanasi side with a construction crane in view', 1331, 695),
+  photo('front-night', 'The building at night', 'The frame lit at night while construction continues.',
+    'Night photograph of the SHRINEVA building under construction with string lights on the frame', 900, 1200),
+];
 
 /** The illustrated 3D location map (not to scale): Ring Road, Trade Centre, NIFT, Apollo and the plot. */
 export const LOCATION_MAP: MediaItem = {
   id: 'location-3d', group: 'Location', title: 'Location map (3D, not to scale)',
-  caption: 'Illustrative 3D map: Ring Road, Trade Centre, NIFT, Apollo hospital site and SHRINEVA on the 24 m road. Not to scale.',
-  alt: 'Illustrative 3D map of Bada Lalpur showing the Varanasi Ring Road, the Varanasi Trade Centre, NIFT, the Apollo hospital site and SHRINEVA on the 24 m wide road',
+  caption: 'Illustrative 3D map: Ring Road, Trade Centre, NIFT, the Apollo hospital site (upcoming) and SHRINEVA on the 24 m road. Not to scale.',
+  alt: 'Illustrative 3D map of Bada Lalpur showing the Varanasi Ring Road, the Varanasi Trade Centre, NIFT, the upcoming Apollo hospital site and SHRINEVA on the 24 m wide road',
   src: 'assets/images/map/location-3d.webp', thumb: 'assets/images/map/location-3d-sm.webp', width: 1800, height: 947,
-};
-
-/**
- * Short drive-in and floor-tour film (home page, after the location block).
- * `available` stays false until assets/video/shrineva-tour.mp4 and the poster exist; chapters are seconds into the film.
- * The film is an illustrative animation over the 3D map plus the indicative 3D model. Locations are approximate.
- */
-export interface TourChapter { id: string; label: string; start: number; }
-export const TOUR_VIDEO = {
-  available: true,
-  src: 'assets/video/shrineva-tour.mp4',
-  poster: 'assets/video/shrineva-tour-poster.webp',
-  posterWidth: 1280,
-  posterHeight: 720,
-  durationSec: 88,
-  uploadDate: '2026-10-15',
-  title: 'SHRINEVA: drive-in from Ring Road and floor tour',
-  description: 'An illustrative map flight from Ring Road to Stadium Road in Bada Lalpur, Varanasi: the Trade Centre and Vardhan Hospital facing each other, NIFT, the Apollo hospital site and SHRINEVA, followed by an indicative 3D tour of the ground floor and of the column-free first floor, from the front, from the back and from above.',
-  chapters: [
-    { id: 'drive', label: 'Drive in from Ring Road', start: 0 },
-    { id: 'nearby', label: 'Trade Centre · Vardhan Hospital', start: 11 },
-    { id: 'anchors', label: 'NIFT · Apollo · the plot', start: 17 },
-    { id: 'ground', label: 'Ground floor', start: 34 },
-    { id: 'first', label: 'First floor, column-free', start: 59 },
-    { id: 'aerial', label: 'Aerial view of the floor', start: 76 },
-  ] as TourChapter[],
 };

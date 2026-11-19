@@ -20,7 +20,7 @@ export class LandingPageComponent implements OnInit {
   others: LandingPage[] = [];
   property = PROPERTY;
   waHref = waLink();
-  render = RENDERS[0];
+  render = RENDERS.find((r) => r.id === 'facade-night') ?? RENDERS[0];
 
   facts: { label: string; value: string }[] = [
     { label: 'Frontage', value: 'About 50 ft' },

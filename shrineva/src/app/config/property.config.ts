@@ -153,7 +153,7 @@ export const PROPERTY = {
   },
 
   domain: {
-    canonical: 'https://shrineva.com',
+    canonical: 'https://shrineva.in',
     siteName: 'SHRINEVA',
   },
 
@@ -166,13 +166,13 @@ export const PROPERTY = {
   sameAs: [] as string[],
 
   contact: {
-    /** Enquiry-form recipient only. Not shown on pages. */
-    email: 'neerajsingh250@gmail.com',
+    /** Enquiry-form recipient (also used by the FormSubmit backup route). */
+    email: 'leasing@shrineva.in',
     /**
-     * Public leasing email shown on the site. The mailbox must exist (and have SPF/DKIM/DMARC) before launch,
-     * otherwise mail sent to it bounces. Form submissions do not depend on it: see `leadRecipients`.
+     * Public leasing email shown on the site (owner, 19 Nov 2026). The mailbox must exist in Hostinger
+     * (Emails) before launch, otherwise enquiries sent to it bounce.
      */
-    publicEmail: 'leasing@shrineva.com',
+    publicEmail: 'leasing@shrineva.in',
     // Email and both phone numbers are taken from the owner's enquiry sheet (Floor Plans PDF, 12.10.2026).
     // Primary line first (owner, 19 Nov 2026): +91 81140 80609 is also the WhatsApp number. Secondary: +91 73557 70378.
     phoneDisplay: '+91 81140 80609',
@@ -186,11 +186,11 @@ export const PROPERTY = {
     /** Machine-readable form of `hours` for structured data (schema.org openingHoursSpecification). */
     hoursSpec: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:30', closes: '19:30' },
     /**
-     * Where enquiry forms are delivered (see src/api/lead.php and README "Enquiry forms"). This list documents the intent;
-     * the PHP handler on the web host reads its own copy in src/api/config.php. The browser-side FormSubmit fallback
-     * uses `email` above (an address that exists today), never the not-yet-created domain mailbox. Never shown on the site.
+     * Where enquiry forms are delivered (see src/api/lead.php and README "Enquiry forms"): every enquiry goes to the
+     * leasing mailbox (owner, 19 Nov 2026). This list documents the intent; the PHP handler on the web host reads its own
+     * copy in src/api/config.php. The FormSubmit backup route uses `email` above. Never shown on the site.
      */
-    leadRecipients: ['leasing@shrineva.com', 'neerajsingh250@gmail.com'],
+    leadRecipients: ['leasing@shrineva.in'],
   },
 
   address: {
@@ -336,33 +336,6 @@ export const PROPERTY = {
     longTermAccepted: true,
     pricingDisclosure: 'Commercial terms on request',
   },
-
-  floors: [
-    {
-      id: 'floor-1',
-      label: 'Floor 1',
-      route: '/spaces/floor-1',
-      carpetAreaSqFt: 3017.25,
-      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay'],
-      leaseFormat: ['Full floor', 'Subdivision subject to requirement'],
-    },
-    {
-      id: 'floor-2',
-      label: 'Floor 2',
-      route: '/spaces/floor-2',
-      carpetAreaSqFt: 3017.25,
-      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay'],
-      leaseFormat: ['Full floor', 'Subdivision subject to requirement'],
-    },
-    {
-      id: 'floor-3',
-      label: 'Floor 3',
-      route: '/spaces/floor-3',
-      carpetAreaSqFt: 3017.25,
-      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay'],
-      leaseFormat: ['Full floor', 'Subdivision subject to requirement'],
-    },
-  ] as FloorDefinition[],
 
   /**
    * Neighbourhood distances supplied for the Bada Lalpur site (Apollo / NIFT /
@@ -524,7 +497,6 @@ export const PROPERTY = {
     'Education',
     'Fitness/Wellness',
     'Fashion/Design',
-    'Hotel / Serviced Stay',
     'Other',
   ],
 
@@ -540,14 +512,14 @@ export const PROPERTY = {
   preferredFloorOptions: ['Any', 'Floor 1', 'Floor 2', 'Floor 3'],
 
   images: {
-    hero: 'assets/images/renders/facade-golden.webp',
+    hero: 'assets/images/renders/facade-night.webp',
     logo: 'assets/images/shrineva-logo.webp',
-    og: 'https://shrineva.com/assets/images/og-shrineva.jpg',
+    og: 'https://shrineva.in/assets/images/og-shrineva.jpg',
   },
 
   legal: {
     areaDisclaimer:
-      'Areas are computed from the architect\'s dimensions and are not certified. Specifications are subject to final architectural, sanctioned and technical documentation.',
+      'Areas are approximate and subject to final measurement. Specifications are subject to final architectural, sanctioned and technical documentation.',
     useDisclaimer:
       'Tenant use is subject to applicable approvals, building regulations, fire and safety requirements and technical feasibility.',
       futureDisclaimer:

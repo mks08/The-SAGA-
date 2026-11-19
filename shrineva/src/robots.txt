@@ -31,4 +31,4 @@ User-agent: Google-Extended
 Allow: /
 Disallow: /api/
 
-Sitemap: https://shrineva.com/sitemap.xml
+Sitemap: https://shrineva.in/sitemap.xml

@@ -18,16 +18,15 @@ export class NavbarComponent implements OnDestroy {
   property = PROPERTY;
   waHref = waLink();
 
-  /** "Nearby Projects" is deliberately a top-level, marked link: it is the evidence behind the footfall claim. */
+  /** Five links, one per decision a tenant makes: see it, plan it, find it, ask about terms. */
   readonly navLinks: NavLink[] = [
     { path: '/', label: 'Home' },
-    { path: '/property', label: 'Property' },
-    { path: '/walkthrough', label: '3D Walkthrough' },
+    { path: '/walkthrough', label: 'Walkthrough' },
     { path: '/floor-plans', label: 'Floor Plans' },
-    { path: '/growth', label: 'Nearby Projects', live: true },
     { path: '/location-contact', label: 'Location & Visit' },
     { path: '/leasing', label: 'Leasing' },
   ];
+
 
   private sub: Subscription;
 

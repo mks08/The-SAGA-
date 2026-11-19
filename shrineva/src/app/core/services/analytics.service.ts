@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
  *   shrineva_commercial_lead      qualified commercial enquiry submitted (also the short "book a visit" form)
  *   shrineva_phone_click          any tel: link
  *   shrineva_whatsapp_click       any wa.me / WhatsApp link
- *   shrineva_brochure_download    any .pdf link (dossier, floor plans)
+ *   shrineva_brochure_download    any .pdf link (brochure, floor plans)
  *   shrineva_residential_lead     proposed-residential interest form (only if that form is switched on)
  * Phone, WhatsApp and PDF clicks are caught by ONE delegated listener, so every link on every page is counted exactly once
  * and no component has to remember to track it.
@@ -22,7 +22,7 @@ type Gtag = (...args: unknown[]) => void;
 interface TrackWindow { dataLayer?: unknown[]; gtag?: Gtag; __shrinevaClicks?: boolean }
 
 /** Older call sites still send these names; the delegated listener now owns them, so they are dropped here to avoid double counting. */
-const HANDLED_BY_LISTENER = new Set(['phone_click', 'whatsapp_click', 'email_click', 'plan_pdf_download', 'dossier_download']);
+const HANDLED_BY_LISTENER = new Set(['phone_click', 'whatsapp_click', 'email_click', 'plan_pdf_download', 'dossier_download', 'brochure_download']);
 
 const EVENT_NAME: Record<ConversionKey, string> = {
   commercialLead: 'shrineva_commercial_lead',

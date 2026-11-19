@@ -1,95 +1,75 @@
 # SHRINEVA — website
 
-Marketing and leasing site for **SHRINEVA**, a commercial building (open parking level + three whole floors, "Parking + 3") at D-15, Bada Lalpur, Chandmari, Varanasi 221003.
+Leasing site for **SHRINEVA**, a commercial building (open ground level plus three identical floors) at Plot No. D-15, Lalpur Housing Scheme, Stadium Road, Bada Lalpur, Varanasi 221003, opposite the **upcoming** Apollo Hospital.
 
-Angular 16 single-page app with Tailwind CSS 3, pre-rendered per route at build time (static HTML shells with title, description, canonical, Open Graph, `<noscript>` text and JSON-LD), deployed as static files plus one small PHP endpoint for enquiries.
+Angular 16 + Tailwind 3 single-page app, pre-rendered per route at build time, deployed as static files plus one small PHP endpoint for enquiries. Domain: **shrineva.in**. Enquiries: **leasing@shrineva.in**.
 
 ## Run and build
 
 ```bash
 npm install          # Node 18.x
 npm start            # dev server
-npm run build        # ng build, then scripts/build-seo.js (postbuild)
+npm run build        # ng build, then scripts/build-seo.js (postbuild). Always run the full build.
 ```
 
 Output: `dist/shrineva/`. `postbuild` writes, from the same route list and domain:
 
-- one `index.html` per route (20 routes, e.g. `/walkthrough/index.html`, `/spaces/floor-1/index.html`)
-- `sitemap.xml`, `robots.txt` and `llms.txt` (a plain-text summary for AI assistants, built from the same config)
-- `404.html`, which `.htaccess` serves with a real 404 status for unknown URLs
-- JSON-LD in each shell: RealEstateAgent + LocalBusiness (address, geo, hours, phones, service area, amenities, optional `sameAs`), WebSite, Place, WebPage / ContactPage, BreadcrumbList, a RealEstateListing with a lease Offer on `/`, `/leasing`, `/spaces` and the three landing pages, a FAQPage wherever a visible FAQ is shown, plus the nearby-distance ItemList and the film's VideoObject on `/` and an ImageGallery on `/gallery`
-- the page's real content (H1, answer-first section, key facts, FAQ, contact block, links) **inside `<app-root>`**, visually hidden until Angular starts and shown by a `<noscript>` rule, so crawlers and AI assistants that skip JavaScript read the full text
-- quality gates that fail the build: titles 50–60 and descriptions 145–155 characters, FAQ answers 40–60 words, one H1 per page, valid JSON-LD that matches the visible FAQ, no retired claims (VDA approval, "60–70 m", studios), "Apollo" never without "upcoming / under construction", every `<img>` with alt, width and height
-- the hero-image preload, on the home shell only
+- one `index.html` per route (10 routes) with title, description, canonical, Open Graph, JSON-LD and the page's real text **inside `<app-root>`** (visually hidden until Angular starts, shown when JavaScript is off), so crawlers and AI assistants that skip JavaScript read the full page
+- `sitemap.xml`, `robots.txt` (search and AI crawlers named and allowed) and `llms.txt` (plain-text summary for AI assistants)
+- `404.html`, which `.htaccess` serves with a real 404 status
+- **quality gates that fail the build:** titles 50–60 and descriptions 145–155 characters; FAQ answers 40–60 words; one H1 per page; valid JSON-LD with a FAQPage that matches the FAQ config; no retired claims (VDA approval, "60–70 m", studio / residential wording); "Apollo" never without "upcoming / under construction"; every `<img>` has alt, width, height and a loading mode; every route is in the `.htaccess` whitelist
 
-## What the site does
+## Pages
 
 | Page | Purpose |
 |---|---|
-| `/` | Compact light hero (commercial and mixed-use), footfall strip, key features and project status, 3D walkthrough, floor plans, six renders, location (3D map and distance list), short film, short enquiry form |
-| `/growth` | Detailed nearby projects: each card dated and linked to its source |
-| `/walkthrough` | Full 3D model: orbit, open any floor, pull the floors apart, step inside, guided tour, day / golden hour / night, illustrative layouts |
-| `/floor-plans`, `/spaces/floor-N` | The architect's plans (repainted for web) with computed area statement |
-| `/healthcare-diagnostic-space`, `/office-bank-coaching-space`, `/retail-showroom-cafe-space` | Intent landing pages for Google Ads and search: answer-first section, facts, qualified enquiry form, FAQ. Copy in `landing.config.ts`; `/?intent=healthcare\|office\|retail\|floor` swaps the home hero to match an ad |
-| `/location-contact` | Address, hours, phones, map, distances, qualified site-visit form, FAQ (replaces `/location` and `/contact`, which 301 here) |
-| `/privacy-disclaimer` | Privacy policy and disclaimer (replaces `/privacy` and `/disclaimer`) |
-| `/leasing`, `/brokers` | Enquiry routes; leasing@shrineva.com and both phone numbers |
+| `/` | Hero (finalised 3D, day / night), answer-first block with six facts, guided walkthrough, floor-plan teaser, location map, brochure download, business paths, FAQ, enquiry |
+| `/walkthrough` | Seven-stop guided tour of the final 3D design (auto-advances, pausable, enlargeable), then photographs of the building as it stands today |
+| `/floor-plans` | Ground-level and typical-floor plans (plan and 3D view), areas, PDF download |
+| `/healthcare-diagnostic-space`, `/office-bank-coaching-space`, `/retail-showroom-cafe-space` | Intent pages for ads and search: answer first, facts, qualified form, FAQ. Copy in `landing.config.ts`; `/?intent=healthcare\|office\|retail\|floor` changes the home headline for an ad |
+| `/location-contact` | Address, hours, phones, map, distances, site-visit form, FAQ |
+| `/leasing` | What is available, how leasing works, downloads, enquiry form, FAQ |
+| `/privacy-disclaimer`, `/terms` | Legal |
 
-### 3D walkthrough
-
-- Three.js 0.160 in a lazy chunk (`712.*.js`, about 121 kB gzipped). It downloads only when a visitor starts it on the home page, or opens `/walkthrough`. Initial JS for the rest of the site is about 151 kB gzipped.
-- The model is generated from `src/app/config/building.config.ts` (the architect's sheets SH-01 and SH-02 read in feet), so the 3D model and the plan cannot drift apart. Edit dimensions there.
-- Everything the architect has not drawn (façade finishes, furniture presets, neighbours, trees) is illustrative and labelled so on screen. The model uses a nominal 10′-6″ ceiling; clear height is to be confirmed.
-- Controls: drag to look (hover leans the view on desktop), W A S D / arrows to walk, Q E to turn, click or tap the floor to walk there, scroll or pinch to zoom outside, Esc leaves full screen. On touch screens the page still scrolls over the canvas until the visitor goes full screen.
-- Falls back to the static renders and plans when WebGL is unavailable. Respects `prefers-reduced-motion`.
-- Debug handle `window.__wt` exists only when the URL contains `?wtdebug`.
-
-### Short film
-
-`src/assets/video/shrineva-tour.mp4` (about 1 min 28 s, H.264, no sound) and its poster `shrineva-tour-poster.webp`. It shows an illustrative drive from Ring Road past Vardhan Hospital (position approximate), the Trade Centre, NIFT and the Apollo site to the plot, then the ground floor and the column-free first floor (from the front, from the back and from above) in the indicative 3D model. The home page shows only the poster until a visitor presses play (`preload="none"`), so it costs no bandwidth otherwise. Set `TOUR_VIDEO.available` to `false` to hide the section; change `chapters` (start seconds) if the file is re-cut. The film was rendered under a software renderer from `window.__wt`; re-render after changing the 3D model.
-
-### Look and feel
-
-The site is light and warm. `.theme-soft` (in `styles.scss`) swaps the ink and paper colour tokens so older dark-styled blocks render light; `.theme-light` restores the base tokens. New blocks use plain `bg-paper` / `text-ink`. Buttons come in `btn-primary`, `btn-outline` and a smaller `btn-sm`.
-
-### Map pin
-
-The Location section embeds a real Google Map with directions links, centred on the area by name. To pin the exact plot, set `PROPERTY.address.lat` and `lng` in `property.config.ts` (copy them from Google Maps: right-click the plot, click the coordinates). The embed, "Open map" and "Get directions" then all use the pin. Do not guess coordinates.
-
-### VDA tag
-
-The small "VDA approved" tag comes from `PROPERTY.approvals.vda`. It reflects the owner's statement; no approval number is published. Set `PROPERTY.approvals.vda.show` to `false` to remove every instance.
+Old URLs (`/property`, `/spaces/*`, `/infrastructure`, `/growth`, `/gallery`, `/brokers`, `/location`, `/contact`, `/privacy`, `/disclaimer`, `/business-fit`) 301 to the new pages in `.htaccess`, in the app router and in `vercel.json`.
 
 ## Where things live
 
 | What | File |
 |---|---|
-| Property facts (areas, plan figures, contact, address, domain, VDA flag) | `src/app/config/property.config.ts` |
-| 3D geometry, tour stops, presets | `src/app/config/building.config.ts` |
-| Nearby projects and the dated footfall evidence | `src/app/config/footfall.config.ts` |
-| Page titles, descriptions, routes | `src/app/config/seo.config.ts` |
-| Key features, project status, "I am looking for" choices (owner-stated) | `src/app/config/highlights.config.ts` |
-| Short distance list (location block, footer, structured data) | `src/app/config/location.config.ts` |
-| Short film: file names, chapters, `available` switch | `TOUR_VIDEO` in `src/app/config/media.config.ts` |
-| Marketing copy that is not a measured fact | `src/app/config/content.config.ts` |
-| Images, renders, plan sheets | `src/app/config/media.config.ts`, `src/assets/` |
-| Motion (reveal, count-up, tilt, spotlight, parallax) | `src/app/shared/directives/` |
-| Design tokens and plugin (colours as CSS variables) | `tailwind.config.js`, `src/styles.scss` |
+| Facts: areas, plan figures, address, GPS, phones, hours, domain, `sameAs`, residential switch | `src/app/config/property.config.ts` |
+| Titles, descriptions, H1, sitemap priority per route | `src/app/config/seo.config.ts` |
+| FAQ text (page, FAQPage markup, static HTML and llms.txt all read it) | `src/app/config/faq.config.ts` |
+| Page copy shared with the static HTML: level areas, leasing points and steps | `src/app/config/content.config.ts` |
+| Intent pages | `src/app/config/landing.config.ts` |
+| Distances | `src/app/config/location.config.ts` |
+| Images: hero day/night, tour stops, plans, site photos, map, brochure | `src/app/config/media.config.ts`, `src/assets/images/` |
+| Brochure and floor-plan PDFs | `src/assets/shrineva-brochure.pdf`, `src/assets/shrineva-floor-plans.pdf` |
+| Logo (always the designed artwork, never typed text) | `src/app/components/brand-logo/`, `src/assets/images/logo-*.webp` |
 | Structured data | `src/app/core/seo/schema.ts` |
-| Lead form delivery | `src/app/core/services/lead.service.ts`, `src/api/lead.php` |
-| Apache rules (HTTPS, www → apex, SPA fallback, caching, headers) | `src/.htaccess` |
+| Enquiry delivery | `src/app/core/services/lead.service.ts`, `src/api/lead.php`, `src/api/config.php` |
+| Apache rules | `src/.htaccess` |
 
-**Rule for editing:** change a fact in `property.config.ts` once; pages, schema, sitemap text and `<noscript>` all read from it. Do not type areas or distances into templates.
+**Rule for editing:** change a fact once in `property.config.ts` (or the config above); pages, schema, sitemap text, llms.txt and the static HTML all read from it. Do not type areas or distances into templates.
+
+**Logo:** use `<app-brand-logo>` (`variant="lockup"` for header and footer, `variant="wordmark"` for large headings). The SG monogram and the SHRINEVA lettering are cut from the owner's logo with a transparent background.
+
+## Content rules
+
+- Facts only. Approvals, rents, footfall and completion dates are not claimed. The Apollo Hospital is always "upcoming / under construction". Use of any floor is "subject to floor suitability and applicable statutory approvals".
+- Areas are about 3,500 sq ft gross and about 3,100 sq ft carpet per upper floor, approximate and subject to final measurement.
+- Renders are labelled indicative. Photographs are labelled as construction progress. The renders themselves are not edited.
+- The studio / residential plan is not mentioned anywhere (`PROPOSED_RESIDENTIAL.show = false`).
 
 ## Add a page
 
-1. Create the page component and add its route in `src/app/app-routing.module.ts`.
-2. Add an entry (path, title, description, h1, priority) to `SEO_ROUTES` in `src/app/config/seo.config.ts`.
-3. Add the path to the route whitelist line in `src/.htaccess`. `npm run build` fails with the missing path if you forget, because an unlisted path would return 404 on the live host.
+1. Create the page component and route in `src/app/app-routing.module.ts`.
+2. Add it to `SEO_ROUTES` in `seo.config.ts`, and to the nav list in `scripts/build-seo.js` if it should be linked in the static HTML.
+3. Add the path to the route whitelist line in `src/.htaccess`. The build fails if you forget.
 
 ## Public domain
 
-The repository is configured for **https://shrineva.com**. Nothing here registers, points or verifies a domain. To change it:
+Configured for **https://shrineva.in**. To change it:
 
 ```bash
 node scripts/set-domain.js https://example.com
@@ -98,70 +78,52 @@ npm run build
 
 ## Where enquiries go
 
-Every form (contact, site visit, broker, leasing) sends the same JSON:
-
 ```
-visitor's browser ──► /api/lead.php (this site's own hosting)
+visitor's browser ──► /api/lead.php (this site's hosting)
                           ├─ validates, rate-limits, ignores bots (honeypot)
-                          ├─ keeps a private copy: leads.csv + monthly leads-YYYY-MM.jsonl
-                          └─ emails the recipients in api/config.php
-                      if that fails ──► FormSubmit (third-party) ──► leasing inbox
+                          ├─ keeps a private copy: leads.csv + leads-YYYY-MM.jsonl
+                          └─ emails the recipients in api/config.php (leasing@shrineva.in)
+                      if that fails ──► FormSubmit (third party) ──► the leasing inbox
                       if that fails ──► the page shows the phone and WhatsApp numbers
 ```
 
-The site says "sent" only when one of the two routes confirms delivery.
+**First deployment**
 
-**Owner actions on first deployment**
-
-1. **Mailbox.** `leasing@shrineva.com` must exist (Hostinger → Emails) before mail to it is delivered. Until then the second recipient in `api/config.php` still receives every enquiry, and the private copy is always kept.
-2. **SMTP (recommended).** PHP `mail()` works on most Hostinger plans but cannot be tested from outside the host. For reliable delivery create `api/config.local.php` on the server (it is git-ignored):
+1. Create the mailbox `leasing@shrineva.in` (Hostinger → Emails). Until it exists, mail to it bounces; the private copy in `leads.csv` is always kept.
+2. For reliable delivery add `api/config.local.php` on the server (git-ignored):
 
    ```php
    <?php return [
      'transport' => 'smtp',
      'smtp' => ['host' => 'smtp.hostinger.com', 'port' => 465, 'secure' => 'ssl',
-                'user' => 'leasing@shrineva.com', 'pass' => '********'],
-     'from' => 'leasing@shrineva.com',
+                'user' => 'leasing@shrineva.in', 'pass' => '********'],
+     'from' => 'leasing@shrineva.in',
    ];
    ```
-3. **Test it.** Submit the contact form once from the live site. Check the inbox, then check `shrineva-leads/leads.csv` one level above `public_html` (or `api/_data/`, which `.htaccess` closes to the web).
-4. **FormSubmit (backup route).** The first backup submission makes FormSubmit email an activation link. Click it, or the backup route stays silent.
-5. **Email authentication.** Add SPF, DKIM and DMARC for the domain in hPanel, or enquiry mail is likely to land in spam.
+3. Submit the form once from the live site; check the inbox and `shrineva-leads/leads.csv` (one level above `public_html`, or `api/_data/`).
+4. The first FormSubmit backup submission emails an activation link; click it or the backup stays silent.
+5. Add SPF, DKIM and DMARC for the domain in hPanel.
 
-Recipients are never displayed on any page. (The backup route's address does have to be readable in the page's JavaScript, as with any browser-side form service. To hide it, swap in FormSubmit's random alias after activation.) Phones shown: +91 73557 70378 and +91 81140 80609. WhatsApp messages are prefilled by `waLink()` in `property.config.ts`.
+Phones: +91 81140 80609 (also WhatsApp) and +91 73557 70378.
 
 ## Analytics
 
-`src/environments/environment*.ts` hold `ga4MeasurementId` (G-…), `googleAdsId` (AW-…) and `googleAdsLabels` (one conversion label per action). They are empty; nothing loads until the owner supplies them, but events still go to `window.dataLayer`.
+`src/environments/environment*.ts` hold `ga4MeasurementId` (G-…), `googleAdsId` (AW-…) and `googleAdsLabels`. They are empty; nothing loads until set, but events still go to `window.dataLayer`.
 
-Conversion events (`AnalyticsService`): `shrineva_commercial_lead` (qualified form and the short visit pop-up), `shrineva_phone_click`, `shrineva_whatsapp_click`, `shrineva_brochure_download` (any `.pdf` link) and `shrineva_residential_lead` (only if `PROPOSED_RESIDENTIAL.show` is switched on). Phone, WhatsApp and PDF clicks are caught by one delegated listener, so every link is counted once with a `source` (`data-track-source`, else header / footer / page). Other events: `site_visit_click`, `leasing_form_error`, `walkthrough_start` and similar.
-
-Attribution: `AttributionService` keeps `utm_*`, `gclid` (or `gbraid` / `wbraid`), landing page and external referrer in sessionStorage; `LeadService` sends them with every enquiry and `lead.php` records them (CSV, JSONL and the email). If an older `leads.csv` exists on the server, rename it before the first new lead so the columns stay aligned.
+Events: `shrineva_commercial_lead` (form), `shrineva_phone_click`, `shrineva_whatsapp_click`, `shrineva_brochure_download` (any `.pdf` link). Phone, WhatsApp and PDF clicks are caught by one delegated listener. UTM tags and `gclid` are kept for the session and sent with every enquiry. If an older `leads.csv` exists on the server, rename it before the first new lead (columns changed).
 
 ## Deploy to Hostinger (static upload)
 
 1. `npm run build`.
-2. In hPanel → File Manager (or FTP), open `public_html/`, remove the old site files, and upload the **contents** of `dist/shrineva/` (including the hidden `.htaccess` and the `api/` folder).
-3. Confirm SSL is active, then open `/`, `/walkthrough`, `/floor-plans`, `/location-contact`, `/does-not-exist`, and `/location`, `/contact` (should 301 to `/location-contact`) (should show the app's 404 page, not a server error).
-4. Follow "Where enquiries go" above.
-5. In Google Search Console add the domain, submit `https://<domain>/sitemap.xml`, and inspect `/` and `/growth`.
+2. hPanel → File Manager (or FTP): back up `public_html`, remove the old site, upload the **contents** of `dist/shrineva/` including the hidden `.htaccess` and the `api/` folder.
+3. Delete old folders if present: `location/`, `contact/`, `privacy/`, `disclaimer/`, `property/`, `spaces/`, `growth/`, `gallery/`, `business-fit/`, `infrastructure/`, `brokers/`.
+4. Check: `curl -I http://shrineva.in/` (301 to https), `curl -I https://www.shrineva.in/` (301 to apex), `curl -I https://shrineva.in/contact` (301 to `/location-contact`), `curl -I https://shrineva.in/nope` (404).
+5. Follow "Where enquiries go". In Google Search Console add the domain and submit `sitemap.xml`; do the same in Bing Webmaster Tools.
 
-`.htaccess` behaviours (HTTPS redirect, www → apex, directory index rewrite, cache and security headers) cannot be exercised locally. Check them after upload with `curl -I http://<domain>/` and `curl -I https://www.<domain>/`.
-
-**Rollback:** keep the previous `public_html` contents as a zip before uploading; to roll back, delete the new files and restore the zip. Vercel alternative: `vercel.json` is included, but the PHP endpoint does not run there (the form then uses the FormSubmit route).
-
-## Content rules this project follows
-
-- No approval numbers, parking counts, tenants, rents, returns or reviews that the owner has not supplied. Parking capacity is deliberately "to be confirmed".
-- Areas are computed from the architect's dimensions (floor area 3,519.75 sq ft, carpet 3,017.25 sq ft per floor) and labelled as such, not certified. Frontage is stated as "about 50 ft"; exact dimensions stay on the drawings.
-- The building is called "Parking + 3". The architect's sheet title still says "Stilt" internally; that word does not appear on the site.
-- 3D images and the walkthrough are labelled indicative.
-- Nearby projects are described with source and date. Each is a development reference, not a footfall count (`FOOTFALL_NOT_CLAIMED`); no confidence labels are shown.
-- Setback dimensions and the original architectural drawings are not published on marketing pages.
+**Rollback:** keep the previous `public_html` as a zip; to roll back, delete the new files and restore it. `vercel.json` is included as an alternative; the PHP endpoint does not run there (forms use the FormSubmit route).
 
 ## Known follow-ups
 
-- The PDF `src/assets/shrineva-floor-plans.pdf` is the owner's original and still carries the old "Stilt" and opening-year wording. Re-issue it with the architect before promoting the download.
-- Angular 16 is out of support: plan an upgrade (P2).
-- Map pin needs verified coordinates (see above).
-- The 3D model has been tested in a software renderer only; check it on a real phone and a laptop GPU before launch.
+- Angular 16 is out of support: plan an upgrade.
+- Add GA4 / Ads IDs and profile URLs (`sameAs`) when available.
+- Ground level is labelled "parking" in some brochure imagery and described as "ground level with parking for 12+ cars" on the site: keep wording consistent when the brochure is re-issued.

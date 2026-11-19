@@ -5,47 +5,44 @@
   subtitle="Floors of about 3,500 sq ft (about 3,100 sq ft carpet), leased whole or in part, on long-term commercial leases.">
 </app-page-header>
 
-<section class="relative overflow-hidden bg-paper py-14 md:py-20" aria-labelledby="lease-avail">
-  <div class="container-srineva">
-    <div class="grid gap-4 lg:grid-cols-[1.25fr_1fr] lg:gap-5">
-      <article appReveal class="spot rounded-4xl border border-ink/10 bg-white p-6 md:p-9" appSpotlight>
-        <span class="eyebrow">What's available</span>
-        <h2 id="lease-avail" class="font-display text-display-md text-ink">Three open floors, <em class="text-brass-deep">your way.</em></h2>
-        <ul class="mt-6 grid gap-x-8 gap-y-3.5 sm:grid-cols-2">
-          <li *ngFor="let p of points" class="flex gap-3 text-[0.95rem] leading-snug text-ink/80">
-            <span class="mt-[0.5em] size-1.5 shrink-0 rounded-full bg-brass" aria-hidden="true"></span>{{ p }}
-          </li>
-        </ul>
-        <dl class="mt-8 grid grid-cols-3 gap-3 border-t border-ink/10 pt-6">
-          <div><dt class="font-mono text-[0.64rem] uppercase tracking-[0.16em] text-brass-deep">Per floor</dt><dd class="mt-1 font-display text-[1.7rem] leading-none text-ink md:text-[2.1rem]">~{{ area.grossNum | number:'1.0-0' }}<span class="ml-1 text-[0.85rem] text-ink/70">sq ft</span></dd></div>
-          <div><dt class="font-mono text-[0.64rem] uppercase tracking-[0.16em] text-brass-deep">Frontage</dt><dd class="mt-1 font-display text-[1.7rem] leading-none text-ink md:text-[2.1rem]">50<span class="ml-1 text-[0.85rem] text-ink/70">ft</span></dd></div>
-          <div><dt class="font-mono text-[0.64rem] uppercase tracking-[0.16em] text-brass-deep">Road</dt><dd class="mt-1 font-display text-[1.7rem] leading-none text-ink md:text-[2.1rem]">24<span class="ml-1 text-[0.85rem] text-ink/70">m</span></dd></div>
-        </dl>
-      </article>
+<section class="bg-paper py-10 md:py-14" aria-labelledby="lease-avail">
+  <div class="container-srineva grid items-start gap-8 lg:grid-cols-[1fr_1fr] lg:gap-10">
+    <div>
+      <h2 id="lease-avail" class="font-display text-display-md text-ink">What is available</h2>
+      <ul class="mt-5 grid gap-3">
+        <li *ngFor="let p of points" class="flex gap-3 text-[0.98rem] leading-snug text-ink/80">
+          <span class="mt-[0.55em] size-1.5 shrink-0 rounded-full bg-brass" aria-hidden="true"></span>{{ p }}
+        </li>
+      </ul>
 
-      <article appReveal [style.--i]="1" class="theme-soft relative overflow-hidden rounded-4xl bg-ink p-6 text-paper md:p-9">
-        <div class="absolute -right-16 -top-16 size-60 rounded-full bg-brass/25 blur-[70px]" aria-hidden="true"></div>
-        <span class="eyebrow">Commercial terms</span>
-        <h2 class="font-display text-display-md text-paper">On request, <em class="text-brass-soft">in writing.</em></h2>
-        <p class="mt-3 text-[0.95rem] leading-relaxed text-paper/75">{{ property.leasing.pricingDisclosure }}. The leasing team shares terms, floor plans and technical specifications directly.</p>
-        <div class="mt-6 flex flex-col gap-3">
-          <a routerLink="/location-contact" fragment="enquiry" class="btn-primary justify-center">Request leasing details <span class="arrow" aria-hidden="true">→</span></a>
-          <a [href]="waHref" target="_blank" rel="noopener" class="btn-whatsapp justify-center">Ask on WhatsApp</a>
-          <a href="assets/shrineva-dossier.pdf" target="_blank" rel="noopener" download class="btn-outline justify-center">Download the leasing dossier (PDF)</a>
-          <a href="assets/shrineva-floor-plans.pdf" target="_blank" rel="noopener" download class="btn-outline justify-center">Download floor plans (PDF)</a>
-        </div>
-        <p *ngIf="property.contact.publicEmail" class="mt-5 text-[0.88rem] text-paper/70">Or write to <a [href]="'mailto:' + property.contact.publicEmail" class="font-semibold text-brass-soft underline-offset-4 hover:underline">{{ property.contact.publicEmail }}</a></p>
-      </article>
+      <h2 class="mt-10 font-display text-[1.5rem] text-ink">How leasing works</h2>
+      <ol class="mt-4 grid gap-3" aria-label="How leasing works">
+        <li *ngFor="let s of steps; let i = index" class="flex gap-4 rounded-2xl border border-ink/10 bg-white p-4">
+          <span class="font-display text-[1.6rem] leading-none text-brass-deep" aria-hidden="true">{{ i + 1 }}</span>
+          <div>
+            <h3 class="font-semibold text-ink">{{ s.t }}</h3>
+            <p class="mt-0.5 text-[0.92rem] leading-snug text-ink/70">{{ s.d }}</p>
+          </div>
+        </li>
+      </ol>
+
+      <h2 class="mt-10 font-display text-[1.5rem] text-ink">Terms and documents</h2>
+      <p class="mt-2 max-w-md text-[0.95rem] leading-relaxed text-ink/75">{{ property.leasing.pricingDisclosure }}. The leasing team shares terms and technical specifications directly.</p>
+      <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a [href]="brochure.href" target="_blank" rel="noopener" download class="btn-primary justify-center">Download brochure <span class="font-normal opacity-80">PDF</span></a>
+        <a [href]="brochure.plansHref" target="_blank" rel="noopener" download class="btn-outline justify-center">Floor plans <span class="font-normal opacity-70">PDF</span></a>
+      </div>
+      <p class="mt-5 text-[0.92rem] text-ink/75">
+        Or call <a [href]="'tel:' + property.contact.phoneE164" class="font-semibold text-ink underline-offset-4 hover:underline">{{ property.contact.phoneDisplay }}</a>,
+        <a [href]="waHref" target="_blank" rel="noopener" class="font-semibold text-[#0b7a3b] underline-offset-4 hover:underline">WhatsApp</a>
+        <ng-container *ngIf="property.contact.publicEmail"> or write to <a [href]="'mailto:' + property.contact.publicEmail" class="font-semibold text-ink underline-offset-4 hover:underline">{{ property.contact.publicEmail }}</a></ng-container>.
+      </p>
     </div>
 
-    <ol class="mt-4 grid gap-3 sm:grid-cols-3 lg:mt-5 lg:gap-5" aria-label="How leasing works">
-      <li *ngFor="let s of steps; let i = index" appReveal [style.--i]="i" class="rounded-3xl border border-ink/10 bg-paper-2 p-5 md:p-6">
-        <span class="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-brass-deep">Step {{ i + 1 }}</span>
-        <h3 class="mt-2 font-display text-[1.45rem] leading-tight text-ink">{{ s.t }}</h3>
-        <p class="mt-1.5 text-[0.9rem] leading-relaxed text-ink/70">{{ s.d }}</p>
-      </li>
-    </ol>
+    <app-commercial-lead-form anchorId="enquiry" heading="Request leasing details"
+      intro="Tell us about your business and the area you need. We will call back with floor options and terms."></app-commercial-lead-form>
   </div>
 </section>
-<app-final-cta></app-final-cta>
+
+<app-faq [items]="faqs" heading="Leasing questions" headingId="lease-faq-title"></app-faq>
 </main>

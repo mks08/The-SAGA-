@@ -9,7 +9,7 @@
  *  3. Writes 404.html and checks that every route is covered by the route whitelist in src/.htaccess.
  *  4. Gates the build: title 50-60 and description 145-155 characters, 40-60 word FAQ answers, one H1 per page, valid JSON-LD,
  *     no retired claims (VDA approval, "60-70 m", studios), and "Apollo" never without "upcoming / under construction".
- * Source of truth: src/app/config/*.ts (seo, property, faq, landing, highlights, location, footfall).
+ * Source of truth: src/app/config/*.ts (seo, property, faq, landing, location).
  */
 const fs = require('fs');
 const path = require('path');
@@ -41,9 +41,9 @@ const { SEO_ROUTES, SEO_DOMAIN } = load(path.join(cfgDir, 'seo.config.ts'));
 const { PROPERTY, PLAN, MARKETING_AREA, PROPOSED_RESIDENTIAL } = load(path.join(cfgDir, 'property.config.ts'));
 const { CORE_FAQ, STATUS_FAQ, HOME_ANSWER, faqForPath } = load(path.join(cfgDir, 'faq.config.ts'));
 const { LANDING_PAGES, landingByPath } = load(path.join(cfgDir, 'landing.config.ts'));
-const { PROJECT_STATUS, KEY_FEATURES, BUILDING_SERVICES } = load(path.join(cfgDir, 'highlights.config.ts'));
 const { NEARBY_DISTANCES } = load(path.join(cfgDir, 'location.config.ts'));
-const { FOOTFALL_AS_OF, NEARBY_PROJECTS, CITY_DRIVERS, FOOTFALL_NOT_CLAIMED } = load(path.join(cfgDir, 'footfall.config.ts'));
+const { LEVEL_INFO, LEASING_POINTS, LEASING_STEPS } = load(path.join(cfgDir, 'content.config.ts'));
+const { TOUR_STOPS, SITE_PHOTOS, BROCHURE } = load(path.join(cfgDir, 'media.config.ts'));
 // Same JSON-LD builder the runtime SeoService uses (src/app/core/seo/schema.ts).
 const { buildGraph } = load(path.join(root, 'src/app/core/seo/schema.ts'));
 
@@ -57,9 +57,8 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').repl
 const url = (p) => (p ? `${SEO_DOMAIN}/${p}` : `${SEO_DOMAIN}/`);
 
 const nav = [
-  ['', 'Home'], ['property', 'The Property'], ['walkthrough', '3D Walkthrough'], ['floor-plans', 'Floor Plans'], ['gallery', 'Gallery'],
-  ['location-contact', 'Location & Site Visit'], ['growth', 'Nearby Projects'], ['business-fit', 'Business Fit'], ['infrastructure', 'Infrastructure'],
-  ['spaces', 'Spaces'], ['leasing', 'Leasing'], ['brokers', 'Brokers'],
+  ['', 'Home'], ['walkthrough', '3D Walkthrough'], ['floor-plans', 'Floor Plans'],
+  ['location-contact', 'Location & Site Visit'], ['leasing', 'Leasing'],
   ...LANDING_PAGES.map((l) => [l.path, l.navLabel]),
   ['privacy-disclaimer', 'Privacy & Disclaimer'], ['terms', 'Terms'],
 ];
@@ -92,28 +91,67 @@ function faqHtml(faqs, heading) {
     : '';
 }
 
+const li = (items) => `<ul>${items.map((t) => `<li>${t}</li>`).join('')}</ul>`;
+const downloadsHtml = () => `<p><a href="${url(BROCHURE.href)}">Download the brochure (PDF, about ${esc(BROCHURE.size)}, ${BROCHURE.pages} pages)</a> · <a href="${url(BROCHURE.plansHref)}">Download the floor plans (PDF)</a></p>`;
+
+/** Page-specific sections: what a visitor sees on the page, written as plain HTML for crawlers that do not run JavaScript. */
+function pageSections(route) {
+  switch (route.path) {
+    case '':
+      return [
+        `<section><h2>${esc(HOME_ANSWER.q)}</h2><p>${esc(HOME_ANSWER.a)}</p></section>`,
+        `<section><h2>The building: 3D walkthrough</h2><p>Indicative 3D renders of the final design, by day and night, from the road to the lift lobby. Construction is ongoing.</p>${li(TOUR_STOPS.map((t) => `<strong>${esc(t.title)}.</strong> ${esc(t.caption)}`))}<p><a href="${url('walkthrough')}">Open the walkthrough</a></p></section>`,
+        `<section><h2>Floor plans</h2>${li(Object.values(LEVEL_INFO).map((l) => `<strong>${esc(l.title)}:</strong> ${esc(l.value)} (${esc(l.label)}; ${esc(l.sub)})`))}<p><a href="${url('floor-plans')}">All plans and areas</a></p></section>`,
+        `<section><h2>Brochure</h2><p>Six pages with the final 3D renders, floor plans and areas, specifications and location.</p>${downloadsHtml()}</section>`,
+        `<section><h2>Which business are you leasing for?</h2><ul>${LANDING_PAGES.map((l) => `<li><a href="${url(l.path)}">${esc(l.navLabel)}</a>: ${esc(l.sub)}</li>`).join('')}</ul></section>`,
+      ];
+    case 'floor-plans':
+      return [
+        `<section><h2>Floor areas</h2>${Object.values(LEVEL_INFO).map((l) => `<h3>${esc(l.title)}: ${esc(l.value)}</h3><p>${esc(l.label)}. ${esc(l.sub)}.</p>${li(l.facts.map((f) => `${esc(f.label)}: ${esc(f.value)}`))}`).join('')}<p>Areas are approximate and subject to final measurement. Floors are offered as open shells.</p></section>`,
+        `<section><h2>Download</h2>${downloadsHtml()}</section>`,
+      ];
+    case 'walkthrough':
+      return [
+        `<section><h2>Walkthrough stops</h2><p>Indicative 3D renders of the final design. Finishes, signage, planting and surroundings are illustrative and subject to change.</p>${li(TOUR_STOPS.map((t) => `<strong>${esc(t.title)}.</strong> ${esc(t.caption)}`))}</section>`,
+        `<section><h2>The building as it stands today</h2><p>Photographs taken on site. Construction is ongoing.</p>${li(SITE_PHOTOS.map((p) => `<strong>${esc(p.title)}.</strong> ${esc(p.caption)}`))}</section>`,
+        `<section><h2>Next</h2><p><a href="${url('floor-plans')}">Floor plans</a> · ${downloadsHtml().replace(/^<p>|<\/p>$/g, '')}</p></section>`,
+      ];
+    case 'leasing':
+      return [
+        `<section><h2>What is available</h2>${li(LEASING_POINTS.map(esc))}</section>`,
+        `<section><h2>How leasing works</h2><ol>${LEASING_STEPS.map((x) => `<li><strong>${esc(x.t)}.</strong> ${esc(x.d)}</li>`).join('')}</ol></section>`,
+        `<section><h2>Terms and documents</h2><p>${esc(PROPERTY.leasing.pricingDisclosure)}. The leasing team shares terms and technical specifications directly.</p>${downloadsHtml()}</section>`,
+      ];
+    case 'location-contact':
+      return [
+        `<section><h2>Where is SHRINEVA?</h2><p>${esc(PROPERTY.address.full)}</p><p>Site visits and calls: ${esc(PROPERTY.contact.hours)}. Phone ${esc(PROPERTY.contact.phoneDisplay)} or ${esc(PROPERTY.contact.phone2Display)}.</p><p><a href="${esc(PROPERTY.address.googleMapsUrl)}">Open in Google Maps</a></p></section>`,
+      ];
+    default:
+      return [];
+  }
+}
+
+const LEGAL_PAGES = new Set(['privacy-disclaimer', 'terms']);
+
 function staticBody(route) {
   const landing = landingByPath(route.path);
   const faqs = faqForPath(route.path, landing ? landing.faq : []);
+  const legal = LEGAL_PAGES.has(route.path);
   const out = [`<header><p>${esc(PROPERTY.brand.name)}</p><h1>${esc(route.h1)}</h1><p>${esc(route.description)}</p></header>`];
   if (landing) {
     out.push(`<section><h2>${esc(landing.answerQ)}</h2><p>${esc(landing.answer)}</p><p>${esc(landing.approvalNote)}</p></section>`);
     out.push(`<section><h2>Why operators look at SHRINEVA</h2><ul>${landing.cards.map((c) => `<li><strong>${esc(c.title)}.</strong> ${esc(c.text)}</li>`).join('')}</ul>` +
       `<h3>${esc(landing.categoriesHeading)}</h3><ul>${landing.categories.map((c) => `<li>${esc(c)}</li>`).join('')}</ul></section>`);
-  } else if (route.path === '') {
-    out.push(`<section><h2>${esc(HOME_ANSWER.q)}</h2><p>${esc(HOME_ANSWER.a)}</p></section>`);
-    out.push(`<section><h2>Which business are you leasing for?</h2><ul>${LANDING_PAGES.map((l) => `<li><a href="${url(l.path)}">${esc(l.navLabel)}</a>: ${esc(l.sub)}</li>`).join('')}</ul></section>`);
+  } else {
+    out.push(...pageSections(route));
   }
-  out.push(`<section><h2>SHRINEVA key facts</h2><ul>${facts().map((f) => `<li>${esc(f)}</li>`).join('')}</ul></section>`);
-  if (route.path === 'growth') {
-    out.push(`<section><h2>What is being built near SHRINEVA (reviewed ${esc(FOOTFALL_AS_OF)})</h2>` +
-      NEARBY_PROJECTS.map((p) => `<h3>${esc(p.name)} — ${esc(p.distance)}</h3><p>${esc(p.status)} ${esc(p.facts.join('; '))}.</p>`).join('') +
-      `<h2>City-level projects (indirect)</h2>` +
-      CITY_DRIVERS.map((c) => `<h3>${esc(c.name)}</h3><p>${esc(c.facts)} ${esc(c.whyIndirect)}</p>`).join('') +
-      `<h2>What we do not claim</h2><ul>${FOOTFALL_NOT_CLAIMED.map((n) => `<li>${esc(n)}</li>`).join('')}</ul></section>`);
+  if (!legal) {
+    out.push(`<section><h2>SHRINEVA key facts</h2><ul>${facts().map((f) => `<li>${esc(f)}</li>`).join('')}</ul></section>`);
+    out.push(faqHtml(faqs, landing ? `Questions from ${landing.eyebrow.toLowerCase()} tenants` : 'Frequently asked questions'));
+    if (route.path === 'location-contact' || route.path === '') {
+      out.push(`<section><h2>Nearby (approximate)</h2><ul>${NEARBY_DISTANCES.map((d) => `<li>${esc(d.name)}: ${esc(d.value)}${d.note ? ` (${esc(d.note)})` : ''}</li>`).join('')}</ul></section>`);
+    }
   }
-  out.push(faqHtml(faqs, landing ? `Questions from ${landing.eyebrow.toLowerCase()} tenants` : 'Frequently asked questions'));
-  out.push(`<section><h2>Nearby (approximate)</h2><ul>${NEARBY_DISTANCES.map((d) => `<li>${esc(d.name)}: ${esc(d.value)}${d.note ? ` (${esc(d.note)})` : ''}</li>`).join('')}</ul></section>`);
   out.push(`<p>${esc(PROPERTY.address.full)}. Call ${esc(PROPERTY.contact.phoneDisplay)} or ${esc(PROPERTY.contact.phone2Display)}, or message ${esc(PROPERTY.contact.phoneDisplay)} on WhatsApp.</p>`);
   out.push(`<nav aria-label="Site"><ul>${nav.map(([p, l]) => `<li><a href="${url(p)}">${esc(l)}</a></li>`).join('')}</ul></nav>`);
   return out.join('');
@@ -130,7 +168,7 @@ function shell(route) {
   let html = base;
   if (route.path === '') {
     // Only the home page paints the hero straight away; other routes must not pay for it.
-    html = html.replace('</head>', '  <link rel="preload" as="image" href="assets/images/hero/hero-golden-1000.webp" imagesrcset="assets/images/hero/hero-golden-1000.webp 1000w, assets/images/hero/hero-golden-2000.webp 2000w" imagesizes="(min-width: 1024px) 560px, 92vw" fetchpriority="high">\n</head>');
+    html = html.replace('</head>', '  <link rel="preload" as="image" href="assets/images/hero/hero-night-960.webp" imagesrcset="assets/images/hero/hero-night-960.webp 960w, assets/images/hero/hero-night-1920.webp 1920w" imagesizes="(min-width: 1320px) 1272px, calc(100vw - 2.5rem)" fetchpriority="high">\n</head>');
   }
   html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(route.title)}</title>`);
   html = setMeta(html, 'name', 'description', route.description);
@@ -149,7 +187,7 @@ function shell(route) {
   const bodyAt = html.indexOf('<body');
   let bodyHtml = html.slice(bodyAt).replace(/<noscript>[\s\S]*?<\/noscript>/i, '');
   bodyHtml = bodyHtml.replace(/<app-root>[\s\S]*?<\/app-root>/i,
-    () => `<app-root><div class="boot" aria-hidden="true"><b>SHRINEVA</b><span>Bada Lalpur, Varanasi</span></div><main class="static-shell" style="${HIDDEN}">${staticBody(route)}</main></app-root>`);
+    () => `<app-root><div class="boot" aria-hidden="true"><img src="assets/images/logo-wordmark-sm.webp" alt="" width="320" height="82"><span>Bada Lalpur, Varanasi</span></div><main class="static-shell" style="${HIDDEN}">${staticBody(route)}</main></app-root>`);
   html = html.slice(0, bodyAt) + bodyHtml;
   html = html.replace('</head>', `  ${NOSCRIPT_REVEAL}\n</head>`);
   // Structured data in the static HTML (the runtime SeoService updates this same element by id).
@@ -168,14 +206,17 @@ for (const route of SEO_ROUTES) {
 }
 console.log(`SEO shells written: ${count}`);
 
+const SITEMAP_IMAGES = {
+  '': [['renders/facade-night.webp', 'SHRINEVA building at night, indicative 3D render'], ['renders/facade-day.webp', 'SHRINEVA building by day, indicative 3D render']],
+  walkthrough: [['renders/entrance.webp', 'SHRINEVA entrance, indicative 3D render'], ['renders/ground-level.webp', 'SHRINEVA ground level, indicative 3D render'], ['renders/lift-lobby.webp', 'SHRINEVA lift lobby, indicative 3D render']],
+  'floor-plans': [['plans/plan-typical.webp', 'SHRINEVA typical floor plan, Floors 1 to 3'], ['plans/plan-ground.webp', 'SHRINEVA ground level plan']],
+};
 // --- sitemap ---------------------------------------------------------------------------------
 const today = new Date().toISOString().slice(0, 10);
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
   SEO_ROUTES.map((r) => {
-    const img = r.path === 'gallery' || r.path === '' || r.path === 'floor-plans'
-      ? `\n    <image:image><image:loc>${SEO_DOMAIN}/assets/images/renders/facade-golden.webp</image:loc><image:title>SHRINEVA façade, indicative 3D render</image:title></image:image>`
-      : '';
+    const img = (SITEMAP_IMAGES[r.path] || []).map(([f, t]) => `\n    <image:image><image:loc>${SEO_DOMAIN}/assets/images/${f}</image:loc><image:title>${esc(t)}</image:title></image:image>`).join('');
     return `  <url>\n    <loc>${url(r.path)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>${img}\n  </url>`;
   }).join('\n') + '\n</urlset>\n';
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
@@ -216,8 +257,8 @@ const llms = [
   ...SEO_ROUTES.filter((r) => r.priority >= 0.5).map((r) => `- [${pageLabel(r)}](${url(r.path)}): ${r.description}`),
   '',
   '## Downloads',
-  `- [Leasing dossier (PDF)](${url('assets/shrineva-dossier.pdf')}): opportunity, location and distances, key features, floor plans, 3D views and contacts.`,
-  `- [Floor plans (PDF)](${url('assets/shrineva-floor-plans.pdf')}): ground level, typical floor and building summary with area statements.`,
+  `- [Brochure (PDF)](${url('assets/shrineva-brochure.pdf')}): six pages with the final 3D renders, floor plans and areas, specifications and location.`,
+  `- [Floor plans (PDF)](${url('assets/shrineva-floor-plans.pdf')}): ground level and typical floor plans with areas.`,
   '',
   '## Approximate distances',
   ...NEARBY_DISTANCES.map((d) => `- ${d.name}: ${d.value}${d.note ? ` (${d.note})` : ''}`),
@@ -225,7 +266,7 @@ const llms = [
   '## Frequently asked questions',
   ...[HOME_ANSWER, ...CORE_FAQ, ...STATUS_FAQ].flatMap((f) => [`### ${f.q}`, f.a, '']),
   '## Notes',
-  `- The Apollo Hospital opposite is upcoming and under construction. No footfall, rent or approval claim is made for this building. Nearby project sources are listed at ${url('growth')} (reviewed ${FOOTFALL_AS_OF}).`,
+  `- The Apollo Hospital opposite is upcoming and under construction. No footfall, rent or approval claim is made for this building.`,
   `- Areas are approximate. Use of any floor is subject to floor suitability and statutory approvals.`,
   '',
 ].join('\n');

@@ -1,84 +1,54 @@
 /**
- * SHRINEVA — Editorial / marketing content.
- * Facts belong in property.config.ts. This file holds copy that is not a
- * measured specification (demand engines, occupier factors, business-fit
- * narratives). Keep claims qualitative; do not invent footfall or returns.
+ * SHRINEVA — page copy that is shown on the site AND written into the static HTML (scripts/build-seo.js) and llms.txt.
+ * Keeping it here means the page a visitor reads and the page a crawler reads can never disagree.
+ * Figures come from property.config.ts and the printed brochure; nothing is invented.
  */
-import { PROPERTY, PLAN } from './property.config';
+import { MARKETING_AREA, PLAN } from './property.config';
 
-const sqft = (n: number) => n.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+export interface Fact { label: string; value: string; }
+export interface LevelInfo { id: 'ground' | 'typical'; title: string; value: string; label: string; sub: string; facts: Fact[]; }
 
-export const CONTENT = {
-  about:
-    "Built with a long-term view of Varanasi's evolving commercial landscape, SHRINEVA combines a family-led vision with a practical approach to modern business space.",
+const lift = `${PLAN.lift.capacity.replace(' passengers', '-person')} passenger lift, serves every level`;
 
-  /** Property at a glance (home). Every figure is from the architect's sheets. */
-  snapshot: [
-    { value: `${PLAN.plot.areaSqM} sq m`, label: 'Plot area', sub: `≈ ${sqft(PLAN.plot.areaSqFt)} sq ft` },
-    { value: PLAN.plot.frontageShort, label: 'Frontage, north-facing', sub: `on a ${PLAN.plot.roadWidthM} m wide road` },
-    { value: 'Parking + 3', label: 'Commercial floors', sub: 'Open parking level, three whole floors' },
-    { value: `${sqft(PLAN.typical.floorArea.sqft)} sq ft`, label: 'Floor area, each floor', sub: `${sqft(PLAN.typical.carpet.sqft)} sq ft carpet` },
-    { value: '8 persons', label: 'Passenger lift', sub: 'One lift, one staircase' },
-    { value: 'Open', label: 'Parking level', sub: 'Capacity to be confirmed' },
-  ],
-
-  demandEngineStrip: [
-    { kicker: 'Healthcare', line: 'Planned 400-bed Apollo hospital nearby' },
-    { kicker: 'Education', line: 'NIFT Varanasi' },
-    { kicker: 'Trade & Culture', line: 'Varanasi Trade Centre' },
-    { kicker: 'Residential', line: 'Surrounding catchment' },
-    { kicker: 'Connectivity', line: 'Ring Road · about 1 km' },
-  ],
-
-  occupierFactors: [
-    { title: 'Location', copy: 'The upcoming Apollo Hospital directly opposite, NIFT about 100 m away, the Trade Centre about 330 m, Ring Road about 1 km by road.' },
-    { title: 'Visibility', copy: `${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road, plus a glass front on each upper floor.` },
-    { title: 'Access', copy: 'Open frontage with direct entry from the road, and east and west walkways to the lift and stair lobby.' },
-    { title: 'Parking', copy: 'Parking on the open ground level. Car and two-wheeler capacity will be confirmed against the sanctioned layout.' },
-    { title: 'Flexibility', copy: 'One whole open floor plate, divided as required. Full-floor or subdivided occupation.' },
-    { title: 'Infrastructure', copy: 'Planned provisions for power, DG backup, water, HVAC and internet; specifications in the leasing pack.' },
-    { title: 'Brand presence', copy: 'Façade, projecting and building-level signage opportunities, subject to façade design finalisation.' },
-    { title: 'Operability', copy: 'Commercial-ready infrastructure. F&B-related provisions subject to final tenant MEP design.' },
-  ],
-
-  architectureLevels: [
-    {
-      id: 'ground',
-      label: 'Parking level',
-      area: `${sqft(PLAN.stilt.structureZone.sqft)} sq ft structure zone`,
-      note: `Open ground level, ${PLAN.stilt.floorToFloor} floor to floor. Lift and stair lobby, parking and arrival.`,
-      route: '/floor-plans',
-    },
-    {
-      id: 'floor-1',
-      label: 'Floor 01',
-      area: `${sqft(PLAN.typical.floorArea.sqft)} sq ft · ${sqft(PLAN.typical.carpet.sqft)} carpet`,
-      note: 'One open floor plate, divided as required. The first-floor plan is typical for all three floors.',
-      route: '/spaces/floor-1',
-    },
-    {
-      id: 'floor-2',
-      label: 'Floor 02',
-      area: `${sqft(PLAN.typical.floorArea.sqft)} sq ft · ${sqft(PLAN.typical.carpet.sqft)} carpet`,
-      note: 'Same plate as Floor 01.',
-      route: '/spaces/floor-2',
-    },
-    {
-      id: 'floor-3',
-      label: 'Floor 03',
-      area: `${sqft(PLAN.typical.floorArea.sqft)} sq ft · ${sqft(PLAN.typical.carpet.sqft)} carpet`,
-      note: 'Same plate as Floor 01.',
-      route: '/spaces/floor-3',
-    },
-  ],
-
-  infrastructureEssentials: [
-    'Planned provisions: DG backup, three-phase power, water and internet readiness (specifications in the leasing pack)',
-    'HVAC provision for commercial occupation',
-    `One ${PLAN.lift.adjective} lift (${PLAN.lift.clear} clear) and one staircase with 5′-3″ flights`,
-    `Floor-to-floor height ${PLAN.stilt.floorToFloor} at the parking level and ${PLAN.typical.floorToFloor} on upper floors`,
-    'Parking on the open ground level (capacity to be confirmed against the sanctioned layout)',
-    'Façade and projecting signage opportunities',
-    'Toilets, pantry, handover condition and clear ceiling height are agreed with each occupier',
-  ],
+/** Areas and facts per drawing set (floor plans page and home teaser). */
+export const LEVEL_INFO: Record<'ground' | 'typical', LevelInfo> = {
+  ground: {
+    id: 'ground', title: 'Ground level',
+    value: 'About 3,000 sq ft', label: 'Open to the road, parking for 12+ cars', sub: 'About 279 sq m',
+    facts: [
+      { label: 'Floor to floor', value: 'About 9.5 ft' },
+      { label: 'Frontage', value: `${PLAN.plot.frontage} on a ${PLAN.plot.roadWidthM} m road` },
+      { label: 'Parking', value: 'For 12+ cars' },
+      { label: 'Entries', value: 'West and east, to the lift and stair lobby' },
+      { label: 'Lift', value: lift },
+      { label: 'Fire exit', value: 'On every level' },
+    ],
+  },
+  typical: {
+    id: 'typical', title: 'Floors 1, 2 and 3 (identical)',
+    value: MARKETING_AREA.gross.replace('about', 'About'), label: 'Gross, on each of Floors 1, 2 and 3', sub: `${MARKETING_AREA.carpet.replace('about', 'About')} carpet`,
+    facts: [
+      { label: 'Floors', value: '1, 2 and 3 are identical' },
+      { label: 'Floor to floor', value: 'About 11.5 ft' },
+      { label: 'Front', value: 'Glass front facing the road' },
+      { label: 'Lift', value: lift },
+      { label: 'Fire exit', value: 'On every level' },
+      { label: 'Handover', value: 'Open shell, fitted out by the tenant' },
+    ],
+  },
 };
+
+export const LEASING_POINTS: string[] = [
+  `${MARKETING_AREA.gross} gross per floor (${MARKETING_AREA.carpet} carpet), in one open floor plate`,
+  'Full-floor lease or subdivision, subject to requirement',
+  'Long-term leases accepted',
+  'Commercial use across Floors 1, 2 and 3, subject to floor suitability and applicable statutory approvals',
+  'Fit-out and handover condition agreed with each occupier',
+  'Brand visibility on a 24 m road, signage and ground-level parking',
+];
+
+export const LEASING_STEPS: { t: string; d: string }[] = [
+  { t: 'Tell us what you need', d: 'Area, use and timing. Use the form, call or WhatsApp.' },
+  { t: 'See it', d: 'Floor options, the brochure and a visit to the plot.' },
+  { t: 'Agree the terms', d: 'Commercial terms, fit-out and handover condition, in writing.' },
+];

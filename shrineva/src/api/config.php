@@ -9,16 +9,16 @@
  *   <?php return [
  *     'transport' => 'smtp',
  *     'smtp' => ['host' => 'smtp.hostinger.com', 'port' => 465, 'secure' => 'ssl',
- *                'user' => 'leasing@shrineva.com', 'pass' => '********'],
- *     'from' => 'leasing@shrineva.com',
+ *                'user' => 'leasing@shrineva.in', 'pass' => '********'],
+ *     'from' => 'leasing@shrineva.in',
  *   ];
  */
 return [
-    // Everyone in this list gets every enquiry. leasing@shrineva.com only works once that mailbox exists.
-    'recipients' => ['leasing@shrineva.com', 'neerajsingh250@gmail.com'],
+    // Everyone in this list gets every enquiry. leasing@shrineva.in only works once that mailbox exists in Hostinger (Emails).
+    'recipients' => ['leasing@shrineva.in'],
 
     // Visible sender. Use a real mailbox or alias on the website's domain so SPF/DKIM line up.
-    'from'      => 'leasing@shrineva.com',
+    'from'      => 'leasing@shrineva.in',
     'from_name' => 'SHRINEVA website',
 
     // 'mail' = PHP's built-in mail() (works on Hostinger with no setup); 'smtp' = authenticated SMTP (more reliable).

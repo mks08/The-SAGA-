@@ -1,5 +1,5 @@
 /**
- * One-command domain switch.   node scripts/set-domain.js https://shrineva.com
+ * One-command domain switch.   node scripts/set-domain.js https://shrineva.in
  * Updates the two places the public domain lives (property.config.ts → domain.canonical and the
  * static tags in src/index.html). Sitemap, robots.txt, canonical/OG tags and JSON-LD are all
  * regenerated from that value by `npm run build`. Nothing here buys, points or verifies a domain.
@@ -20,7 +20,7 @@ let c = fs.readFileSync(cfg, 'utf8');
 const m = c.match(/canonical:\s*'(https:\/\/[^']+)'/);
 if (!m) { console.error('domain.canonical not found in property.config.ts'); process.exit(1); }
 const prev = m[1];
-c = c.replace(m[0], `canonical: '${next}'`);
+c = c.split(prev).join(next); // canonical and the og:image URL both carry the domain
 fs.writeFileSync(cfg, c);
 
 let h = fs.readFileSync(idx, 'utf8');

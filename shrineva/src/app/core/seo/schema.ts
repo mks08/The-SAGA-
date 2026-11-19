@@ -1,6 +1,6 @@
 import { seoForPath, SEO_DOMAIN, SEO_ROUTES } from '../../config/seo.config';
 import { PROPERTY, PLAN, MARKETING_AREA } from '../../config/property.config';
-import { RENDERS, TOUR_VIDEO } from '../../config/media.config';
+import { RENDERS, BROCHURE } from '../../config/media.config';
 import { NEARBY_DISTANCES } from '../../config/location.config';
 import { faqForPath } from '../../config/faq.config';
 import { LANDING_PAGES, landingByPath } from '../../config/landing.config';
@@ -21,7 +21,7 @@ const ID = {
 };
 
 /** Pages that carry the lease listing / offer. */
-const LISTING_PATHS = new Set(['', 'leasing', 'spaces', ...LANDING_PAGES.map((l) => l.path)]);
+const LISTING_PATHS = new Set(['', 'leasing', ...LANDING_PAGES.map((l) => l.path)]);
 
 const abs = (p: string) => (/^https?:/.test(p) ? p : `${SEO_DOMAIN}/${p}`);
 
@@ -139,7 +139,8 @@ export function buildGraph(path: string, canonical: string) {
 
   if (LISTING_PATHS.has(path)) graph.push(listing(path, canonical));
   if (!path) graph.push(...homeExtras());
-  if (path === 'gallery') graph.push(gallerySchema());
+  if (path === 'walkthrough') graph.push(gallerySchema());
+  if (path === 'leasing' || path === 'floor-plans') graph.push(...downloads(canonical));
 
   const faqs = faqForPath(path, landingByPath(path)?.faq ?? []);
   if (faqs.length) {
@@ -207,6 +208,25 @@ function breadcrumbs(path: string, canonical: string) {
   return { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: items };
 }
 
+/** The two PDFs offered for download. */
+function downloads(canonical: string) {
+  const doc = (id: string, name: string, description: string, href: string) => ({
+    '@type': 'DigitalDocument',
+    '@id': `${canonical}#${id}`,
+    name,
+    description,
+    url: abs(href),
+    encodingFormat: 'application/pdf',
+    inLanguage: 'en-IN',
+    about: { '@id': ID.place },
+    publisher: { '@id': ID.org },
+  });
+  return [
+    doc('brochure', 'SHRINEVA brochure (PDF)', `Six pages: the final 3D renders, floor plans and areas, specifications and location. Renders are indicative and subject to change.`, BROCHURE.href),
+    doc('floor-plans-pdf', 'SHRINEVA floor plans (PDF)', 'Ground-level and typical upper-floor plans with areas. Areas are approximate and subject to final measurement.', BROCHURE.plansHref),
+  ];
+}
+
 function gallerySchema() {
   return {
     '@type': 'ImageGallery',
@@ -223,7 +243,7 @@ function gallerySchema() {
   };
 }
 
-/** Home only: the short distance list as plain structured facts, and the film once it is published (TOUR_VIDEO.available). */
+/** Home only: the short distance list as plain structured facts. */
 function homeExtras() {
   return [
     {
@@ -237,24 +257,5 @@ function homeExtras() {
         description: `${d.value}${d.note ? ` (${d.note})` : ''}`,
       })),
     },
-    ...(TOUR_VIDEO.available ? [videoSchema()] : []),
   ];
-}
-
-/** The short film, once it is published (TOUR_VIDEO.available). */
-function videoSchema() {
-  const v = TOUR_VIDEO, m = Math.floor(v.durationSec / 60), sec = Math.round(v.durationSec % 60);
-  return {
-    '@type': 'VideoObject',
-    '@id': `${SEO_DOMAIN}/#film`,
-    name: v.title,
-    description: v.description,
-    thumbnailUrl: `${SEO_DOMAIN}/${v.poster}`,
-    contentUrl: `${SEO_DOMAIN}/${v.src}`,
-    uploadDate: v.uploadDate,
-    duration: `PT${m ? `${m}M` : ''}${sec}S`,
-    width: v.posterWidth,
-    height: v.posterHeight,
-    inLanguage: 'en-IN',
-  };
 }

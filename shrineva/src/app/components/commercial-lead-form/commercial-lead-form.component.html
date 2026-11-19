@@ -32,11 +32,11 @@
         </div>
       </div>
 
-      <div class="grid gap-3.5 sm:grid-cols-3">
+      <div class="grid gap-3.5 sm:grid-cols-2">
         <div>
           <label class="field-label" [for]="anchorId + '-area'">Area needed</label>
           <select [id]="anchorId + '-area'" class="field-input" formControlName="area">
-            <option value="">Select (optional)</option>
+            <option value="">Not sure yet</option>
             <option *ngFor="let a of areas" [value]="a">{{ a }}</option>
           </select>
         </div>
@@ -46,10 +46,10 @@
             <option *ngFor="let f of floors" [value]="f">{{ f }}</option>
           </select>
         </div>
-        <div>
+        <div class="sm:col-span-2">
           <label class="field-label" [for]="anchorId + '-timeline'">Timeline</label>
           <select [id]="anchorId + '-timeline'" class="field-input" formControlName="timeline">
-            <option value="">Select (optional)</option>
+            <option value="">Not sure yet</option>
             <option *ngFor="let t of timelines" [value]="t">{{ t }}</option>
           </select>
         </div>

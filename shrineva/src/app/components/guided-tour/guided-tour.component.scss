@@ -1,0 +1,19 @@
+:host { display: block; }
+
+@keyframes tour-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes tour-drift { from { transform: scale(1); } to { transform: scale(1.055); } }
+
+.fill { transform: scaleX(0); transform-origin: left center; }
+.fill.done { transform: scaleX(1); }
+.fill.run { animation: tour-fill var(--tour-s, 6s) linear forwards; }
+
+.drift { animation: tour-drift calc(var(--tour-s, 6s) + 1.5s) ease-out forwards; }
+
+.thumbs { scrollbar-width: none; scroll-snap-type: x proximity; }
+.thumbs::-webkit-scrollbar { display: none; }
+.thumbs > li { scroll-snap-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fill.run { animation: none; transform: scaleX(1); }
+  .drift { animation: none; }
+}

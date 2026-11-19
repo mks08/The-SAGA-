@@ -21,9 +21,6 @@ export interface RouteSeo {
 
 const domain = PROPERTY.domain.canonical;
 
-const floorDesc = (n: number) =>
-  `Floor ${n} at SHRINEVA, Bada Lalpur, Varanasi: about 3,500 sq ft gross (about 3,100 sq ft carpet), one open floor plate with a glass front on a 24 m road.`;
-
 export const SEO_ROUTES: RouteSeo[] = [
   {
     path: '',
@@ -83,92 +80,11 @@ export const SEO_ROUTES: RouteSeo[] = [
     changefreq: 'weekly',
   },
   {
-    path: 'property',
-    title: 'The Property: 50 ft Frontage, Lift, Parking | SHRINEVA',
-    description: `Commercial building on a ${PLAN.plot.areaSqM} sq m plot, Bada Lalpur, Varanasi: about 50 ft frontage on a 24 m road, 8-person lift, 12+ car parking, fire exits, Vastu.`,
-    h1: 'A Commercial Building Designed for Flexibility',
-    priority: 0.9,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'spaces',
-    title: 'Commercial Floors for Lease, Bada Lalpur | SHRINEVA Varanasi',
-    description: 'Three identical open floors at SHRINEVA, each about 3,500 sq ft gross and 3,100 sq ft carpet, in Bada Lalpur, Varanasi. Lease a whole floor or part of one.',
-    h1: 'Explore the Space',
-    priority: 0.8,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'spaces/floor-1',
-    title: 'Floor 1 Commercial Space, SHRINEVA Bada Lalpur, Varanasi',
-    description: floorDesc(1),
-    h1: 'Floor 1',
-    priority: 0.6,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'spaces/floor-2',
-    title: 'Floor 2 Commercial Space, SHRINEVA Bada Lalpur, Varanasi',
-    description: floorDesc(2),
-    h1: 'Floor 2',
-    priority: 0.6,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'spaces/floor-3',
-    title: 'Floor 3 Commercial Space, SHRINEVA Bada Lalpur, Varanasi',
-    description: floorDesc(3),
-    h1: 'Floor 3',
-    priority: 0.6,
-    changefreq: 'monthly',
-  },
-  {
     path: 'walkthrough',
-    title: '3D Walkthrough of SHRINEVA Commercial Building, Varanasi',
-    description: 'Explore an indicative 3D model of SHRINEVA, Bada Lalpur, Varanasi: orbit the building, open each floor and look around with mouse or touch. May change.',
-    h1: '3D Walkthrough',
+    title: '3D Walkthrough: SHRINEVA Building, Bada Lalpur, Varanasi',
+    description: 'Walk through the final 3D design of SHRINEVA, Bada Lalpur, Varanasi, from the road to the lift lobby, by day and night. Indicative; subject to change.',
+    h1: 'Walk through SHRINEVA before you visit',
     priority: 0.8,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'business-fit',
-    title: 'Which Businesses Suit SHRINEVA? Clinics, Banks, Offices',
-    description: 'Floor plates at SHRINEVA, Bada Lalpur, Varanasi suit clinics, banks, offices, retail, cafés, coaching and wellness. Every use is subject to approvals.',
-    h1: 'Built Around Business Needs',
-    priority: 0.8,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'growth',
-    title: 'Projects Near SHRINEVA: Apollo, NIFT, Trade Centre, Varanasi',
-    description: 'Sourced status of projects near SHRINEVA, Bada Lalpur: the upcoming Apollo Hospital, NIFT Varanasi campus and Varanasi Trade Centre. No footfall claimed.',
-    h1: 'Nearby Projects and Footfall Potential',
-    priority: 0.7,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'infrastructure',
-    title: 'Specifications: Lift, Power, Parking | SHRINEVA, Varanasi',
-    description: `Planned provisions at SHRINEVA, Varanasi: ${PLAN.lift.adjective} lift, power with DG backup, internet, ${PLAN.stilt.floorToFloor} ground level and ${PLAN.typical.floorToFloor} floor heights.`,
-    h1: 'Built for Serious Operators',
-    priority: 0.6,
-    changefreq: 'monthly',
-  },
-  {
-    path: 'gallery',
-    title: 'Gallery: 3D Renders of SHRINEVA, Bada Lalpur, Varanasi',
-    description: 'Indicative 3D renders of the SHRINEVA facade by day and night, the ground-level court and lift lobby in Bada Lalpur, Varanasi. Design subject to change.',
-    h1: 'Gallery',
-    priority: 0.7,
-    changefreq: 'monthly',
-    image: `${domain}/assets/images/og-shrineva.jpg`,
-  },
-  {
-    path: 'brokers',
-    title: 'For Brokers & Tenant Representatives | SHRINEVA, Varanasi',
-    description: 'Floors, plans and a direct leasing line for commercial brokers and tenant representatives at SHRINEVA, Bada Lalpur, Varanasi. Register a client brief here.',
-    h1: 'For Tenant Representatives & Brokers',
-    priority: 0.6,
     changefreq: 'monthly',
   },
   {

@@ -28,12 +28,6 @@
           <a [href]="links.directions" target="_blank" rel="noopener" class="btn-primary justify-center">Get directions <span class="arrow" aria-hidden="true">↗</span></a>
           <a href="#enquiry" class="btn-outline justify-center">Book a site visit</a>
         </div>
-        <h3 class="mt-8 font-display text-[1.3rem] text-ink">Approximate distances</h3>
-        <ul class="mt-2 max-w-md" aria-label="Distances from SHRINEVA">
-          <li *ngFor="let d of distances" class="flex items-baseline justify-between gap-3 border-b border-ink/10 py-2 text-[0.92rem]">
-            <span class="text-ink/80">{{ d.name }}<span *ngIf="d.note" class="text-ink/70"> ({{ d.note }})</span></span><span class="shrink-0 font-bold text-ink">{{ d.value }}</span>
-          </li>
-        </ul>
       </div>
       <app-commercial-lead-form anchorId="enquiry" heading="Book a site visit or request leasing details"
         intro="Tell us about your business and when you would like to visit. We will call to confirm a time."></app-commercial-lead-form>
