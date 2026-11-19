@@ -1,81 +1,135 @@
 import { seoForPath, SEO_DOMAIN, SEO_ROUTES } from '../../config/seo.config';
-import { PROPERTY, PLAN } from '../../config/property.config';
+import { PROPERTY, PLAN, MARKETING_AREA } from '../../config/property.config';
 import { RENDERS, TOUR_VIDEO } from '../../config/media.config';
 import { NEARBY_DISTANCES } from '../../config/location.config';
+import { faqForPath } from '../../config/faq.config';
+import { LANDING_PAGES, landingByPath } from '../../config/landing.config';
 
 /**
  * Structured data (JSON-LD) for every route. Pure functions with no Angular imports so the same
  * graph is used at runtime (SeoService) and written into the static HTML shells by scripts/build-seo.js.
+ *
+ * Graph per page: RealEstateAgent + LocalBusiness (the leasing business, with address, geo, hours, phones, service area and
+ * amenities), WebSite, Place (the building), WebPage, BreadcrumbList, plus - where the page shows them - a RealEstateListing
+ * with an Offer (lease) and a FAQPage whose questions are exactly the visible FAQ.
+ * Facts only: no approvals, rents, footfall or completion dates are asserted; the Apollo Hospital is "upcoming".
  */
+const ID = {
+  org: `${SEO_DOMAIN}/#organization`,
+  website: `${SEO_DOMAIN}/#website`,
+  place: `${SEO_DOMAIN}/#place`,
+};
+
+/** Pages that carry the lease listing / offer. */
+const LISTING_PATHS = new Set(['', 'leasing', 'spaces', ...LANDING_PAGES.map((l) => l.path)]);
+
+const abs = (p: string) => (/^https?:/.test(p) ? p : `${SEO_DOMAIN}/${p}`);
+
+const amenities = () => [
+  { '@type': 'LocationFeatureSpecification', name: 'Passenger lift', value: PLAN.lift.capacity },
+  { '@type': 'LocationFeatureSpecification', name: 'Parking for 12+ cars at ground level', value: true },
+  { '@type': 'LocationFeatureSpecification', name: 'Fire exit on every level', value: true },
+  { '@type': 'LocationFeatureSpecification', name: 'Vastu-compliant layout', value: true },
+  { '@type': 'LocationFeatureSpecification', name: 'Open, column-free floor plates', value: true },
+  { '@type': 'LocationFeatureSpecification', name: 'Frontage on a 24 m wide road', value: PLAN.plot.frontage },
+];
+
+function address() {
+  return {
+    '@type': 'PostalAddress',
+    streetAddress: PROPERTY.address.line1,
+    addressLocality: 'Varanasi',
+    addressRegion: PROPERTY.address.state,
+    postalCode: PROPERTY.address.pin,
+    addressCountry: 'IN',
+  };
+}
+
+function geo() {
+  const { lat, lng } = PROPERTY.address;
+  return lat !== null && lng !== null ? { '@type': 'GeoCoordinates', latitude: lat, longitude: lng } : undefined;
+}
+
 export function buildGraph(path: string, canonical: string) {
   const route = seoForPath(path);
+  const sameAs = (PROPERTY.sameAs || []).filter((u) => /^https:\/\//.test(u));
+
   const org = {
-    '@type': 'Organization',
-    '@id': `${SEO_DOMAIN}/#organization`,
-    name: PROPERTY.brand.name,
+    '@type': ['RealEstateAgent', 'LocalBusiness'],
+    '@id': ID.org,
+    name: `${PROPERTY.brand.name} Leasing`,
+    alternateName: PROPERTY.brand.name,
+    description: `Leasing office for ${PROPERTY.brand.name}, a commercial building on Stadium Road, Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital. Floors of ${MARKETING_AREA.gross} for lease, whole or in part.`,
     url: `${SEO_DOMAIN}/`,
-    logo: `${SEO_DOMAIN}/${PROPERTY.images.logo}`,
-    ...(PROPERTY.contact.publicEmail ? { email: PROPERTY.contact.publicEmail } : {}),
+    logo: abs(PROPERTY.images.logo),
+    image: [PROPERTY.images.og, ...RENDERS.slice(0, 3).map((r) => abs(r.src))],
     telephone: PROPERTY.contact.phoneE164,
-    contactPoint: [
+    ...(PROPERTY.contact.publicEmail ? { email: PROPERTY.contact.publicEmail } : {}),
+    address: address(),
+    ...(geo() ? { geo: geo() } : {}),
+    hasMap: PROPERTY.address.googleMapsUrl,
+    openingHoursSpecification: [
       {
-        '@type': 'ContactPoint',
-        contactType: 'leasing enquiries',
-        telephone: PROPERTY.contact.phoneE164,
-        ...(PROPERTY.contact.publicEmail ? { email: PROPERTY.contact.publicEmail } : {}),
-        areaServed: 'IN',
-        availableLanguage: ['en', 'hi'],
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: PROPERTY.contact.hoursSpec.days,
+        opens: PROPERTY.contact.hoursSpec.opens,
+        closes: PROPERTY.contact.hoursSpec.closes,
       },
-      { '@type': 'ContactPoint', contactType: 'leasing enquiries', telephone: PROPERTY.contact.phone2E164, areaServed: 'IN', availableLanguage: ['en', 'hi'] },
     ],
+    areaServed: [
+      { '@type': 'City', name: 'Varanasi' },
+      { '@type': 'AdministrativeArea', name: 'Uttar Pradesh' },
+    ],
+    contactPoint: [PROPERTY.contact.phoneE164, PROPERTY.contact.phone2E164].map((telephone) => ({
+      '@type': 'ContactPoint',
+      contactType: 'leasing enquiries',
+      telephone,
+      areaServed: 'IN',
+      availableLanguage: ['en', 'hi'],
+    })),
+    amenityFeature: amenities(),
+    location: { '@id': ID.place },
+    ...(sameAs.length ? { sameAs } : {}),
   };
 
   const place = {
     '@type': 'Place',
-    '@id': `${SEO_DOMAIN}/#place`,
-    name: `${PROPERTY.brand.name} — commercial building, Bada Lalpur, Varanasi`,
-    description: `VDA-approved Parking + 3 commercial building on a ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} frontage on a ${PLAN.plot.roadWidthM} m road, about 60–70 m from the Apollo Medics hospital site and NIFT Varanasi. Whole floors of ${PLAN.typical.floorArea.sqft} sq ft.`,
+    '@id': ID.place,
+    name: `${PROPERTY.brand.name}, commercial building, Bada Lalpur, Varanasi`,
+    description: `Commercial building under construction on a ${PLAN.plot.areaSqM} sq m plot at Plot No. D-15, Lalpur Housing Scheme, Stadium Road, with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m wide road, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi. Three upper floors of ${MARKETING_AREA.gross} each.`,
     url: `${SEO_DOMAIN}/`,
     telephone: PROPERTY.contact.phoneE164,
     hasMap: PROPERTY.address.googleMapsUrl,
-    image: [PROPERTY.images.og, ...RENDERS.slice(0, 3).map((r) => `${SEO_DOMAIN}/${r.src}`)],
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: PROPERTY.address.line1,
-      addressLocality: 'Varanasi',
-      addressRegion: PROPERTY.address.state,
-      postalCode: PROPERTY.address.pin,
-      addressCountry: 'IN',
-    },
-    amenityFeature: [
-      { '@type': 'LocationFeatureSpecification', name: 'Passenger lift', value: PLAN.lift.capacity },
-    ],
+    image: [PROPERTY.images.og, ...RENDERS.slice(0, 3).map((r) => abs(r.src))],
+    address: address(),
+    ...(geo() ? { geo: geo() } : {}),
+    amenityFeature: amenities(),
     additionalProperty: [
       { '@type': 'PropertyValue', name: 'Plot area', value: PLAN.plot.areaSqM, unitText: 'square metres' },
-      { '@type': 'PropertyValue', name: 'Floor area per floor', value: PLAN.typical.floorArea.sqft, unitText: 'square feet' },
-      { '@type': 'PropertyValue', name: 'Carpet area per floor (computed)', value: PLAN.typical.carpet.sqft, unitText: 'square feet' },
-      { '@type': 'PropertyValue', name: 'Road frontage', value: PLAN.plot.frontage, unitText: 'about 50 feet' },
+      { '@type': 'PropertyValue', name: 'Gross area per upper floor (approximate)', value: MARKETING_AREA.grossNum, unitText: 'square feet' },
+      { '@type': 'PropertyValue', name: 'Carpet area per upper floor (approximate)', value: MARKETING_AREA.carpetNum, unitText: 'square feet' },
+      { '@type': 'PropertyValue', name: 'Road frontage (approximate)', value: PLAN.plot.frontageFt, unitText: 'feet' },
       { '@type': 'PropertyValue', name: 'Road width', value: PLAN.plot.roadWidthM, unitText: 'metres' },
     ],
   };
 
   const website = {
     '@type': 'WebSite',
-    '@id': `${SEO_DOMAIN}/#website`,
+    '@id': ID.website,
     url: `${SEO_DOMAIN}/`,
     name: PROPERTY.brand.name,
     inLanguage: 'en-IN',
-    publisher: { '@id': `${SEO_DOMAIN}/#organization` },
+    publisher: { '@id': ID.org },
   };
 
   const webpage = {
-    '@type': path === 'contact' ? 'ContactPage' : 'WebPage',
+    '@type': path === 'location-contact' ? 'ContactPage' : 'WebPage',
     '@id': `${canonical}#webpage`,
     url: canonical,
     name: route.title,
     description: route.description,
-    isPartOf: { '@id': `${SEO_DOMAIN}/#website` },
-    about: { '@id': `${SEO_DOMAIN}/#place` },
+    isPartOf: { '@id': ID.website },
+    about: { '@id': ID.place },
     primaryImageOfPage: route.image ?? PROPERTY.images.og,
     inLanguage: 'en-IN',
     breadcrumb: { '@id': `${canonical}#breadcrumb` },
@@ -83,10 +137,60 @@ export function buildGraph(path: string, canonical: string) {
 
   const graph: unknown[] = [org, website, place, webpage, breadcrumbs(path, canonical)];
 
+  if (LISTING_PATHS.has(path)) graph.push(listing(path, canonical));
   if (!path) graph.push(...homeExtras());
   if (path === 'gallery') graph.push(gallerySchema());
 
+  const faqs = faqForPath(path, landingByPath(path)?.faq ?? []);
+  if (faqs.length) {
+    graph.push({
+      '@type': 'FAQPage',
+      '@id': `${canonical}#faq`,
+      inLanguage: 'en-IN',
+      mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    });
+  }
+
   return { '@context': 'https://schema.org', '@graph': graph.filter(Boolean) };
+}
+
+/** The lease listing: floors of about 3,500 sq ft, price on request (no rent is published or implied). */
+function listing(path: string, canonical: string) {
+  return {
+    '@type': 'RealEstateListing',
+    '@id': `${canonical}#listing`,
+    name: 'Commercial floors for lease at SHRINEVA, Bada Lalpur, Varanasi',
+    description: `Three upper floors of ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) each, offered as open shells for lease, whole or in part. Construction is ongoing. Use is subject to approvals.`,
+    url: path ? canonical : `${SEO_DOMAIN}/leasing`,
+    about: { '@id': ID.place },
+    offers: {
+      '@type': 'Offer',
+      '@id': `${canonical}#offer`,
+      businessFunction: 'http://purl.org/goodrelations/v1#LeaseOut',
+      seller: { '@id': ID.org },
+      areaServed: { '@type': 'City', name: 'Varanasi' },
+      description: 'Lease terms and rent are shared by the leasing team on request.',
+      itemOffered: {
+        '@type': 'Accommodation',
+        name: 'Commercial floor, SHRINEVA (Floors 1, 2 and 3)',
+        floorLevel: '1, 2, 3',
+        floorSize: { '@type': 'QuantitativeValue', value: MARKETING_AREA.grossNum, unitCode: 'FTK', unitText: 'square feet (approximate, gross)' },
+        amenityFeature: amenities(),
+        address: address(),
+        ...(geo() ? { geo: geo() } : {}),
+      },
+    },
+  };
+}
+
+function crumbName(path: string): string {
+  const landing = landingByPath(path);
+  if (landing) return landing.navLabel;
+  const route = SEO_ROUTES.find((r) => r.path === path);
+  if (path === 'location-contact') return 'Location & Site Visit';
+  if (path === 'privacy-disclaimer') return 'Privacy & Disclaimer';
+  if (path === 'floor-plans') return 'Floor Plans';
+  return route?.h1 ?? path;
 }
 
 function breadcrumbs(path: string, canonical: string) {
@@ -96,11 +200,9 @@ function breadcrumbs(path: string, canonical: string) {
   if (path) {
     const parts = path.split('/');
     if (parts.length > 1) {
-      const parent = SEO_ROUTES.find((r) => r.path === parts[0]);
-      items.push({ '@type': 'ListItem', position: 2, name: parent?.h1 ?? parts[0], item: `${SEO_DOMAIN}/${parts[0]}` });
+      items.push({ '@type': 'ListItem', position: 2, name: crumbName(parts[0]), item: `${SEO_DOMAIN}/${parts[0]}` });
     }
-    const route = SEO_ROUTES.find((r) => r.path === path);
-    items.push({ '@type': 'ListItem', position: items.length + 1, name: route?.h1 ?? path, item: canonical });
+    items.push({ '@type': 'ListItem', position: items.length + 1, name: crumbName(path), item: canonical });
   }
   return { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: items };
 }
@@ -121,7 +223,7 @@ function gallerySchema() {
   };
 }
 
-/** Home only: the project status and the short distance list, as plain structured facts (no FAQ markup). */
+/** Home only: the short distance list as plain structured facts, and the film once it is published (TOUR_VIDEO.available). */
 function homeExtras() {
   return [
     {

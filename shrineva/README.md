@@ -17,7 +17,9 @@ Output: `dist/shrineva/`. `postbuild` writes, from the same route list and domai
 - one `index.html` per route (20 routes, e.g. `/walkthrough/index.html`, `/spaces/floor-1/index.html`)
 - `sitemap.xml`, `robots.txt` and `llms.txt` (a plain-text summary for AI assistants, built from the same config)
 - `404.html`, which `.htaccess` serves with a real 404 status for unknown URLs
-- JSON-LD (Organization, WebSite, Place, WebPage, BreadcrumbList, plus an ItemList of the nearby distances and the film's VideoObject on `/`, ImageGallery on `/gallery`) inside each shell, with no FAQ page or markup; the runtime `SeoService` updates the same element when visitors navigate
+- JSON-LD in each shell: RealEstateAgent + LocalBusiness (address, geo, hours, phones, service area, amenities, optional `sameAs`), WebSite, Place, WebPage / ContactPage, BreadcrumbList, a RealEstateListing with a lease Offer on `/`, `/leasing`, `/spaces` and the three landing pages, a FAQPage wherever a visible FAQ is shown, plus the nearby-distance ItemList and the film's VideoObject on `/` and an ImageGallery on `/gallery`
+- the page's real content (H1, answer-first section, key facts, FAQ, contact block, links) **inside `<app-root>`**, visually hidden until Angular starts and shown by a `<noscript>` rule, so crawlers and AI assistants that skip JavaScript read the full text
+- quality gates that fail the build: titles 50–60 and descriptions 145–155 characters, FAQ answers 40–60 words, one H1 per page, valid JSON-LD that matches the visible FAQ, no retired claims (VDA approval, "60–70 m", studios), "Apollo" never without "upcoming / under construction", every `<img>` with alt, width and height
 - the hero-image preload, on the home shell only
 
 ## What the site does
@@ -28,8 +30,10 @@ Output: `dist/shrineva/`. `postbuild` writes, from the same route list and domai
 | `/growth` | Detailed nearby projects: each card dated and linked to its source |
 | `/walkthrough` | Full 3D model: orbit, open any floor, pull the floors apart, step inside, guided tour, day / golden hour / night, illustrative layouts |
 | `/floor-plans`, `/spaces/floor-N` | The architect's plans (repainted for web) with computed area statement |
-| `/location` | Google Maps embed with directions, distances |
-| `/leasing`, `/brokers`, `/contact` | Enquiry routes; leasing@shrineva.com and both phone numbers |
+| `/healthcare-diagnostic-space`, `/office-bank-coaching-space`, `/retail-showroom-cafe-space` | Intent landing pages for Google Ads and search: answer-first section, facts, qualified enquiry form, FAQ. Copy in `landing.config.ts`; `/?intent=healthcare\|office\|retail\|floor` swaps the home hero to match an ad |
+| `/location-contact` | Address, hours, phones, map, distances, qualified site-visit form, FAQ (replaces `/location` and `/contact`, which 301 here) |
+| `/privacy-disclaimer` | Privacy policy and disclaimer (replaces `/privacy` and `/disclaimer`) |
+| `/leasing`, `/brokers` | Enquiry routes; leasing@shrineva.com and both phone numbers |
 
 ### 3D walkthrough
 
@@ -128,13 +132,17 @@ Recipients are never displayed on any page. (The backup route's address does hav
 
 ## Analytics
 
-`src/environments/environment*.ts` hold `ga4MeasurementId`, `googleAdsConversionId`, `googleAdsConversionLabel`. They are empty; tracking stays off until the owner supplies them. Events include `whatsapp_click`, `phone_click`, `floor_plans_click`, `plan_open`, `plan_pdf_download`, `site_visit_click`, `site_visit_submit`, `leasing_form_submit`, `walkthrough_start`, `walkthrough_page_click` and the matching `*_error` events (see `AnalyticsService`).
+`src/environments/environment*.ts` hold `ga4MeasurementId` (G-…), `googleAdsId` (AW-…) and `googleAdsLabels` (one conversion label per action). They are empty; nothing loads until the owner supplies them, but events still go to `window.dataLayer`.
+
+Conversion events (`AnalyticsService`): `shrineva_commercial_lead` (qualified form and the short visit pop-up), `shrineva_phone_click`, `shrineva_whatsapp_click`, `shrineva_brochure_download` (any `.pdf` link) and `shrineva_residential_lead` (only if `PROPOSED_RESIDENTIAL.show` is switched on). Phone, WhatsApp and PDF clicks are caught by one delegated listener, so every link is counted once with a `source` (`data-track-source`, else header / footer / page). Other events: `site_visit_click`, `leasing_form_error`, `walkthrough_start` and similar.
+
+Attribution: `AttributionService` keeps `utm_*`, `gclid` (or `gbraid` / `wbraid`), landing page and external referrer in sessionStorage; `LeadService` sends them with every enquiry and `lead.php` records them (CSV, JSONL and the email). If an older `leads.csv` exists on the server, rename it before the first new lead so the columns stay aligned.
 
 ## Deploy to Hostinger (static upload)
 
 1. `npm run build`.
 2. In hPanel → File Manager (or FTP), open `public_html/`, remove the old site files, and upload the **contents** of `dist/shrineva/` (including the hidden `.htaccess` and the `api/` folder).
-3. Confirm SSL is active, then open `/`, `/walkthrough`, `/floor-plans`, `/location`, `/does-not-exist` (should show the app's 404 page, not a server error).
+3. Confirm SSL is active, then open `/`, `/walkthrough`, `/floor-plans`, `/location-contact`, `/does-not-exist`, and `/location`, `/contact` (should 301 to `/location-contact`) (should show the app's 404 page, not a server error).
 4. Follow "Where enquiries go" above.
 5. In Google Search Console add the domain, submit `https://<domain>/sitemap.xml`, and inspect `/` and `/growth`.
 

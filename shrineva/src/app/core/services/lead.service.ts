@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PROPERTY } from '../../config/property.config';
+import { AttributionService } from './attribution.service';
 
-export type LeadKind = 'leasing' | 'site-visit' | 'broker';
+export type LeadKind = 'leasing' | 'site-visit' | 'broker' | 'residential';
 
 export interface LeadResult {
   ok: boolean;
@@ -24,7 +25,12 @@ export interface LeadResult {
  */
 @Injectable({ providedIn: 'root' })
 export class LeadService {
-  async submit(subject: string, fields: Record<string, string>, kind: LeadKind = 'leasing'): Promise<LeadResult> {
+  constructor(private attribution: AttributionService) {}
+
+  async submit(subject: string, form: Record<string, string>, kind: LeadKind = 'leasing'): Promise<LeadResult> {
+    // Every enquiry carries the campaign it came from (UTM tags, Google click ID, landing page), when there is one.
+    const { intent: _intent, ...campaign } = this.attribution.get();
+    const fields: Record<string, string> = { ...campaign, ...form };
     const viaHandler = await this.viaHandler(kind, fields);
     if (viaHandler.ok || viaHandler.reason === 'invalid' || viaHandler.reason === 'rate-limited') return viaHandler;
     const viaFormSubmit = await this.viaFormSubmit(subject, fields);

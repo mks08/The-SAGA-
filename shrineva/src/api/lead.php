@@ -75,7 +75,7 @@ function clean($v, int $max): string
     return mb_substr($v, 0, $max, 'UTF-8');
 }
 
-$kinds = ['leasing' => 'leasing enquiry', 'site-visit' => 'site-visit request', 'broker' => 'broker requirement'];
+$kinds = ['leasing' => 'leasing enquiry', 'site-visit' => 'site-visit request', 'broker' => 'broker requirement', 'residential' => 'proposed residential interest'];
 $kind = clean($in['kind'] ?? 'leasing', 20);
 if (!isset($kinds[$kind])) {
     $kind = 'leasing';
@@ -93,7 +93,17 @@ $fields = [
     'space_required'     => clean($in['space_required'] ?? '', 60),
     'preferred_floor'    => clean($in['preferred_floor'] ?? '', 30),
     'expected_occupancy' => clean($in['expected_occupancy'] ?? '', 60),
+    'timeline'           => clean($in['timeline'] ?? '', 60),
     'message'            => clean($in['message'] ?? '', 2000),
+    // Campaign attribution, captured in the browser (AttributionService) so each lead can be tied to the ad or page that produced it.
+    'utm_source'         => clean($in['utm_source'] ?? '', 80),
+    'utm_medium'         => clean($in['utm_medium'] ?? '', 80),
+    'utm_campaign'       => clean($in['utm_campaign'] ?? '', 120),
+    'utm_term'           => clean($in['utm_term'] ?? '', 120),
+    'utm_content'        => clean($in['utm_content'] ?? '', 120),
+    'gclid'              => clean($in['gclid'] ?? '', 200),
+    'landing_page'       => clean($in['landing_page'] ?? '', 200),
+    'referrer'           => clean($in['referrer'] ?? '', 200),
 ];
 
 $errors = [];
@@ -202,7 +212,10 @@ $rows = [
     'Company / brand' => $fields['company'], 'Designation' => $fields['designation'],
     'Business category' => $fields['business_category'], 'Space type' => $fields['space_type'], 'Other details' => $fields['other_details'],
     'Space required' => $fields['space_required'], 'Preferred floor' => $fields['preferred_floor'],
-    'Expected occupancy' => $fields['expected_occupancy'], 'Message' => $fields['message'],
+    'Expected occupancy' => $fields['expected_occupancy'], 'Timeline' => $fields['timeline'], 'Message' => $fields['message'],
+    'Campaign source' => $fields['utm_source'], 'Campaign medium' => $fields['utm_medium'], 'Campaign' => $fields['utm_campaign'],
+    'Keyword (utm_term)' => $fields['utm_term'], 'Ad content' => $fields['utm_content'], 'Google click ID' => $fields['gclid'],
+    'Landing page' => $fields['landing_page'], 'Referrer' => $fields['referrer'],
     'Received (IST)' => $stamp, 'Sent from page' => $record['page'],
 ];
 $body = "A new enquiry came in through the SHRINEVA website.\r\n\r\n";

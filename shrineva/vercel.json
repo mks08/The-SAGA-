@@ -3,14 +3,42 @@
   "outputDirectory": "dist/shrineva",
   "framework": "angular",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/location",
+      "destination": "/location-contact",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/location-contact",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy-disclaimer",
+      "permanent": true
+    },
+    {
+      "source": "/disclaimer",
+      "destination": "/privacy-disclaimer",
+      "permanent": true
     }
   ]
 }

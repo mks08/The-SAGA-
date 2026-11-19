@@ -25,7 +25,7 @@ export class NavbarComponent implements OnDestroy {
     { path: '/walkthrough', label: '3D Walkthrough' },
     { path: '/floor-plans', label: 'Floor Plans' },
     { path: '/growth', label: 'Nearby Projects', live: true },
-    { path: '/location', label: 'Location' },
+    { path: '/location-contact', label: 'Location & Visit' },
     { path: '/leasing', label: 'Leasing' },
   ];
 

@@ -157,6 +157,14 @@ export const PROPERTY = {
     siteName: 'SHRINEVA',
   },
 
+  /**
+   * Public profiles of the business, written into the structured data as `sameAs` (helps search and AI engines tie the
+   * website to the same entity). Leave empty until each profile exists and is verified; add full https:// URLs, for example:
+   * Google Business Profile, Facebook page, Instagram, LinkedIn page, JustDial, MagicBricks / 99acres / Housing.com listing.
+   * Never add a placeholder URL: an empty list is omitted from the markup.
+   */
+  sameAs: [] as string[],
+
   contact: {
     /** Enquiry-form recipient only. Not shown on pages. */
     email: 'neerajsingh250@gmail.com',
@@ -166,15 +174,17 @@ export const PROPERTY = {
      */
     publicEmail: 'leasing@shrineva.com',
     // Email and both phone numbers are taken from the owner's enquiry sheet (Floor Plans PDF, 12.10.2026).
-    phoneDisplay: '+91 73557 70378',
-    phoneE164: '+917355770378',
-    phone2Display: '+91 81140 80609',
-    phone2E164: '+918114080609',
+    // Primary line first (owner, 19 Nov 2026): +91 81140 80609 is also the WhatsApp number. Secondary: +91 73557 70378.
+    phoneDisplay: '+91 81140 80609',
+    phoneE164: '+918114080609',
+    phone2Display: '+91 73557 70378',
+    phone2E164: '+917355770378',
     whatsappDisplay: '+91 81140 80609',
     whatsappE164: '918114080609',
-    whatsappMessage:
-      'Hello, I am interested in leasing space at SHRINEVA, D-15 Bada Lalpur, Varanasi. I would like to know the available floor/area options.',
-    hours: 'Site visits by appointment',
+    whatsappMessage: 'Hi, I am interested in commercial space at SHRINEVA Bada Lalpur',
+    hours: 'Monday to Sunday, 9:30 AM – 7:30 PM IST',
+    /** Machine-readable form of `hours` for structured data (schema.org openingHoursSpecification). */
+    hoursSpec: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:30', closes: '19:30' },
     /**
      * Where enquiry forms are delivered (see src/api/lead.php and README "Enquiry forms"). This list documents the intent;
      * the PHP handler on the web host reads its own copy in src/api/config.php. The browser-side FormSubmit fallback
@@ -184,21 +194,21 @@ export const PROPERTY = {
   },
 
   address: {
-    line1: 'D-15, Bada Lalpur, Chandmari',
-    line2: 'Near Apollo Hospital & NIFT',
+    line1: 'Plot No. D-15, Lalpur Housing Scheme, Stadium Road, Bada Lalpur',
+    line2: 'Opposite the upcoming Apollo Hospital, near NIFT Varanasi',
     city: 'Varanasi',
     state: 'Uttar Pradesh',
     pin: '221003',
     country: 'India',
-    full: 'D-15, Bada Lalpur, Chandmari, near Apollo Hospital & NIFT, Varanasi, Uttar Pradesh 221003',
+    full: 'Plot No. D-15, Lalpur Housing Scheme, Stadium Road, Bada Lalpur, Varanasi, Uttar Pradesh 221003, India',
     // NOTE: insert the verified Google Maps place / plus-code once the exact pin is finalised.
     /**
      * Map pin. `lat`/`lng` are left null on purpose: no verified coordinates have been supplied, and a pin placed by guess
      * would send people to the wrong spot. When the exact point is confirmed, set both and the site switches to a
      * coordinate pin, a "Get directions" deep link and the map embed automatically (see `mapLinks()` below).
      */
-    lat: null as number | null,
-    lng: null as number | null,
+    lat: 25.3833895 as number | null,
+    lng: 82.9786124 as number | null,
     /** The owner's own Google Maps share link for the exact plot (15–18 Oct 2026). Opens the pin in Google Maps on any device. */
     googleMapsUrl: 'https://maps.app.goo.gl/UGerjaEDeKVnrnYw5',
     embedSrc: 'https://maps.google.com/maps?q=Bada+Lalpur+Chandmari+Varanasi&t=&z=16&ie=UTF8&iwloc=&output=embed',
@@ -213,7 +223,9 @@ export const PROPERTY = {
 
   /** Approvals the owner has stated. Shown as a small tag; sanction details are not published here. */
   approvals: {
-    vda: { label: 'VDA approved', title: 'Approved by the Varanasi Development Authority', show: true },
+    // Hidden on 19 Nov 2026: an approval is not among the owner's verified facts for the SEO / Google Ads brief, so it is not
+    // claimed anywhere (badges, meta, schema, llms.txt). Set show: true only when the sanction can be shown on request.
+    vda: { label: 'VDA approved', title: 'Approved by the Varanasi Development Authority', show: false },
   },
 
   /**
@@ -331,7 +343,7 @@ export const PROPERTY = {
       label: 'Floor 1',
       route: '/spaces/floor-1',
       carpetAreaSqFt: 3017.25,
-      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay', 'Studio apartment'],
+      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay'],
       leaseFormat: ['Full floor', 'Subdivision subject to requirement'],
     },
     {
@@ -339,7 +351,7 @@ export const PROPERTY = {
       label: 'Floor 2',
       route: '/spaces/floor-2',
       carpetAreaSqFt: 3017.25,
-      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay', 'Studio apartment'],
+      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay'],
       leaseFormat: ['Full floor', 'Subdivision subject to requirement'],
     },
     {
@@ -347,7 +359,7 @@ export const PROPERTY = {
       label: 'Floor 3',
       route: '/spaces/floor-3',
       carpetAreaSqFt: 3017.25,
-      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay', 'Studio apartment'],
+      suggestedFit: ['Healthcare', 'F&B', 'Retail', 'BFSI', 'Corporate office', 'Education / training', 'Fitness & wellness', 'Professional services', 'Hotel / serviced stay'],
       leaseFormat: ['Full floor', 'Subdivision subject to requirement'],
     },
   ] as FloorDefinition[],
@@ -362,9 +374,9 @@ export const PROPERTY = {
     {
       name: 'Apollo Hospital',
       category: 'healthcare',
-      relation: 'Same road, opposite side',
-      distanceKm: 0.065,
-      distanceDisplay: '≈ 60–70 m',
+      relation: 'Directly opposite',
+      distanceKm: 0.05,
+      distanceDisplay: 'Opposite',
       direction: 'North-east',
       status: 'Under construction · OPD expected to start in 2027',
       detail: '400 beds. Multi-specialty hospital under construction; OPD expected to start in 2027 (owner\'s expectation). VDA-approved plan reported: double basement, ground and 7 floors; 365 car parking spaces.',
@@ -374,9 +386,9 @@ export const PROPERTY = {
     {
       name: 'NIFT Varanasi',
       category: 'education',
-      relation: 'Same road, opposite side',
-      distanceKm: 0.065,
-      distanceDisplay: '≈ 60–70 m',
+      relation: 'Near the plot',
+      distanceKm: 0.1,
+      distanceDisplay: '≈ 100 m',
       direction: 'North-west',
       status: 'Classes since July 2024 · campus under construction, expected ready in 2027',
       detail: 'Permanent campus on 7.5 acres; main campus construction started January 2025; expected ready in 2027 (owner\'s expectation).',
@@ -472,7 +484,7 @@ export const PROPERTY = {
     },
     {
       phase: 'COMING UP',
-      title: 'Hospital and campus, 60–70 m away',
+      title: 'Upcoming hospital opposite, NIFT about 100 m away',
       status: 'under-construction',
       points: [
         'Apollo Medics, 400 beds: under construction, OPD expected to start in 2027',
@@ -513,7 +525,6 @@ export const PROPERTY = {
     'Fitness/Wellness',
     'Fashion/Design',
     'Hotel / Serviced Stay',
-    'Studio Apartment',
     'Other',
   ],
 
@@ -577,3 +588,26 @@ export function mapLinks(): { pinned: boolean; embed: string; open: string; dire
     directions: googleMapsUrl,
   };
 }
+
+/**
+ * Marketing wording for floor areas in titles, FAQ answers, landing pages, structured data and llms.txt (owner's brief,
+ * 19 Nov 2026: about 3,500 sq ft gross / about 3,100 sq ft carpet per upper floor, as in the printed brochure).
+ * NOTE: the architect's computed statement on /floor-plans still reads 3,519.75 gross / 3,017.25 carpet (PLAN.typical).
+ * Decide which carpet figure is final and change it here and in PLAN together.
+ */
+export const MARKETING_AREA = {
+  gross: 'about 3,500 sq ft',
+  carpet: 'about 3,100 sq ft',
+  grossNum: 3500,
+  carpetNum: 3100,
+};
+
+/**
+ * Proposed residential / serviced units (studio and 2 BHK). OFF by default: the owner's standing instruction is that this
+ * plan is not mentioned in marketing. When switched on, a clearly labelled "proposed" interest form appears on
+ * /location-contact, kept apart from the commercial leasing form, and `shrineva_residential_lead` is tracked.
+ */
+export const PROPOSED_RESIDENTIAL = {
+  show: false,
+  label: 'Proposed Studio & 2 BHK Units — subject to availability and regulatory approvals',
+};

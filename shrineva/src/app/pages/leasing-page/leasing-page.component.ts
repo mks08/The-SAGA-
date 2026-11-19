@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SeoService } from '../../core/services/seo.service';
-import { PROPERTY, waLink } from '../../config/property.config';
+import { MARKETING_AREA, PROPERTY, waLink } from '../../config/property.config';
 
 @Component({
   selector: 'app-leasing-page',
@@ -8,13 +8,14 @@ import { PROPERTY, waLink } from '../../config/property.config';
 })
 export class LeasingPageComponent implements OnInit {
   property = PROPERTY;
+  area = MARKETING_AREA;
   waHref = waLink(`Hi, I'd like to request the leasing information pack for SHRINEVA, ${PROPERTY.address.full}.`);
 
   points = [
-    `${PROPERTY.area.floorAreaPerFloorSqFt.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} sq ft floor area per floor (${PROPERTY.area.carpetAreaPerFloorSqFt.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} sq ft carpet)`,
+    `${MARKETING_AREA.gross} gross per floor (${MARKETING_AREA.carpet} carpet), in one open floor plate`,
     'Full-floor lease or subdivision, subject to requirement',
     'Long-term leases accepted',
-    'Mixed commercial use across Floors 1, 2 and 3; hotel and studio-apartment formats are a possibility',
+    'Commercial use across Floors 1, 2 and 3, subject to floor suitability and applicable statutory approvals',
     'Fit-out and handover condition agreed with each occupier',
     'Brand visibility on a 24 m road, signage and ground-level parking',
   ];

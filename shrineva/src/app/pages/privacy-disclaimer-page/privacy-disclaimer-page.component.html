@@ -1,0 +1,33 @@
+<main id="main-content" role="main">
+<app-page-header
+  eyebrow="Legal"
+  title="Privacy Policy & Disclaimer"
+  subtitle="How enquiry details are used, and how to read areas, approvals, construction status and renders.">
+</app-page-header>
+<section class="bg-paper py-12 md:py-20">
+  <div class="container-srineva">
+    <div class="max-w-3xl space-y-5 text-[1.02rem] leading-[1.8] text-ink/80 [&_a]:font-semibold [&_a]:text-brass-deep [&_a]:underline [&_a]:underline-offset-4 [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-[1.7rem] [&_h2]:leading-tight [&_h2]:text-ink">
+      <h2 id="privacy">Privacy policy</h2>
+      <h2>What we collect</h2>
+            <p>The details you type into a leasing, site-visit or broker enquiry form: typically name, company, designation, business category, phone number, email address, space required, preferred floor, timeline and your message. The form says which are optional. If you arrive from a Google ad or a tagged link, the campaign details in that link (such as the campaign name and the Google click ID) are kept for your visit and sent with your enquiry, so we can tell which advertising produced it.</p>
+            <h2>How it is used</h2>
+            <p>Only to answer your enquiry: to call or message you, send floor options and the information pack, and arrange a site visit. We do not sell personal data and we do not use it for unrelated marketing.</p>
+            <h2>Where it goes</h2>
+            <p>The form sends your enquiry to a small handler on this website's own hosting. The handler emails the leasing team and keeps a private copy on the server so that an enquiry is not lost if an email fails. If the handler is unavailable, the form falls back to FormSubmit, a third-party form-delivery service, which emails the leasing inbox. Access is limited to the SHRINEVA leasing team.</p>
+            <p>Anonymous usage statistics, such as which pages are viewed, may be collected once an analytics service is configured on this site. They do not include the contents of your enquiry. If Google Analytics or Google Ads conversion tracking is switched on, Google receives anonymous events such as page views, phone and WhatsApp link clicks, brochure downloads and form submissions, never your name or number.</p>
+            <h2>Your choices</h2>
+            <p>To see, correct or delete an enquiry you sent us, contact the leasing team using the details below and tell us the phone number you used.</p>
+            <p>Questions: message the leasing team on WhatsApp or call <a [href]="'tel:' + property.contact.phoneE164">{{ property.contact.phoneDisplay }}</a><ng-container *ngIf="property.contact.publicEmail">, or email <a [href]="'mailto:' + property.contact.publicEmail">{{ property.contact.publicEmail }}</a></ng-container>.</p>
+      <h2 id="disclaimer">Disclaimer</h2>
+      <p>SHRINEVA is under construction. Floors are offered as open shells, and the images labelled as renders show the proposed building, not the finished one.</p>
+      <p>The Apollo Hospital opposite the site is upcoming and under construction. It is not yet operational, and SHRINEVA makes no claim about the footfall it may bring.</p>
+      <p>Use of any floor for a particular business is subject to floor suitability and the statutory approvals that business needs, such as municipal and fire approvals, and FSSAI for food businesses.</p>
+      <p>{{ property.legal.areaDisclaimer }}</p>
+            <p>{{ property.legal.useDisclaimer }}</p>
+            <p>{{ property.legal.futureDisclaimer }}</p>
+            <p>The 3D walkthrough and renders are indicative. Façade finishes, furniture layouts, neighbouring buildings, trees and traffic are illustrative, and the design is subject to change.</p>
+            <p>SHRINEVA does not publish unverified rents, returns, footfall counts or tenant logos. Suggested floor uses are recommendations, not exclusive legal permissions.</p>
+    </div>
+  </div>
+</section>
+</main>

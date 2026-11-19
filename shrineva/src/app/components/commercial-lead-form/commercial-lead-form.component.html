@@ -1,0 +1,87 @@
+<div [id]="anchorId" class="scroll-mt-24">
+  <div class="rounded-3xl border border-ink/10 bg-white p-5 shadow-soft md:p-7" *ngIf="!submitted">
+    <h2 class="font-display text-[1.7rem] leading-tight text-ink">{{ heading }}</h2>
+    <p class="mt-1.5 text-[0.92rem] leading-relaxed text-ink/70">{{ intro }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="mt-5 grid gap-3.5" aria-label="Commercial leasing enquiry">
+      <div class="grid gap-3.5 sm:grid-cols-2">
+        <div>
+          <label class="field-label" [for]="anchorId + '-name'">Your name *</label>
+          <input [id]="anchorId + '-name'" type="text" class="field-input" [class.is-invalid]="isInvalid('name')" formControlName="name" required autocomplete="name" enterkeyhint="next">
+          <p class="field-error" *ngIf="isInvalid('name')">Please enter your name</p>
+        </div>
+        <div>
+          <label class="field-label" [for]="anchorId + '-phone'">Mobile *</label>
+          <input [id]="anchorId + '-phone'" type="tel" inputmode="numeric" class="field-input" [class.is-invalid]="isInvalid('phone')" formControlName="phone" required autocomplete="tel-national" maxlength="10" placeholder="10-digit number" enterkeyhint="next">
+          <p class="field-error" *ngIf="isInvalid('phone')">Enter a valid 10-digit mobile number</p>
+        </div>
+      </div>
+
+      <div class="grid gap-3.5 sm:grid-cols-2">
+        <div>
+          <label class="field-label" [for]="anchorId + '-business'">Business / brand</label>
+          <input [id]="anchorId + '-business'" type="text" class="field-input" formControlName="business" autocomplete="organization" enterkeyhint="next">
+        </div>
+        <div>
+          <label class="field-label" [for]="anchorId + '-category'">Business category *</label>
+          <select [id]="anchorId + '-category'" class="field-input" [class.is-invalid]="isInvalid('category')" formControlName="category" required>
+            <option value="">Select a category</option>
+            <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+          </select>
+          <p class="field-error" *ngIf="isInvalid('category')">Please choose a category</p>
+        </div>
+      </div>
+
+      <div class="grid gap-3.5 sm:grid-cols-3">
+        <div>
+          <label class="field-label" [for]="anchorId + '-area'">Area needed</label>
+          <select [id]="anchorId + '-area'" class="field-input" formControlName="area">
+            <option value="">Select (optional)</option>
+            <option *ngFor="let a of areas" [value]="a">{{ a }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" [for]="anchorId + '-floor'">Preferred floor</label>
+          <select [id]="anchorId + '-floor'" class="field-input" formControlName="floor">
+            <option *ngFor="let f of floors" [value]="f">{{ f }}</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" [for]="anchorId + '-timeline'">Timeline</label>
+          <select [id]="anchorId + '-timeline'" class="field-input" formControlName="timeline">
+            <option value="">Select (optional)</option>
+            <option *ngFor="let t of timelines" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+        <label [for]="anchorId + '-website'">Leave this field empty</label>
+        <input [id]="anchorId + '-website'" type="text" formControlName="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="rounded-2xl border border-red-800/30 bg-red-50 p-3.5 text-[0.88rem] text-red-900" role="alert" *ngIf="failed">
+        <strong>Your enquiry was not sent.</strong> Please try again, or WhatsApp or call {{ property.contact.phoneDisplay }}. What you typed is still here.
+      </div>
+
+      <div class="flex flex-col gap-2.5 sm:flex-row">
+        <button type="submit" class="btn-primary btn-submit sm:flex-1" [disabled]="submitting">
+          <span *ngIf="!submitting">Request leasing details <span class="arrow" aria-hidden="true">→</span></span>
+          <span *ngIf="submitting">Sending…</span>
+        </button>
+        <a [href]="waHref" class="btn-outline" target="_blank" rel="noopener" data-track-source="enquiry_form">WhatsApp instead</a>
+      </div>
+      <p class="text-[0.72rem] leading-relaxed text-ink/70">We use these details only to reply to this enquiry. Use of any floor is subject to approvals. <a routerLink="/privacy-disclaimer" class="underline">Privacy and disclaimer</a>.</p>
+    </form>
+  </div>
+
+  <div class="rounded-3xl border border-ink/10 bg-white p-8 text-center shadow-soft md:p-10" *ngIf="submitted" role="status">
+    <div class="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-ok/15 text-2xl text-ok" aria-hidden="true">✓</div>
+    <h2 class="font-display text-[2rem] text-ink">Enquiry received</h2>
+    <p class="mx-auto mt-2 max-w-sm text-[0.95rem] text-ink/70">Thank you. The leasing team will call you. For a faster reply, WhatsApp or call.</p>
+    <div class="mt-5 flex flex-col justify-center gap-2.5 sm:flex-row">
+      <a [href]="waHref" class="btn-whatsapp" target="_blank" rel="noopener" data-track-source="enquiry_thanks">WhatsApp</a>
+      <a [href]="'tel:' + property.contact.phoneE164" class="btn-outline" data-track-source="enquiry_thanks">Call {{ property.contact.phoneDisplay }}</a>
+    </div>
+  </div>
+</div>

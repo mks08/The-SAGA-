@@ -31,7 +31,7 @@ export const CONTENT = {
   ],
 
   occupierFactors: [
-    { title: 'Location', copy: 'Apollo Hospital and NIFT about 60–70 m away, the Trade Centre about 330 m, Ring Road about 1 km by road.' },
+    { title: 'Location', copy: 'The upcoming Apollo Hospital directly opposite, NIFT about 100 m away, the Trade Centre about 330 m, Ring Road about 1 km by road.' },
     { title: 'Visibility', copy: `${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m road, plus a glass front on each upper floor.` },
     { title: 'Access', copy: 'Open frontage with direct entry from the road, and east and west walkways to the lift and stair lobby.' },
     { title: 'Parking', copy: 'Parking on the open ground level. Car and two-wheeler capacity will be confirmed against the sanctioned layout.' },

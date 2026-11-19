@@ -59,8 +59,8 @@ export const BUILDING = {
 
   /** Direction and distance of the anchors, from the owner's location sheet (bearing from the plot, degrees from north). */
   anchors: [
-    { id: 'apollo', label: 'Apollo Medics site', sub: '60–70 m · opposite side', bearing: 45, metres: 65 },
-    { id: 'nift', label: 'NIFT Varanasi', sub: '60–70 m · opposite side', bearing: 315, metres: 65 },
+    { id: 'apollo', label: 'Apollo Medics site', sub: 'Opposite · upcoming', bearing: 45, metres: 50 },
+    { id: 'nift', label: 'NIFT Varanasi', sub: '≈ 100 m · near the plot', bearing: 315, metres: 100 },
   ],
   tradeCentre: { label: 'Varanasi Trade Centre', sub: 'about 330 m west on this road' },
 };

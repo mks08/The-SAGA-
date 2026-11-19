@@ -31,4 +31,4 @@ export const BUILDING_SERVICES = ['Parking', 'Internet', 'DG power backup'];
 export const FEATURES_NOTE = 'As specified by the owner; subject to final design and approvals.';
 
 /** "I am looking for" choices on the short enquiry forms. */
-export const NEED_OPTIONS = ['Office', 'Restaurant / fine dining', 'Clinic / diagnostics', 'Retail / showroom', 'Studio / serviced stay', 'Other'];
+export const NEED_OPTIONS = ['Office', 'Restaurant / fine dining', 'Clinic / diagnostics', 'Retail / showroom', 'Bank / NBFC', 'Coaching / education', 'Other'];

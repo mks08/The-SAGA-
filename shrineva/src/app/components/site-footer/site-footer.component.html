@@ -8,8 +8,7 @@
           <span class="font-display text-[1.9rem] tracking-[0.14em]">{{ property.brand.name }}</span>
         </a>
         <p class="mt-3 max-w-sm text-[0.92rem] leading-relaxed text-paper/70">
-          Commercial and mixed-use space in Bada Lalpur, Varanasi: Parking + 3 floors of
-          {{ property.area.floorAreaPerFloorSqFt | number:'1.0-0' }} sq ft each.
+          Commercial space for lease in Bada Lalpur, Varanasi: three open floors of {{ area.gross }} each, opposite the upcoming Apollo Hospital.
         </p>
         <p *ngIf="property.approvals.vda.show" class="mt-3">
           <span class="badge-vda" [attr.title]="property.approvals.vda.title">
@@ -28,12 +27,15 @@
           <li><a routerLink="/walkthrough" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">3D Walkthrough</a></li>
           <li><a routerLink="/floor-plans" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floor Plans</a></li>
           <li><a routerLink="/growth" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Nearby Projects</a></li>
-          <li><a routerLink="/location" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location</a></li>
+          <li><a routerLink="/location-contact" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location</a></li>
           <li><a routerLink="/gallery" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">3D Renders</a></li>
           <li><a routerLink="/spaces" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floors</a></li>
           <li><a routerLink="/business-fit" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Business Fit</a></li>
           <li><a routerLink="/leasing" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Leasing</a></li>
           <li><a routerLink="/brokers" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">For Brokers</a></li>
+          <li><a routerLink="/healthcare-diagnostic-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Healthcare &amp; Diagnostics</a></li>
+          <li><a routerLink="/office-bank-coaching-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Office, Bank &amp; Coaching</a></li>
+          <li><a routerLink="/retail-showroom-cafe-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Retail, Showroom &amp; Café</a></li>
         </ul>
       </nav>
 
@@ -72,9 +74,9 @@
     <div class="mt-5 flex flex-col gap-1 border-t border-paper/10 pt-4 text-[0.78rem] text-paper/70 sm:flex-row sm:items-center sm:justify-between">
       <p>© {{ year }} {{ property.brand.name }}. All rights reserved.</p>
       <p class="flex gap-5">
-        <a routerLink="/privacy" class="flex min-h-[40px] items-center hover:text-paper">Privacy Policy</a>
+        <a routerLink="/privacy-disclaimer" class="flex min-h-[40px] items-center hover:text-paper">Privacy Policy</a>
         <a routerLink="/terms" class="flex min-h-[40px] items-center hover:text-paper">Terms</a>
-        <a routerLink="/disclaimer" class="flex min-h-[40px] items-center hover:text-paper">Disclaimer</a>
+        <a routerLink="/privacy-disclaimer" fragment="disclaimer" class="flex min-h-[40px] items-center hover:text-paper">Disclaimer</a>
       </p>
     </div>
   </div>

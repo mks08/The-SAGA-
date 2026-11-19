@@ -1,0 +1,72 @@
+<main id="main-content" role="main">
+  <app-page-header [eyebrow]="page.eyebrow" [title]="page.h1" [subtitle]="page.sub"></app-page-header>
+
+  <!-- Next actions, directly under the headline -->
+  <section class="bg-paper pt-6 md:pt-8" aria-label="Contact the leasing team">
+    <div class="container-srineva flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+      <a [href]="'tel:' + property.contact.phoneE164" class="btn-primary justify-center" data-track-source="landing_top">Call {{ property.contact.phoneDisplay }}</a>
+      <a [href]="waHref" class="btn-whatsapp justify-center" target="_blank" rel="noopener" data-track-source="landing_top">WhatsApp the leasing team</a>
+      <a href="#enquiry" class="btn-outline justify-center">Get floor options</a>
+    </div>
+  </section>
+
+  <!-- Answer first: question as H2, a short quotable answer directly under it -->
+  <section class="bg-paper py-10 md:py-14" aria-labelledby="answer-q">
+    <div class="container-srineva grid items-start gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+      <div>
+        <h2 id="answer-q" class="font-display text-display-md text-ink">{{ page.answerQ }}</h2>
+        <p class="mt-3 max-w-2xl text-[1.05rem] leading-relaxed text-ink/80">{{ page.answer }}</p>
+        <p class="mt-3 max-w-2xl text-[0.85rem] leading-relaxed text-ink/70">{{ page.approvalNote }}</p>
+      </div>
+      <dl class="grid grid-cols-2 gap-3" aria-label="SHRINEVA at a glance">
+        <div *ngFor="let f of facts" class="rounded-2xl border border-ink/10 bg-white p-4">
+          <dt class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brass-deep">{{ f.label }}</dt>
+          <dd class="mt-1 text-[0.95rem] font-semibold leading-snug text-ink">{{ f.value }}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="bg-paper-2 py-10 md:py-14" aria-labelledby="why-title">
+    <div class="container-srineva">
+      <h2 id="why-title" class="font-display text-display-md text-ink">Why operators look at SHRINEVA</h2>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+        <li *ngFor="let c of page.cards" class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
+          <h3 class="font-display text-[1.3rem] leading-snug text-ink">{{ c.title }}</h3>
+          <p class="mt-1.5 text-[0.93rem] leading-relaxed text-ink/75">{{ c.text }}</p>
+        </li>
+      </ul>
+      <h3 class="mt-8 font-display text-[1.3rem] text-ink">{{ page.categoriesHeading }}</h3>
+      <ul class="mt-3 flex flex-wrap gap-2">
+        <li *ngFor="let c of page.categories" class="rounded-full border border-ink/12 bg-white px-3.5 py-1.5 text-[0.86rem] text-ink/80">{{ c }}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-paper py-10 md:py-14" aria-labelledby="enquiry-title">
+    <div class="container-srineva grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+      <figure class="overflow-hidden rounded-3xl border border-ink/10 bg-white p-1.5 shadow-soft">
+        <img [src]="render.src" [alt]="render.alt" [attr.width]="render.width" [attr.height]="render.height" loading="lazy" decoding="async" class="h-auto w-full rounded-[1.3rem]">
+        <figcaption class="px-3 py-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-ink/70">Indicative render. Construction is ongoing and the design is subject to change.</figcaption>
+      </figure>
+      <div>
+        <span id="enquiry-title" class="sr-only">Enquiry form</span>
+        <app-commercial-lead-form [category]="page.formCategory"></app-commercial-lead-form>
+      </div>
+    </div>
+  </section>
+
+  <app-faq [items]="faqs" heading="Questions from {{ page.eyebrow.toLowerCase() }} tenants" headingId="landing-faq-title"></app-faq>
+
+  <nav class="bg-paper-2 py-10" aria-label="Other ways to explore SHRINEVA">
+    <div class="container-srineva">
+      <h2 class="font-display text-[1.5rem] text-ink">Explore more</h2>
+      <ul class="mt-3 flex flex-wrap gap-2">
+        <li *ngFor="let o of others"><a [routerLink]="'/' + o.path" class="inline-flex min-h-[44px] items-center rounded-full border border-ink/15 bg-white px-4 text-[0.9rem] font-semibold text-ink hover:border-brass-deep">{{ o.navLabel }}</a></li>
+        <li><a routerLink="/floor-plans" class="inline-flex min-h-[44px] items-center rounded-full border border-ink/15 bg-white px-4 text-[0.9rem] font-semibold text-ink hover:border-brass-deep">Floor plans</a></li>
+        <li><a routerLink="/location-contact" class="inline-flex min-h-[44px] items-center rounded-full border border-ink/15 bg-white px-4 text-[0.9rem] font-semibold text-ink hover:border-brass-deep">Location &amp; site visit</a></li>
+        <li><a routerLink="/walkthrough" class="inline-flex min-h-[44px] items-center rounded-full border border-ink/15 bg-white px-4 text-[0.9rem] font-semibold text-ink hover:border-brass-deep">3D walkthrough</a></li>
+      </ul>
+    </div>
+  </nav>
+</main>

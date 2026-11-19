@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PROPERTY, mapLinks, waLink } from '../../config/property.config';
+import { MARKETING_AREA, PROPERTY, mapLinks, waLink } from '../../config/property.config';
 import { LOCATION_MAP, DOSSIER } from '../../config/media.config';
 import { NEARBY_DISTANCES } from '../../config/location.config';
 
@@ -10,6 +10,7 @@ import { NEARBY_DISTANCES } from '../../config/location.config';
 })
 export class SiteFooterComponent {
   property = PROPERTY;
+  area = MARKETING_AREA;
   waHref = waLink();
   year = new Date().getFullYear();
   map = LOCATION_MAP;

@@ -38,7 +38,7 @@
           <p class="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-paper/75">The leasing team replies with floor options, the information pack and a site visit.</p>
         </div>
         <div class="flex flex-col gap-3">
-          <a routerLink="/contact" class="btn-primary justify-center">Register a requirement <span class="arrow" aria-hidden="true">→</span></a>
+          <a routerLink="/location-contact" fragment="enquiry" class="btn-primary justify-center">Register a requirement <span class="arrow" aria-hidden="true">→</span></a>
           <a [href]="waHref" target="_blank" rel="noopener" class="btn-whatsapp justify-center">WhatsApp the leasing desk</a>
           <a *ngIf="property.contact.publicEmail" [href]="'mailto:' + property.contact.publicEmail" class="btn-outline justify-center">{{ property.contact.publicEmail }}</a>
         </div>

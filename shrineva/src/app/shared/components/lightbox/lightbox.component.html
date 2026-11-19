@@ -9,8 +9,8 @@
 
   <div class="lb-stage" [class.zoomed]="zoomed" (click)="$event.stopPropagation()">
     <button type="button" class="lb-nav prev" *ngIf="items.length > 1 && !zoomed" (click)="step(-1)" aria-label="Previous image">‹</button>
-    <img *ngIf="!zoomed" [src]="c.src" [alt]="c.alt" [attr.width]="c.width" [attr.height]="c.height" class="lb-img">
-    <img *ngIf="zoomed" [src]="c.zoomSrc || c.src" [alt]="c.alt" class="lb-img-zoom" [style.width.px]="c.zoomWidth || c.width">
+    <img *ngIf="!zoomed" [src]="c.src" [alt]="c.alt" [attr.width]="c.width" [attr.height]="c.height" loading="eager" class="lb-img">
+    <img *ngIf="zoomed" [src]="c.zoomSrc || c.src" [alt]="c.alt" [attr.width]="c.zoomWidth || c.width" [attr.height]="c.zoomWidth ? null : c.height" loading="eager" class="lb-img-zoom" [style.width.px]="c.zoomWidth || c.width">
     <button type="button" class="lb-nav next" *ngIf="items.length > 1 && !zoomed" (click)="step(1)" aria-label="Next image">›</button>
   </div>
 

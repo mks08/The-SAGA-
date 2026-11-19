@@ -1,4 +1,4 @@
-<section id="top" data-rail="Top" class="relative isolate overflow-hidden bg-gradient-to-b from-paper-2 via-paper to-paper" aria-label="SHRINEVA, commercial and mixed-use space in Bada Lalpur, Varanasi">
+<section id="top" data-rail="Top" class="relative isolate overflow-hidden bg-gradient-to-b from-paper-2 via-paper to-paper" aria-label="SHRINEVA, commercial space for lease in Bada Lalpur, Varanasi">
   <div class="pointer-events-none absolute -left-24 top-10 -z-10 size-[26rem] rounded-full bg-brass/10 blur-[110px]" aria-hidden="true"></div>
   <div class="pointer-events-none absolute -right-16 bottom-16 -z-10 size-[18rem] rounded-full bg-sand/40 blur-[100px]" aria-hidden="true"></div>
 
@@ -11,18 +11,16 @@
           {{ property.approvals.vda.label }}
         </span>
         <span class="inline-flex items-center gap-2 rounded-full border border-ink/12 bg-white/70 px-3 py-1 font-mono text-[0.64rem] uppercase tracking-[0.12em] text-ink/70">
-          <span class="live-dot" aria-hidden="true"></span> Under construction · Handover Mar 2027
+          <span class="live-dot" aria-hidden="true"></span> Under construction
         </span>
       </div>
 
       <h1 class="animate-rise [animation-delay:80ms]">
         <span class="block font-display text-[clamp(2.6rem,6.2vw,4.4rem)] leading-[0.95] tracking-[0.1em] text-ink">SHRINEVA</span>
-        <span class="mt-3 block font-display text-[clamp(1.35rem,2.7vw,2rem)] leading-[1.12] text-ink/85">Commercial <em class="text-brass-deep">&amp; mixed-use</em> space in Bada Lalpur, Varanasi</span>
+        <span class="mt-3 block font-display text-[clamp(1.35rem,2.7vw,2rem)] leading-[1.12] text-ink/85">{{ hero.title }}</span>
       </h1>
 
-      <p class="mt-4 max-w-md text-[1rem] leading-relaxed text-ink/70 animate-rise [animation-delay:160ms]">
-        Parking + 3 whole floors on a 24 m road, 60–70 m from the Apollo hospital and NIFT sites.
-      </p>
+      <p class="mt-4 max-w-md text-[1rem] leading-relaxed text-ink/70 animate-rise [animation-delay:160ms]">{{ hero.sub }}</p>
 
       <div class="mt-6 flex flex-col gap-3 animate-rise [animation-delay:240ms] sm:flex-row sm:items-center">
         <a routerLink="/walkthrough" class="btn-primary" (click)="track('walkthrough_click')">
@@ -45,8 +43,8 @@
       <div class="overflow-hidden rounded-[1.6rem] border border-ink/10 bg-white p-1.5 shadow-lift">
         <img src="assets/images/hero/hero-golden-1000.webp"
              srcset="assets/images/hero/hero-golden-1000.webp 1000w, assets/images/hero/hero-golden-2000.webp 2000w"
-             sizes="(min-width: 1024px) 560px, 92vw" width="1000" height="667" fetchpriority="high" decoding="async"
-             alt="Indicative render of the SHRINEVA façade at golden hour: Parking + 3 floors with glass fronts and timber screens, Bada Lalpur, Varanasi"
+             sizes="(min-width: 1024px) 560px, 92vw" width="1000" height="667" loading="eager" fetchpriority="high" decoding="async"
+             alt="Indicative render of the SHRINEVA façade at golden hour: open ground level and three floors with glass fronts and timber screens, Bada Lalpur, Varanasi"
              class="aspect-[16/10] w-full rounded-[1.2rem] object-cover object-[50%_40%] lg:aspect-[4/3] lg:max-h-[350px]">
       </div>
       <figcaption class="absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink/70 backdrop-blur">Indicative render</figcaption>

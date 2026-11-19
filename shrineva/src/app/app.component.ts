@@ -11,7 +11,7 @@ import { AnalyticsService } from './core/services/analytics.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'SHRINEVA — Premium Commercial & Mixed-Use Spaces, Bada Lalpur, Varanasi';
+  title = 'SHRINEVA — Commercial Space for Lease, Bada Lalpur, Varanasi';
 
   /**
    * Soft fade between pages. The class is only on while the animation runs: a finished animation would otherwise keep

@@ -26,7 +26,6 @@ import { MobileCtaComponent } from './components/mobile-cta/mobile-cta.component
 import { PropertyPageComponent } from './pages/property-page/property-page.component';
 import { SpacesPageComponent } from './pages/spaces-page/spaces-page.component';
 import { FloorDetailPageComponent } from './pages/floor-detail-page/floor-detail-page.component';
-import { LocationPageComponent } from './pages/location-page/location-page.component';
 import { GrowthPageComponent } from './pages/growth-page/growth-page.component';
 import { BusinessFitPageComponent } from './pages/business-fit-page/business-fit-page.component';
 import { InfrastructurePageComponent } from './pages/infrastructure-page/infrastructure-page.component';
@@ -34,10 +33,7 @@ import { FloorPlansPageComponent } from './pages/floor-plans-page/floor-plans-pa
 import { GalleryPageComponent } from './pages/gallery-page/gallery-page.component';
 import { LeasingPageComponent } from './pages/leasing-page/leasing-page.component';
 import { BrokersPageComponent } from './pages/brokers-page/brokers-page.component';
-import { ContactPageComponent } from './pages/contact-page/contact-page.component';
-import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
-import { DisclaimerPageComponent } from './pages/disclaimer-page/disclaimer-page.component';
 import { PlansComponent } from './components/plans/plans.component';
 import { HomeHeroComponent } from './components/home-hero/home-hero.component';
 import { FootfallComponent } from './components/footfall/footfall.component';
@@ -50,6 +46,12 @@ import { HomeSpecsComponent } from './components/home-specs/home-specs.component
 import { PlaceMapComponent } from './components/place-map/place-map.component';
 import { SectionRailComponent } from './components/section-rail/section-rail.component';
 import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-page.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { LocationContactPageComponent } from './pages/location-contact-page/location-contact-page.component';
+import { PrivacyDisclaimerPageComponent } from './pages/privacy-disclaimer-page/privacy-disclaimer-page.component';
+import { FaqComponent } from './components/faq/faq.component';
+import { CommercialLeadFormComponent } from './components/commercial-lead-form/commercial-lead-form.component';
+import { ResidentialLeadFormComponent } from './components/residential-lead-form/residential-lead-form.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,6 @@ import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-p
     PropertyPageComponent,
     SpacesPageComponent,
     FloorDetailPageComponent,
-    LocationPageComponent,
     GrowthPageComponent,
     BusinessFitPageComponent,
     InfrastructurePageComponent,
@@ -78,10 +79,7 @@ import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-p
     GalleryPageComponent,
     LeasingPageComponent,
     BrokersPageComponent,
-    ContactPageComponent,
-    PrivacyPageComponent,
     TermsPageComponent,
-    DisclaimerPageComponent,
     PlansComponent,
     HomeHeroComponent,
     FootfallComponent,
@@ -94,6 +92,12 @@ import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-p
     PlaceMapComponent,
     SectionRailComponent,
     WalkthroughPageComponent,
+    LandingPageComponent,
+    LocationContactPageComponent,
+    PrivacyDisclaimerPageComponent,
+    FaqComponent,
+    CommercialLeadFormComponent,
+    ResidentialLeadFormComponent,
   ],
   imports: [
     BrowserModule,

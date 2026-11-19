@@ -16,10 +16,10 @@ export class IdealForComponent {
   categories = [
     {
       label: 'Healthcare & Diagnostics',
-      demand: 'Apollo site, 60–70 m',
+      demand: 'Opposite upcoming Apollo Hospital',
       short: 'Clinics, diagnostics, pharmacy',
-      description: 'Clinics, diagnostics and pharmacies sit about 60–70 m from the planned 400-bed Apollo Medics hospital (under construction; OPD expected to start in 2027).',
-      benefit: 'Near a planned 400-bed hospital',
+      description: 'Clinics, diagnostics and pharmacies sit directly opposite the upcoming Apollo Hospital. The hospital is under construction and not yet operational.',
+      benefit: 'Opposite an upcoming hospital',
     },
     {
       label: 'Banking, BFSI & Insurance',
@@ -38,28 +38,28 @@ export class IdealForComponent {
     {
       label: 'Corporate & Professional Offices',
       demand: 'Whole open floor, glass front',
-      short: 'One open 3,520 sq ft floor',
+      short: 'One open floor, about 3,500 sq ft',
       description: 'One whole open floor plate with a glass front, three-phase power, DG backup and internet readiness, divided as the occupier requires.',
       benefit: 'Power, internet, daylight',
     },
     {
       label: 'Education & Training',
-      demand: 'NIFT Varanasi, 60–70 m',
+      demand: 'NIFT Varanasi, about 100 m',
       short: 'Institutes, coaching',
       description: 'Training institutes and coaching businesses benefit from proximity to NIFT Varanasi (classes running since July 2024) and the student catchment.',
-      benefit: 'Beside NIFT Varanasi',
+      benefit: 'Near NIFT Varanasi',
     },
     {
       label: 'Fashion, Design & Creative',
       demand: 'NIFT and the Trade Centre',
-      short: 'Studios, showrooms',
-      description: 'Studios and creative businesses can draw on NIFT Varanasi and the Trade Centre, which has 50 marts and a 1,000-seat convention hall.',
+      short: 'Design studios, showrooms',
+      description: 'Design studios and creative businesses can draw on NIFT Varanasi and the Trade Centre, which has 50 marts and a 1,000-seat convention hall.',
       benefit: 'NIFT and the Trade Centre',
     },
     {
       label: 'Fitness, Wellness & Lifestyle',
-      demand: 'Residents and campus',
-      short: 'Gyms, studios, wellness',
+      demand: 'Campus and neighbourhood',
+      short: 'Gyms, fitness, wellness',
       description: 'Whole-floor formats with parking and HVAC provision suit fitness and wellness operators, subject to structural and MEP confirmation.',
       benefit: 'Whole floor, parking',
     },
@@ -69,20 +69,6 @@ export class IdealForComponent {
       short: 'Showrooms, services',
       description: `High-visibility frontage (${PLAN.plot.frontage} on a ${PLAN.plot.roadWidthM} m road) and parking support customer-facing retail and service formats.`,
       benefit: 'Frontage, visibility, parking',
-    },
-    {
-      label: 'Hotels & Serviced Stay',
-      demand: 'Visitors and families',
-      short: 'A possibility, not assigned',
-      description: 'Boutique hotel and serviced-stay formats can be considered on the whole-floor plates for visitors, families and professionals. This is a business possibility, not an exclusive floor assignment.',
-      benefit: 'Possible · subject to approvals',
-    },
-    {
-      label: 'Studio Apartments',
-      demand: 'Visitors and professionals',
-      short: 'A possibility, not assigned',
-      description: 'Studio apartments and compact stay units can be considered as a mixed-use possibility on the same typical floor plate used across Floors 1, 2 and 3.',
-      benefit: 'Possible · subject to approvals',
     },
   ];
 
