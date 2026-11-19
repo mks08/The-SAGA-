@@ -15,7 +15,7 @@ import { Component, Input } from '@angular/core';
     </ng-container>
     <ng-template #lockup>
       <span class="flex items-center gap-3">
-        <img src="assets/images/logo-mark.webp" alt="" width="200" height="194" loading="eager" decoding="async" class="h-11 w-auto select-none">
+        <img src="assets/images/logo-mark.webp" alt="" width="120" height="116" loading="eager" decoding="async" class="h-11 w-auto select-none">
         <span class="flex flex-col">
           <img src="assets/images/logo-wordmark-sm.webp" alt="SHRINEVA" width="320" height="82" loading="eager" decoding="async" class="h-[1.85rem] w-auto select-none">
           <span *ngIf="tagline" class="mt-1 whitespace-nowrap font-mono text-[0.56rem] uppercase leading-none tracking-[0.2em] text-brass-soft">Commercial space · Varanasi</span>

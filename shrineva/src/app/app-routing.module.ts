@@ -9,6 +9,7 @@ import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-p
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { LocationContactPageComponent } from './pages/location-contact-page/location-contact-page.component';
 import { PrivacyDisclaimerPageComponent } from './pages/privacy-disclaimer-page/privacy-disclaimer-page.component';
+import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
 
 const routes: Routes = [
   { path: '', component: MainLayoutComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'leasing', component: LeasingPageComponent },
   { path: 'privacy-disclaimer', component: PrivacyDisclaimerPageComponent },
   { path: 'terms', component: TermsPageComponent },
+  { path: 'hi', component: HindiPageComponent },
   // Old URLs from earlier versions of the site. .htaccess sends the same permanent (301) redirects for first-time visitors.
   { path: 'location', redirectTo: 'location-contact', pathMatch: 'full' },
   { path: 'contact', redirectTo: 'location-contact', pathMatch: 'full' },

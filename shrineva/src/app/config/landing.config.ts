@@ -41,10 +41,10 @@ export const LANDING_PAGES: LandingPage[] = [
     h1: 'Clinic, Pathology Lab & Diagnostic Space Opposite the Upcoming Apollo Hospital, Varanasi',
     sub: 'Open floors on 24 m Stadium Road, Bada Lalpur, with the Apollo Hospital opposite (upcoming, under construction) and NIFT Varanasi about 100 m away.',
     answerQ: 'Is SHRINEVA suitable for a clinic, pathology lab or diagnostic centre?',
-    answer: `SHRINEVA offers open, column-free floors of ${MARKETING_AREA.carpet} carpet directly opposite the upcoming Apollo Hospital on 24-metre-wide Stadium Road, with an 8-person lift, a fire exit on every level and 12+ car parking. The hospital is under construction and not yet operational. Healthcare use is subject to floor suitability and statutory approvals.`,
+    answer: `SHRINEVA offers open-plan commercial floor plates of ${MARKETING_AREA.carpet} carpet directly opposite the upcoming Apollo Hospital on 24-metre-wide Stadium Road, with an 8-person lift, a fire exit on every level and 12+ car parking. The hospital is under construction and not yet operational. Healthcare use is subject to floor suitability and statutory approvals.`,
     cards: [
       { title: 'Directly opposite an upcoming hospital', text: 'The Apollo Hospital across Stadium Road is under construction and not yet operational. SHRINEVA makes no footfall claim; the location is simply opposite the site.' },
-      { title: 'Open, column-free floors', text: `Each upper floor is ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) in one open plate, which can be planned for consulting rooms, sample collection, reporting and waiting areas. Part-floor leasing is possible.` },
+      { title: 'Open-plan commercial floor plates', text: `Each upper floor is ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) in one open plate, which can be planned for consulting rooms, sample collection, reporting and waiting areas. Part-floor leasing is possible.` },
       { title: 'Lift and fire exit', text: 'One 8-person passenger lift serves all floors, and every level has a dedicated fire exit.' },
       { title: 'Parking and road access', text: 'Parking for 12+ cars at ground level and about 50 ft of frontage on a 24-metre-wide road.' },
     ],
@@ -78,7 +78,7 @@ export const LANDING_PAGES: LandingPage[] = [
     answer: `SHRINEVA offers three open-shell floors of ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) each on 24-metre-wide Stadium Road, Bada Lalpur, with about 50 ft of frontage, an 8-person lift, 12+ car parking and a fire exit on every level. Lease a whole floor, part of a floor, or several floors.`,
     cards: [
       { title: 'Frontage and parking for branches', text: 'About 50 ft of frontage on a 24 m road and parking for 12+ cars suit customer-facing branches. Bank, ATM and NBFC formats depend on the operator’s own requirements and approvals.' },
-      { title: 'Open plates for offices', text: 'Column-free floor plates let corporate, IT and consulting teams plan their own layouts. The floors are open shells, so the fit-out is yours.' },
+      { title: 'Open plates for offices', text: 'Open-plan floor plates with flexible tenant layouts let corporate, IT and consulting teams plan their own space. The floors are open shells, so the fit-out is yours.' },
       { title: 'Space for institutes and coworking', text: 'A whole floor can be divided into classrooms or workspaces. NIFT Varanasi is about 100 m away, and Deendayal Hastkala Sankul (Varanasi Trade Centre) is nearby.' },
       { title: 'Lift, fire exit and Vastu', text: 'An 8-person passenger lift, a fire exit on every level and a Vastu-compliant layout.' },
     ],
@@ -144,7 +144,7 @@ export interface HeroIntent { key: string; title: string; sub: string; }
 
 export const HERO_DEFAULT: HeroIntent = {
   key: 'default',
-  title: 'Commercial & office space for lease in Bada Lalpur, Varanasi',
+  title: 'Commercial space for rent & lease in Bada Lalpur, Varanasi',
   sub: `Opposite the upcoming Apollo Hospital, about 100 m from NIFT Varanasi, on 24 m Stadium Road. Whole floors of ${MARKETING_AREA.gross}.`,
 };
 

@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "build": "ng build",
+    "build": "ng build && ng run shrineva:server:production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "postbuild": "node scripts/build-seo.js"
+    "postbuild": "node scripts/prerender.js && node scripts/build-seo.js",
+    "build:seo": "node scripts/prerender.js && node scripts/build-seo.js"
   },
   "private": true,
   "engines": {
@@ -20,6 +21,7 @@
     "@angular/forms": "^16.2.0",
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
+    "@angular/platform-server": "^16.2.12",
     "@angular/router": "^16.2.0",
     "@fontsource-variable/manrope": "^5.3.0",
     "@fontsource/cormorant-garamond": "^5.3.0",

@@ -36,7 +36,7 @@ RewriteRule ^ - [L]
 # 4. Known app routes fall back to the app if their static folder is missing. Anything else is a real 404
 #    (see ErrorDocument below), so crawlers do not index junk URLs as copies of the home page.
 #    Keep this list in step with src/app/config/seo.config.ts; `npm run build` fails if a route is missing.
-RewriteRule ^(floor-plans|walkthrough|location-contact|healthcare-diagnostic-space|office-bank-coaching-space|retail-showroom-cafe-space|leasing|privacy-disclaimer|terms)/?$ index.html [L]
+RewriteRule ^(floor-plans|walkthrough|location-contact|healthcare-diagnostic-space|office-bank-coaching-space|retail-showroom-cafe-space|leasing|hi|privacy-disclaimer|terms)/?$ index.html [L]
 </IfModule>
 
 # Unknown URLs: real 404 status with the app shell (404.html), which sends visitors to the home page.

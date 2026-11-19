@@ -132,6 +132,19 @@
 
   section[id], [id$='-section'] { scroll-margin-top: 84px; }
 
+  /* Soft brass glows behind sections: a radial gradient, not a 110 px CSS blur (blur filters are slow on phones and can render as black boxes in some browsers). */
+  .glow-brass-10 { background: radial-gradient(closest-side, rgb(var(--brass) / 0.14), rgb(var(--brass) / 0)); }
+  .glow-brass-15 { background: radial-gradient(closest-side, rgb(var(--brass) / 0.2), rgb(var(--brass) / 0)); }
+
+  /* Hindi page: no web font is downloaded (saves mobile data). Devanagari is drawn by the best system face, with looser lines and no tracking. */
+  .hi-copy, .hi-copy * {
+    font-family: 'Noto Sans Devanagari', 'Nirmala UI', 'Kohinoor Devanagari', 'Devanagari Sangam MN', Mukta, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    letter-spacing: 0;
+  }
+  .hi-copy { line-height: 1.75; }
+  .hi-copy h1, .hi-copy h2, .hi-copy h3 { line-height: 1.35; font-weight: 700; }
+  .hi-copy .font-mono, .hi-copy .eyebrow { text-transform: none; }
+
   body {
     background-color: var(--color-void);
     color: var(--color-cream);

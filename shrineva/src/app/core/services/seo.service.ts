@@ -34,19 +34,34 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:url', content: canonical });
     this.meta.updateTag({ property: 'og:image', content: image });
     this.meta.updateTag({ property: 'og:image:alt', content: imageAlt });
-    this.meta.updateTag({ property: 'og:locale', content: 'en_IN' });
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: route.title });
     this.meta.updateTag({ name: 'twitter:description', content: route.description });
     this.meta.updateTag({ name: 'twitter:image', content: image });
     this.meta.updateTag({ name: 'twitter:image:alt', content: imageAlt });
 
+    const lang = route.lang ?? 'en-IN';
+    this.doc.documentElement.setAttribute('lang', lang);
+    this.meta.updateTag({ property: 'og:locale', content: lang.replace('-', '_') });
+    this.setAlternates(route.alternates ?? []);
     this.setCanonical(canonical);
     this.setJsonLd('shrineva-schema', buildGraph(route.path, canonical));
   }
 
   private canonicalFor(path: string): string {
     return path ? `${SEO_DOMAIN}/${path}` : `${SEO_DOMAIN}/`;
+  }
+
+  /** hreflang links between the English page and its Hindi equivalent (the same pairs are in sitemap.xml). */
+  private setAlternates(list: { hreflang: string; href: string }[]): void {
+    this.doc.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+    for (const a of list) {
+      const link = this.doc.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', a.hreflang);
+      link.setAttribute('href', a.href);
+      this.doc.head.appendChild(link);
+    }
   }
 
   private setCanonical(url: string): void {
@@ -67,6 +82,6 @@ export class SeoService {
       script.type = 'application/ld+json';
       this.doc.head.appendChild(script);
     }
-    script.textContent = JSON.stringify(data);
+    script.textContent = JSON.stringify(data).replace(/</g, '\\u003c');
   }
 }

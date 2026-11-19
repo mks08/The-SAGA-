@@ -221,11 +221,14 @@ export const PROPERTY = {
     commercialFloors: 3,
   },
 
-  /** Approvals the owner has stated. Shown as a small tag; sanction details are not published here. */
+  /**
+   * Approvals the owner has stated. Only the short "VDA approved" tag is published (hero and footer); no sanction number, date or
+   * scope is shown, and no other page copy, schema or llms.txt line claims more. Switched on at the owner's instruction on
+   * 20 Nov 2026; the scope (which approval, number, date) is still to be confirmed by the owner. build-seo.js fails the build if
+   * the tag and this switch disagree, or if wider approval wording appears.
+   */
   approvals: {
-    // Hidden on 19 Nov 2026: an approval is not among the owner's verified facts for the SEO / Google Ads brief, so it is not
-    // claimed anywhere (badges, meta, schema, llms.txt). Set show: true only when the sanction can be shown on request.
-    vda: { label: 'VDA approved', title: 'Approved by the Varanasi Development Authority', show: false },
+    vda: { label: 'VDA approved', title: 'Approved by the Varanasi Development Authority', show: true },
   },
 
   /**

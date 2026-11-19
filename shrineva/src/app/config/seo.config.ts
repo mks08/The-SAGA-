@@ -5,6 +5,7 @@
  * title, description, canonical and Open Graph tags for every URL.
  */
 import { PROPERTY, PLAN } from './property.config';
+import { HI } from './hindi.config';
 
 export interface RouteSeo {
   path: string;
@@ -17,23 +18,33 @@ export interface RouteSeo {
   /** Optional page-specific image (defaults to the façade render). */
   image?: string;
   imageAlt?: string;
+  /** Page language (default en-IN). */
+  lang?: 'en-IN' | 'hi-IN';
+  /** hreflang links (also written to sitemap.xml): the English page and its Hindi equivalent point at each other. */
+  alternates?: { hreflang: string; href: string }[];
 }
 
 const domain = PROPERTY.domain.canonical;
+const LANG_ALTERNATES = [
+  { hreflang: 'en-IN', href: `${domain}/` },
+  { hreflang: 'hi-IN', href: `${domain}/${HI.path}` },
+  { hreflang: 'x-default', href: `${domain}/` },
+];
 
 export const SEO_ROUTES: RouteSeo[] = [
   {
     path: '',
-    title: 'Commercial Space for Lease, Bada Lalpur, Varanasi | SHRINEVA',
-    description: 'Commercial and office space for lease on 24 m Stadium Road, Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital. Open floors of about 3,500 sq ft.',
-    h1: 'Commercial & office space for lease in Bada Lalpur, Varanasi',
+    title: 'Commercial Space for Rent in Varanasi | SHRINEVA Bada Lalpur',
+    description: 'Commercial space and halls for rent in Bada Lalpur, Varanasi: open floors of about 3,500 sq ft on Stadium Road, opposite the upcoming Apollo Hospital.',
+    h1: 'Commercial space for rent & lease in Bada Lalpur, Varanasi',
     priority: 1.0,
     changefreq: 'weekly',
+    alternates: LANG_ALTERNATES,
   },
   {
     path: 'floor-plans',
-    title: 'Floor Plans & Floor Area, SHRINEVA Bada Lalpur, Varanasi',
-    description: 'Floor plans for SHRINEVA, Varanasi: ground-level layout and three identical open floors of about 3,500 sq ft gross, with lift, fire exit and parking. PDF.',
+    title: 'Floor Plans & Area: Commercial Building, Varanasi | SHRINEVA',
+    description: 'Floor plans for SHRINEVA, Varanasi: ground level and three identical open floors of about 3,500 sq ft gross, with lift, fire exit and parking. PDF.',
     h1: 'Floor Plans',
     priority: 0.9,
     changefreq: 'monthly',
@@ -41,31 +52,31 @@ export const SEO_ROUTES: RouteSeo[] = [
   },
   {
     path: 'healthcare-diagnostic-space',
-    title: 'Clinic & Diagnostic Space Near Upcoming Apollo | SHRINEVA',
-    description: 'Space for clinics, pathology labs and diagnostic centres opposite the upcoming Apollo Hospital, Bada Lalpur, Varanasi. Open floors, lift and parking.',
+    title: 'Clinic & Lab Space for Rent Near Upcoming Apollo | SHRINEVA',
+    description: 'Space for rent for clinics, pathology labs and diagnostic centres opposite the upcoming Apollo Hospital, Bada Lalpur, Varanasi. Open floors, lift, parking.',
     h1: 'Clinic, Pathology Lab & Diagnostic Space Opposite the Upcoming Apollo Hospital, Varanasi',
     priority: 0.9,
     changefreq: 'monthly',
   },
   {
     path: 'office-bank-coaching-space',
-    title: 'Office, Bank & Coaching Space for Lease | SHRINEVA Varanasi',
-    description: 'Bare-shell office, bank branch and coaching space on Stadium Road, Varanasi: floors of about 3,500 sq ft, 50 ft frontage, lift and 12+ car parking.',
+    title: 'Office Space for Rent in Varanasi, Bada Lalpur | SHRINEVA',
+    description: 'Office, bank branch and coaching space for rent on Stadium Road, Varanasi: open floors of about 3,500 sq ft, 50 ft frontage, lift and 12+ car parking.',
     h1: 'Bare-Shell Office, Bank Branch & Coaching Institute Space in Varanasi',
     priority: 0.9,
     changefreq: 'monthly',
   },
   {
     path: 'retail-showroom-cafe-space',
-    title: 'Showroom, Retail & Café Space Near NIFT Varanasi | SHRINEVA',
-    description: 'Main-road showroom, retail and café space near NIFT Varanasi: 50 ft frontage on a 24 m road in Bada Lalpur, with parking and lift. Food use needs approvals',
+    title: 'Showroom & Shop Space for Rent Near NIFT Varanasi | SHRINEVA',
+    description: 'Showroom, shop and café space for rent near NIFT Varanasi: 50 ft frontage on a 24 m road in Bada Lalpur, with parking and a lift. Food use needs approvals.',
     h1: 'Main-Road Showroom, Retail & Café Space Near NIFT Varanasi',
     priority: 0.9,
     changefreq: 'monthly',
   },
   {
     path: 'location-contact',
-    title: 'Location, Map & Site Visit | SHRINEVA, Bada Lalpur, Varanasi',
+    title: 'Location: Near Ring Road, NIFT, Upcoming Apollo | SHRINEVA',
     description: 'Find SHRINEVA on Stadium Road, Bada Lalpur, Varanasi: map, distances to NIFT, the upcoming Apollo Hospital and Ring Road, plus a site visit booking form.',
     h1: 'Location, Map & Site Visit',
     priority: 0.9,
@@ -73,8 +84,8 @@ export const SEO_ROUTES: RouteSeo[] = [
   },
   {
     path: 'leasing',
-    title: 'Lease Commercial Floors at SHRINEVA, Varanasi: Whole or Part',
-    description: 'Lease a whole floor, part of a floor or several floors at SHRINEVA, Bada Lalpur, Varanasi. Open-shell floors of about 3,500 sq ft. Terms on request.',
+    title: 'Commercial Hall & Floor for Rent in Varanasi | SHRINEVA',
+    description: 'Rent or lease a whole floor or part of a floor at SHRINEVA, Bada Lalpur, Varanasi. Open-shell floors of about 3,500 sq ft each; terms on request.',
     h1: 'Lease a Space at SHRINEVA',
     priority: 0.9,
     changefreq: 'weekly',
@@ -82,10 +93,20 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'walkthrough',
     title: '3D Walkthrough: SHRINEVA Building, Bada Lalpur, Varanasi',
-    description: 'Walk through the final 3D design of SHRINEVA, Bada Lalpur, Varanasi, from the road to the lift lobby, by day and night. Indicative; subject to change.',
+    description: 'Walk through the final 3D design of SHRINEVA, Bada Lalpur, Varanasi, from the road to the lift lobby, at golden hour and night. Indicative; may change.',
     h1: 'Walk through SHRINEVA before you visit',
     priority: 0.8,
     changefreq: 'monthly',
+  },
+  {
+    path: HI.path,
+    title: HI.title,
+    description: HI.description,
+    h1: HI.h1,
+    priority: 0.8,
+    changefreq: 'monthly',
+    lang: 'hi-IN',
+    alternates: LANG_ALTERNATES,
   },
   {
     path: 'privacy-disclaimer',

@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PROPERTY, waLink } from '../../config/property.config';
 import { LEAD_AREAS, LEAD_CATEGORIES, LEAD_FLOORS, LEAD_TIMELINES } from '../../config/landing.config';
 import { LeadService } from '../../core/services/lead.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { AttributionService } from '../../core/services/attribution.service';
+import { EnquiryPrefillService } from '../../core/services/enquiry-prefill.service';
 
 /**
  * Qualified commercial enquiry: name, business, category, mobile, area, preferred floor, timeline.
@@ -15,7 +17,8 @@ import { AttributionService } from '../../core/services/attribution.service';
   selector: 'app-commercial-lead-form',
   templateUrl: './commercial-lead-form.component.html',
 })
-export class CommercialLeadFormComponent implements OnInit {
+export class CommercialLeadFormComponent implements OnInit, OnDestroy {
+  private prefillSub?: Subscription;
   /** Pre-selected business category (a LEAD_CATEGORIES value). */
   @Input() category = '';
   @Input() heading = 'Tell us what you need';
@@ -39,6 +42,7 @@ export class CommercialLeadFormComponent implements OnInit {
     private leads: LeadService,
     private analytics: AnalyticsService,
     private attribution: AttributionService,
+    private prefill: EnquiryPrefillService,
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +56,16 @@ export class CommercialLeadFormComponent implements OnInit {
       timeline: [''],
       website: [''], // honeypot: real visitors never see or fill this
     });
+    // The space finder on the same page hands over its two answers (business category and area needed).
+    this.prefillSub = this.prefill.value$.subscribe((p) => {
+      if (!p) return;
+      if (p.category && this.categories.includes(p.category)) this.form.patchValue({ category: p.category });
+      if (p.area && this.areas.includes(p.area)) this.form.patchValue({ area: p.area });
+      this.prefill.clear();
+    });
   }
+
+  ngOnDestroy(): void { this.prefillSub?.unsubscribe(); }
 
   isInvalid(field: string): boolean {
     const c = this.form.get(field);

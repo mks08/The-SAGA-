@@ -9,9 +9,11 @@ import { LANDING_PAGES, landingByPath } from '../../config/landing.config';
  * Structured data (JSON-LD) for every route. Pure functions with no Angular imports so the same
  * graph is used at runtime (SeoService) and written into the static HTML shells by scripts/build-seo.js.
  *
- * Graph per page: RealEstateAgent + LocalBusiness (the leasing business, with address, geo, hours, phones, service area and
- * amenities), WebSite, Place (the building), WebPage, BreadcrumbList, plus - where the page shows them - a RealEstateListing
- * with an Offer (lease) and a FAQPage whose questions are exactly the visible FAQ.
+ * Graph per page: LocalBusiness (the leasing office: address, geo, hours, phones, service area), WebSite, Place (the building,
+ * with its measured facts as PropertyValue), WebPage, BreadcrumbList, plus - where the page shows them - a RealEstateListing
+ * (a page type) whose Offer is a lease offer, and a FAQPage whose questions are exactly the visible FAQ.
+ * Deliberately not used: RealEstateAgent (the owner leases directly, it is not an agent) and Accommodation (the floors are
+ * commercial open shells, not lodging).
  * Facts only: no approvals, rents, footfall or completion dates are asserted; the Apollo Hospital is "upcoming".
  */
 const ID = {
@@ -30,7 +32,7 @@ const amenities = () => [
   { '@type': 'LocationFeatureSpecification', name: 'Parking for 12+ cars at ground level', value: true },
   { '@type': 'LocationFeatureSpecification', name: 'Fire exit on every level', value: true },
   { '@type': 'LocationFeatureSpecification', name: 'Vastu-compliant layout', value: true },
-  { '@type': 'LocationFeatureSpecification', name: 'Open, column-free floor plates', value: true },
+  { '@type': 'LocationFeatureSpecification', name: 'Open-plan commercial floor plates with flexible tenant layouts', value: true },
   { '@type': 'LocationFeatureSpecification', name: 'Frontage on a 24 m wide road', value: PLAN.plot.frontage },
 ];
 
@@ -55,7 +57,7 @@ export function buildGraph(path: string, canonical: string) {
   const sameAs = (PROPERTY.sameAs || []).filter((u) => /^https:\/\//.test(u));
 
   const org = {
-    '@type': ['RealEstateAgent', 'LocalBusiness'],
+    '@type': 'LocalBusiness',
     '@id': ID.org,
     name: `${PROPERTY.brand.name} Leasing`,
     alternateName: PROPERTY.brand.name,
@@ -118,7 +120,7 @@ export function buildGraph(path: string, canonical: string) {
     '@id': ID.website,
     url: `${SEO_DOMAIN}/`,
     name: PROPERTY.brand.name,
-    inLanguage: 'en-IN',
+    inLanguage: ['en-IN', 'hi-IN'],
     publisher: { '@id': ID.org },
   };
 
@@ -131,7 +133,7 @@ export function buildGraph(path: string, canonical: string) {
     isPartOf: { '@id': ID.website },
     about: { '@id': ID.place },
     primaryImageOfPage: route.image ?? PROPERTY.images.og,
-    inLanguage: 'en-IN',
+    inLanguage: route.lang ?? 'en-IN',
     breadcrumb: { '@id': `${canonical}#breadcrumb` },
   };
 
@@ -147,7 +149,7 @@ export function buildGraph(path: string, canonical: string) {
     graph.push({
       '@type': 'FAQPage',
       '@id': `${canonical}#faq`,
-      inLanguage: 'en-IN',
+      inLanguage: route.lang ?? 'en-IN',
       mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     });
   }
@@ -170,16 +172,8 @@ function listing(path: string, canonical: string) {
       businessFunction: 'http://purl.org/goodrelations/v1#LeaseOut',
       seller: { '@id': ID.org },
       areaServed: { '@type': 'City', name: 'Varanasi' },
-      description: 'Lease terms and rent are shared by the leasing team on request.',
-      itemOffered: {
-        '@type': 'Accommodation',
-        name: 'Commercial floor, SHRINEVA (Floors 1, 2 and 3)',
-        floorLevel: '1, 2, 3',
-        floorSize: { '@type': 'QuantitativeValue', value: MARKETING_AREA.grossNum, unitCode: 'FTK', unitText: 'square feet (approximate, gross)' },
-        amenityFeature: amenities(),
-        address: address(),
-        ...(geo() ? { geo: geo() } : {}),
-      },
+      name: 'Lease of commercial floor space at SHRINEVA (open shell, whole or in part)',
+      description: `Floors 1, 2 and 3, each ${MARKETING_AREA.gross} gross, offered as open shells. Lease terms and rent are shared by the leasing team on request.`,
     },
   };
 }
@@ -188,6 +182,7 @@ function crumbName(path: string): string {
   const landing = landingByPath(path);
   if (landing) return landing.navLabel;
   const route = SEO_ROUTES.find((r) => r.path === path);
+  if (path === 'hi') return 'हिंदी';
   if (path === 'location-contact') return 'Location & Site Visit';
   if (path === 'privacy-disclaimer') return 'Privacy & Disclaimer';
   if (path === 'floor-plans') return 'Floor Plans';

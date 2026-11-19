@@ -6,6 +6,8 @@
  */
 import { PROPERTY, MARKETING_AREA } from './property.config';
 
+import { HI } from './hindi.config';
+
 export interface Faq { q: string; a: string; }
 
 const p1 = PROPERTY.contact.phoneDisplay;
@@ -25,7 +27,7 @@ export const CORE_FAQ: Faq[] = [
   },
   {
     q: 'What is the carpet area and gross area per floor at SHRINEVA?',
-    a: `Each of the three upper floors has ${MARKETING_AREA.gross} gross area and ${MARKETING_AREA.carpet} carpet area as one open, column-free floor plate. Floors can be leased whole or in part. Areas are approximate and subject to final measurement, and the floors are offered as open shells while construction is ongoing.`,
+    a: `Each of the three upper floors has ${MARKETING_AREA.gross} gross area and ${MARKETING_AREA.carpet} carpet area as open-plan commercial floor plates with flexible tenant layouts. Floors can be leased whole or in part. Areas are approximate and subject to final measurement, and the floors are offered as open shells while construction is ongoing.`,
   },
   {
     q: 'How much car parking and lift capacity does SHRINEVA provide?',
@@ -60,6 +62,8 @@ export function faqForPath(path: string, extra: Faq[] = []): Faq[] {
       return CORE_FAQ;
     case 'location-contact':
       return [...CORE_FAQ, ...STATUS_FAQ];
+    case 'hi':
+      return HI.faq;
     case 'healthcare-diagnostic-space':
     case 'office-bank-coaching-space':
     case 'retail-showroom-cafe-space':

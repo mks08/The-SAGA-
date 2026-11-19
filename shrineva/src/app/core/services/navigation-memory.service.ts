@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Location, ViewportScroller } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, Location, ViewportScroller } from '@angular/common';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 /**
@@ -14,7 +14,9 @@ export class NavigationMemoryService {
     private router: Router,
     private location: Location,
     private viewport: ViewportScroller,
+    @Inject(PLATFORM_ID) platformId: object,
   ) {
+    if (!isPlatformBrowser(platformId)) return; // scroll memory is a browser-only feature
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.positions.set(this.normalize(this.router.url), this.currentY());

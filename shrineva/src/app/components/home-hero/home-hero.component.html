@@ -1,5 +1,5 @@
 <section id="top" data-rail="Top" class="relative isolate overflow-hidden bg-gradient-to-b from-paper-2 via-paper to-paper" aria-label="SHRINEVA, commercial space for lease in Bada Lalpur, Varanasi">
-  <div class="pointer-events-none absolute -left-24 top-10 -z-10 size-[26rem] rounded-full bg-brass/10 blur-[110px]" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -left-24 top-10 -z-10 size-[34rem] rounded-full glow-brass-10" aria-hidden="true"></div>
 
   <div class="container-srineva pb-7 pt-[calc(var(--nav-h)+1rem)] md:pb-9">
     <!-- Headline -->
@@ -28,23 +28,26 @@
       </div>
     </div>
 
-    <!-- The finalised building, by day and by night -->
+    <!-- The finalised building, at golden hour and by night -->
     <figure class="relative mt-6 animate-rise [animation-delay:200ms]">
       <div class="relative overflow-hidden rounded-[1.6rem] border border-ink/10 bg-ink-3 shadow-lift">
         <div class="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:aspect-[1920/995] lg:max-h-[64svh]">
-          <img *ngFor="let v of views"
-               [src]="v.src960" [attr.srcset]="v.src960 + ' 960w, ' + v.src1920 + ' 1920w'" sizes="(min-width: 1320px) 1272px, calc(100vw - 2.5rem)"
-               [alt]="v.alt" width="1920" height="995" loading="eager" decoding="async" [attr.fetchpriority]="v.id === active ? 'high' : 'low'"
-               [attr.aria-hidden]="v.id === active ? null : 'true'"
-               class="absolute inset-0 h-full w-full object-cover object-[58%_55%] transition-opacity duration-[900ms] ease-out motion-reduce:transition-none"
-               [ngClass]="v.id === active ? 'opacity-100' : 'opacity-0'">
+          <ng-container *ngFor="let v of views">
+            <!-- The night view is requested after the page has loaded (or when asked for), so the golden-hour image gets the whole connection first -->
+            <img *ngIf="v.id === 'day' || nightReady"
+                 [src]="v.src960" [attr.srcset]="v.src960 + ' 960w, ' + v.src1920 + ' 1920w'" sizes="(min-width: 1320px) 1272px, calc(100vw - 2.5rem)"
+                 [alt]="v.alt" width="1920" height="995" loading="eager" decoding="async" [attr.fetchpriority]="v.id === active ? 'high' : 'low'"
+                 [attr.aria-hidden]="v.id === active ? null : 'true'" (load)="onLoad(v.id)"
+                 class="absolute inset-0 h-full w-full object-cover object-[58%_55%] transition-opacity duration-[900ms] ease-out motion-reduce:transition-none"
+                 [ngClass]="v.id === active ? 'opacity-100' : 'opacity-0'">
+          </ng-container>
         </div>
 
-        <!-- Day / Night -->
+        <!-- Golden hour / Night -->
         <div class="absolute right-3 top-3 inline-flex rounded-full bg-[#1b1714]/70 p-1 backdrop-blur md:right-4 md:top-4" role="group" aria-label="Choose the view">
-          <button *ngFor="let v of views" type="button" [attr.aria-pressed]="v.id === active" (click)="select(v.id)"
+          <button *ngFor="let v of views" type="button" [attr.aria-pressed]="v.id === chosen" (click)="select(v.id)"
                   class="inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-[0.82rem] font-bold transition-colors"
-                  [ngClass]="v.id === active ? 'bg-[#f6f1e8] text-[#1b1714]' : 'text-[#f6f1e8]/85 hover:text-white'">
+                  [ngClass]="v.id === chosen ? 'bg-[#f6f1e8] text-[#1b1714]' : 'text-[#f6f1e8]/85 hover:text-white'">
             <svg *ngIf="v.id === 'day'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
             <svg *ngIf="v.id === 'night'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
             {{ v.label }}

@@ -17,7 +17,7 @@
            tabindex="0" role="group" aria-roledescription="carousel" [attr.aria-label]="'SHRINEVA walkthrough, stop ' + label + ': ' + current.title"
            (keydown)="onKey($event)" (pointerdown)="onDown($event)" (pointerup)="onUp($event)">
         <ng-container *ngFor="let s of stops; let i = index">
-          <img *ngIf="near(i)" [src]="s.src" [alt]="s.alt" [attr.width]="s.width" [attr.height]="s.height" loading="lazy" decoding="async" draggable="false" [attr.fetchpriority]="variant === 'page' && i === 0 ? null : 'low'"
+          <img *ngIf="shows(i)" [src]="s.src" [alt]="s.alt" [attr.width]="s.width" [attr.height]="s.height" loading="lazy" decoding="async" draggable="false" [attr.fetchpriority]="variant === 'page' && i === 0 ? null : 'low'"
                class="absolute inset-0 h-full w-full object-cover transition-opacity duration-[800ms] ease-out motion-reduce:transition-none"
                [ngClass]="[i === idx ? 'opacity-100' : 'opacity-0', i === idx && running ? 'drift' : '']"
                [attr.aria-hidden]="i === idx ? null : 'true'">

@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, Input, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { MediaItem, TOUR_STOPS } from '../../config/media.config';
 import { PROPERTY } from '../../config/property.config';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -28,29 +29,42 @@ export class GuidedTourComponent implements AfterViewInit, OnDestroy {
   idx = 0;
   playing = false;
   inView = false;
+  /** True once the tour is within a screen's height of the viewport: only then are neighbouring stops (and, on the home page, any stop) downloaded. */
+  seen = false;
   hover = false;
   tabHidden = false;
   reduced = false;
   lightboxIndex: number | null = null;
 
   private io?: IntersectionObserver;
+  private ioNear?: IntersectionObserver;
   private startX = 0;
   private startY = 0;
 
-  constructor(private analytics: AnalyticsService) {}
+  private readonly browser: boolean;
+
+  constructor(private analytics: AnalyticsService, @Inject(PLATFORM_ID) platformId: object) {
+    this.browser = isPlatformBrowser(platformId);
+  }
 
   ngAfterViewInit(): void {
+    if (!this.browser) return; // the pre-rendered page shows the first stop, paused
     this.reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.playing = !this.reduced;
     if (typeof IntersectionObserver === 'function') {
       this.io = new IntersectionObserver((entries) => { this.inView = entries.some((e) => e.isIntersecting); }, { threshold: 0.45 });
       this.io.observe(this.root.nativeElement);
+      this.ioNear = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { this.seen = true; this.ioNear?.disconnect(); }
+      }, { rootMargin: '400px 0px' });
+      this.ioNear.observe(this.root.nativeElement);
     } else {
       this.inView = true;
+      this.seen = true;
     }
   }
 
-  ngOnDestroy(): void { this.io?.disconnect(); }
+  ngOnDestroy(): void { this.io?.disconnect(); this.ioNear?.disconnect(); }
 
   @HostListener('document:visibilitychange')
   onVisibility() { this.tabHidden = document.hidden; }
@@ -59,12 +73,18 @@ export class GuidedTourComponent implements AfterViewInit, OnDestroy {
   get current(): MediaItem { return this.stops[this.idx]; }
   get label(): string { return `${this.idx + 1} of ${this.stops.length}`; }
 
-  /** Only the stop on screen and its two neighbours are rendered. */
-  near(i: number): boolean { return Math.abs(i - this.idx) <= 1; }
+  /**
+   * Which stops are in the page. The walkthrough page always has the current stop (it is the page's main picture); the home page
+   * adds the tour only when it is about to be scrolled to. Neighbours follow once the tour is near, so Next / Previous are instant.
+   */
+  shows(i: number): boolean {
+    if (this.variant === 'page' && i === this.idx) return true;
+    return this.seen && Math.abs(i - this.idx) <= 1;
+  }
 
   timeOf(s: MediaItem): string {
     if (s.id === 'facade-night' || s.id === 'night-street') return 'Night';
-    if (s.id === 'facade-day') return 'Day';
+    if (s.id === 'facade-day') return 'Golden hour';
     return '';
   }
 

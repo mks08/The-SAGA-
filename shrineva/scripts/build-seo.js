@@ -1,223 +1,78 @@
 /**
- * Post-build SEO step (runs after `ng build`, see package.json "postbuild").
- *  1. Writes one static HTML shell per route (dist/<route>/index.html) with the right <title>, description, canonical,
- *     robots, Open Graph / Twitter tags, JSON-LD and the page's real content INSIDE <app-root> (H1, answer-first section,
- *     key facts, visible FAQ, contact block and links to every page). Angular replaces that content when it starts, so
- *     visitors see the app, while crawlers and AI assistants that do not run JavaScript read the full text.
- *     The content is visually hidden until JavaScript has started; with JavaScript off, a <noscript> rule shows it.
- *  2. Regenerates sitemap.xml, robots.txt (named search and AI crawlers allowed) and llms.txt from the same config.
- *  3. Writes 404.html and checks that every route is covered by the route whitelist in src/.htaccess.
- *  4. Gates the build: title 50-60 and description 145-155 characters, 40-60 word FAQ answers, one H1 per page, valid JSON-LD,
- *     no retired claims (VDA approval, "60-70 m", studios), and "Apollo" never without "upcoming / under construction".
- * Source of truth: src/app/config/*.ts (seo, property, faq, landing, location).
+ * Post-build SEO step (runs after scripts/prerender.js, see package.json "postbuild").
+ *
+ * The pages themselves are rendered by Angular (scripts/prerender.js): real, visible HTML with title, description,
+ * canonical, Open Graph and JSON-LD already in place. This script does not touch them. It:
+ *  1. Regenerates sitemap.xml, robots.txt (named search and AI crawlers allowed) and llms.txt from the same config.
+ *  2. Checks that every route is covered by the route whitelist in src/.htaccess.
+ *  3. Gates the build on the RENDERED pages: title 50-60 and description 145-155 characters (and equal to the config), 40-60 word
+ *     FAQ answers, one H1, one canonical, valid JSON-LD (LocalBusiness, Place, WebPage, BreadcrumbList; no RealEstateAgent or
+ *     Accommodation; FAQPage equal to the visible FAQ), no hidden-text pattern, readable body text in the HTML, every internal
+ *     link and asset resolving, every <img> with alt / width / height, no retired claims ("column-free", "60-70 m", handover
+ *     dates, studios) and "Apollo" never without "upcoming / under construction".
+ * Source of truth: src/app/config/*.ts (seo, property, faq, landing, location, content, media).
  */
 const fs = require('fs');
 const path = require('path');
-const ts = require('typescript');
+const { load, root } = require('./lib/load-ts');
 
-const root = path.resolve(__dirname, '..');
 const cfgDir = path.join(root, 'src/app/config');
 const distDir = path.join(root, 'dist/shrineva');
-
-// --- tiny TS loader (transpile config files in memory) -------------------------------------
-const cache = {};
-function load(file) {
-  file = path.resolve(file);
-  if (cache[file]) return cache[file].exports;
-  const out = ts.transpileModule(fs.readFileSync(file, 'utf8'), {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-  }).outputText;
-  const mod = { exports: {} };
-  cache[file] = mod;
-  const req = (name) => {
-    if (name.startsWith('.')) return load(path.resolve(path.dirname(file), name) + '.ts');
-    return require(name);
-  };
-  new Function('require', 'module', 'exports', out)(req, mod, mod.exports);
-  return mod.exports;
-}
 
 const { SEO_ROUTES, SEO_DOMAIN } = load(path.join(cfgDir, 'seo.config.ts'));
 const { PROPERTY, PLAN, MARKETING_AREA, PROPOSED_RESIDENTIAL } = load(path.join(cfgDir, 'property.config.ts'));
 const { CORE_FAQ, STATUS_FAQ, HOME_ANSWER, faqForPath } = load(path.join(cfgDir, 'faq.config.ts'));
 const { LANDING_PAGES, landingByPath } = load(path.join(cfgDir, 'landing.config.ts'));
 const { NEARBY_DISTANCES } = load(path.join(cfgDir, 'location.config.ts'));
-const { LEVEL_INFO, LEASING_POINTS, LEASING_STEPS } = load(path.join(cfgDir, 'content.config.ts'));
-const { TOUR_STOPS, SITE_PHOTOS, BROCHURE } = load(path.join(cfgDir, 'media.config.ts'));
-// Same JSON-LD builder the runtime SeoService uses (src/app/core/seo/schema.ts).
-const { buildGraph } = load(path.join(root, 'src/app/core/seo/schema.ts'));
 
 if (!fs.existsSync(path.join(distDir, 'index.html'))) {
-  console.error('dist index.html not found. Run `ng build` first.');
+  console.error('dist/shrineva/index.html not found. Run `npm run build` (it runs the pre-render first).');
   process.exit(1);
 }
-const base = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const url = (p) => (p ? `${SEO_DOMAIN}/${p}` : `${SEO_DOMAIN}/`);
+const fileFor = (r) => (r.path ? path.join(distDir, r.path, 'index.html') : path.join(distDir, 'index.html'));
+const vda = PROPERTY.approvals && PROPERTY.approvals.vda;
 
 const nav = [
   ['', 'Home'], ['walkthrough', '3D Walkthrough'], ['floor-plans', 'Floor Plans'],
   ['location-contact', 'Location & Site Visit'], ['leasing', 'Leasing'],
   ...LANDING_PAGES.map((l) => [l.path, l.navLabel]),
+  ['hi', 'हिंदी (Hindi): वाराणसी में किराये पर कमर्शियल स्पेस'],
   ['privacy-disclaimer', 'Privacy & Disclaimer'], ['terms', 'Terms'],
 ];
 
-function setMeta(html, attr, key, content) {
-  const re = new RegExp(`<meta ${attr}="${key}"[^>]*>`, 'i');
-  const tag = `<meta ${attr}="${key}" content="${esc(content)}">`;
-  return re.test(html) ? html.replace(re, tag) : html.replace('</head>', `  ${tag}\n</head>`);
-}
-
-/** Verified facts, one line each. Written from the config so the static HTML, llms.txt and the page cannot disagree. */
+/** Verified facts, one line each. Written from the config so llms.txt and the pages cannot disagree. */
 function facts() {
   const lat = PROPERTY.address.lat, lng = PROPERTY.address.lng;
   return [
     `Address: ${PROPERTY.address.full}.`,
     ...(lat !== null && lng !== null ? [`GPS coordinates: ${lat}, ${lng}.`] : []),
     `Leasing phone: ${PROPERTY.contact.phoneDisplay} (also WhatsApp, https://wa.me/${PROPERTY.contact.whatsappE164}) and ${PROPERTY.contact.phone2Display}. Open ${PROPERTY.contact.hours}.`,
-    `Location: opposite the upcoming Apollo Hospital (under construction, not yet operational) and about 100 m from the NIFT Varanasi campus, on Stadium Road in Bada Lalpur.`,
+    `Location: opposite the upcoming Apollo Hospital (under construction, not yet operational) and about 100 m from the NIFT Varanasi campus, on Stadium Road in Bada Lalpur, about 1 km from Ring Road (NH 135B).`,
     `Plot and road: ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m wide road.`,
-    `Floors: three upper floors, each ${MARKETING_AREA.gross} gross and ${MARKETING_AREA.carpet} carpet, offered as open shells to lease whole or in part. Areas are approximate.`,
+    `Floors: three upper floors, each ${MARKETING_AREA.gross} gross and ${MARKETING_AREA.carpet} carpet. Open-plan commercial floor plates with flexible tenant layouts, offered as open shells to rent or lease whole or in part. Areas are approximate.`,
     `Building: one ${PLAN.lift.capacity.replace(' passengers', '-person')} passenger lift, a fire exit on every level, Vastu-compliant layout, parking for 12+ cars at ground level.`,
+    ...(vda && vda.show ? [`Approval: shown on the site as "${vda.label}" (Varanasi Development Authority). Sanction details are not published on the site; ask the leasing team.`] : []),
     `Status: construction is ongoing. Images labelled as renders are indicative and the design is subject to change.`,
     `Use of any floor is subject to floor suitability and applicable statutory approvals (municipal, fire and, for food businesses, FSSAI).`,
   ];
 }
 
-function faqHtml(faqs, heading) {
-  return faqs.length
-    ? `<section><h2>${esc(heading)}</h2>${faqs.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('')}</section>`
-    : '';
-}
-
-const li = (items) => `<ul>${items.map((t) => `<li>${t}</li>`).join('')}</ul>`;
-const downloadsHtml = () => `<p><a href="${url(BROCHURE.href)}">Download the brochure (PDF, about ${esc(BROCHURE.size)}, ${BROCHURE.pages} pages)</a> · <a href="${url(BROCHURE.plansHref)}">Download the floor plans (PDF)</a></p>`;
-
-/** Page-specific sections: what a visitor sees on the page, written as plain HTML for crawlers that do not run JavaScript. */
-function pageSections(route) {
-  switch (route.path) {
-    case '':
-      return [
-        `<section><h2>${esc(HOME_ANSWER.q)}</h2><p>${esc(HOME_ANSWER.a)}</p></section>`,
-        `<section><h2>The building: 3D walkthrough</h2><p>Indicative 3D renders of the final design, by day and night, from the road to the lift lobby. Construction is ongoing.</p>${li(TOUR_STOPS.map((t) => `<strong>${esc(t.title)}.</strong> ${esc(t.caption)}`))}<p><a href="${url('walkthrough')}">Open the walkthrough</a></p></section>`,
-        `<section><h2>Floor plans</h2>${li(Object.values(LEVEL_INFO).map((l) => `<strong>${esc(l.title)}:</strong> ${esc(l.value)} (${esc(l.label)}; ${esc(l.sub)})`))}<p><a href="${url('floor-plans')}">All plans and areas</a></p></section>`,
-        `<section><h2>Brochure</h2><p>Six pages with the final 3D renders, floor plans and areas, specifications and location.</p>${downloadsHtml()}</section>`,
-        `<section><h2>Which business are you leasing for?</h2><ul>${LANDING_PAGES.map((l) => `<li><a href="${url(l.path)}">${esc(l.navLabel)}</a>: ${esc(l.sub)}</li>`).join('')}</ul></section>`,
-      ];
-    case 'floor-plans':
-      return [
-        `<section><h2>Floor areas</h2>${Object.values(LEVEL_INFO).map((l) => `<h3>${esc(l.title)}: ${esc(l.value)}</h3><p>${esc(l.label)}. ${esc(l.sub)}.</p>${li(l.facts.map((f) => `${esc(f.label)}: ${esc(f.value)}`))}`).join('')}<p>Areas are approximate and subject to final measurement. Floors are offered as open shells.</p></section>`,
-        `<section><h2>Download</h2>${downloadsHtml()}</section>`,
-      ];
-    case 'walkthrough':
-      return [
-        `<section><h2>Walkthrough stops</h2><p>Indicative 3D renders of the final design. Finishes, signage, planting and surroundings are illustrative and subject to change.</p>${li(TOUR_STOPS.map((t) => `<strong>${esc(t.title)}.</strong> ${esc(t.caption)}`))}</section>`,
-        `<section><h2>The building as it stands today</h2><p>Photographs taken on site. Construction is ongoing.</p>${li(SITE_PHOTOS.map((p) => `<strong>${esc(p.title)}.</strong> ${esc(p.caption)}`))}</section>`,
-        `<section><h2>Next</h2><p><a href="${url('floor-plans')}">Floor plans</a> · ${downloadsHtml().replace(/^<p>|<\/p>$/g, '')}</p></section>`,
-      ];
-    case 'leasing':
-      return [
-        `<section><h2>What is available</h2>${li(LEASING_POINTS.map(esc))}</section>`,
-        `<section><h2>How leasing works</h2><ol>${LEASING_STEPS.map((x) => `<li><strong>${esc(x.t)}.</strong> ${esc(x.d)}</li>`).join('')}</ol></section>`,
-        `<section><h2>Terms and documents</h2><p>${esc(PROPERTY.leasing.pricingDisclosure)}. The leasing team shares terms and technical specifications directly.</p>${downloadsHtml()}</section>`,
-      ];
-    case 'location-contact':
-      return [
-        `<section><h2>Where is SHRINEVA?</h2><p>${esc(PROPERTY.address.full)}</p><p>Site visits and calls: ${esc(PROPERTY.contact.hours)}. Phone ${esc(PROPERTY.contact.phoneDisplay)} or ${esc(PROPERTY.contact.phone2Display)}.</p><p><a href="${esc(PROPERTY.address.googleMapsUrl)}">Open in Google Maps</a></p></section>`,
-      ];
-    default:
-      return [];
-  }
-}
-
-const LEGAL_PAGES = new Set(['privacy-disclaimer', 'terms']);
-
-function staticBody(route) {
-  const landing = landingByPath(route.path);
-  const faqs = faqForPath(route.path, landing ? landing.faq : []);
-  const legal = LEGAL_PAGES.has(route.path);
-  const out = [`<header><p>${esc(PROPERTY.brand.name)}</p><h1>${esc(route.h1)}</h1><p>${esc(route.description)}</p></header>`];
-  if (landing) {
-    out.push(`<section><h2>${esc(landing.answerQ)}</h2><p>${esc(landing.answer)}</p><p>${esc(landing.approvalNote)}</p></section>`);
-    out.push(`<section><h2>Why operators look at SHRINEVA</h2><ul>${landing.cards.map((c) => `<li><strong>${esc(c.title)}.</strong> ${esc(c.text)}</li>`).join('')}</ul>` +
-      `<h3>${esc(landing.categoriesHeading)}</h3><ul>${landing.categories.map((c) => `<li>${esc(c)}</li>`).join('')}</ul></section>`);
-  } else {
-    out.push(...pageSections(route));
-  }
-  if (!legal) {
-    out.push(`<section><h2>SHRINEVA key facts</h2><ul>${facts().map((f) => `<li>${esc(f)}</li>`).join('')}</ul></section>`);
-    out.push(faqHtml(faqs, landing ? `Questions from ${landing.eyebrow.toLowerCase()} tenants` : 'Frequently asked questions'));
-    if (route.path === 'location-contact' || route.path === '') {
-      out.push(`<section><h2>Nearby (approximate)</h2><ul>${NEARBY_DISTANCES.map((d) => `<li>${esc(d.name)}: ${esc(d.value)}${d.note ? ` (${esc(d.note)})` : ''}</li>`).join('')}</ul></section>`);
-    }
-  }
-  out.push(`<p>${esc(PROPERTY.address.full)}. Call ${esc(PROPERTY.contact.phoneDisplay)} or ${esc(PROPERTY.contact.phone2Display)}, or message ${esc(PROPERTY.contact.phoneDisplay)} on WhatsApp.</p>`);
-  out.push(`<nav aria-label="Site"><ul>${nav.map(([p, l]) => `<li><a href="${url(p)}">${esc(l)}</a></li>`).join('')}</ul></nav>`);
-  return out.join('');
-}
-
-// Visually hidden until Angular starts (it then replaces everything inside <app-root>); shown by the <noscript> rule below when JavaScript is off.
-const HIDDEN = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);border:0';
-const NOSCRIPT_REVEAL = '<noscript><style>.boot{display:none}.static-shell{position:static!important;width:auto!important;height:auto!important;margin:0 auto!important;overflow:visible!important;clip:auto!important;max-width:56rem;padding:1.25rem;font:1rem/1.6 Georgia,serif;color:#1B1A17}.static-shell a{color:#5B4113}</style></noscript>';
-
-function shell(route) {
-  const canonical = url(route.path);
-  const image = route.image || PROPERTY.images.og;
-  const alt = route.imageAlt || 'SHRINEVA commercial building, Bada Lalpur, Varanasi (indicative 3D render)';
-  let html = base;
-  if (route.path === '') {
-    // Only the home page paints the hero straight away; other routes must not pay for it.
-    html = html.replace('</head>', '  <link rel="preload" as="image" href="assets/images/hero/hero-night-960.webp" imagesrcset="assets/images/hero/hero-night-960.webp 960w, assets/images/hero/hero-night-1920.webp 1920w" imagesizes="(min-width: 1320px) 1272px, calc(100vw - 2.5rem)" fetchpriority="high">\n</head>');
-  }
-  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(route.title)}</title>`);
-  html = setMeta(html, 'name', 'description', route.description);
-  html = setMeta(html, 'name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
-  html = html.replace(/<link rel="canonical"[^>]*>/i, `<link rel="canonical" href="${canonical}">`);
-  html = setMeta(html, 'property', 'og:url', canonical);
-  html = setMeta(html, 'property', 'og:title', route.title);
-  html = setMeta(html, 'property', 'og:description', route.description);
-  html = setMeta(html, 'property', 'og:image', image);
-  html = setMeta(html, 'property', 'og:image:alt', alt);
-  html = setMeta(html, 'name', 'twitter:title', route.title);
-  html = setMeta(html, 'name', 'twitter:description', route.description);
-  html = setMeta(html, 'name', 'twitter:image', image);
-  html = setMeta(html, 'name', 'twitter:image:alt', alt);
-  // Page content inside <app-root> (replaced by Angular on start). The <noscript> in <body> is dropped; the one in <head> is Angular's stylesheet fallback and stays.
-  const bodyAt = html.indexOf('<body');
-  let bodyHtml = html.slice(bodyAt).replace(/<noscript>[\s\S]*?<\/noscript>/i, '');
-  bodyHtml = bodyHtml.replace(/<app-root>[\s\S]*?<\/app-root>/i,
-    () => `<app-root><div class="boot" aria-hidden="true"><img src="assets/images/logo-wordmark-sm.webp" alt="" width="320" height="82"><span>Bada Lalpur, Varanasi</span></div><main class="static-shell" style="${HIDDEN}">${staticBody(route)}</main></app-root>`);
-  html = html.slice(0, bodyAt) + bodyHtml;
-  html = html.replace('</head>', `  ${NOSCRIPT_REVEAL}\n</head>`);
-  // Structured data in the static HTML (the runtime SeoService updates this same element by id).
-  const ld = JSON.stringify(buildGraph(route.path, canonical)).replace(/</g, '\\u003c');
-  html = html.replace(/<script[^>]*id="shrineva-schema"[^>]*>[\s\S]*?<\/script>/i, '');
-  html = html.replace('</head>', `<script type="application/ld+json" id="shrineva-schema">${ld}</script></head>`);
-  return html;
-}
-
-let count = 0;
-for (const route of SEO_ROUTES) {
-  const out = route.path ? path.join(distDir, route.path, 'index.html') : path.join(distDir, 'index.html');
-  fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, shell(route));
-  count++;
-}
-console.log(`SEO shells written: ${count}`);
-
+// --- sitemap -----------------------------------------------------------------------------------------
 const SITEMAP_IMAGES = {
-  '': [['renders/facade-night.webp', 'SHRINEVA building at night, indicative 3D render'], ['renders/facade-day.webp', 'SHRINEVA building by day, indicative 3D render']],
+  '': [['renders/facade-day.webp', 'SHRINEVA building at golden hour, indicative 3D render'], ['renders/facade-night.webp', 'SHRINEVA building at night, indicative 3D render']],
   walkthrough: [['renders/entrance.webp', 'SHRINEVA entrance, indicative 3D render'], ['renders/ground-level.webp', 'SHRINEVA ground level, indicative 3D render'], ['renders/lift-lobby.webp', 'SHRINEVA lift lobby, indicative 3D render']],
   'floor-plans': [['plans/plan-typical.webp', 'SHRINEVA typical floor plan, Floors 1 to 3'], ['plans/plan-ground.webp', 'SHRINEVA ground level plan']],
 };
-// --- sitemap ---------------------------------------------------------------------------------
 const today = new Date().toISOString().slice(0, 10);
 const sitemap =
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
   SEO_ROUTES.map((r) => {
     const img = (SITEMAP_IMAGES[r.path] || []).map(([f, t]) => `\n    <image:image><image:loc>${SEO_DOMAIN}/assets/images/${f}</image:loc><image:title>${esc(t)}</image:title></image:image>`).join('');
-    return `  <url>\n    <loc>${url(r.path)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>${img}\n  </url>`;
+    const alt = (r.alternates || []).map((a) => `\n    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${a.href}"/>`).join('');
+    return `  <url>\n    <loc>${url(r.path)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>${alt}${img}\n  </url>`;
   }).join('\n') + '\n</urlset>\n';
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 fs.writeFileSync(path.join(root, 'src/sitemap.xml'), sitemap);
@@ -236,20 +91,20 @@ fs.writeFileSync(path.join(root, 'src/robots.txt'), robots);
 console.log('robots.txt written');
 
 // --- llms.txt: a plain-text summary for AI assistants, generated from the same config (no extra claims) ----
-const pageLabel = (r) => (nav.find(([p]) => p === r.path) || [])[1] || r.path.replace('spaces/floor-', 'Floor ');
+const pageLabel = (r) => (nav.find(([p]) => p === r.path) || [])[1] || r.path;
 const llms = [
   `# ${PROPERTY.brand.name}`,
   '',
-  `> ${PROPERTY.brand.name} is a commercial building for lease at ${PROPERTY.address.full}, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi. Three open floors of ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) can be leased whole or in part. Construction is ongoing; images labelled as renders are indicative.`,
+  `> ${PROPERTY.brand.name} is a commercial building for rent or lease at ${PROPERTY.address.full}, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi. Three open-plan floors of ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) with flexible tenant layouts can be rented or leased whole or in part. Construction is ongoing; images labelled as renders are indicative.`,
   '',
   '## Verified facts',
   ...facts().map((f) => `- ${f}`),
   '',
-  '## Who can lease here',
+  '## Who can rent or lease here',
   '- Pathology labs, diagnostic centres and clinics',
   '- Banks, NBFCs and insurance branches',
   '- Corporate and IT offices',
-  '- Retail showrooms and boutiques',
+  '- Retail showrooms, shops and boutiques',
   '- Restaurants and cafés (subject to municipal, fire and FSSAI approvals)',
   '- Coaching institutes, coworking, fitness and wellness centres',
   '',
@@ -266,20 +121,13 @@ const llms = [
   '## Frequently asked questions',
   ...[HOME_ANSWER, ...CORE_FAQ, ...STATUS_FAQ].flatMap((f) => [`### ${f.q}`, f.a, '']),
   '## Notes',
-  `- The Apollo Hospital opposite is upcoming and under construction. No footfall, rent or approval claim is made for this building.`,
+  `- The Apollo Hospital opposite is upcoming and under construction. No footfall, rent or return claim is made for this building.`,
   `- Areas are approximate. Use of any floor is subject to floor suitability and statutory approvals.`,
   '',
 ].join('\n');
 fs.writeFileSync(path.join(distDir, 'llms.txt'), llms);
 fs.writeFileSync(path.join(root, 'src/llms.txt'), llms);
 console.log('llms.txt written');
-
-// --- 404.html: same app shell, marked noindex; .htaccess serves it with a real 404 status ---------------------
-let nf = base.replace(/<title>[\s\S]*?<\/title>/i, `<title>Page not found | ${esc(PROPERTY.brand.name)}</title>`);
-nf = nf.replace(/<link rel="canonical"[^>]*>/i, '');
-nf = setMeta(nf, 'name', 'robots', 'noindex, follow');
-fs.writeFileSync(path.join(distDir, '404.html'), nf);
-console.log('404.html written');
 
 // --- every route must be covered by the whitelist in src/.htaccess ------------------------------------------
 const htaccess = fs.readFileSync(path.join(root, 'src/.htaccess'), 'utf8');
@@ -293,8 +141,15 @@ console.log('.htaccess route whitelist covers all routes');
 // --- quality gates: fail the build rather than ship a page that breaks the brief ---------------------------------------
 const problems = [];
 const words = (t) => String(t).trim().split(/\s+/).length;
+const decode = (s) => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'");
 for (const r of SEO_ROUTES) {
   const tl = r.title.length, dl = r.description.length;
+  if (r.lang === 'hi-IN') {
+    // Devanagari glyphs are wider than Latin ones, so the same pixel width holds fewer characters.
+    if (tl < 30 || tl > 62) problems.push(`Hindi title length ${tl} (want 30-62): /${r.path} "${r.title}"`);
+    if (dl < 80 || dl > 160) problems.push(`Hindi description length ${dl} (want 80-160): /${r.path}`);
+    continue;
+  }
   if (tl < 50 || tl > 60) problems.push(`title length ${tl} (want 50-60): /${r.path} "${r.title}"`);
   if (dl < 145 || dl > 155) problems.push(`description length ${dl} (want 145-155): /${r.path}`);
 }
@@ -303,47 +158,115 @@ for (const f of answers) {
   const n = words(f.a);
   if (n < 40 || n > 60) problems.push(`answer word count ${n} (want 40-60): "${f.q}"`);
 }
+
 const FORBIDDEN = [
-  [/VDA[- ]approved (Parking|building|commercial)|VDA approved/i, 'VDA approval claim'],
+  // The short "VDA approved" badge is shown only when the owner has switched it on (property.config.ts approvals.vda.show);
+  // any wider approval wording is never allowed.
+  [vda && vda.show ? /VDA[- ]approved (Parking|building|commercial|plan|project)/i : /VDA[- ]approv/i, 'VDA approval claim beyond the badge'],
+  [/column[- ]?free|pillar[- ]?free|without (any )?columns/i, '"column-free" claim (the plans show columns)'],
   [/60\s*[–-]\s*70 ?m/i, '"60-70 m" distance'],
   [/handover (March|in March) 2027/i, 'handover date in SEO text'],
   ...(PROPOSED_RESIDENTIAL.show ? [] : [[/\bstudio apartment|\b2 ?BHK\b|serviced[- ]stay|proposed (studio|residential)/i, 'residential / studio mention']]),
 ];
-function textOf(html) { return html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '); }
+function textOf(html) {
+  const body = html.slice(html.indexOf('<body'));
+  return body.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+}
+
+const known = new Set(SEO_ROUTES.map((r) => r.path));
+const REDIRECTED = new Set(['location', 'contact', 'privacy', 'disclaimer', 'property', 'business-fit', 'spaces', 'infrastructure', 'growth', 'gallery', 'brokers']);
 const scanned = [];
 for (const r of SEO_ROUTES) {
-  const file = r.path ? path.join(distDir, r.path, 'index.html') : path.join(distDir, 'index.html');
+  const file = fileFor(r);
+  const label = '/' + r.path;
+  if (!fs.existsSync(file)) { problems.push(`${label}: no pre-rendered file`); continue; }
   const html = fs.readFileSync(file, 'utf8');
   const text = textOf(html);
-  const label = '/' + r.path;
-  const h1s = (html.match(/<h1[\s>]/g) || []).length;
-  if (h1s !== 1) problems.push(`${label}: ${h1s} <h1> in the static HTML (want 1)`);
-  if ((html.match(/<link rel="canonical"/g) || []).length !== 1) problems.push(`${label}: canonical link missing or duplicated`);
-  const ld = html.match(/<script type="application\/ld\+json" id="shrineva-schema">([\s\S]*?)<\/script>/);
+
+  const title = (html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1];
+  if (!title || decode(title) !== r.title) problems.push(`${label}: rendered <title> differs from seo.config.ts ("${title}")`);
+  const desc = (html.match(/<meta name="description" content="([^"]*)"/i) || [])[1];
+  if (!desc || decode(desc) !== r.description) problems.push(`${label}: rendered meta description differs from seo.config.ts`);
+  const canon = html.match(/<link rel="canonical" href="([^"]*)"/g) || [];
+  if (canon.length !== 1 || !canon[0].includes(`href="${url(r.path)}"`)) problems.push(`${label}: canonical link missing, duplicated or wrong`);
+  if (!/<meta name="robots" content="index, follow/i.test(html)) problems.push(`${label}: robots meta is not "index, follow"`);
+  if ((html.match(/<h1[\s>]/g) || []).length !== 1) problems.push(`${label}: not exactly one <h1> in the rendered HTML`);
+  if (text.length < 1200) problems.push(`${label}: only ${text.length} characters of readable text in the HTML (page not rendered?)`);
+  if (/static-shell|clip:rect\(0,? ?0,? ?0,? ?0\)|width:1px;height:1px/i.test(html.replace(/<style[\s\S]*?<\/style>/gi, ''))) problems.push(`${label}: hidden-text pattern in the HTML`);
+  if (/class="boot"/.test(html)) problems.push(`${label}: loading placeholder still in the pre-rendered page`);
+
+  // images: alt, width, height in the rendered HTML
+  for (const m of html.matchAll(/<img\b[^>]*>/g)) {
+    const tag = m[0];
+    if (!/\balt=/.test(tag)) problems.push(`${label}: <img> without alt: ${tag.slice(0, 80)}`);
+    if (!/\bwidth="/.test(tag) || !/\bheight="/.test(tag)) problems.push(`${label}: <img> without width/height: ${tag.slice(0, 80)}`);
+  }
+  if ((html.match(/fetchpriority="high"/g) || []).length > 2) problems.push(`${label}: more than two fetchpriority="high" elements`);
+
+  // links and assets resolve
+  for (const m of html.matchAll(/\s(?:href|src)="([^"#?][^"]*)"/g)) {
+    const ref = m[1];
+    if (/^(https?:|mailto:|tel:|data:|javascript:)/i.test(ref)) continue;
+    const clean = ref.split(/[?#]/)[0];
+    if (clean.startsWith('/')) {
+      const p = clean.replace(/^\/+|\/+$/g, '');
+      const ok = p === '' || known.has(p) || fs.existsSync(path.join(distDir, p));
+      if (!ok) problems.push(`${label}: link to /${p} does not exist`);
+    } else if (/^assets\//.test(clean) || /\.(js|css|ico)$/.test(clean)) {
+      if (!fs.existsSync(path.join(distDir, clean))) problems.push(`${label}: missing file ${clean}`);
+    }
+  }
+  for (const m of html.matchAll(/(?:srcset|imagesrcset)="([^"]+)"/g)) {
+    for (const part of m[1].split(',')) {
+      const f = part.trim().split(/\s+/)[0];
+      if (f && !/^https?:/.test(f) && !fs.existsSync(path.join(distDir, f))) problems.push(`${label}: srcset file missing ${f}`);
+    }
+  }
+
+  // JSON-LD
+  const ld = html.match(/<script id="shrineva-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
   if (!ld) problems.push(`${label}: JSON-LD missing`);
   else {
     try {
       const g = JSON.parse(ld[1].replace(/\\u003c/g, '<'))['@graph'];
       const types = g.flatMap((n) => [].concat(n['@type']));
-      for (const t of ['RealEstateAgent', 'LocalBusiness', 'WebPage', 'BreadcrumbList']) if (!types.includes(t) && !(t === 'WebPage' && types.includes('ContactPage'))) problems.push(`${label}: JSON-LD lacks ${t}`);
+      for (const t of ['LocalBusiness', 'Place', 'WebSite', 'BreadcrumbList']) if (!types.includes(t)) problems.push(`${label}: JSON-LD lacks ${t}`);
+      if (!types.includes('WebPage') && !types.includes('ContactPage')) problems.push(`${label}: JSON-LD lacks WebPage`);
+      for (const t of ['RealEstateAgent', 'Accommodation', 'Residence', 'Apartment']) if (types.includes(t)) problems.push(`${label}: JSON-LD uses ${t}, which does not describe this commercial building`);
       const wantFaq = faqForPath(r.path, (landingByPath(r.path) || { faq: [] }).faq);
       const faqNode = g.find((n) => n['@type'] === 'FAQPage');
       if (wantFaq.length && (!faqNode || faqNode.mainEntity.length !== wantFaq.length)) problems.push(`${label}: FAQPage does not match the visible FAQ`);
       if (!wantFaq.length && faqNode) problems.push(`${label}: FAQPage markup without a visible FAQ`);
+      // every FAQ question in the markup must be visible on the page
+      if (faqNode) for (const q of faqNode.mainEntity) if (!text.includes(q.name.replace(/\s+/g, ' ').slice(0, 40))) problems.push(`${label}: FAQ question not visible on the page: "${q.name.slice(0, 50)}"`);
     } catch (e) { problems.push(`${label}: JSON-LD is not valid JSON (${e.message})`); }
   }
-  if (/Apollo/.test(text) && !/upcoming|under construction/i.test(text)) problems.push(`${label}: mentions Apollo without "upcoming / under construction"`);
-  scanned.push([label, text + ' ' + (ld ? ld[1] : '')]);
+
+  if (/Apollo|अपोलो/.test(text) && !/upcoming|under construction|निर्माणाधीन/i.test(text)) problems.push(`${label}: mentions Apollo without "upcoming / under construction"`);
+  // language: <html lang> and og:locale follow the route; hreflang pairs are present and reciprocal where declared
+  const wantLang = r.lang || 'en-IN';
+  if (!new RegExp(`<html[^>]*\\blang="${wantLang}"`, 'i').test(html)) problems.push(`${label}: <html lang> is not ${wantLang}`);
+  if (r.alternates) {
+    for (const a of r.alternates) if (!new RegExp(`<link[^>]*rel="alternate"[^>]*hreflang="${a.hreflang}"[^>]*href="${a.href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'i').test(html)) problems.push(`${label}: hreflang ${a.hreflang} link missing in the head`);
+  } else if (/rel="alternate"[^>]*hreflang=/i.test(html)) problems.push(`${label}: hreflang link on a page that declares no alternates`);
+  if (vda && vda.show && !/VDA approved/i.test(text)) problems.push(`${label}: the VDA badge is switched on but not in the page`);
+  if (vda && !vda.show && /VDA approved/i.test(text)) problems.push(`${label}: VDA badge in the page but switched off in property.config.ts`);
+  scanned.push([label, text + ' ' + (ld ? ld[1] : '') + ' ' + [title, desc].join(' ')]);
+}
+// the home page must preload the same image its hero shows first (golden hour)
+{
+  const home = fs.readFileSync(fileFor(SEO_ROUTES[0]), 'utf8');
+  if (!/<link rel="preload" as="image"[^>]*hero-day-960\.webp/.test(home)) problems.push('/: hero preload is not the golden-hour (day) image');
+  if (!/<img[^>]*hero-day-960\.webp[^>]*fetchpriority="high"|<img[^>]*fetchpriority="high"[^>]*hero-day/.test(home)) problems.push('/: the golden-hour hero image is not the high-priority image');
 }
 scanned.push(['llms.txt', llms]);
 for (const [label, text] of scanned) for (const [re, what] of FORBIDDEN) if (re.test(text)) problems.push(`${label}: ${what}`);
 
-// every internal link in the static nav must be a real route
-const known = new Set(SEO_ROUTES.map((r) => r.path));
+// every internal link in the nav list must be a real route
 for (const [p] of nav) if (!known.has(p)) problems.push(`nav links to a route that is not in seo.config.ts: /${p}`);
+for (const p of REDIRECTED) if (known.has(p)) problems.push(`/${p} is both a route and a redirected legacy URL`);
 
 // source templates: every <img> needs alt, width and height; lazy-load everything except the hero (fetchpriority="high"), the header logo and the lightbox (loading="eager")
-const imgIssues = [];
 (function walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
@@ -352,17 +275,16 @@ const imgIssues = [];
       const src = fs.readFileSync(p, 'utf8');
       for (const m of src.matchAll(/<img\b[^>]*>/gs)) {
         const tag = m[0], rel = path.relative(root, p);
-        if (!/(\[alt\]|\[attr\.alt\]|\balt)=/.test(tag)) imgIssues.push(`${rel}: <img> without alt`);
-        if (!/(\[attr\.)?width\]?=/.test(tag) || !/(\[attr\.)?height\]?=/.test(tag)) imgIssues.push(`${rel}: <img> without width/height: ${tag.slice(0, 90).replace(/\s+/g, ' ')}`);
-        if (!/fetchpriority="high"/.test(tag) && !/loading="(lazy|eager)"/.test(tag)) imgIssues.push(`${rel}: <img> neither lazy nor an explicit eager (hero / header logo / lightbox): ${tag.slice(0, 90).replace(/\s+/g, ' ')}`);
+        if (!/(\[alt\]|\[attr\.alt\]|\balt)=/.test(tag)) problems.push(`${rel}: <img> without alt`);
+        if (!/(\[attr\.)?width\]?=/.test(tag) || !/(\[attr\.)?height\]?=/.test(tag)) problems.push(`${rel}: <img> without width/height: ${tag.slice(0, 90).replace(/\s+/g, ' ')}`);
+        if (!/fetchpriority="high"/.test(tag) && !/loading="(lazy|eager)"/.test(tag)) problems.push(`${rel}: <img> neither lazy nor an explicit eager (hero / header logo / lightbox): ${tag.slice(0, 90).replace(/\s+/g, ' ')}`);
       }
     }
   }
 })(path.join(root, 'src/app'));
-for (const i of imgIssues) problems.push(i);
 
 if (problems.length) {
   console.error('\nSEO quality gates FAILED:\n - ' + problems.join('\n - '));
   process.exit(1);
 }
-console.log(`SEO quality gates passed (${SEO_ROUTES.length} routes, ${answers.length} quotable answers, images audited).`);
+console.log(`SEO quality gates passed (${SEO_ROUTES.length} rendered routes, ${answers.length} quotable answers, links, assets and images audited).`);

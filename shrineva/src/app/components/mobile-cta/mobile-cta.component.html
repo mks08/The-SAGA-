@@ -1,9 +1,9 @@
 <nav class="theme-soft md:hidden fixed inset-x-3 z-[950] grid grid-cols-[1fr_1fr_1.25fr] gap-1.5 rounded-full border border-paper/15 bg-ink-3/95 p-1.5 shadow-lift backdrop-blur-xl"
-     style="bottom: calc(0.6rem + env(safe-area-inset-bottom))" aria-label="Quick actions" data-track-source="mobile_bar">
+     style="bottom: calc(0.6rem + env(safe-area-inset-bottom))" [attr.aria-label]="hindi ? 'त्वरित संपर्क' : 'Quick actions'" data-track-source="mobile_bar">
   <a [href]="'tel:' + property.contact.phoneE164"
      class="flex min-h-[48px] items-center justify-center gap-2 rounded-full text-[0.8rem] font-bold text-paper active:bg-paper/10">
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
-    Call Now
+    {{ hindi ? 'कॉल करें' : 'Call Now' }}
   </a>
   <a [href]="waHref" target="_blank" rel="noopener"
      class="flex min-h-[48px] items-center justify-center gap-2 rounded-full text-[0.8rem] font-bold text-paper active:bg-paper/10">
@@ -12,6 +12,6 @@
   </a>
   <button type="button" (click)="bookVisit()"
           class="flex min-h-[48px] items-center justify-center rounded-full bg-brass-sheen text-[0.8rem] font-extrabold text-[#1b1714]">
-    Book Visit
+    {{ hindi ? 'विज़िट बुक करें' : 'Book Visit' }}
   </button>
 </nav>

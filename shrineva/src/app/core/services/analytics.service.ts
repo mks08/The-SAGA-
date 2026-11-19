@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
 
 /**
@@ -34,6 +35,12 @@ const EVENT_NAME: Record<ConversionKey, string> = {
 
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService {
+  private readonly browser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
+    this.browser = isPlatformBrowser(platformId);
+  }
+
   event(name: string, params: Record<string, unknown> = {}): void {
     if (HANDLED_BY_LISTENER.has(name)) return;
     this.send(name, params);
@@ -41,6 +48,7 @@ export class AnalyticsService {
 
   /** A named conversion: fires the shrineva_* event and, when a label is configured, the matching Google Ads conversion. */
   conversion(key: ConversionKey, params: Record<string, unknown> = {}): void {
+    if (!this.browser) return;
     const page_path = typeof location !== 'undefined' ? location.pathname : '';
     this.send(EVENT_NAME[key], { page_path, ...params });
     const w = window as unknown as TrackWindow;
@@ -53,6 +61,7 @@ export class AnalyticsService {
 
   /** Loads gtag.js once when a GA4 (G-) or Google Ads (AW-) ID is configured, and starts the click listener. Called from AppComponent. */
   init(): void {
+    if (!this.browser) return; // pre-rendering at build time: no tags, no listeners
     this.listenForClicks();
     const ids = [environment.ga4MeasurementId, environment.googleAdsId].filter(Boolean);
     if (!ids.length || document.getElementById('ga4-script')) return;
@@ -74,6 +83,7 @@ export class AnalyticsService {
   }
 
   private send(name: string, params: Record<string, unknown>): void {
+    if (!this.browser) return;
     const w = window as unknown as TrackWindow;
     if (typeof w.gtag === 'function') {
       w.gtag('event', name, params);

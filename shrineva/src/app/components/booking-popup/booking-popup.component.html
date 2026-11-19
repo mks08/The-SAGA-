@@ -1,39 +1,39 @@
-<div class="popup-overlay fixed inset-0 z-[1200] grid place-items-end bg-ink/55 backdrop-blur-sm sm:place-items-center sm:p-6" *ngIf="showPopup" (click)="onOverlayClick($event)" role="dialog" aria-modal="true" aria-label="Schedule a visit at SHRINEVA">
+<div class="popup-overlay fixed inset-0 z-[1200] grid place-items-end bg-ink/55 backdrop-blur-sm sm:place-items-center sm:p-6" *ngIf="showPopup" (click)="onOverlayClick($event)" role="dialog" aria-modal="true" [attr.aria-label]="txt.dialog" [attr.lang]="hindi ? 'hi' : null">
   <div class="popup-card theme-light relative w-full max-w-[26rem] overflow-hidden rounded-t-3xl bg-white text-ink shadow-lift animate-rise sm:rounded-3xl">
 
-    <button type="button" class="popup-close absolute right-2.5 top-2.5 z-20 grid size-10 place-items-center rounded-full bg-ink/[0.08] text-ink hover:bg-ink/15" (click)="close()" aria-label="Close">
+    <button type="button" class="popup-close absolute right-2.5 top-2.5 z-20 grid size-10 place-items-center rounded-full bg-ink/[0.08] text-ink hover:bg-ink/15" (click)="close()" [attr.aria-label]="txt.close">
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
 
     <div class="popup-right max-h-[92dvh] overflow-y-auto p-5 pt-6 sm:p-7">
       <div *ngIf="popupSubmitted" class="grid min-h-[260px] place-content-center text-center" role="status">
         <div class="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-ok/15 text-2xl text-ok" aria-hidden="true">✓</div>
-        <h3 class="font-display text-[2rem] text-ink">Enquiry sent</h3>
-        <p class="mx-auto mt-2 max-w-xs text-[0.95rem] text-ink/70">Thank you. The leasing team will call you to confirm a time. For a faster reply, message us on WhatsApp.</p>
-        <a [href]="waSubmittedHref" class="btn-whatsapp mx-auto mt-5" target="_blank" rel="noopener">WhatsApp now</a>
+        <h3 class="font-display text-[2rem] text-ink">{{ txt.sentTitle }}</h3>
+        <p class="mx-auto mt-2 max-w-xs text-[0.95rem] text-ink/70">{{ txt.sentBody }}</p>
+        <a [href]="waSubmittedHref" class="btn-whatsapp mx-auto mt-5" target="_blank" rel="noopener">{{ txt.waNow }}</a>
       </div>
 
       <ng-container *ngIf="!popupSubmitted">
-        <span class="eyebrow !mb-1.5 !text-brass-deep">Schedule a visit</span>
-        <h2 class="font-display text-[1.7rem] leading-tight text-ink">When can we show you around?</h2>
-        <p class="mt-1.5 text-[0.88rem] text-ink/65">Leave your name and number. We will call to fix a time.</p>
+        <span class="eyebrow !mb-1.5 !text-brass-deep">{{ txt.eyebrow }}</span>
+        <h2 class="font-display text-[1.7rem] leading-tight text-ink">{{ txt.title }}</h2>
+        <p class="mt-1.5 text-[0.88rem] text-ink/65">{{ txt.sub }}</p>
 
-        <form [formGroup]="bookingForm" (ngSubmit)="submit()" novalidate class="mt-4 grid gap-3.5" aria-label="Schedule a visit">
+        <form [formGroup]="bookingForm" (ngSubmit)="submit()" novalidate class="mt-4 grid gap-3.5" [attr.aria-label]="txt.eyebrow">
           <div>
-            <label class="field-label" for="b-name">Name *</label>
+            <label class="field-label" for="b-name">{{ txt.name }}</label>
             <input id="b-name" type="text" class="field-input" [class.is-invalid]="isInvalid('name')" formControlName="name" autocomplete="name" enterkeyhint="next">
-            <p class="field-error" *ngIf="isInvalid('name')">Please enter your name</p>
+            <p class="field-error" *ngIf="isInvalid('name')">{{ txt.errName }}</p>
           </div>
           <div>
-            <label class="field-label" for="b-phone">Mobile *</label>
-            <input id="b-phone" type="tel" inputmode="numeric" class="field-input" [class.is-invalid]="isInvalid('phone')" formControlName="phone" autocomplete="tel-national" maxlength="10" placeholder="10-digit number" enterkeyhint="send">
-            <p class="field-error" *ngIf="isInvalid('phone')">Enter a valid 10-digit mobile number</p>
+            <label class="field-label" for="b-phone">{{ txt.phone }}</label>
+            <input id="b-phone" type="tel" inputmode="numeric" class="field-input" [class.is-invalid]="isInvalid('phone')" formControlName="phone" autocomplete="tel-national" maxlength="10" [attr.placeholder]="txt.phonePh" enterkeyhint="send">
+            <p class="field-error" *ngIf="isInvalid('phone')">{{ txt.errPhone }}</p>
           </div>
           <div>
-            <label class="field-label" for="b-need">I am looking for</label>
+            <label class="field-label" for="b-need">{{ txt.need }}</label>
             <select id="b-need" class="field-input" formControlName="need">
-              <option value="">Select (optional)</option>
-              <option *ngFor="let n of needs" [value]="n">{{ n }}</option>
+              <option value="">{{ txt.needPh }}</option>
+              <option *ngFor="let n of needs" [value]="n">{{ hindi ? (needLabelHi[n] || n) : n }}</option>
             </select>
           </div>
 
@@ -42,16 +42,16 @@
           </div>
 
           <div class="rounded-2xl border border-red-800/30 bg-red-50 p-3.5 text-[0.88rem] text-red-900" role="alert" *ngIf="failed">
-            <strong>Your enquiry was not sent.</strong> Please try again, or call {{ property.contact.phoneDisplay }} or use WhatsApp. What you typed is still here.
+            <strong>{{ txt.failedStrong }}</strong> {{ txt.failed(property.contact.phoneDisplay) }}
           </div>
 
           <div class="flex flex-col gap-2.5 sm:flex-row">
             <button type="submit" class="btn-primary sm:flex-1" id="popup-submit-btn" [disabled]="submitting">
-              {{ submitting ? 'Sending…' : 'Send enquiry' }} <span class="arrow" aria-hidden="true" *ngIf="!submitting">→</span>
+              {{ submitting ? txt.sending : txt.send }} <span class="arrow" aria-hidden="true" *ngIf="!submitting">→</span>
             </button>
-            <a [href]="waHref" class="btn-outline" target="_blank" rel="noopener">WhatsApp</a>
+            <a [href]="waHref" class="btn-outline" target="_blank" rel="noopener">{{ txt.wa }}</a>
           </div>
-          <p class="text-[0.72rem] text-ink/70">We use these details only to reply. <a routerLink="/privacy-disclaimer" (click)="close()" class="underline">Privacy policy</a>.</p>
+          <p class="text-[0.72rem] text-ink/70">{{ txt.privacyPre }} <a routerLink="/privacy-disclaimer" (click)="close()" class="underline">{{ txt.privacy }}</a>.</p>
         </form>
       </ng-container>
     </div>

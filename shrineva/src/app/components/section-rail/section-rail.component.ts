@@ -1,4 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 
@@ -7,17 +8,21 @@ interface RailItem { id: string; label: string; }
 /**
  * A slim dot rail on the right edge of the home page: shows where you are and jumps to a section.
  * Built from the `data-rail` attributes in the page, so a new section only needs that attribute. Desktop only.
+ * Only the dots take clicks (the container and the hidden hover labels are pointer-events-none), so the rail never sits on top of
+ * page controls such as the hero's Golden hour / Night switch on 1280-1366 px laptop screens.
  */
 @Component({
   selector: 'app-section-rail',
   template: `
-    <nav *ngIf="items.length > 1 && visible" class="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 xl:block" aria-label="Page sections">
+    <nav *ngIf="items.length > 1 && visible" class="pointer-events-none fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 xl:block" aria-label="Page sections">
       <ul class="flex flex-col items-end gap-1">
         <li *ngFor="let it of items">
           <a [href]="'#' + it.id" (click)="go($event, it.id)" class="group flex min-h-[28px] items-center gap-3" [attr.aria-current]="active === it.id ? 'true' : null">
             <span class="rounded-full bg-ink/80 px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-paper opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">{{ it.label }}</span>
-            <span class="block rounded-full border border-brass/70 transition-all duration-300"
-                  [ngClass]="active === it.id ? 'h-6 w-2 bg-brass' : 'size-2 bg-ink/30 group-hover:bg-brass/70'"></span>
+            <span class="pointer-events-auto flex h-7 w-6 items-center justify-center">
+              <span class="block rounded-full border border-brass/70 transition-all duration-300"
+                    [ngClass]="active === it.id ? 'h-6 w-2 bg-brass' : 'size-2 bg-ink/30 group-hover:bg-brass/70'"></span>
+            </span>
           </a>
         </li>
       </ul>
@@ -30,11 +35,14 @@ export class SectionRailComponent implements AfterViewInit, OnDestroy {
   private io?: IntersectionObserver;
   private sub: Subscription;
 
-  constructor(private host: ElementRef<HTMLElement>, private zone: NgZone, private cdr: ChangeDetectorRef, router: Router) {
-    this.sub = router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => setTimeout(() => this.scan()));
+  private readonly browser: boolean;
+
+  constructor(private host: ElementRef<HTMLElement>, private zone: NgZone, private cdr: ChangeDetectorRef, router: Router, @Inject(PLATFORM_ID) platformId: object) {
+    this.browser = isPlatformBrowser(platformId);
+    this.sub = router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => { if (this.browser) setTimeout(() => this.scan()); });
   }
 
-  ngAfterViewInit(): void { setTimeout(() => this.scan()); }
+  ngAfterViewInit(): void { if (this.browser) setTimeout(() => this.scan()); }
 
   ngOnDestroy(): void { this.io?.disconnect(); this.sub.unsubscribe(); }
 

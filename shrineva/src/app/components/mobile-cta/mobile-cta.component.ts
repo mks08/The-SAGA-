@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { PROPERTY, waLink } from '../../config/property.config';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { PageLangService } from '../../core/services/page-lang.service';
+import { HI } from '../../config/hindi.config';
 
 /**
  * Sticky action bar for phones (hidden from the md breakpoint up, where the WhatsApp button and the header buttons are used).
@@ -14,9 +16,11 @@ import { AnalyticsService } from '../../core/services/analytics.service';
 })
 export class MobileCtaComponent {
   property = PROPERTY;
-  waHref = waLink();
+  /** The WhatsApp message and labels follow the page language (Hindi on /hi). */
+  get hindi(): boolean { return this.lang.hindi; }
+  get waHref(): string { return waLink(this.lang.hindi ? HI.waMessage : undefined); }
 
-  constructor(private analytics: AnalyticsService) {}
+  constructor(private analytics: AnalyticsService, private lang: PageLangService) {}
 
   bookVisit(): void {
     this.analytics.event('site_visit_click', { source: 'mobile_bar' });

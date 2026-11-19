@@ -1,4 +1,5 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { MediaItem } from '../../../config/media.config';
 
 /**
@@ -19,6 +20,8 @@ export class LightboxComponent implements OnChanges, OnDestroy {
 
   zoomed = false;
 
+  constructor(@Inject(DOCUMENT) private doc: Document) {}
+
   get open(): boolean {
     return this.index !== null && this.items.length > 0;
   }
@@ -29,15 +32,15 @@ export class LightboxComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(): void {
     this.zoomed = false;
-    document.body.style.overflow = this.open ? 'hidden' : '';
+    this.doc.body.style.overflow = this.open ? 'hidden' : '';
   }
 
   ngOnDestroy(): void {
-    document.body.style.overflow = '';
+    this.doc.body.style.overflow = '';
   }
 
   close(): void {
-    document.body.style.overflow = '';
+    this.doc.body.style.overflow = '';
     this.closed.emit();
   }
 

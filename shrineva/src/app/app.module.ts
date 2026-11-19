@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -36,6 +36,8 @@ import { PrivacyDisclaimerPageComponent } from './pages/privacy-disclaimer-page/
 import { FaqComponent } from './components/faq/faq.component';
 import { CommercialLeadFormComponent } from './components/commercial-lead-form/commercial-lead-form.component';
 import { ResidentialLeadFormComponent } from './components/residential-lead-form/residential-lead-form.component';
+import { SpaceFinderComponent } from './components/space-finder/space-finder.component';
+import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { ResidentialLeadFormComponent } from './components/residential-lead-form
     FaqComponent,
     CommercialLeadFormComponent,
     ResidentialLeadFormComponent,
+    SpaceFinderComponent,
+    HindiPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +80,8 @@ import { ResidentialLeadFormComponent } from './components/residential-lead-form
     CoreModule,
     SharedModule,
   ],
+  // Reuses the pre-rendered HTML on the visitor's device instead of building the page a second time.
+  providers: [provideClientHydration()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

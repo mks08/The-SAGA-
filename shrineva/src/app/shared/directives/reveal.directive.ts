@@ -21,6 +21,9 @@ export class RevealDirective implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const el = this.host.nativeElement;
     if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') return;
+    // Already on screen when the page is first shown (the pre-rendered HTML is painted before this runs): leave it visible, no hide-then-reveal flash.
+    const r = el.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) return;
     el.classList.add('rv');
     if (this.appReveal) el.classList.add(`rv-${this.appReveal}`);
     this.zone.runOutsideAngular(() => {

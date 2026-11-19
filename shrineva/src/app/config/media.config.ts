@@ -26,12 +26,12 @@ const P = 'assets/images/plans/';
 const F = 'assets/images/photos/';
 const H = 'assets/images/hero/';
 
-/** Hero: the finalised building by day and by night (960 / 1920 px wide, same framing). */
+/** Hero: the finalised building at golden hour and at night (960 / 1920 px wide, same framing). The golden-hour view is shown first. */
 export const HERO_VIEWS = [
   {
-    id: 'day', label: 'Day',
+    id: 'day', label: 'Golden hour',
     src960: `${H}hero-day-960.webp`, src1920: `${H}hero-day-1920.webp`,
-    alt: 'Indicative 3D render of the SHRINEVA commercial building by day: open ground level and three floors with glass fronts and a sandstone-clad side, Bada Lalpur, Varanasi',
+    alt: 'Indicative 3D render of the SHRINEVA commercial building at golden hour: open ground level and three floors with glass fronts and a sandstone-clad side, Bada Lalpur, Varanasi',
   },
   {
     id: 'night', label: 'Night',
@@ -49,11 +49,11 @@ const render = (id: string, title: string, caption: string, alt: string, height 
 
 /**
  * The guided walkthrough: from the road to the upper floor. Final renders, unretouched; order tells the story.
- * `day` marks the daylight view so the tour can show a small Day / Night chip.
+ * The `facade-day` stop is the golden-hour view; the tour shows a small Golden hour / Night chip.
  */
 export const TOUR_STOPS: MediaItem[] = [
-  render('facade-day', 'From the road, by day', 'The building from Stadium Road: open ground level, three glass floors and a sandstone side wall.',
-    'Indicative 3D render of the SHRINEVA building seen from the road by day, with three glass floors above an open ground level'),
+  render('facade-day', 'From the road, at golden hour', 'The building from Stadium Road: open ground level, three glass floors and a sandstone side wall.',
+    'Indicative 3D render of the SHRINEVA building seen from the road at golden hour, with three glass floors above an open ground level'),
   render('facade-night', 'From the road, at night', 'Lit floors and a lit crown, so the building reads clearly after dark.',
     'Indicative 3D render of the SHRINEVA building at night with lit glass floors and an illuminated crown'),
   render('entrance', 'The entrance', 'A planted forecourt and an entrance sign at the foot of the building.',

@@ -1,4 +1,5 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -12,6 +13,8 @@ interface NavLink { path: string; label: string; live?: boolean; }
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnDestroy {
+  /** True on the Hindi page: the language link then points back to English. */
+  hindi = false;
   scrolled = false;
   menuOpen = false;
   scrollProgress = 0;
@@ -30,8 +33,12 @@ export class NavbarComponent implements OnDestroy {
 
   private sub: Subscription;
 
-  constructor(private analytics: AnalyticsService, router: Router) {
-    this.sub = router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => this.closeMenu());
+  constructor(private analytics: AnalyticsService, router: Router, location: Location) {
+    this.hindi = /^\/hi(\/|$)/.test(location.path());
+    this.sub = router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe((e) => {
+      this.hindi = /^\/hi(\/|$|\?|#)/.test(e.urlAfterRedirects);
+      this.closeMenu();
+    });
   }
 
   @HostListener('window:scroll')
@@ -63,5 +70,8 @@ export class NavbarComponent implements OnDestroy {
 
   track(name: string) { this.analytics.event(name, { source: 'navbar' }); }
 
-  ngOnDestroy() { this.sub.unsubscribe(); document.body.style.overflow = ''; }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+    if (typeof document !== 'undefined') document.body.style.overflow = '';
+  }
 }

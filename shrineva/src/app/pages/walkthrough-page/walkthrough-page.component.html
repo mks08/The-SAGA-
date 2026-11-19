@@ -8,6 +8,24 @@
   <app-guided-tour variant="page"></app-guided-tour>
   <app-gallery></app-gallery>
 
+  <!-- Dated progress: shown only when the owner has supplied dated updates (config/content.config.ts) -->
+  <section *ngIf="progress.length" id="progress" class="bg-paper-2 py-9 md:py-12" aria-labelledby="progress-title">
+    <div class="container-srineva">
+      <span class="eyebrow">Construction progress</span>
+      <h2 id="progress-title" class="font-display text-display-md text-ink">What has been built, and when</h2>
+      <ol class="mt-6 grid gap-4 md:grid-cols-2">
+        <li *ngFor="let u of progress" class="overflow-hidden rounded-3xl border border-ink/10 bg-white">
+          <img *ngIf="u.photo" [src]="u.photo" [alt]="u.alt || u.title" [attr.width]="u.width || 1600" [attr.height]="u.height || 1200" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover">
+          <div class="p-4 md:p-5">
+            <time [attr.datetime]="u.date" class="font-mono text-[0.64rem] uppercase tracking-[0.16em] text-brass-deep">{{ u.date | date: 'd MMM y' }}</time>
+            <h3 class="mt-1 font-display text-[1.35rem] leading-tight text-ink">{{ u.title }}</h3>
+            <p class="mt-1 text-[0.92rem] leading-relaxed text-ink/75">{{ u.text }}</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
   <section class="bg-paper py-9 md:py-12" aria-label="Next steps">
     <div class="container-srineva flex flex-col gap-3 sm:flex-row sm:flex-wrap">
       <a routerLink="/floor-plans" class="btn-outline justify-center">See the floor plans</a>
