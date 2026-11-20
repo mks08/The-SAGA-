@@ -27,6 +27,7 @@ import { PlansComponent } from './components/plans/plans.component';
 import { HomeHeroComponent } from './components/home-hero/home-hero.component';
 import { BrochureCardComponent } from './components/brochure-card/brochure-card.component';
 import { GuidedTourComponent } from './components/guided-tour/guided-tour.component';
+import { ProjectTimelineComponent } from './components/project-timeline/project-timeline.component';
 import { PlaceMapComponent } from './components/place-map/place-map.component';
 import { SectionRailComponent } from './components/section-rail/section-rail.component';
 import { WalkthroughPageComponent } from './pages/walkthrough-page/walkthrough-page.component';
@@ -37,6 +38,9 @@ import { FaqComponent } from './components/faq/faq.component';
 import { CommercialLeadFormComponent } from './components/commercial-lead-form/commercial-lead-form.component';
 import { ResidentialLeadFormComponent } from './components/residential-lead-form/residential-lead-form.component';
 import { SpaceFinderComponent } from './components/space-finder/space-finder.component';
+import { AvailabilityComponent } from './components/availability/availability.component';
+import { BuildingSpecsComponent } from './components/building-specs/building-specs.component';
+import { SitePlanComponent } from './components/site-plan/site-plan.component';
 import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
 
 @NgModule({
@@ -59,6 +63,7 @@ import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
     HomeHeroComponent,
     BrochureCardComponent,
     GuidedTourComponent,
+    ProjectTimelineComponent,
     PlaceMapComponent,
     SectionRailComponent,
     WalkthroughPageComponent,
@@ -70,6 +75,9 @@ import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
     ResidentialLeadFormComponent,
     SpaceFinderComponent,
     HindiPageComponent,
+    AvailabilityComponent,
+    SitePlanComponent,
+    BuildingSpecsComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,9 +2,22 @@
 <app-page-header
   eyebrow="Floor plans"
   title="Floor plans"
-  subtitle="The ground level and the typical upper floor, as plans and in 3D, with areas. Floors 1, 2 and 3 share one plan.">
+  subtitle="The plans open in 2D, with 3D views beside them. The typical floor is shared by Floors 1, 2 and 3. Plot, setbacks and the road are on the site plan below.">
 </app-page-header>
 
-<app-plans [showIntro]="false"></app-plans>
+<app-plans></app-plans>
+
+<section id="site-plan" data-rail="Site plan" class="bg-paper-2 py-10 md:py-14" aria-labelledby="site-plan-title">
+  <div class="container-srineva">
+    <div appReveal class="mb-6 max-w-2xl md:mb-8">
+      <span class="eyebrow">Site plan</span>
+      <h2 id="site-plan-title" class="font-display text-display-md text-ink">The plot, the road <em class="text-brass-deep">and the setbacks.</em></h2>
+      <p class="mt-2 text-[0.96rem] leading-relaxed text-ink/70">North-facing, with about 50 ft of frontage on a 24 m wide road. The upcoming Apollo Hospital is opposite, and NIFT Varanasi is about 100 m away.</p>
+    </div>
+    <app-site-plan></app-site-plan>
+    <p class="mt-5 text-[0.92rem] text-ink/75">Want the satellite view and distances? <a routerLink="/location-contact" class="font-semibold text-brass-deep underline underline-offset-4">See the location</a>.</p>
+  </div>
+</section>
+
 <app-final-cta></app-final-cta>
 </main>

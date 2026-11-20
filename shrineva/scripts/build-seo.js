@@ -3,13 +3,14 @@
  *
  * The pages themselves are rendered by Angular (scripts/prerender.js): real, visible HTML with title, description,
  * canonical, Open Graph and JSON-LD already in place. This script does not touch them. It:
- *  1. Regenerates sitemap.xml, robots.txt (named search and AI crawlers allowed) and llms.txt from the same config.
+ *  1. Regenerates sitemap.xml (honest lastmod, PDFs, site photographs), robots.txt (every named search, AI-search, AI-assistant and AI-model
+ *     crawler allowed), llms.txt, llms-full.txt and the IndexNow key file from the same config.
  *  2. Checks that every route is covered by the route whitelist in src/.htaccess.
  *  3. Gates the build on the RENDERED pages: title 50-60 and description 145-155 characters (and equal to the config), 40-60 word
  *     FAQ answers, one H1, one canonical, valid JSON-LD (LocalBusiness, Place, WebPage, BreadcrumbList; no RealEstateAgent or
  *     Accommodation; FAQPage equal to the visible FAQ), no hidden-text pattern, readable body text in the HTML, every internal
- *     link and asset resolving, every <img> with alt / width / height, no retired claims ("column-free", "60-70 m", handover
- *     dates, studios) and "Apollo" never without "upcoming / under construction".
+ *     link and asset resolving, every <img> with alt / width / height, no retired claims ("column-free", "60-70 m", "handover", a completion month without "target" and
+ *     "subject to approvals", studios) and "Apollo" never without "upcoming / under construction".
  * Source of truth: src/app/config/*.ts (seo, property, faq, landing, location, content, media).
  */
 const fs = require('fs');
@@ -19,11 +20,14 @@ const { load, root } = require('./lib/load-ts');
 const cfgDir = path.join(root, 'src/app/config');
 const distDir = path.join(root, 'dist/shrineva');
 
-const { SEO_ROUTES, SEO_DOMAIN } = load(path.join(cfgDir, 'seo.config.ts'));
+const { SEO_ROUTES, SEO_DOMAIN, SITE_UPDATED, INDEXNOW_KEY } = load(path.join(cfgDir, 'seo.config.ts'));
 const { PROPERTY, PLAN, MARKETING_AREA, PROPOSED_RESIDENTIAL } = load(path.join(cfgDir, 'property.config.ts'));
 const { CORE_FAQ, STATUS_FAQ, HOME_ANSWER, faqForPath } = load(path.join(cfgDir, 'faq.config.ts'));
 const { LANDING_PAGES, landingByPath } = load(path.join(cfgDir, 'landing.config.ts'));
 const { NEARBY_DISTANCES } = load(path.join(cfgDir, 'location.config.ts'));
+const { PROJECT_STATUS, LEVEL_INFO, STACK, LEASE_OPTIONS, LEASING_POINTS, LEASING_STEPS, SPEC_GROUPS, ASK_ITEMS } = load(path.join(cfgDir, 'content.config.ts'));
+const { TOUR_STOPS, SITE_PHOTOS, BROCHURE } = load(path.join(cfgDir, 'media.config.ts'));
+const { HI } = load(path.join(cfgDir, 'hindi.config.ts'));
 
 if (!fs.existsSync(path.join(distDir, 'index.html'))) {
   console.error('dist/shrineva/index.html not found. Run `npm run build` (it runs the pre-render first).');
@@ -49,85 +53,184 @@ function facts() {
   return [
     `Address: ${PROPERTY.address.full}.`,
     ...(lat !== null && lng !== null ? [`GPS coordinates: ${lat}, ${lng}.`] : []),
-    `Leasing phone: ${PROPERTY.contact.phoneDisplay} (also WhatsApp, https://wa.me/${PROPERTY.contact.whatsappE164}) and ${PROPERTY.contact.phone2Display}. Open ${PROPERTY.contact.hours}.`,
-    `Location: opposite the upcoming Apollo Hospital (under construction, not yet operational) and about 100 m from the NIFT Varanasi campus, on Stadium Road in Bada Lalpur, about 1 km from Ring Road (NH 135B).`,
+    `Leasing phone: ${PROPERTY.contact.phoneDisplay} (also WhatsApp, https://wa.me/${PROPERTY.contact.whatsappE164}) and ${PROPERTY.contact.phone2Display}. Leasing email: ${PROPERTY.contact.publicEmail}.`,
+    `Location: opposite the upcoming Apollo Hospital (under construction, not yet operational) and about 100 m from the NIFT Varanasi campus, on a 24 m wide north-facing road in Bada Lalpur, about 1 km from Ring Road (NH 135B).`,
     `Plot and road: ${PLAN.plot.areaSqM} sq m plot with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m wide road.`,
     `Floors: three upper floors, each ${MARKETING_AREA.gross} gross and ${MARKETING_AREA.carpet} carpet. Open-plan commercial floor plates with flexible tenant layouts, offered as open shells to rent or lease whole or in part. Areas are approximate.`,
-    `Building: one ${PLAN.lift.capacity.replace(' passengers', '-person')} passenger lift, a fire exit on every level, Vastu-compliant layout, parking for 12+ cars at ground level.`,
+    `Building: one ${PLAN.lift.adjective} lift, a fire exit on every level, Vastu-compliant layout, parking for 12+ cars at ground level.`,
     ...(vda && vda.show ? [`Approval: shown on the site as "${vda.label}" (Varanasi Development Authority). Sanction details are not published on the site; ask the leasing team.`] : []),
-    `Status: construction is ongoing. Images labelled as renders are indicative and the design is subject to change.`,
+    `Project status (${PROJECT_STATUS.updated}): the concrete structure is complete; brickwork, façade, lift and services are in progress; project completion is targeted for ${PROJECT_STATUS.completion.value}, ${PROJECT_STATUS.completion.note.toLowerCase()}. Dates are targets and may change. Images labelled as renders are indicative and the design is subject to change.`,
     `Use of any floor is subject to floor suitability and applicable statutory approvals (municipal, fire and, for food businesses, FSSAI).`,
   ];
 }
 
 // --- sitemap -----------------------------------------------------------------------------------------
+// lastmod is the date the content really changed (SITE_UPDATED), not the build date: engines stop trusting a lastmod that
+// moves on every build. Real site photographs and the two PDFs are listed too, so crawlers and AI tools find them directly.
+const photoImg = (p) => [p.src.replace(/^assets\/images\//, ''), `${p.title}: SHRINEVA site photograph, ${PROJECT_STATUS.photosTaken}`];
 const SITEMAP_IMAGES = {
-  '': [['renders/facade-day.webp', 'SHRINEVA building at golden hour, indicative 3D render'], ['renders/facade-night.webp', 'SHRINEVA building at night, indicative 3D render']],
-  walkthrough: [['renders/entrance.webp', 'SHRINEVA entrance, indicative 3D render'], ['renders/ground-level.webp', 'SHRINEVA ground level, indicative 3D render'], ['renders/lift-lobby.webp', 'SHRINEVA lift lobby, indicative 3D render']],
-  'floor-plans': [['plans/plan-typical.webp', 'SHRINEVA typical floor plan, Floors 1 to 3'], ['plans/plan-ground.webp', 'SHRINEVA ground level plan']],
+  '': [['renders/facade-day.webp', 'SHRINEVA building, indicative 3D render'], ['renders/entrance.webp', 'SHRINEVA entrance, indicative 3D render'], ...SITE_PHOTOS.slice(0, 2).map(photoImg)],
+  walkthrough: [['renders/entrance.webp', 'SHRINEVA entrance, indicative 3D render'], ['renders/ground-level.webp', 'SHRINEVA ground level, indicative 3D render'], ['renders/lift-lobby.webp', 'SHRINEVA lift lobby, indicative 3D render'], ...SITE_PHOTOS.map(photoImg)],
+  'floor-plans': [['plans/plan-typical-sheet.webp', 'SHRINEVA typical floor plan, Floors 1 to 3'], ['plans/plan-ground-sheet.webp', 'SHRINEVA ground level plan']],
 };
-const today = new Date().toISOString().slice(0, 10);
+const DOCS = [[BROCHURE.href, 'brochure'], [BROCHURE.plansHref, 'floor plans']];
+const urlsInSitemap = [];
 const sitemap =
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
   SEO_ROUTES.map((r) => {
     const img = (SITEMAP_IMAGES[r.path] || []).map(([f, t]) => `\n    <image:image><image:loc>${SEO_DOMAIN}/assets/images/${f}</image:loc><image:title>${esc(t)}</image:title></image:image>`).join('');
     const alt = (r.alternates || []).map((a) => `\n    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${a.href}"/>`).join('');
-    return `  <url>\n    <loc>${url(r.path)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>${alt}${img}\n  </url>`;
-  }).join('\n') + '\n</urlset>\n';
+    urlsInSitemap.push(url(r.path));
+    return `  <url>\n    <loc>${url(r.path)}</loc>\n    <lastmod>${r.lastmod || SITE_UPDATED}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>${alt}${img}\n  </url>`;
+  }).join('\n') + '\n' +
+  DOCS.map(([href]) => { urlsInSitemap.push(`${SEO_DOMAIN}/${href}`); return `  <url>\n    <loc>${SEO_DOMAIN}/${href}</loc>\n    <lastmod>${SITE_UPDATED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>`; }).join('\n') + '\n</urlset>\n';
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 fs.writeFileSync(path.join(root, 'src/sitemap.xml'), sitemap);
 console.log('sitemap.xml written');
 
-// --- robots.txt: search and AI-search crawlers are named and allowed; the form handler is closed to all ------------------
-const BOTS = ['Googlebot', 'Bingbot', 'OAI-SearchBot', 'ChatGPT-User', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended'];
+// --- robots.txt --------------------------------------------------------------------------------------------------------
+// Policy: this is a public leasing website. Search engines, AI search and answer assistants and AI model crawlers are all
+// welcome, so the building can be found and quoted accurately. Only the enquiry handler (/api/) is closed. Tokens checked
+// against each vendor's own crawler documentation in November 2026 (OpenAI, Anthropic, Perplexity, Google, Apple, Meta, Amazon,
+// Mistral, DuckDuckGo, Common Crawl). Naming them is a statement of intent: it also overrides any "block AI" default that a
+// CDN or host may add for unnamed bots. To keep a model-training crawler out, move its token to a `Disallow: /` group.
+const AGENTS = [
+  ['Search engines', ['Googlebot', 'Googlebot-Image', 'Bingbot', 'Applebot', 'DuckDuckBot', 'Slurp']],
+  ['AI search and answer engines: index pages and cite them in answers', ['OAI-SearchBot', 'Claude-SearchBot', 'PerplexityBot', 'DuckAssistBot', 'Meta-WebIndexer', 'Gemini-Deep-Research', 'Google-CloudVertexBot']],
+  ['AI assistants fetching a page because a person asked (ChatGPT, Claude, Perplexity, Mistral, Meta AI)', ['ChatGPT-User', 'Claude-User', 'Perplexity-User', 'MistralAI-User', 'Meta-ExternalFetcher']],
+  ['AI model crawlers and training controls', ['GPTBot', 'ClaudeBot', 'anthropic-ai', 'Google-Extended', 'Applebot-Extended', 'meta-externalagent', 'FacebookBot', 'Amazonbot', 'CCBot', 'Bytespider', 'cohere-ai', 'Diffbot']],
+];
+const ALL_AGENTS = AGENTS.flatMap(([, bots]) => bots);
 const robots = [
-  `# SHRINEVA: search engines and AI search / answer crawlers are welcome. Only the enquiry handler is closed.`,
-  `User-agent: *\nAllow: /\nDisallow: /api/\n`,
-  ...BOTS.map((b) => `User-agent: ${b}\nAllow: /\nDisallow: /api/\n`),
+  `# SHRINEVA robots.txt: search engines, AI search and answer assistants, and AI model crawlers are all welcome.`,
+  `# Only the enquiry handler (/api/) is closed. Generated by scripts/build-seo.js; edit the list there.`,
+  '',
+  `User-agent: *\nAllow: /\nDisallow: /api/\nContent-Signal: search=yes, ai-input=yes, ai-train=yes\n`,
+  ...AGENTS.map(([label, bots]) => `# ${label}\n${bots.map((b) => `User-agent: ${b}`).join('\n')}\nAllow: /\nDisallow: /api/\n`),
   `Sitemap: ${SEO_DOMAIN}/sitemap.xml\n`,
 ].join('\n');
 fs.writeFileSync(path.join(distDir, 'robots.txt'), robots);
 fs.writeFileSync(path.join(root, 'src/robots.txt'), robots);
-console.log('robots.txt written');
+console.log(`robots.txt written (${ALL_AGENTS.length} named crawlers, all allowed)`);
 
-// --- llms.txt: a plain-text summary for AI assistants, generated from the same config (no extra claims) ----
+// --- IndexNow key file: lets Bing and other IndexNow engines be pinged on each upload (scripts/indexnow.js) ----------------
+fs.writeFileSync(path.join(distDir, `${INDEXNOW_KEY}.txt`), INDEXNOW_KEY);
+fs.writeFileSync(path.join(root, `src/${INDEXNOW_KEY}.txt`), INDEXNOW_KEY);
+
+// --- llms.txt and llms-full.txt: plain-text / Markdown summaries for AI assistants, generated from the same config ----------
+// Format follows llmstxt.org: H1, a one-paragraph summary in a blockquote, then H2 sections of annotated links. llms.txt is the
+// short entry point; llms-full.txt carries the whole site's content in one file. Neither adds a claim the pages do not make.
+// (Google says Search does not use these files and that they neither help nor harm; other assistants may read them.)
 const pageLabel = (r) => (nav.find(([p]) => p === r.path) || [])[1] || r.path;
+const SUMMARY = `${PROPERTY.brand.name} is a commercial building for rent or lease at ${PROPERTY.address.full}, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi, on a 24 m wide north-facing road. Three open-plan floors of ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) with flexible tenant layouts can be rented or leased whole or in part. The concrete structure is complete; project completion is targeted for ${PROJECT_STATUS.completion.value}, ${PROJECT_STATUS.completion.note.toLowerCase()}. Images labelled as renders are indicative.`;
+const factLines = facts().map((f) => `- ${f}`);
+const pageLines = SEO_ROUTES.filter((r) => r.priority >= 0.5).map((r) => `- [${pageLabel(r)}](${url(r.path)}): ${r.description}`);
+
 const llms = [
   `# ${PROPERTY.brand.name}`,
   '',
-  `> ${PROPERTY.brand.name} is a commercial building for rent or lease at ${PROPERTY.address.full}, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi. Three open-plan floors of ${MARKETING_AREA.gross} gross (${MARKETING_AREA.carpet} carpet) with flexible tenant layouts can be rented or leased whole or in part. Construction is ongoing; images labelled as renders are indicative.`,
+  `> ${SUMMARY}`,
   '',
-  '## Verified facts',
-  ...facts().map((f) => `- ${f}`),
+  `Last updated: ${PROJECT_STATUS.updated} (${SITE_UPDATED}). Leasing enquiries: ${PROPERTY.contact.publicEmail}, ${PROPERTY.contact.phoneDisplay} (also WhatsApp) or ${PROPERTY.contact.phone2Display}.`,
   '',
-  '## Who can rent or lease here',
-  '- Pathology labs, diagnostic centres and clinics',
-  '- Banks, NBFCs and insurance branches',
-  '- Corporate and IT offices',
-  '- Retail showrooms, shops and boutiques',
-  '- Restaurants and cafés (subject to municipal, fire and FSSAI approvals)',
-  '- Coaching institutes, coworking, fitness and wellness centres',
+  '## Key facts',
+  ...factLines,
   '',
   '## Pages',
-  ...SEO_ROUTES.filter((r) => r.priority >= 0.5).map((r) => `- [${pageLabel(r)}](${url(r.path)}): ${r.description}`),
+  ...pageLines,
   '',
-  '## Downloads',
-  `- [Brochure (PDF)](${url('assets/shrineva-brochure.pdf')}): six pages with the final 3D renders, floor plans and areas, specifications and location.`,
-  `- [Floor plans (PDF)](${url('assets/shrineva-floor-plans.pdf')}): ground level and typical floor plans with areas.`,
+  '## Documents',
+  `- [Brochure (PDF)](${url(BROCHURE.href)}): four pages: the building, floor plans and areas, safety and access, location and the leasing contacts.`,
+  `- [Floor plans (PDF)](${url(BROCHURE.plansHref)}): typical floor, ground level and site plans with areas and setbacks.`,
   '',
-  '## Approximate distances',
+  '## Optional',
+  `- [Full site content in one file](${url('llms-full.txt')}): every page, FAQ, fact, distance and the project timeline, in Markdown.`,
+  `- [Sitemap](${url('sitemap.xml')}): all pages, the two PDFs and the site photographs.`,
+  '',
+].join('\n');
+
+const level = (id) => LEVEL_INFO[id];
+const llmsFull = [
+  `# ${PROPERTY.brand.name}: full site content`,
+  '',
+  `> ${SUMMARY}`,
+  '',
+  `Last updated: ${PROJECT_STATUS.updated} (${SITE_UPDATED}). Source: ${SEO_DOMAIN}/. Short version: ${url('llms.txt')}.`,
+  '',
+  '## Key facts',
+  ...factLines,
+  '',
+  '## Project status and timeline',
+  `Status as of ${PROJECT_STATUS.updated}. ${PROJECT_STATUS.lead}`,
+  ...PROJECT_STATUS.stages.map((s, i) => `${i + 1}. ${s.title}: ${s.label}. ${s.text}`),
+  `- ${PROJECT_STATUS.changes.title} ${PROJECT_STATUS.changes.text}`,
+  `- ${PROJECT_STATUS.note}`,
+  `- Site photographs (taken ${PROJECT_STATUS.photosTaken}) are on ${SEO_DOMAIN}/#status: ${SITE_PHOTOS.map((p) => p.title).join('; ')}.`,
+  '',
+  '## The building and the floors',
+  ...['ground', 'typical'].flatMap((id) => [`### ${level(id).title}`, `${level(id).value} (${level(id).label}; ${level(id).sub}).`, ...level(id).facts.map((f) => `- ${f.label}: ${f.value}`), '']),
+  '### Stack',
+  ...STACK.map((l) => `- ${l.label}: ${l.area}. ${l.detail} (${l.tag}).`),
+  '',
+  '### What can be leased',
+  ...LEASE_OPTIONS.map((o) => `- ${o}`),
+  ...LEASING_POINTS.map((o) => `- ${o}`),
+  '',
+  '### How leasing works',
+  ...LEASING_STEPS.map((s, i) => `${i + 1}. ${s.t}: ${s.d}`),
+  '',
+  '## Safety and access',
+  ...SPEC_GROUPS.flatMap((g) => [`### ${g.title}`, ...g.items.map((i) => `- ${i.label}: ${i.value}`), '']),
+  `Not stated on the site, so ask the leasing team: ${ASK_ITEMS.join('; ')}.`,
+  '',
+  '## Location and approximate distances',
   ...NEARBY_DISTANCES.map((d) => `- ${d.name}: ${d.value}${d.note ? ` (${d.note})` : ''}`),
   '',
+  '## 3D walkthrough (indicative renders; the design may change)',
+  ...TOUR_STOPS.map((t) => `- ${t.title}: ${t.caption}`),
+  '',
+  '## Who can rent or lease here, by business type',
+  ...LANDING_PAGES.flatMap((l) => [
+    `### ${l.navLabel}`,
+    `Page: ${url(l.path)}`,
+    `${l.h1}. ${l.sub}`,
+    '',
+    `**${l.answerQ}** ${l.answer}`,
+    '',
+    ...l.cards.map((c) => `- ${c.title}: ${c.text}`),
+    `- ${l.categoriesHeading}: ${l.categories.join('; ')}.`,
+    `- ${l.approvalNote}`,
+    '',
+    ...l.faq.flatMap((f) => [`**${f.q}** ${f.a}`, '']),
+  ]),
   '## Frequently asked questions',
   ...[HOME_ANSWER, ...CORE_FAQ, ...STATUS_FAQ].flatMap((f) => [`### ${f.q}`, f.a, '']),
+  '## हिंदी (Hindi)',
+  `${HI.h1}. ${HI.sub}`,
+  '',
+  `**${HI.answerQ}** ${HI.answer}`,
+  '',
+  ...HI.faq.flatMap((f) => [`**${f.q}** ${f.a}`, '']),
+  `Hindi page: ${url(HI.path)}`,
+  '',
+  '## Contact and downloads',
+  `- Email: ${PROPERTY.contact.publicEmail}`,
+  `- Phone: ${PROPERTY.contact.phoneDisplay} (also WhatsApp, https://wa.me/${PROPERTY.contact.whatsappE164}) and ${PROPERTY.contact.phone2Display}`,
+  `- Address: ${PROPERTY.address.full}`,
+  `- Brochure (PDF): ${url(BROCHURE.href)}`,
+  `- Floor plans (PDF): ${url(BROCHURE.plansHref)}`,
+  '',
   '## Notes',
   `- The Apollo Hospital opposite is upcoming and under construction. No footfall, rent or return claim is made for this building.`,
   `- Areas are approximate. Use of any floor is subject to floor suitability and statutory approvals.`,
+  `- ${PROJECT_STATUS.completion.label}: ${PROJECT_STATUS.completion.value}, ${PROJECT_STATUS.completion.note.toLowerCase()}. Dates are targets and may change.`,
   '',
 ].join('\n');
 fs.writeFileSync(path.join(distDir, 'llms.txt'), llms);
 fs.writeFileSync(path.join(root, 'src/llms.txt'), llms);
-console.log('llms.txt written');
+fs.writeFileSync(path.join(distDir, 'llms-full.txt'), llmsFull);
+fs.writeFileSync(path.join(root, 'src/llms-full.txt'), llmsFull);
+console.log(`llms.txt (${llms.length} chars) and llms-full.txt (${llmsFull.length} chars) written`);
 
 // --- every route must be covered by the whitelist in src/.htaccess ------------------------------------------
 const htaccess = fs.readFileSync(path.join(root, 'src/.htaccess'), 'utf8');
@@ -164,8 +267,11 @@ const FORBIDDEN = [
   // any wider approval wording is never allowed.
   [vda && vda.show ? /VDA[- ]approved (Parking|building|commercial|plan|project)/i : /VDA[- ]approv/i, 'VDA approval claim beyond the badge'],
   [/column[- ]?free|pillar[- ]?free|without (any )?columns/i, '"column-free" claim (the plans show columns)'],
+  [/stadium road/i, '"Stadium Road" (the owner wants "24 metre wide road")'],
+  [/golden[- ]hour|night view|day\s*\/\s*night|day and night view/i, 'time-of-day wording (the owner does not want it mentioned)'],
+  [/\b(?:[0-9]|1[1-9]|[2-9][0-9])[- ]passenger lift/i, 'lift capacity other than 10 passengers'],
   [/60\s*[–-]\s*70 ?m/i, '"60-70 m" distance'],
-  [/handover (March|in March) 2027/i, 'handover date in SEO text'],
+  [/\bhand-?over\b/i, '"handover" (the owner wants "project completion": tenants may ask for changes, so the works continue)'],
   ...(PROPOSED_RESIDENTIAL.show ? [] : [[/\bstudio apartment|\b2 ?BHK\b|serviced[- ]stay|proposed (studio|residential)/i, 'residential / studio mention']]),
 ];
 function textOf(html) {
@@ -253,13 +359,95 @@ for (const r of SEO_ROUTES) {
   if (vda && !vda.show && /VDA approved/i.test(text)) problems.push(`${label}: VDA badge in the page but switched off in property.config.ts`);
   scanned.push([label, text + ' ' + (ld ? ld[1] : '') + ' ' + [title, desc].join(' ')]);
 }
-// the home page must preload the same image its hero shows first (golden hour)
+// the home page must preload the same image its hero shows
 {
   const home = fs.readFileSync(fileFor(SEO_ROUTES[0]), 'utf8');
-  if (!/<link rel="preload" as="image"[^>]*hero-day-960\.webp/.test(home)) problems.push('/: hero preload is not the golden-hour (day) image');
-  if (!/<img[^>]*hero-day-960\.webp[^>]*fetchpriority="high"|<img[^>]*fetchpriority="high"[^>]*hero-day/.test(home)) problems.push('/: the golden-hour hero image is not the high-priority image');
+  if (!/<link rel="preload" as="image"[^>]*hero-day-960\.webp/.test(home)) problems.push('/: hero preload is not the hero image');
+  if (!/<img[^>]*hero-day-960\.webp[^>]*fetchpriority="high"|<img[^>]*fetchpriority="high"[^>]*hero-day/.test(home)) problems.push('/: the hero image is not the high-priority image');
 }
 scanned.push(['llms.txt', llms]);
+scanned.push(['llms-full.txt', llmsFull]);
+
+// Apollo: every line of the AI text files that names the hospital also says it is upcoming / under construction
+for (const [label, body] of [['llms.txt', llms], ['llms-full.txt', llmsFull]]) {
+  body.split('\n').forEach((line, i) => {
+    // a question heading is answered on the next line; the Hindi pages say "निर्माणाधीन" (under construction)
+    if (/Apollo/.test(line) && !/^### .*\?$/.test(line) && !/upcoming|under construction|निर्माणाधीन/i.test(line)) problems.push(`${label} line ${i + 1}: mentions Apollo without "upcoming / under construction": ${line.slice(0, 90)}`);
+  });
+}
+
+// The completion month is only ever a target: wherever "March 2027" appears, "target" is right before it and "subject to approvals" is in the same text.
+const TARGET = PROJECT_STATUS.completion.value;
+for (const [label, text] of scanned) {
+  const re = new RegExp(TARGET, 'g');
+  let m;
+  while ((m = re.exec(text))) {
+    if (!/target/i.test(text.slice(Math.max(0, m.index - 70), m.index))) problems.push(`${label}: "${TARGET}" without "target" just before it: ...${text.slice(Math.max(0, m.index - 50), m.index + 20)}`);
+  }
+  if (new RegExp(TARGET).test(text) && !/subject to approvals/i.test(text)) problems.push(`${label}: "${TARGET}" without "subject to approvals" in the same text`);
+}
+// ...and never in a title or meta description (it would go stale in search results)
+for (const r of SEO_ROUTES) if (/\b20[2-3]\d\b/.test(r.title + ' ' + r.description)) problems.push(`/${r.path}: a year in the title or meta description (dates go stale in search results)`);
+
+// The progress section is on the home, leasing and walkthrough pages with the target and the update date
+for (const p of ['', 'leasing', 'walkthrough']) {
+  const f = path.join(distDir, p, 'index.html');
+  if (!fs.existsSync(f)) continue;
+  const t = textOf(fs.readFileSync(f, 'utf8'));
+  const h = fs.readFileSync(f, 'utf8');
+  if (!/id="status"/.test(h)) problems.push(`/${p}: project progress section (#status) missing`);
+  if (!t.includes(TARGET) || !/subject to approvals/i.test(t)) problems.push(`/${p}: the targeted completion month is not on the page`);
+  if (!t.includes('Updated ' + PROJECT_STATUS.updated)) problems.push(`/${p}: "Updated ${PROJECT_STATUS.updated}" missing from the progress section`);
+}
+{
+  const h = fs.readFileSync(fileFor(SEO_ROUTES[0]), 'utf8');
+  const photos = (h.match(/assets\/images\/photos\/[a-z-]+-sm\.webp/g) || []).length;
+  if (photos < SITE_PHOTOS.length) problems.push(`/: only ${photos} of ${SITE_PHOTOS.length} site photographs in the page`);
+}
+
+// robots.txt: every named crawler is present, none is shut out, the sitemap is declared
+for (const b of ALL_AGENTS) if (!new RegExp(`^User-agent: ${b}$`, 'm').test(robots)) problems.push(`robots.txt: crawler ${b} not named`);
+if (/^Disallow:\s*\/\s*$/m.test(robots)) problems.push('robots.txt: a "Disallow: /" line would shut a crawler out');
+if (!robots.includes(`Sitemap: ${SEO_DOMAIN}/sitemap.xml`)) problems.push('robots.txt: sitemap line missing');
+
+// sitemap: every URL is a real page or file, lastmod is a real date that is not in the future
+for (const u of urlsInSitemap) {
+  const p = u.replace(SEO_DOMAIN + '/', '').replace(/\/$/, '');
+  if (p && !known.has(p) && !fs.existsSync(path.join(distDir, p))) problems.push(`sitemap.xml: ${u} does not exist in the build`);
+}
+for (const m of sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)) if (!/^\d{4}-\d{2}-\d{2}$/.test(m[1]) || m[1] > new Date().toISOString().slice(0, 10)) problems.push(`sitemap.xml: bad lastmod ${m[1]}`);
+for (const m of sitemap.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)) if (!fs.existsSync(path.join(distDir, m[1].replace(SEO_DOMAIN + '/', '')))) problems.push(`sitemap.xml: image missing ${m[1]}`);
+
+// llms.txt: every link goes to a page, file or sitemap entry that exists
+for (const [label, body] of [['llms.txt', llms], ['llms-full.txt', llmsFull]]) {
+  for (const m of body.matchAll(/\]\((https?:\/\/[^)\s]+)\)|\s(https:\/\/shrineva\.in\/[^\s)]*)/g)) {
+    const u = m[1] || m[2];
+    if (!u.startsWith(SEO_DOMAIN)) continue;
+    const p = u.replace(SEO_DOMAIN + '/', '').split('#')[0].replace(/[.,;]+$/, '').replace(/\/$/, '');
+    if (p && !known.has(p) && !fs.existsSync(path.join(distDir, p))) problems.push(`${label}: link to ${u} does not exist`);
+  }
+}
+if (!llms.includes('llms-full.txt')) problems.push('llms.txt does not point to llms-full.txt');
+
+// IndexNow key file present and matching
+{
+  const kf = path.join(distDir, `${INDEXNOW_KEY}.txt`);
+  if (!fs.existsSync(kf) || fs.readFileSync(kf, 'utf8').trim() !== INDEXNOW_KEY) problems.push('IndexNow key file missing or wrong');
+}
+
+// structured data carries the freshness date and the targeted completion (as a target)
+{
+  const h = fs.readFileSync(fileFor(SEO_ROUTES[0]), 'utf8');
+  const ld = h.match(/<script id="shrineva-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (ld) {
+    const g = JSON.parse(ld[1].replace(/\\u003c/g, '<'))['@graph'];
+    const wp = g.find((n) => n['@type'] === 'WebPage');
+    if (!wp || wp.dateModified !== SITE_UPDATED) problems.push('/: WebPage dateModified is missing or not SITE_UPDATED');
+    const pl = g.find((n) => n['@type'] === 'Place');
+    const prop = pl && (pl.additionalProperty || []).find((a) => /Targeted project completion/.test(a.name));
+    if (!prop || !/subject to approvals/i.test(String(prop.description || ''))) problems.push('/: Place lacks the "Targeted project completion" property (with "subject to approvals")');
+  }
+}
 for (const [label, text] of scanned) for (const [re, what] of FORBIDDEN) if (re.test(text)) problems.push(`${label}: ${what}`);
 
 // every internal link in the nav list must be a real route

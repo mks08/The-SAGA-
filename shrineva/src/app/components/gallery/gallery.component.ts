@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { PROPERTY } from '../../config/property.config';
 import { MediaItem, SITE_PHOTOS } from '../../config/media.config';
+import { PROJECT_STATUS } from '../../config/content.config';
 
 /** Real photographs of the building as it stands today (construction ongoing). Opens in the lightbox. */
 @Component({
@@ -12,6 +13,7 @@ export class GalleryComponent {
 
   property = PROPERTY;
   items: MediaItem[] = SITE_PHOTOS;
+  photosTaken = PROJECT_STATUS.photosTaken;
   lightboxIndex: number | null = null;
 
   open(i: number) { this.lightboxIndex = i; }

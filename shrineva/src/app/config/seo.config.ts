@@ -6,6 +6,7 @@
  */
 import { PROPERTY, PLAN } from './property.config';
 import { HI } from './hindi.config';
+import { PROJECT_STATUS } from './content.config';
 
 export interface RouteSeo {
   path: string;
@@ -20,11 +21,27 @@ export interface RouteSeo {
   imageAlt?: string;
   /** Page language (default en-IN). */
   lang?: 'en-IN' | 'hi-IN';
+  /** sitemap.xml <lastmod> (YYYY-MM-DD): the date the page's content last really changed. Defaults to SITE_UPDATED. */
+  lastmod?: string;
   /** hreflang links (also written to sitemap.xml): the English page and its Hindi equivalent point at each other. */
   alternates?: { hreflang: string; href: string }[];
 }
 
 const domain = PROPERTY.domain.canonical;
+
+/**
+ * The date the site's content last really changed (YYYY-MM-DD). It is the sitemap <lastmod> and the schema.org dateModified.
+ * Search engines learn to ignore a lastmod that changes on every build, so it moves only when PROJECT_STATUS.updatedISO does:
+ * bump it in content.config.ts whenever the progress, photos or any page text is updated.
+ */
+export const SITE_UPDATED = PROJECT_STATUS.updatedISO;
+
+/**
+ * IndexNow key (https://www.indexnow.org). Bing, Yandex and other engines that take IndexNow pings are told about new and
+ * changed pages straight away instead of waiting to re-crawl; the key file is written to the site root by scripts/build-seo.js.
+ * The key is public by design. Run `npm run indexnow` (or see README) after each upload.
+ */
+export const INDEXNOW_KEY = 'cbec100c58ec9d58d1b2b903b2ed6baf';
 const LANG_ALTERNATES = [
   { hreflang: 'en-IN', href: `${domain}/` },
   { hreflang: 'hi-IN', href: `${domain}/${HI.path}` },
@@ -35,7 +52,7 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: '',
     title: 'Commercial Space for Rent in Varanasi | SHRINEVA Bada Lalpur',
-    description: 'Commercial space and halls for rent in Bada Lalpur, Varanasi: open floors of about 3,500 sq ft on Stadium Road, opposite the upcoming Apollo Hospital.',
+    description: 'Commercial space for rent in Bada Lalpur, Varanasi: open floors of about 3,500 sq ft on a 24 m north-facing road, opposite the upcoming Apollo Hospital.',
     h1: 'Commercial space for rent & lease in Bada Lalpur, Varanasi',
     priority: 1.0,
     changefreq: 'weekly',
@@ -61,7 +78,7 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'office-bank-coaching-space',
     title: 'Office Space for Rent in Varanasi, Bada Lalpur | SHRINEVA',
-    description: 'Office, bank branch and coaching space for rent on Stadium Road, Varanasi: open floors of about 3,500 sq ft, 50 ft frontage, lift and 12+ car parking.',
+    description: 'Office, bank branch and coaching space for rent in Bada Lalpur, Varanasi: open floors of about 3,500 sq ft, 50 ft frontage, lift and 12+ car parking.',
     h1: 'Bare-Shell Office, Bank Branch & Coaching Institute Space in Varanasi',
     priority: 0.9,
     changefreq: 'monthly',
@@ -77,7 +94,7 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'location-contact',
     title: 'Location: Near Ring Road, NIFT, Upcoming Apollo | SHRINEVA',
-    description: 'Find SHRINEVA on Stadium Road, Bada Lalpur, Varanasi: map, distances to NIFT, the upcoming Apollo Hospital and Ring Road, plus a site visit booking form.',
+    description: 'Find SHRINEVA in Bada Lalpur, Varanasi, on a 24 m road: map, distances to NIFT, the upcoming Apollo Hospital and Ring Road, plus a site visit booking form.',
     h1: 'Location, Map & Site Visit',
     priority: 0.9,
     changefreq: 'monthly',
@@ -93,7 +110,7 @@ export const SEO_ROUTES: RouteSeo[] = [
   {
     path: 'walkthrough',
     title: '3D Walkthrough: SHRINEVA Building, Bada Lalpur, Varanasi',
-    description: 'Walk through the final 3D design of SHRINEVA, Bada Lalpur, Varanasi, from the road to the lift lobby, at golden hour and night. Indicative; may change.',
+    description: 'Walk through the final 3D design of SHRINEVA, Bada Lalpur, Varanasi, from the road to the lift lobby, with zoom and a plan. Indicative; may change.',
     h1: 'Walk through SHRINEVA before you visit',
     priority: 0.8,
     changefreq: 'monthly',

@@ -89,5 +89,13 @@ Header set Cache-Control "public, max-age=31536000, immutable"
 Header always set Strict-Transport-Security "max-age=15552000" env=HTTPS
 </IfModule>
 
+# Plain-text files for crawlers and AI assistants are served as UTF-8 text (Hindi text in llms-full.txt must not turn into mojibake)
+AddDefaultCharset UTF-8
+<IfModule mod_headers.c>
+<FilesMatch "^(robots|llms|llms-full)\.txt$">
+Header set Content-Type "text/plain; charset=utf-8"
+</FilesMatch>
+</IfModule>
+
 # Do not list folders
 Options -Indexes

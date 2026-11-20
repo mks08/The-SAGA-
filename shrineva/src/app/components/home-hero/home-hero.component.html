@@ -1,11 +1,41 @@
-<section id="top" data-rail="Top" class="relative isolate overflow-hidden bg-gradient-to-b from-paper-2 via-paper to-paper" aria-label="SHRINEVA, commercial space for lease in Bada Lalpur, Varanasi">
-  <div class="pointer-events-none absolute -left-24 top-10 -z-10 size-[34rem] rounded-full glow-brass-10" aria-hidden="true"></div>
+<section id="top" data-rail="Top" class="relative isolate z-[2] bg-gradient-to-b from-paper-2 via-paper to-paper" aria-label="SHRINEVA, commercial space for lease in Bada Lalpur, Varanasi">
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true"><div class="absolute -left-24 top-10 size-[34rem] rounded-full glow-brass-10"></div></div>
 
-  <div class="container-srineva pb-7 pt-[calc(var(--nav-h)+1rem)] md:pb-9">
-    <!-- Headline -->
-    <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-      <div class="max-w-3xl">
-        <div class="mb-3 flex flex-wrap items-center gap-2 animate-rise">
+  <div class="container-srineva pb-0 pt-[calc(var(--nav-h)+1rem)] lg:pt-[calc(var(--nav-h)+2rem)]">
+    <div class="grid items-stretch gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
+
+      <!-- Picture first on phones; second column on desktop -->
+      <figure class="relative order-1 lg:order-2">
+        <div class="relative h-full overflow-hidden rounded-[1.6rem] border border-ink/10 bg-ink-3 shadow-lift">
+          <div class="relative aspect-[4/3.1] w-full sm:aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[34rem]">
+            <div class="absolute inset-0 overflow-hidden" aria-hidden="false">
+              <div class="absolute inset-0" style="transform: scale(1.12)" [appParallax]="0.05">
+                <img [src]="image.src960" [attr.srcset]="image.src960 + ' 960w, ' + image.src1920 + ' 1920w'" sizes="(min-width: 1024px) 58vw, 100vw"
+                     [alt]="image.alt" width="1920" height="995" loading="eager" decoding="async" fetchpriority="high"
+                     class="hero-img absolute inset-0 h-full w-full object-cover object-[54%_58%]">
+              </div>
+            </div>
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1b1714]/55 via-transparent to-transparent" aria-hidden="true"></div>
+
+            <!-- Orientation chip -->
+            <div class="absolute right-3 top-3 inline-flex items-center gap-2 rounded-full bg-[#1b1714]/70 py-1.5 pl-2 pr-3.5 text-[#f6f1e8] backdrop-blur md:right-4 md:top-4">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" opacity=".5"/><path d="M12 5l3 8h-6z" fill="currentColor"/></svg>
+              <span class="font-mono text-[0.6rem] uppercase tracking-[0.14em]">North-facing · 24 m road</span>
+            </div>
+
+            <!-- Where it is -->
+            <figcaption class="absolute inset-x-3 bottom-3 flex flex-col gap-2 rounded-2xl bg-white/90 p-3 backdrop-blur sm:inset-x-auto sm:left-4 sm:max-w-[22rem] md:bottom-4 md:p-4">
+              <p class="font-display text-[1.02rem] leading-snug text-ink">Plot D-15, Lalpur Housing Scheme, Bada Lalpur</p>
+              <p class="text-[0.8rem] leading-snug text-ink/75">Opposite the upcoming Apollo Hospital · about 100 m from NIFT Varanasi</p>
+              <p class="font-mono text-[0.56rem] uppercase tracking-[0.14em] text-ink/70">Indicative 3D render</p>
+            </figcaption>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Text -->
+      <div class="order-2 flex flex-col justify-center py-2 lg:order-1 lg:py-8">
+        <div class="mb-4 flex flex-wrap items-center gap-2 animate-rise">
           <span class="badge-vda" *ngIf="property.approvals.vda.show" [attr.title]="property.approvals.vda.title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
             {{ property.approvals.vda.label }}
@@ -16,45 +46,53 @@
         </div>
         <h1 class="animate-rise [animation-delay:80ms]">
           <span class="sr-only">SHRINEVA: </span>
-          <app-brand-logo variant="wordmark" [decorative]="true" class="block w-[clamp(15rem,31vw,23rem)]"></app-brand-logo>
-          <span class="mt-3 block max-w-2xl font-display text-[clamp(1.3rem,2.6vw,1.95rem)] leading-[1.12] text-ink/85">{{ hero.title }}</span>
+          <app-brand-logo variant="wordmark" [decorative]="true" class="block w-[clamp(14rem,24vw,21rem)]"></app-brand-logo>
+          <span class="mt-4 block font-display text-[clamp(1.6rem,3vw,2.5rem)] leading-[1.1] text-ink">{{ hero.title }}</span>
         </h1>
-        <p class="mt-3 max-w-xl text-[1rem] leading-relaxed text-ink/70 animate-rise [animation-delay:160ms]">{{ hero.sub }}</p>
-      </div>
+        <p class="mt-4 max-w-xl text-[1.02rem] leading-relaxed text-ink/75 animate-rise [animation-delay:160ms]">{{ hero.sub }}</p>
 
-      <div class="flex flex-col gap-3 animate-rise [animation-delay:240ms] sm:flex-row sm:items-center lg:shrink-0">
-        <button type="button" class="btn-primary" id="hero-visit-btn" (click)="openPopup()">Schedule a visit <span class="arrow" aria-hidden="true">→</span></button>
-        <a routerLink="/" fragment="walkthrough" class="btn-outline" (click)="track('walkthrough_click')">Walk through the building</a>
+        <div class="mt-6 flex flex-col gap-3 animate-rise [animation-delay:240ms] sm:flex-row sm:flex-wrap sm:items-center">
+          <button type="button" class="btn-primary" id="hero-visit-btn" (click)="openPopup()">Schedule a visit <span class="arrow" aria-hidden="true">→</span></button>
+          <a class="btn-outline" [href]="brochure.href" target="_blank" rel="noopener" download (click)="track('brochure_download')">Download brochure <span aria-hidden="true">↓</span></a>
+        </div>
+
+        <!-- Contact line: always in the first screen -->
+        <ul class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1 animate-rise [animation-delay:300ms]" aria-label="Contact the leasing team">
+          <li><a [href]="'tel:' + property.contact.phoneE164" class="inline-flex min-h-[44px] items-center gap-2 text-[0.92rem] font-semibold text-ink hover:text-brass-deep" data-track-source="hero">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+            {{ property.contact.phoneDisplay }}</a></li>
+          <li><a [href]="waHref" target="_blank" rel="noopener" class="inline-flex min-h-[44px] items-center gap-2 text-[0.92rem] font-semibold text-[#0b7a3b] hover:underline" data-track-source="hero">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9s-.5-.1-.7.1-.8.9-.9 1.1-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5l-.9-2.1c-.2-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.4 3.4 14.6 14.6 0 0 0 5.6 4.9c2.1.9 2.9.9 3.9.8a3.3 3.3 0 0 0 2.2-1.6 2.7 2.7 0 0 0 .2-1.6c-.1-.1-.3-.2-.7-.4zM12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z"/></svg>
+            WhatsApp</a></li>
+          <li><a [href]="'mailto:' + property.contact.publicEmail" class="inline-flex min-h-[44px] items-center gap-2 text-[0.92rem] font-semibold text-ink hover:text-brass-deep" data-track-source="hero">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            {{ property.contact.publicEmail }}</a></li>
+        </ul>
       </div>
     </div>
 
-    <!-- The finalised building, at golden hour and by night -->
-    <figure class="relative mt-6 animate-rise [animation-delay:200ms]">
-      <div class="relative overflow-hidden rounded-[1.6rem] border border-ink/10 bg-ink-3 shadow-lift">
-        <div class="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:aspect-[1920/995] lg:max-h-[64svh]">
-          <ng-container *ngFor="let v of views">
-            <!-- The night view is requested after the page has loaded (or when asked for), so the golden-hour image gets the whole connection first -->
-            <img *ngIf="v.id === 'day' || nightReady"
-                 [src]="v.src960" [attr.srcset]="v.src960 + ' 960w, ' + v.src1920 + ' 1920w'" sizes="(min-width: 1320px) 1272px, calc(100vw - 2.5rem)"
-                 [alt]="v.alt" width="1920" height="995" loading="eager" decoding="async" [attr.fetchpriority]="v.id === active ? 'high' : 'low'"
-                 [attr.aria-hidden]="v.id === active ? null : 'true'" (load)="onLoad(v.id)"
-                 class="absolute inset-0 h-full w-full object-cover object-[58%_55%] transition-opacity duration-[900ms] ease-out motion-reduce:transition-none"
-                 [ngClass]="v.id === active ? 'opacity-100' : 'opacity-0'">
+    <!-- The six facts a tenant checks first -->
+    <dl class="relative z-10 mt-6 grid grid-cols-2 overflow-hidden rounded-3xl border border-ink/10 bg-white shadow-soft sm:grid-cols-3 lg:-mb-9 lg:grid-cols-6" aria-label="SHRINEVA at a glance">
+      <div *ngFor="let f of facts; let i = index" appReveal [style.--i]="i" class="spot group relative border-b border-r border-ink/10 p-3.5 last:border-r-0 md:p-4 lg:border-b-0" appSpotlight>
+        <dt class="flex items-center gap-1.5 font-mono text-[0.58rem] uppercase tracking-[0.13em] text-brass-deep">
+          <ng-container [ngSwitch]="f.icon">
+            <svg *ngSwitchCase="'frontage'" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18M3 8v8M21 8v8M7 10l-4 2 4 2M17 10l4 2-4 2"/></svg>
+            <svg *ngSwitchCase="'road'" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3L4 21M16 3l4 18M12 4v3M12 11v3M12 18v3"/></svg>
+            <svg *ngSwitchCase="'parking'" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 17V8h3a2.5 2.5 0 0 1 0 5h-3"/></svg>
+            <svg *ngSwitchCase="'lift'" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 3v18M9 9l-1.5-2L6 9M16 15l1.5 2L19 15" transform="translate(-0.5 0)"/></svg>
+            <svg *ngSwitchCase="'floor'" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 4.5-9 4.5-9-4.5zM3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"/></svg>
+            <svg *ngSwitchCase="'fire'" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg>
           </ng-container>
-        </div>
-
-        <!-- Golden hour / Night -->
-        <div class="absolute right-3 top-3 inline-flex rounded-full bg-[#1b1714]/70 p-1 backdrop-blur md:right-4 md:top-4" role="group" aria-label="Choose the view">
-          <button *ngFor="let v of views" type="button" [attr.aria-pressed]="v.id === chosen" (click)="select(v.id)"
-                  class="inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-[0.82rem] font-bold transition-colors"
-                  [ngClass]="v.id === chosen ? 'bg-[#f6f1e8] text-[#1b1714]' : 'text-[#f6f1e8]/85 hover:text-white'">
-            <svg *ngIf="v.id === 'day'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-            <svg *ngIf="v.id === 'night'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
-            {{ v.label }}
-          </button>
-        </div>
-        <figcaption class="pointer-events-none absolute bottom-3 left-3 rounded-full bg-white/90 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink/70 backdrop-blur md:bottom-4 md:left-4">Indicative 3D render</figcaption>
+          {{ f.label }}
+        </dt>
+        <dd class="mt-1.5">
+          <span class="block font-display text-[clamp(1.7rem,2.6vw,2.2rem)] leading-none text-ink">
+            <ng-container *ngIf="f.value !== undefined; else plain">{{ f.prefix }}<span [appCountUp]="f.value!">{{ f.value | number: '1.0-0' }}</span>{{ f.suffix }}</ng-container>
+            <ng-template #plain>{{ f.text }}</ng-template>
+          </span>
+          <span class="mt-1 block text-[0.76rem] leading-snug text-ink/70">{{ f.sub }}</span>
+        </dd>
       </div>
-    </figure>
+    </dl>
   </div>
 </section>

@@ -1,41 +1,42 @@
 <main role="main" id="main-content">
   <app-home-hero></app-home-hero>
 
-  <!-- Answer first: the question as an H2, a short quotable answer, six facts -->
-  <section class="bg-paper py-9 md:py-12" aria-labelledby="answer-title" id="at-a-glance" data-rail="Overview">
-    <div class="container-srineva grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-      <div appReveal>
-        <h2 id="answer-title" class="max-w-2xl font-display text-display-md text-ink">{{ answer.q }}</h2>
-        <p class="mt-3 max-w-2xl text-[1.05rem] leading-relaxed text-ink/80">{{ answer.a }}</p>
-      </div>
-      <dl appReveal [style.--i]="1" class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:gap-3" aria-label="SHRINEVA at a glance">
-        <div *ngFor="let f of facts" class="rounded-2xl border border-ink/10 bg-white p-3.5 md:p-4">
-          <dt class="font-mono text-[0.6rem] uppercase tracking-[0.14em] text-brass-deep">{{ f.label }}</dt>
-          <dd class="mt-1 text-[0.93rem] font-semibold leading-snug text-ink">{{ f.value }}</dd>
-        </div>
-      </dl>
-    </div>
-  </section>
+  <!-- What is available, as a stack, in the first half of the page -->
+  <app-availability></app-availability>
 
+  <!-- Plan your space: pick a use and a size, see it marked on the floor (3D or plan), test two occupiers -->
+  <app-space-finder></app-space-finder>
+
+  <!-- The brochure, once the visitor knows what the building is -->
+  <app-brochure-card [compact]="true"></app-brochure-card>
+
+  <!-- 3D walkthrough: stop by stop, with tools -->
   <app-guided-tour variant="embed"></app-guided-tour>
-  <app-plans [compact]="true"></app-plans>
-  <app-place-map></app-place-map>
-  <app-brochure-card></app-brochure-card>
+
+  <!-- Project progress: stages, targeted project completion, and the real site photographs -->
+  <app-project-timeline></app-project-timeline>
+
+  <!-- Safety, access and building facts -->
+  <app-building-specs></app-building-specs>
+
+  <!-- Location: the answer-first block, satellite map and distances -->
+  <app-place-map [heading]="answer.q" [lead]="answer.a"></app-place-map>
 
   <section class="bg-paper py-12 md:py-16" aria-labelledby="paths-title" id="business-paths" data-rail="Uses">
     <div class="container-srineva">
-      <span class="eyebrow">Find your space</span>
-      <h2 id="paths-title" class="font-display text-display-md text-ink">Which business are you leasing for?</h2>
+      <div appReveal>
+        <span class="eyebrow">Find your space</span>
+        <h2 id="paths-title" class="font-display text-display-md text-ink">Which business are you leasing for?</h2>
+      </div>
       <ul class="mt-6 grid gap-3 md:grid-cols-3">
-        <li *ngFor="let l of landing">
-          <a [routerLink]="'/' + l.path" class="group block h-full rounded-3xl border border-ink/10 bg-white p-5 transition-colors hover:border-brass-deep/60 md:p-6">
+        <li *ngFor="let l of landing; let i = index" appReveal [style.--i]="i">
+          <a [routerLink]="'/' + l.path" appSpotlight class="spot group block h-full rounded-3xl border border-ink/10 bg-white p-5 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-brass-deep/60 hover:shadow-lift md:p-6">
             <h3 class="font-display text-[1.35rem] leading-snug text-ink">{{ l.navLabel }}</h3>
             <p class="mt-1.5 text-[0.92rem] leading-relaxed text-ink/75">{{ l.sub }}</p>
             <span class="mt-3 inline-flex items-center gap-1 text-[0.88rem] font-bold text-brass-deep">See the space <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span></span>
           </a>
         </li>
       </ul>
-      <p class="mt-5 text-[0.95rem] text-ink/75">Not sure how much space you need? <a routerLink="/leasing" fragment="space-finder" class="font-semibold text-brass-deep underline underline-offset-4">Try the space finder</a>.</p>
     </div>
   </section>
 

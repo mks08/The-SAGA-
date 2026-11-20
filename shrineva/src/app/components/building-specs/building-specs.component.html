@@ -1,0 +1,40 @@
+<section id="specs" data-rail="Safety" class="relative bg-paper-2 py-10 md:py-14" aria-labelledby="specs-title">
+  <div class="container-srineva">
+    <div appReveal class="mb-6 max-w-2xl md:mb-8">
+      <span class="eyebrow">Safety and building</span>
+      <h2 id="specs-title" class="font-display text-display-md text-ink">Planned for people, <em class="text-brass-deep">escape and access.</em></h2>
+      <p class="mt-2 text-[0.96rem] leading-relaxed text-ink/70">What the architect's plans and the owner confirm today. Nothing here is a promise about items still being finalised.</p>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <article *ngFor="let g of groups; let i = index" appReveal [style.--i]="i" appSpotlight class="spot rounded-3xl border border-ink/10 bg-white p-5 transition-shadow duration-500 hover:shadow-lift md:p-6">
+        <div class="flex items-center gap-3">
+          <span class="grid size-10 place-items-center rounded-full bg-ink text-brass" aria-hidden="true">
+            <ng-container [ngSwitch]="g.icon">
+              <svg *ngSwitchCase="'fire'" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg>
+              <svg *ngSwitchCase="'lift'" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M12 3v18"/></svg>
+              <svg *ngSwitchCase="'building'" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14M9 21v-5h6v5M9 10h.01M15 10h.01M9 13h.01M15 13h.01"/></svg>
+            </ng-container>
+          </span>
+          <h3 class="font-display text-[1.35rem] leading-tight text-ink">{{ g.title }}</h3>
+        </div>
+        <dl class="mt-4 divide-y divide-ink/10">
+          <div *ngFor="let it of g.items" class="grid gap-0.5 py-2.5 sm:grid-cols-[7.2rem_1fr] sm:gap-3">
+            <dt class="font-mono text-[0.6rem] uppercase tracking-[0.13em] text-ink/70 sm:pt-0.5">{{ it.label }}</dt>
+            <dd class="text-[0.92rem] font-semibold leading-snug text-ink">{{ it.value }}</dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+
+    <div appReveal class="mt-5 flex flex-col gap-3 rounded-3xl border border-dashed border-ink/20 bg-paper p-4 md:flex-row md:items-center md:justify-between md:p-5">
+      <div>
+        <p class="font-display text-[1.15rem] text-ink">Ask the leasing team about</p>
+        <ul class="mt-2 flex flex-wrap gap-2" aria-label="Topics to ask about">
+          <li *ngFor="let a of ask" class="rounded-full border border-ink/15 bg-white px-3 py-1 text-[0.8rem] font-semibold text-ink/80">{{ a }}</li>
+        </ul>
+      </div>
+      <button type="button" class="btn-outline btn-sm shrink-0 justify-center" (click)="openPopup()">Ask the leasing team</button>
+    </div>
+  </div>
+</section>

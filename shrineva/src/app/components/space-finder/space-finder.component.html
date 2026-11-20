@@ -1,46 +1,154 @@
-<section id="space-finder" class="scroll-mt-24 bg-paper-2 py-10 md:py-14" aria-labelledby="finder-title">
+<section id="space-finder" class="scroll-mt-24 bg-paper-2 py-12 md:py-16" aria-labelledby="finder-title" data-rail="Plan">
   <div class="container-srineva">
-    <span class="eyebrow">Space finder</span>
-    <h2 id="finder-title" class="font-display text-display-md text-ink">How much space do you need?</h2>
-    <p class="mt-2 max-w-xl text-[0.94rem] leading-relaxed text-ink/70">Two quick choices give you a starting point and fill in the enquiry form for you. Nothing is booked, and the leasing team confirms floors and sizes.</p>
+    <div appReveal>
+      <span class="eyebrow">Plan your space</span>
+      <h2 id="finder-title" class="font-display text-display-md text-ink">See your space on the floor</h2>
+      <p class="mt-2 max-w-2xl text-[0.96rem] leading-relaxed text-ink/70">Choose what it is for and how much space you need. The floor shows it marked out, with the glass front, the lift and stair bay and the fire exit. Two occupiers? Test how they could share one floor.</p>
+    </div>
 
-    <div class="mt-6 grid items-start gap-4 lg:grid-cols-[1.15fr_0.85fr] lg:gap-6">
+    <div class="mt-7 lg:grid lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] lg:items-start lg:gap-x-7 lg:gap-y-6">
+
+      <!-- The floor -->
+      <div class="finder-stage top-[68px] z-[5] mb-4 overflow-hidden rounded-3xl border border-ink/10 bg-white shadow-soft lg:static lg:mb-0" [class.sticky]="view === 'iso'">
+        <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-ink/10 bg-paper-2 px-3.5 py-2 md:px-4">
+          <p class="font-mono text-[0.6rem] uppercase tracking-[0.14em] text-ink/70">Typical floor · Floors 1 to 3</p>
+          <div class="inline-flex rounded-full border border-ink/15 bg-white p-0.5" role="group" aria-label="View">
+            <button type="button" (click)="setView('iso')" [attr.aria-pressed]="view === 'iso'" class="seg" [class.is-on]="view === 'iso'">3D</button>
+            <button type="button" (click)="setView('plan')" [attr.aria-pressed]="view === 'plan'" class="seg" [class.is-on]="view === 'plan'">Plan</button>
+          </div>
+        </div>
+        <div class="bg-[#f6f2e8] p-1.5 md:p-3">
+          <svg [attr.viewBox]="scene.vb" class="finder-svg mx-auto block h-auto w-full max-h-[34vh] lg:max-h-none" [class.max-h-none]="view === 'plan'" [class.is-plan]="view === 'plan' && floors === 1" role="img" aria-labelledby="fd-t fd-d" font-family="DM Sans, system-ui, sans-serif">
+            <title id="fd-t">The typical floor with {{ headline }} marked</title>
+            <desc id="fd-d">A {{ view === 'iso' ? 'three-dimensional' : 'flat' }} drawing of the typical floor of SHRINEVA, 40 feet 6 inches by 89 feet 6 inches. The glass front faces the 24 metre road on the north. The lift, lobby and stair bay stands on the east side. {{ headline }} is shown in colour.</desc>
+            <ng-container *ngFor="let it of scene.items; trackBy: trackById" [ngSwitch]="it.k">
+              <polygon *ngSwitchCase="'poly'" [attr.points]="$any(it).pts" [attr.fill]="$any(it).fill" [attr.stroke]="$any(it).stroke" [attr.stroke-width]="$any(it).sw" [attr.fill-opacity]="$any(it).op" [attr.stroke-dasharray]="$any(it).dash" [attr.class]="$any(it).cls" stroke-linejoin="round"/>
+              <line *ngSwitchCase="'line'" [attr.x1]="$any(it).x1" [attr.y1]="$any(it).y1" [attr.x2]="$any(it).x2" [attr.y2]="$any(it).y2" [attr.stroke]="$any(it).stroke" [attr.stroke-width]="$any(it).sw" [attr.stroke-dasharray]="$any(it).dash" stroke-linecap="round"/>
+              <text *ngSwitchCase="'text'" [attr.x]="$any(it).x" [attr.y]="$any(it).y" [attr.font-size]="$any(it).size" [attr.font-weight]="$any(it).weight || 500" [attr.fill]="$any(it).fill" [attr.text-anchor]="$any(it).anchor || 'start'" [attr.letter-spacing]="$any(it).ls" [attr.transform]="$any(it).rot ? 'rotate(' + $any(it).rot + ' ' + $any(it).x + ' ' + $any(it).y + ')' : null">{{ $any(it).t }}</text>
+              <g *ngSwitchCase="'chip'" [attr.class]="$any(it).cls">
+                <rect [attr.x]="$any(it).x - $any(it).w / 2" [attr.y]="$any(it).y - $any(it).h / 2" [attr.width]="$any(it).w" [attr.height]="$any(it).h" [attr.rx]="$any(it).h / 2.6" [attr.fill]="$any(it).fill" [attr.stroke]="$any(it).stroke" stroke-width="1.6"/>
+                <text *ngIf="$any(it).lines.length === 1" [attr.x]="$any(it).x" [attr.y]="$any(it).y + $any(it).h * 0.14" text-anchor="middle" [attr.font-size]="$any(it).h * 0.46" font-weight="700" [attr.fill]="$any(it).color" letter-spacing="1">{{ $any(it).lines[0] }}</text>
+                <ng-container *ngIf="$any(it).lines.length > 1">
+                  <text [attr.x]="$any(it).x" [attr.y]="$any(it).y - $any(it).h * 0.08" text-anchor="middle" [attr.font-size]="$any(it).h * 0.29" font-weight="500" [attr.fill]="$any(it).color">{{ $any(it).lines[0] }}</text>
+                  <text [attr.x]="$any(it).x" [attr.y]="$any(it).y + $any(it).h * 0.3" text-anchor="middle" [attr.font-size]="$any(it).h * 0.34" font-weight="700" [attr.fill]="$any(it).color">{{ $any(it).lines[1] }}</text>
+                </ng-container>
+              </g>
+            </ng-container>
+          </svg>
+        </div>
+        <p class="hidden border-t border-ink/10 px-3.5 py-2 text-[0.72rem] leading-snug text-ink/70 md:px-4 lg:block">Indicative, drawn from the architect's dimensions (sheet SH-02). Demising walls, the common passage and exits are set by your architect. Not for construction.</p>
+      </div>
+
+      <!-- Controls and result -->
       <div class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
         <fieldset>
           <legend class="field-label">1. What is it for?</legend>
           <div class="mt-1 flex flex-wrap gap-2" role="group">
             <button *ngFor="let u of uses" type="button" (click)="pickUse(u.category)" [attr.aria-pressed]="category === u.category"
-                    class="min-h-[44px] rounded-full border px-4 text-[0.9rem] font-semibold transition-colors"
-                    [ngClass]="category === u.category ? 'border-brass-deep bg-ink text-paper' : 'border-ink/15 bg-paper text-ink hover:border-brass-deep/60'">{{ u.label }}</button>
+                    class="chip-btn" [class.is-on]="category === u.category">{{ u.label }}</button>
           </div>
         </fieldset>
-        <fieldset class="mt-6">
-          <legend class="field-label">2. How much space?</legend>
+
+        <fieldset class="mt-5">
+          <legend class="field-label">2. How many occupiers?</legend>
+          <div class="mt-1 inline-flex rounded-full border border-ink/15 bg-paper p-0.5" role="group">
+            <button type="button" (click)="setMode('one')" [attr.aria-pressed]="mode === 'one'" class="seg seg-lg" [class.is-on]="mode === 'one'">One</button>
+            <button type="button" (click)="setMode('two')" [attr.aria-pressed]="mode === 'two'" class="seg seg-lg" [class.is-on]="mode === 'two'">Two, sharing a floor</button>
+          </div>
+        </fieldset>
+
+        <!-- One occupier -->
+        <fieldset class="mt-5" *ngIf="mode === 'one'">
+          <legend class="field-label">3. How much space (carpet)?</legend>
           <div class="mt-1 flex flex-wrap gap-2" role="group">
-            <button *ngFor="let a of areas; let i = index" type="button" (click)="pickArea(i)" [attr.aria-pressed]="areaIdx === i"
-                    class="min-h-[44px] rounded-full border px-4 text-[0.9rem] font-semibold transition-colors"
-                    [ngClass]="areaIdx === i ? 'border-brass-deep bg-ink text-paper' : 'border-ink/15 bg-paper text-ink hover:border-brass-deep/60'">{{ a.area }}</button>
+            <button *ngFor="let s of sizes" type="button" (click)="pickSize(s)" [attr.aria-pressed]="isPreset(s)"
+                    class="chip-btn" [class.is-on]="isPreset(s)">{{ s.label }}<span *ngIf="s.carpet && s.carpet < floorCarpet" class="ml-1 font-normal opacity-70">sq ft</span></button>
+          </div>
+          <div class="mt-3 flex items-center gap-2.5" *ngIf="floors === 1">
+            <button type="button" class="tool" aria-label="Smaller" (click)="nudge('size', -50)" [disabled]="size <= minSize">−</button>
+            <input type="range" class="range flex-1" [min]="minSize" [max]="maxSize" step="50" [value]="size" (input)="onSlide('size', $event)" aria-label="Space needed, in square feet of carpet area" [attr.aria-valuetext]="'about ' + size + ' square feet'">
+            <button type="button" class="tool" aria-label="Larger" (click)="nudge('size', 50)" [disabled]="size >= maxSize">+</button>
+          </div>
+          <p class="mt-1.5 text-[0.86rem] text-ink/70" *ngIf="floors === 1">About <strong class="text-ink">{{ size | number: '1.0-0' }} sq ft</strong> carpet</p>
+        </fieldset>
+
+        <!-- Two occupiers -->
+        <fieldset class="mt-5" *ngIf="mode === 'two'">
+          <legend class="field-label">3. How much space each (carpet)?</legend>
+          <div class="mt-1 flex flex-wrap gap-2" role="group" aria-label="Examples">
+            <button type="button" class="chip-btn" (click)="preset2(2000, 1000)" [class.is-on]="s1 === 2000 && s2 === 1000" [attr.aria-pressed]="s1 === 2000 && s2 === 1000">2,000 + 1,000</button>
+            <button type="button" class="chip-btn" (click)="preset2(1500, 1500)" [class.is-on]="s1 === 1500 && s2 === 1500" [attr.aria-pressed]="s1 === 1500 && s2 === 1500">1,500 + 1,500</button>
+            <button type="button" class="chip-btn" (click)="preset2(1500, 1000)" [class.is-on]="s1 === 1500 && s2 === 1000" [attr.aria-pressed]="s1 === 1500 && s2 === 1000">1,500 + 1,000</button>
+          </div>
+          <div class="mt-3 grid gap-2.5">
+            <div>
+              <div class="flex items-baseline justify-between text-[0.86rem]"><span class="font-semibold text-[#6b4b0c]">Occupier 1</span><span class="text-ink/70">about <strong class="text-ink">{{ s1 | number: '1.0-0' }}</strong> sq ft</span></div>
+              <div class="mt-1 flex items-center gap-2.5">
+                <button type="button" class="tool" aria-label="Occupier 1 smaller" (click)="nudge('s1', -50)">−</button>
+                <input type="range" class="range range-a flex-1" [min]="minSize" max="2600" step="50" [value]="s1" (input)="onSlide('s1', $event)" aria-label="Occupier 1, square feet of carpet area">
+                <button type="button" class="tool" aria-label="Occupier 1 larger" (click)="nudge('s1', 50)">+</button>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between text-[0.86rem]"><span class="font-semibold text-[#1f524b]">Occupier 2</span><span class="text-ink/70">about <strong class="text-ink">{{ s2 | number: '1.0-0' }}</strong> sq ft</span></div>
+              <div class="mt-1 flex items-center gap-2.5">
+                <button type="button" class="tool" aria-label="Occupier 2 smaller" (click)="nudge('s2', -50)">−</button>
+                <input type="range" class="range range-b flex-1" [min]="minSize" max="2600" step="50" [value]="s2" (input)="onSlide('s2', $event)" aria-label="Occupier 2, square feet of carpet area">
+                <button type="button" class="tool" aria-label="Occupier 2 larger" (click)="nudge('s2', 50)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap items-center gap-2">
+            <span class="field-label !mb-0">Layout</span>
+            <div class="inline-flex rounded-full border border-ink/15 bg-paper p-0.5" role="group">
+              <button type="button" (click)="setScheme('stack')" [attr.aria-pressed]="scheme === 'stack'" class="seg" [class.is-on]="scheme === 'stack'">One behind the other</button>
+              <button type="button" (click)="setScheme('side')" [attr.aria-pressed]="scheme === 'side'" [disabled]="!sideOk" class="seg" [class.is-on]="scheme === 'side'" [class.is-off]="!sideOk">Side by side</button>
+            </div>
+            <button type="button" class="tool tool-text" (click)="swap()" aria-label="Swap occupier 1 and occupier 2">⇅ Swap</button>
           </div>
         </fieldset>
       </div>
 
-      <div class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6" aria-live="polite">
-        <ng-container *ngIf="result; else empty">
-          <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brass-deep">A starting point</p>
-          <h3 class="mt-1 font-display text-[1.6rem] leading-tight text-ink">{{ result.title }}</h3>
-          <p class="mt-2 text-[0.94rem] leading-relaxed text-ink/75">{{ result.text }}</p>
-          <p *ngIf="note" class="mt-2 text-[0.88rem] leading-relaxed text-ink/70">{{ note }}</p>
-          <div class="mt-4 flex flex-col gap-2.5 sm:flex-row">
-            <button type="button" class="btn-primary btn-sm justify-center" (click)="requestDetails()" [disabled]="!ready">Request details for this <span class="arrow" aria-hidden="true">→</span></button>
-            <a [href]="waHref" target="_blank" rel="noopener" class="btn-outline btn-sm justify-center" data-track-source="space_finder">WhatsApp this</a>
+      <!-- Result -->
+      <div class="mt-4 rounded-3xl border border-ink/10 bg-white p-5 md:p-6 lg:col-span-2 lg:mt-0" aria-live="polite">
+        <div class="lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10">
+          <div>
+            <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brass-deep">Your space</p>
+            <h3 class="mt-1 font-display text-[1.7rem] leading-tight text-ink">{{ headline }}</h3>
+
+            <p *ngIf="verdict" class="mt-3 rounded-2xl border px-3.5 py-2.5 text-[0.88rem] leading-snug"
+               [ngClass]="verdict.tone === 'ok' ? 'border-emerald-700/30 bg-emerald-50 text-emerald-950' : verdict.tone === 'tight' ? 'border-amber-700/35 bg-amber-50 text-amber-950' : 'border-red-800/30 bg-red-50 text-red-950'">{{ verdict.text }}</p>
+
+            <dl class="mt-3 grid gap-2.5">
+              <div *ngFor="let r of rows" class="grid gap-0.5 sm:grid-cols-[7.5rem_1fr] sm:gap-3">
+                <dt class="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink/70 sm:pt-0.5">{{ r.label }}</dt>
+                <dd class="text-[0.92rem] leading-snug text-ink">{{ r.value }}</dd>
+              </div>
+            </dl>
+            <p *ngFor="let n of notes" class="mt-3 text-[0.86rem] leading-relaxed text-ink/75">{{ n }}</p>
+            <p *ngIf="note" class="mt-3 text-[0.86rem] leading-relaxed text-ink/75">{{ note }}</p>
           </div>
-          <p *ngIf="!category" class="mt-3 text-[0.8rem] text-ink/70">Choose what it is for (step 1) to complete your request.</p>
-        </ng-container>
-        <ng-template #empty>
-          <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brass-deep">A starting point</p>
-          <p class="mt-2 text-[0.94rem] leading-relaxed text-ink/70">Each upper floor is about 3,500 sq ft gross (about 3,100 sq ft carpet) and can be leased whole or in part. Pick a size to see what fits.</p>
-          <a [href]="'tel:' + property.contact.phoneE164" class="mt-3 inline-flex min-h-[44px] items-center text-[0.9rem] font-semibold text-ink underline-offset-4 hover:underline">Or call {{ property.contact.phoneDisplay }}</a>
-        </ng-template>
+
+          <div class="mt-4 lg:mt-0">
+            <details class="maths rounded-2xl border border-ink/10 bg-paper px-3.5 py-2.5 text-[0.86rem]" [attr.open]="mode === 'two' ? '' : null">
+              <summary class="cursor-pointer font-semibold text-ink">The maths</summary>
+              <dl class="mt-2 grid gap-1.5">
+                <div *ngFor="let m of maths" class="flex items-baseline justify-between gap-4 border-b border-ink/10 pb-1.5 last:border-0">
+                  <dt class="text-ink/75">{{ m.label }}</dt><dd class="shrink-0 font-semibold text-ink">{{ m.value }}</dd>
+                </div>
+              </dl>
+              <p class="mt-2 text-[0.76rem] leading-snug text-ink/65">Carpet is shared across the floor in proportion to its area, so a whole floor reads as the site's figure. The common passage allowance is a planning assumption, not an architect's figure.</p>
+            </details>
+
+            <div class="mt-5 flex flex-col gap-2.5 sm:flex-row">
+              <button type="button" class="btn-primary btn-sm justify-center" (click)="requestDetails()" [disabled]="!ready">Request details for this <span class="arrow" aria-hidden="true">→</span></button>
+              <a [href]="waHref" target="_blank" rel="noopener" class="btn-outline btn-sm justify-center" data-track-source="space_finder">WhatsApp this plan</a>
+            </div>
+            <p class="mt-3 text-[0.76rem] leading-snug text-ink/65 lg:hidden">The drawing is indicative, from the architect's dimensions (sheet SH-02). Demising walls, the common passage and exits are set by your architect. Not for construction.</p>
+            <p *ngIf="!category" class="mt-3 text-[0.8rem] text-ink/70">Choose what it is for (step 1) to send your request.</p>
+            <p class="mt-3 text-[0.78rem] leading-snug text-ink/65">Nothing is booked and no price is quoted here. The leasing team confirms floors, part-floor sizes and use. Or call <a [href]="'tel:' + property.contact.phoneE164" class="font-semibold text-ink underline underline-offset-4">{{ property.contact.phoneDisplay }}</a>.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

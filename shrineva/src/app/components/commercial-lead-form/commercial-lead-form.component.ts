@@ -27,6 +27,8 @@ export class CommercialLeadFormComponent implements OnInit, OnDestroy {
   @Input() anchorId = 'enquiry';
 
   form!: FormGroup;
+  /** The plan made in the space finder (shown above the button and sent as the message). */
+  finderNote = '';
   submitted = false;
   submitting = false;
   failed = false;
@@ -61,6 +63,7 @@ export class CommercialLeadFormComponent implements OnInit, OnDestroy {
       if (!p) return;
       if (p.category && this.categories.includes(p.category)) this.form.patchValue({ category: p.category });
       if (p.area && this.areas.includes(p.area)) this.form.patchValue({ area: p.area });
+      if (p.note) this.finderNote = p.note;
       this.prefill.clear();
     });
   }
@@ -88,6 +91,7 @@ export class CommercialLeadFormComponent implements OnInit, OnDestroy {
       space_required: v.area || '',
       preferred_floor: v.floor || '',
       timeline: v.timeline || '',
+      message: this.finderNote,
     }, 'leasing');
     this.submitting = false;
 
@@ -102,6 +106,7 @@ export class CommercialLeadFormComponent implements OnInit, OnDestroy {
       });
       this.submitted = true;
       this.form.reset({ category: this.category, floor: LEAD_FLOORS[0], area: '', timeline: '' });
+      this.finderNote = '';
     } else {
       this.failed = true; // keep what the visitor typed
       this.analytics.event('leasing_form_error', { reason: result.reason });

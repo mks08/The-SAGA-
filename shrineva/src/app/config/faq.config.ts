@@ -12,18 +12,19 @@ export interface Faq { q: string; a: string; }
 
 const p1 = PROPERTY.contact.phoneDisplay;
 const p2 = PROPERTY.contact.phone2Display;
+const EMAIL = PROPERTY.contact.publicEmail;
 
 /** Answer-first block at the top of the home page body (visible, and repeated in the static HTML and llms.txt). 40–60 words. */
 export const HOME_ANSWER: Faq = {
   q: 'Where can I lease commercial space in Bada Lalpur, Varanasi?',
-  a: `SHRINEVA is a commercial building on Stadium Road, Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital and about 100 metres from NIFT Varanasi. Three open floors of ${MARKETING_AREA.gross} gross can be leased whole or in part, with an 8-person lift, parking for 12+ cars and about 50 ft of frontage on a 24-metre road.`,
+  a: `SHRINEVA is a commercial building on a 24 m wide north-facing road in Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital and about 100 metres from NIFT Varanasi. Three open floors of ${MARKETING_AREA.gross} gross can be leased whole or in part, with a 10-passenger lift, parking for 12+ cars and about 50 ft of frontage.`,
 };
 
 /** The five tenant questions asked most often, plus the two transparency answers. */
 export const CORE_FAQ: Faq[] = [
   {
     q: 'Where is SHRINEVA located in Varanasi and how wide is the access road?',
-    a: 'SHRINEVA is at Plot No. D-15, Lalpur Housing Scheme, Stadium Road, Bada Lalpur, Varanasi 221003, directly opposite the upcoming Apollo Hospital and about 100 metres from the NIFT Varanasi campus. It has about 50 ft of frontage on the 24-metre-wide Stadium Road, with quick connectivity to the Varanasi Ring Road.',
+    a: 'SHRINEVA is at Plot No. D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi 221003, directly opposite the upcoming Apollo Hospital and about 100 metres from the NIFT Varanasi campus. It has about 50 ft of frontage on a 24-metre-wide north-facing road, with quick connectivity to the Varanasi Ring Road.',
   },
   {
     q: 'What is the carpet area and gross area per floor at SHRINEVA?',
@@ -31,7 +32,7 @@ export const CORE_FAQ: Faq[] = [
   },
   {
     q: 'How much car parking and lift capacity does SHRINEVA provide?',
-    a: 'SHRINEVA offers parking for 12+ cars at ground level and one 8-person passenger lift serving every floor. Each level has a dedicated fire exit, and the layout is Vastu-compliant. Exact parking and floor arrangements for a tenant are confirmed during the site visit and leasing discussion.',
+    a: 'SHRINEVA offers parking for 12+ cars at ground level and one 10-passenger lift serving every floor. Each level has a dedicated fire exit, and the layout is Vastu-compliant. Exact parking and floor arrangements for a tenant are confirmed during the site visit and leasing discussion.',
   },
   {
     q: 'Which businesses can lease space at SHRINEVA?',
@@ -39,14 +40,14 @@ export const CORE_FAQ: Faq[] = [
   },
   {
     q: 'How do I book a site visit or contact the SHRINEVA leasing office?',
-    a: `Call ${p1} or ${p2}, message the leasing team on WhatsApp at ${p1}, or fill in the enquiry form on this page. Site visits and leasing enquiries are handled Monday to Sunday, 9:30 AM to 7:30 PM IST.`,
+    a: `Call ${p1} or ${p2}, message the leasing team on WhatsApp at ${p1}, email ${EMAIL}, or fill in the enquiry form on this page to request a site visit. The leasing team confirms a time with you.`,
   },
 ];
 
 export const STATUS_FAQ: Faq[] = [
   {
-    q: 'Is the SHRINEVA building complete and ready to move in?',
-    a: 'No. Construction at SHRINEVA is ongoing, and the upper floors are offered as open shells that tenants fit out themselves. Images labelled as renders are indicative, while site photos show the current progress. Handover details are agreed with each tenant during leasing.',
+    q: 'When will the SHRINEVA building be complete and ready for tenants?',
+    a: 'Project completion at SHRINEVA is targeted for March 2027, subject to approvals. The concrete structure is complete, and brickwork, façade, lift and services are in progress, followed by final works on the ground, boundary and flooring. Floors are offered as open shells. Dates are targets and may change.',
   },
   {
     q: 'Is the Apollo Hospital opposite SHRINEVA already operational?',
@@ -59,7 +60,7 @@ export function faqForPath(path: string, extra: Faq[] = []): Faq[] {
   switch (path) {
     case '':
     case 'leasing':
-      return CORE_FAQ;
+      return [...CORE_FAQ, STATUS_FAQ[0]];
     case 'location-contact':
       return [...CORE_FAQ, ...STATUS_FAQ];
     case 'hi':

@@ -1,6 +1,7 @@
-import { seoForPath, SEO_DOMAIN, SEO_ROUTES } from '../../config/seo.config';
+import { seoForPath, SEO_DOMAIN, SEO_ROUTES, SITE_UPDATED } from '../../config/seo.config';
 import { PROPERTY, PLAN, MARKETING_AREA } from '../../config/property.config';
-import { RENDERS, BROCHURE } from '../../config/media.config';
+import { RENDERS, SITE_PHOTOS, BROCHURE } from '../../config/media.config';
+import { PROJECT_STATUS } from '../../config/content.config';
 import { NEARBY_DISTANCES } from '../../config/location.config';
 import { faqForPath } from '../../config/faq.config';
 import { LANDING_PAGES, landingByPath } from '../../config/landing.config';
@@ -9,12 +10,13 @@ import { LANDING_PAGES, landingByPath } from '../../config/landing.config';
  * Structured data (JSON-LD) for every route. Pure functions with no Angular imports so the same
  * graph is used at runtime (SeoService) and written into the static HTML shells by scripts/build-seo.js.
  *
- * Graph per page: LocalBusiness (the leasing office: address, geo, hours, phones, service area), WebSite, Place (the building,
+ * Graph per page: LocalBusiness (the leasing office: address, geo, phones, service area), WebSite, Place (the building,
  * with its measured facts as PropertyValue), WebPage, BreadcrumbList, plus - where the page shows them - a RealEstateListing
  * (a page type) whose Offer is a lease offer, and a FAQPage whose questions are exactly the visible FAQ.
  * Deliberately not used: RealEstateAgent (the owner leases directly, it is not an agent) and Accommodation (the floors are
  * commercial open shells, not lodging).
- * Facts only: no approvals, rents, footfall or completion dates are asserted; the Apollo Hospital is "upcoming".
+ * Facts only: no approvals, rents or footfall are asserted. The completion month is stated only as a target, subject to approvals
+ * (PROJECT_STATUS), and the Apollo Hospital is "upcoming". dateModified is SITE_UPDATED, the same date the sitemap uses.
  */
 const ID = {
   org: `${SEO_DOMAIN}/#organization`,
@@ -61,7 +63,7 @@ export function buildGraph(path: string, canonical: string) {
     '@id': ID.org,
     name: `${PROPERTY.brand.name} Leasing`,
     alternateName: PROPERTY.brand.name,
-    description: `Leasing office for ${PROPERTY.brand.name}, a commercial building on Stadium Road, Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital. Floors of ${MARKETING_AREA.gross} for lease, whole or in part.`,
+    description: `Leasing office for ${PROPERTY.brand.name}, a commercial building on a 24 m wide north-facing road in Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital. Floors of ${MARKETING_AREA.gross} for lease, whole or in part.`,
     url: `${SEO_DOMAIN}/`,
     logo: abs(PROPERTY.images.logo),
     image: [PROPERTY.images.og, ...RENDERS.slice(0, 3).map((r) => abs(r.src))],
@@ -70,14 +72,6 @@ export function buildGraph(path: string, canonical: string) {
     address: address(),
     ...(geo() ? { geo: geo() } : {}),
     hasMap: PROPERTY.address.googleMapsUrl,
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: PROPERTY.contact.hoursSpec.days,
-        opens: PROPERTY.contact.hoursSpec.opens,
-        closes: PROPERTY.contact.hoursSpec.closes,
-      },
-    ],
     areaServed: [
       { '@type': 'City', name: 'Varanasi' },
       { '@type': 'AdministrativeArea', name: 'Uttar Pradesh' },
@@ -98,15 +92,19 @@ export function buildGraph(path: string, canonical: string) {
     '@type': 'Place',
     '@id': ID.place,
     name: `${PROPERTY.brand.name}, commercial building, Bada Lalpur, Varanasi`,
-    description: `Commercial building under construction on a ${PLAN.plot.areaSqM} sq m plot at Plot No. D-15, Lalpur Housing Scheme, Stadium Road, with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m wide road, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi. Three upper floors of ${MARKETING_AREA.gross} each.`,
+    description: `Commercial building under construction on a ${PLAN.plot.areaSqM} sq m plot at Plot No. D-15, Lalpur Housing Scheme, with ${PLAN.plot.frontage} of frontage on a ${PLAN.plot.roadWidthM} m wide north-facing road, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi. Three upper floors of ${MARKETING_AREA.gross} each.`,
     url: `${SEO_DOMAIN}/`,
     telephone: PROPERTY.contact.phoneE164,
     hasMap: PROPERTY.address.googleMapsUrl,
     image: [PROPERTY.images.og, ...RENDERS.slice(0, 3).map((r) => abs(r.src))],
+    photo: SITE_PHOTOS.slice(0, 3).map(sitePhoto),
+    containedInPlace: { '@type': 'City', name: 'Varanasi', address: { '@type': 'PostalAddress', addressRegion: PROPERTY.address.state, addressCountry: 'IN' } },
     address: address(),
     ...(geo() ? { geo: geo() } : {}),
     amenityFeature: amenities(),
     additionalProperty: [
+      { '@type': 'PropertyValue', name: 'Construction status', value: 'Concrete structure complete; brickwork, façade, lift and services in progress', description: `As of ${PROJECT_STATUS.updated}.` },
+      { '@type': 'PropertyValue', name: PROJECT_STATUS.completion.label, value: PROJECT_STATUS.completion.value, description: `${PROJECT_STATUS.completion.note}. A target, not a promise: dates may change.` },
       { '@type': 'PropertyValue', name: 'Plot area', value: PLAN.plot.areaSqM, unitText: 'square metres' },
       { '@type': 'PropertyValue', name: 'Gross area per upper floor (approximate)', value: MARKETING_AREA.grossNum, unitText: 'square feet' },
       { '@type': 'PropertyValue', name: 'Carpet area per upper floor (approximate)', value: MARKETING_AREA.carpetNum, unitText: 'square feet' },
@@ -130,6 +128,7 @@ export function buildGraph(path: string, canonical: string) {
     url: canonical,
     name: route.title,
     description: route.description,
+    dateModified: route.lastmod ?? SITE_UPDATED,
     isPartOf: { '@id': ID.website },
     about: { '@id': ID.place },
     primaryImageOfPage: route.image ?? PROPERTY.images.og,
@@ -140,8 +139,8 @@ export function buildGraph(path: string, canonical: string) {
   const graph: unknown[] = [org, website, place, webpage, breadcrumbs(path, canonical)];
 
   if (LISTING_PATHS.has(path)) graph.push(listing(path, canonical));
-  if (!path) graph.push(...homeExtras());
-  if (path === 'walkthrough') graph.push(gallerySchema());
+  if (!path) graph.push(...homeExtras(), sitePhotoGallery(canonical));
+  if (path === 'walkthrough') graph.push(gallerySchema(), sitePhotoGallery(canonical));
   if (path === 'leasing' || path === 'floor-plans') graph.push(...downloads(canonical));
 
   const faqs = faqForPath(path, landingByPath(path)?.faq ?? []);
@@ -217,9 +216,34 @@ function downloads(canonical: string) {
     publisher: { '@id': ID.org },
   });
   return [
-    doc('brochure', 'SHRINEVA brochure (PDF)', `Six pages: the final 3D renders, floor plans and areas, specifications and location. Renders are indicative and subject to change.`, BROCHURE.href),
-    doc('floor-plans-pdf', 'SHRINEVA floor plans (PDF)', 'Ground-level and typical upper-floor plans with areas. Areas are approximate and subject to final measurement.', BROCHURE.plansHref),
+    doc('brochure', 'SHRINEVA brochure (PDF)', `Four pages: the final 3D design, floor plans and areas, specifications and location, with the leasing contacts. Renders are indicative and subject to change.`, BROCHURE.href),
+    doc('floor-plans-pdf', 'SHRINEVA floor plans (PDF)', 'Typical-floor, ground-level and site plans with areas and setbacks. Areas are approximate and subject to final measurement.', BROCHURE.plansHref),
   ];
+}
+
+/** A real site photograph, dated: tells Google Images and AI assistants these show the building as it stands. */
+function sitePhoto(p: { src: string; thumb: string; title: string; alt: string; caption: string; width: number; height: number }) {
+  return {
+    '@type': 'ImageObject',
+    contentUrl: `${SEO_DOMAIN}/${p.src}`,
+    thumbnailUrl: `${SEO_DOMAIN}/${p.thumb}`,
+    name: p.title,
+    description: p.alt,
+    caption: `${p.caption} Photographed ${PROJECT_STATUS.photosTaken}.`,
+    dateCreated: '2026-11',
+    width: p.width,
+    height: p.height,
+  };
+}
+
+function sitePhotoGallery(canonical: string) {
+  return {
+    '@type': 'ImageGallery',
+    '@id': `${canonical}#site-photos`,
+    name: `SHRINEVA site photographs, ${PROJECT_STATUS.photosTaken}`,
+    about: { '@id': ID.place },
+    image: SITE_PHOTOS.map(sitePhoto),
+  };
 }
 
 function gallerySchema() {

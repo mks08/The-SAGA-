@@ -1,0 +1,70 @@
+<section id="status" data-rail="Progress" class="relative bg-paper py-10 md:py-14" aria-labelledby="status-title">
+  <div class="container-srineva">
+    <div appReveal class="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-2xl">
+        <span class="eyebrow">Project progress</span>
+        <h2 id="status-title" class="font-display text-display-md text-ink">Where the building <em class="text-brass-deep">stands today.</em></h2>
+        <p class="mt-2 text-[0.96rem] leading-relaxed text-ink/70">{{ status.lead }}</p>
+      </div>
+      <p class="inline-flex w-fit shrink-0 items-center gap-2 rounded-full border border-ink/15 bg-white px-3.5 py-1.5 font-mono text-[0.66rem] uppercase tracking-[0.13em] text-ink/75">
+        <span class="size-1.5 rounded-full bg-ok" aria-hidden="true"></span>
+        Updated <time datetime="2026-11">{{ status.updated }}</time>
+      </p>
+    </div>
+
+    <ol class="stages grid md:grid-cols-4" aria-label="Project stages, in order">
+      <li *ngFor="let s of status.stages; let i = index; let last = last; trackBy: trackById" appReveal [style.--i]="i"
+          class="stage relative pb-7 pl-12 last:pb-0 md:pb-0 md:pl-0 md:pr-5 md:pt-12" [ngClass]="'st-' + s.state"
+          [attr.aria-current]="s.state === 'active' ? 'step' : null">
+        <span class="node absolute left-0 top-0 grid size-8 place-items-center rounded-full border-2" aria-hidden="true">
+          <svg *ngIf="s.state === 'done'" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          <span *ngIf="s.state === 'active'" class="dot relative block size-2.5 rounded-full bg-brass-deep"></span>
+          <svg *ngIf="s.state === 'target'" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4M6 5h11l-2 3.5L17 12H6"/></svg>
+        </span>
+        <span *ngIf="!last" class="rail absolute" aria-hidden="true"></span>
+
+        <p class="state font-mono text-[0.64rem] font-medium uppercase tracking-[0.14em]">{{ s.label }}</p>
+        <h3 class="mt-1 font-display text-[1.3rem] leading-snug text-ink">{{ s.title }}</h3>
+        <p class="mt-1 text-[0.9rem] leading-relaxed text-ink/70">{{ s.text }}</p>
+      </li>
+    </ol>
+
+    <div *ngIf="showPhotos" class="mt-10 md:mt-12">
+      <div appReveal class="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h3 class="font-display text-[1.5rem] leading-tight text-ink md:text-[1.8rem]">Site photographs <span class="text-ink/50">· {{ status.photosTaken }}</span></h3>
+        <p class="text-[0.84rem] text-ink/70">Taken on site. Tap a photograph to enlarge it.</p>
+      </div>
+
+      <ul class="grid grid-cols-2 gap-2.5 md:gap-3 lg:grid-cols-6">
+        <li *ngFor="let p of photos; let i = index" appReveal="scale" class="relative overflow-hidden rounded-2xl bg-paper-3" [ngClass]="cell(i)">
+          <button type="button" class="group absolute inset-0 block h-full w-full text-left" (click)="open(i)" [attr.aria-label]="p.title + ', photographed ' + status.photosTaken + '. Enlarge'">
+            <img [src]="p.thumb" [alt]="p.alt" width="640" [attr.height]="thumbHeight(p)" loading="lazy" decoding="async"
+                 class="absolute inset-0 block h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]" [style.object-position]="i === 0 ? '50% 35%' : null">
+            <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1b1714]/85 via-[#1b1714]/30 to-transparent p-3 pt-12 text-[#f6f1e8]">
+              <strong class="block text-[0.78rem] font-bold leading-snug md:text-[0.86rem]">{{ p.title }}</strong>
+              <span class="mt-0.5 text-[0.74rem] leading-snug text-[#f6f1e8]/80" [ngClass]="i === 0 ? 'block' : 'hidden md:block'">{{ p.caption }}</span>
+            </span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="showChanges" appReveal class="mt-8 flex flex-col gap-4 rounded-3xl border border-brass-deep/25 bg-white p-5 md:flex-row md:items-center md:justify-between md:p-6">
+      <div class="flex gap-3.5">
+        <span class="mt-0.5 grid size-10 shrink-0 place-items-center rounded-full bg-ink text-brass" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg>
+        </span>
+        <div>
+          <h3 class="font-display text-[1.3rem] leading-snug text-ink">{{ status.changes.title }}</h3>
+          <p class="mt-1 max-w-2xl text-[0.92rem] leading-relaxed text-ink/70">{{ status.changes.text }}</p>
+        </div>
+      </div>
+      <button type="button" class="btn-outline btn-sm shrink-0 justify-center" (click)="ask()">Ask the leasing team</button>
+    </div>
+
+    <p class="mt-4 max-w-4xl text-[0.76rem] leading-relaxed text-ink/70">{{ status.note }}</p>
+  </div>
+</section>
+
+<app-lightbox *ngIf="showPhotos" [items]="photos" [index]="lightboxIndex" [disclaimer]="'Site photograph, ' + status.photosTaken + '. Construction is ongoing.'"
+              (indexChange)="lightboxIndex = $event" (closed)="lightboxIndex = null"></app-lightbox>

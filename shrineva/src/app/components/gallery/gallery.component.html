@@ -3,7 +3,7 @@
     <div *ngIf="showIntro" appReveal class="mb-6 max-w-xl md:mb-8">
       <span class="eyebrow">On site</span>
       <h2 id="gal-title" class="font-display text-display-md text-ink">The building, <em class="text-brass-deep">as it stands today.</em></h2>
-      <p class="mt-2 text-[0.94rem] text-ink/65">Photographs taken on site. Construction is ongoing, so the finished building will look different from these.</p>
+      <p class="mt-2 text-[0.94rem] text-ink/65">Photographs taken on site in {{ photosTaken }}. Construction is ongoing, so the finished building will look different from these.</p>
     </div>
     <h2 *ngIf="!showIntro" id="gal-title" class="sr-only">Photographs of the building today</h2>
 
@@ -23,5 +23,5 @@
   </div>
 </section>
 
-<app-lightbox [items]="items" [index]="lightboxIndex" [disclaimer]="'Photograph of the building under construction.'"
+<app-lightbox [items]="items" [index]="lightboxIndex" [disclaimer]="'Site photograph, ' + photosTaken + '. Construction is ongoing.'"
               (indexChange)="lightboxIndex = $event" (closed)="lightboxIndex = null"></app-lightbox>

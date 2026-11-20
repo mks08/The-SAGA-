@@ -48,5 +48,5 @@ export class CountUpDirective implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void { this.io?.disconnect(); cancelAnimationFrame(this.raf); }
+  ngOnDestroy(): void { this.io?.disconnect(); if (this.raf && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this.raf); }
 }

@@ -2,6 +2,7 @@
 
 @keyframes tour-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes tour-drift { from { transform: scale(1); } to { transform: scale(1.055); } }
+@keyframes tour-pulse { 0% { r: 3; opacity: 0.9; } 100% { r: 11; opacity: 0; } }
 
 .fill { transform: scaleX(0); transform-origin: left center; }
 .fill.done { transform: scaleX(1); }
@@ -9,11 +10,31 @@
 
 .drift { animation: tour-drift calc(var(--tour-s, 6s) + 1.5s) ease-out forwards; }
 
+.pulse { animation: tour-pulse 1.8s ease-out infinite; }
+
 .thumbs { scrollbar-width: none; scroll-snap-type: x proximity; }
 .thumbs::-webkit-scrollbar { display: none; }
 .thumbs > li { scroll-snap-align: center; }
 
+.stops-list { scrollbar-width: thin; }
+
+.tool {
+  display: inline-grid; min-width: 40px; min-height: 40px; place-items: center; border-radius: 999px;
+  border: 1px solid rgb(27 23 20 / 0.18); background: #fff; color: #1b1714; font-weight: 700; font-size: 0.95rem;
+  padding: 0 0.7rem; transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+  &:hover:not(:disabled) { border-color: #1b1714; }
+  &:active:not(:disabled) { transform: scale(0.95); }
+  &:disabled { opacity: 0.4; cursor: default; }
+}
+
+/* Full screen: the stage takes the screen, the controls sit under it. */
+.wrap:fullscreen { display: flex; flex-direction: column; background: #14110e; border-radius: 0; overflow: hidden; }
+.wrap:fullscreen .stage { aspect-ratio: auto; flex: 1 1 auto; min-height: 0; }
+.wrap:fullscreen .below { background: #14110e; color: #f6f1e8; }
+.wrap:-webkit-full-screen { display: flex; flex-direction: column; background: #14110e; border-radius: 0; overflow: hidden; }
+.wrap:-webkit-full-screen .stage { aspect-ratio: auto; flex: 1 1 auto; min-height: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   .fill.run { animation: none; transform: scaleX(1); }
-  .drift { animation: none; }
+  .drift, .pulse { animation: none; }
 }

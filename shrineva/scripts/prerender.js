@@ -20,7 +20,7 @@ const distDir = path.join(root, 'dist/shrineva');
 const serverMain = path.join(root, 'dist/shrineva-server/main.js');
 const { SEO_ROUTES } = load(path.join(root, 'src/app/config/seo.config.ts'));
 const { PROPERTY } = load(path.join(root, 'src/app/config/property.config.ts'));
-const { HERO_VIEWS } = load(path.join(root, 'src/app/config/media.config.ts'));
+const { HERO } = load(path.join(root, 'src/app/config/media.config.ts'));
 
 for (const f of [path.join(distDir, 'index.html'), serverMain]) {
   if (!fs.existsSync(f)) { console.error(`Missing ${path.relative(root, f)}. Run "npm run build" (it builds the browser app and the server bundle first).`); process.exit(1); }
@@ -31,12 +31,13 @@ const template = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
 
 const { AppServerModule, renderModule } = require(serverMain);
 
+const HERO_SIZES = '100vw';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-/** The home page paints the hero image first: preload exactly the file the hero shows (golden hour by default). */
+/** The home page paints the hero image first: preload exactly the file the hero shows. */
 function heroPreload() {
-  const v = HERO_VIEWS.find((x) => x.id === 'day') || HERO_VIEWS[0];
-  return `<link rel="preload" as="image" href="${v.src960}" imagesrcset="${v.src960} 960w, ${v.src1920} 1920w" imagesizes="(min-width: 1320px) 1272px, calc(100vw - 2.5rem)" fetchpriority="high">`;
+  const v = HERO;
+  return `<link rel="preload" as="image" href="${v.src960}" imagesrcset="${v.src960} 960w, ${v.src1920} 1920w" imagesizes="${HERO_SIZES}" fetchpriority="high">`;
 }
 
 async function renderRoute(route) {

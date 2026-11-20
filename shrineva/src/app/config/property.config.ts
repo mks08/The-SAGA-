@@ -141,7 +141,7 @@ export const PLAN = {
     staircase: '5′-3″ flights · 24 risers',
     eastRecess: '4′-0″ × 26′-3″',
   },
-  lift: { capacity: '8 passengers', adjective: '8-passenger', clear: '6′-1½″ × 5′-5″', count: 1 },
+  lift: { capacity: '10 passengers', adjective: '10-passenger', count: 1 },
 };
 
 export const PROPERTY = {
@@ -182,9 +182,6 @@ export const PROPERTY = {
     whatsappDisplay: '+91 81140 80609',
     whatsappE164: '918114080609',
     whatsappMessage: 'Hi, I am interested in commercial space at SHRINEVA Bada Lalpur',
-    hours: 'Monday to Sunday, 9:30 AM – 7:30 PM IST',
-    /** Machine-readable form of `hours` for structured data (schema.org openingHoursSpecification). */
-    hoursSpec: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:30', closes: '19:30' },
     /**
      * Where enquiry forms are delivered (see src/api/lead.php and README "Enquiry forms"): every enquiry goes to the
      * leasing mailbox (owner, 19 Nov 2026). This list documents the intent; the PHP handler on the web host reads its own
@@ -194,24 +191,22 @@ export const PROPERTY = {
   },
 
   address: {
-    line1: 'Plot No. D-15, Lalpur Housing Scheme, Stadium Road, Bada Lalpur',
+    line1: 'Plot No. D-15, Lalpur Housing Scheme, Bada Lalpur',
     line2: 'Opposite the upcoming Apollo Hospital, near NIFT Varanasi',
     city: 'Varanasi',
     state: 'Uttar Pradesh',
     pin: '221003',
     country: 'India',
-    full: 'Plot No. D-15, Lalpur Housing Scheme, Stadium Road, Bada Lalpur, Varanasi, Uttar Pradesh 221003, India',
-    // NOTE: insert the verified Google Maps place / plus-code once the exact pin is finalised.
+    full: 'Plot No. D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi, Uttar Pradesh 221003, India',
     /**
-     * Map pin. `lat`/`lng` are left null on purpose: no verified coordinates have been supplied, and a pin placed by guess
-     * would send people to the wrong spot. When the exact point is confirmed, set both and the site switches to a
-     * coordinate pin, a "Get directions" deep link and the map embed automatically (see `mapLinks()` below).
+     * The plot's map pin. These are the coordinates printed in the brochure's map link and QR code (owner, 20 Nov 2026:
+     * "the plot in the brochure coordinates is correct, so use that only"). The map embed, "Open map", "Directions", the
+     * structured data and the brochure all read them from here.
      */
-    lat: 25.3833895 as number | null,
-    lng: 82.9786124 as number | null,
-    /** The owner's own Google Maps share link for the exact plot (15–18 Oct 2026). Opens the pin in Google Maps on any device. */
-    googleMapsUrl: 'https://maps.app.goo.gl/UGerjaEDeKVnrnYw5',
-    embedSrc: 'https://maps.google.com/maps?q=Bada+Lalpur+Chandmari+Varanasi&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    lat: 25.383306 as number | null,
+    lng: 82.978028 as number | null,
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=25.383306,82.978028',
+    embedSrc: 'https://maps.google.com/maps?q=25.383306,82.978028&t=h&z=18&ie=UTF8&iwloc=&output=embed',
   },
 
   structure: {
@@ -273,7 +268,7 @@ export const PROPERTY = {
 
   infrastructure: {
     confirmed: [
-      { label: 'Passenger Lift', value: '1 lift · 8 passengers · 6′-1½″ × 5′-5″', status: 'confirmed' },
+      { label: 'Passenger Lift', value: '1 lift · 10 passengers', status: 'confirmed' },
       { label: 'Staircase', value: '5′-3″ flights', status: 'confirmed' },
       { label: 'Floor-to-Floor Height', value: 'Parking level 9′-6″ · upper floors 11′-6″ (3.51 m)', status: 'confirmed' },
       { label: 'Road Frontage', value: 'About 50 ft on a 24 m road (architect\'s sheet: 49′-5½″)', status: 'confirmed' },
@@ -321,7 +316,7 @@ export const PROPERTY = {
         status: 'provision',
         note: 'Provision / subject to final tenant MEP design.',
       },
-      { label: 'Handover condition, clear ceiling height, toilets and pantry', value: null, status: 'enquire', note: 'To be confirmed — agreed with each occupier.' },
+      { label: 'Floor condition, clear ceiling height, toilets and pantry', value: null, status: 'enquire', note: 'To be confirmed — agreed with each occupier.' },
       { label: 'Signage Zone Width', value: null, status: 'enquire' },
       { label: 'Projecting Signage Limits', value: null, status: 'enquire' },
     ] as TechnicalFact[],
@@ -515,7 +510,7 @@ export const PROPERTY = {
   preferredFloorOptions: ['Any', 'Floor 1', 'Floor 2', 'Floor 3'],
 
   images: {
-    hero: 'assets/images/renders/facade-night.webp',
+    hero: 'assets/images/renders/facade-day.webp',
     logo: 'assets/images/shrineva-logo.webp',
     og: 'https://shrineva.in/assets/images/og-shrineva.jpg',
   },
@@ -544,24 +539,19 @@ export function waLink(message: string = PROPERTY.contact.whatsappMessage): stri
  * Map links. With verified `lat`/`lng` the embed, "open" and "directions" links all point at the exact plot.
  * Until then they point at the Bada Lalpur area by name, which is what Google Maps resolves reliably.
  */
-export function mapLinks(): { pinned: boolean; embed: string; open: string; directions: string } {
+export function mapLinks(): { pinned: boolean; embed: string; embedMap: string; open: string; directions: string } {
   const { lat, lng, googleMapsUrl, embedSrc } = PROPERTY.address;
   if (lat !== null && lng !== null) {
     return {
       pinned: true,
-      embed: `https://maps.google.com/maps?q=${lat},${lng}&z=18&output=embed`,
+      // t=h is Google's satellite view with road and place labels (the default view of the site); t=m is the plain road map.
+      embed: `https://maps.google.com/maps?q=${lat},${lng}&t=h&z=18&output=embed`,
+      embedMap: `https://maps.google.com/maps?q=${lat},${lng}&t=m&z=17&output=embed`,
       open: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
       directions: `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
     };
   }
-  // The share link opens the exact plot in Google Maps (and its Directions button), so both buttons use it.
-  // Only the inline embed stays area-centred until coordinates are added above.
-  return {
-    pinned: false,
-    embed: embedSrc,
-    open: googleMapsUrl,
-    directions: googleMapsUrl,
-  };
+  return { pinned: false, embed: embedSrc, embedMap: embedSrc, open: googleMapsUrl, directions: googleMapsUrl };
 }
 
 /**

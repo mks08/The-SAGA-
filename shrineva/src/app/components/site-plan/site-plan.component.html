@@ -1,0 +1,124 @@
+<figure class="overflow-hidden rounded-3xl border border-ink/10 bg-white shadow-soft">
+  <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-ink/10 bg-paper-2 px-4 py-2.5 md:px-5">
+    <p class="font-display text-[1.05rem] leading-tight text-ink">Site plan</p>
+    <p class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink/70">SHRINEVA · Plot D-15 · North at the top</p>
+  </div>
+
+  <div appReveal class="grid gap-0 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+    <div class="bg-[#f6f2e8] p-2 md:p-4">
+      <svg viewBox="0 0 540 740" class="mx-auto block h-auto w-full max-w-[26rem]" role="img" aria-labelledby="site-t site-d" font-family="DM Sans, system-ui, sans-serif">
+        <title id="site-t">Site plan of SHRINEVA, Plot D-15</title>
+        <desc id="site-d">The plot, 49 feet 5 and a half inches wide and 115 feet 6 and a half inches long, faces north onto a 24 metre (80 feet) wide road. The building stands inside the plot with setbacks of 15 feet 8 inches at the front, 15 feet 4 and a half inches at the rear, 8 feet 11 and a half inches on the east and 5 feet on the west. The Apollo Hospital site (upcoming) is opposite, 50 metres away, and NIFT Varanasi is about 100 metres away.</desc>
+
+        <!-- Landmarks north of the road -->
+        <g font-size="13" fill="#1b1714">
+          <rect x="64" y="14" width="120" height="44" rx="4" fill="#ece5d3" stroke="#bdb297"/>
+          <text x="124" y="32" text-anchor="middle" font-weight="700" font-size="12">NIFT VARANASI</text>
+          <text x="124" y="49" text-anchor="middle" font-size="12" fill="#5b5249">about 100 m</text>
+          <rect x="296" y="14" width="196" height="44" rx="4" fill="#ece5d3" stroke="#bdb297"/>
+          <text x="394" y="32" text-anchor="middle" font-weight="700" font-size="12">APOLLO HOSPITAL (UPCOMING)</text>
+          <text x="394" y="49" text-anchor="middle" font-size="12" fill="#5b5249">opposite · about 50 m</text>
+        </g>
+
+        <!-- Road -->
+        <rect x="0" y="82" width="540" height="62" fill="#2a2622"/>
+        <line x1="0" y1="113" x2="540" y2="113" stroke="#d9b45f" stroke-width="2.5" stroke-dasharray="22 14"/>
+        <text x="14" y="104" font-size="14" font-weight="700" fill="#f6f1e8">24 m (80 ft) wide road</text>
+        <text x="526" y="135" text-anchor="end" font-size="12" fill="#cfc6b3">width not drawn to scale</text>
+
+        <!-- Plot -->
+        <rect [attr.x]="plot.x" [attr.y]="plot.y" [attr.width]="plot.w" [attr.height]="plot.h" fill="#e7dcc0"/>
+        <rect class="draw-path" pathLength="1" [attr.x]="plot.x" [attr.y]="plot.y" [attr.width]="plot.w" [attr.height]="plot.h" fill="none" stroke="#1b1714" stroke-width="3"/>
+
+        <!-- Ground structure -->
+        <rect [attr.x]="ground.x" [attr.y]="ground.y" [attr.width]="ground.w" [attr.height]="ground.h" fill="#f6efdc" stroke="#1b1714" stroke-width="1.6"/>
+        <!-- Upper floors -->
+        <rect [attr.x]="upper.x" [attr.y]="upper.y" [attr.width]="upper.w" [attr.height]="upper.h" fill="none" stroke="#8a6a21" stroke-width="1.6" stroke-dasharray="7 5"/>
+        <!-- Glass front -->
+        <rect [attr.x]="upper.x" [attr.y]="upper.y" [attr.width]="upper.w" [attr.height]="len(5)" fill="#d4e6e1" stroke="#7fb3a8" stroke-width="1"/>
+        <!-- Lift and stair core -->
+        <rect [attr.x]="core.x" [attr.y]="core.y" [attr.width]="core.w" [attr.height]="core.h" fill="#fff" stroke="#1b1714" stroke-width="1.4"/>
+        <text [attr.x]="core.x + core.w / 2" [attr.y]="core.y + core.h / 2 - 4" text-anchor="middle" font-size="11" font-weight="700" fill="#1b1714">LIFT</text>
+        <text [attr.x]="core.x + core.w / 2" [attr.y]="core.y + core.h / 2 + 11" text-anchor="middle" font-size="11" font-weight="700" fill="#1b1714">STAIR</text>
+
+        <text [attr.x]="ground.x + ground.w / 2 - 24" [attr.y]="ground.y + 150" text-anchor="middle" font-size="14" font-weight="700" fill="#1b1714">SHRINEVA</text>
+        <text [attr.x]="ground.x + ground.w / 2 - 24" [attr.y]="ground.y + 168" text-anchor="middle" font-size="11" fill="#5b5249">Ground + 3 floors</text>
+
+        <!-- Frontage: callout to the left of the plot, so it never sits on the drawing -->
+        <g fill="#8a6a21" stroke="#8a6a21">
+          <line [attr.x1]="plot.x - 38" [attr.y1]="plot.y + 18" [attr.x2]="plot.x - 4" [attr.y2]="plot.y + 18" stroke-width="2"/>
+          <path [attr.d]="'M' + (plot.x - 4) + ' ' + (plot.y + 18) + 'l-8 -5v10z'" stroke="none"/>
+          <text [attr.x]="plot.x - 44" [attr.y]="plot.y + 16" text-anchor="end" font-size="12" font-weight="700" stroke="none" letter-spacing="0.6">OPEN FRONTAGE</text>
+          <text [attr.x]="plot.x - 44" [attr.y]="plot.y + 31" text-anchor="end" font-size="12" stroke="none">about 50 ft wide</text>
+        </g>
+
+        <!-- Dimensions: plot width (below) -->
+        <g stroke="#1b1714" stroke-width="1" fill="#1b1714" font-size="13">
+          <line [attr.x1]="plot.x" [attr.y1]="plot.y + plot.h + 22" [attr.x2]="plot.x + plot.w" [attr.y2]="plot.y + plot.h + 22"/>
+          <line [attr.x1]="plot.x" [attr.y1]="plot.y + plot.h + 14" [attr.x2]="plot.x" [attr.y2]="plot.y + plot.h + 30"/>
+          <line [attr.x1]="plot.x + plot.w" [attr.y1]="plot.y + plot.h + 14" [attr.x2]="plot.x + plot.w" [attr.y2]="plot.y + plot.h + 30"/>
+          <text [attr.x]="plot.x + plot.w / 2" [attr.y]="plot.y + plot.h + 46" text-anchor="middle" stroke="none" font-weight="700">Plot width {{ label(W) }}</text>
+          <!-- Plot length (right) -->
+          <line [attr.x1]="plot.x + plot.w + 30" [attr.y1]="plot.y" [attr.x2]="plot.x + plot.w + 30" [attr.y2]="plot.y + plot.h"/>
+          <line [attr.x1]="plot.x + plot.w + 22" [attr.y1]="plot.y" [attr.x2]="plot.x + plot.w + 38" [attr.y2]="plot.y"/>
+          <line [attr.x1]="plot.x + plot.w + 22" [attr.y1]="plot.y + plot.h" [attr.x2]="plot.x + plot.w + 38" [attr.y2]="plot.y + plot.h"/>
+          <text [attr.x]="plot.x + plot.w + 48" [attr.y]="plot.y + plot.h / 2" text-anchor="middle" stroke="none" font-weight="700" [attr.transform]="'rotate(90 ' + (plot.x + plot.w + 48) + ' ' + (plot.y + plot.h / 2) + ')'">Plot length {{ label(L) }}</text>
+        </g>
+
+        <!-- Setbacks -->
+        <g font-size="12" fill="#5b5249" text-anchor="middle">
+          <text [attr.x]="plot.x + plot.w / 2" [attr.y]="plot.y + 30" font-weight="700" fill="#1b1714">Front setback {{ label(N) }}</text>
+          <text [attr.x]="plot.x + plot.w / 2" [attr.y]="plot.y + plot.h - len(S) / 2 + 4">Rear setback {{ label(S) }}</text>
+          <text [attr.x]="plot.x + len(Wst) / 2 - 1" [attr.y]="plot.y + len(N) + 190" [attr.transform]="'rotate(-90 ' + (plot.x + len(Wst) / 2 - 1) + ' ' + (plot.y + len(N) + 190) + ')'" font-size="11">West {{ label(Wst) }}</text>
+          <text [attr.x]="plot.x + len(eastMid)" [attr.y]="plot.y + len(N) + 300" [attr.transform]="'rotate(90 ' + (plot.x + len(eastMid)) + ' ' + (plot.y + len(N) + 300) + ')'" font-size="11">East {{ label(E) }}</text>
+        </g>
+
+        <!-- East walkway from the road to the lift lobby -->
+        <path [attr.d]="'M' + (plot.x + len(eastMid)) + ' ' + (plot.y + 4) + ' V' + (core.y + 66)" fill="none" stroke="#2a6f68" stroke-width="2.4" stroke-dasharray="6 5"/>
+        <path [attr.d]="'M' + (plot.x + len(eastMid) - 7) + ' ' + (core.y + 58) + 'h14l-7 12z'" fill="#2a6f68"/>
+
+        <!-- Fire exit -->
+        <rect [attr.x]="ground.x + ground.w - 62" [attr.y]="ground.y + ground.h - 22" width="58" height="18" rx="9" fill="#168a4b"/>
+        <text [attr.x]="ground.x + ground.w - 33" [attr.y]="ground.y + ground.h - 9" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">FIRE EXIT</text>
+
+        <!-- North arrow -->
+        <g transform="translate(40 640)">
+          <circle r="22" fill="#fff" stroke="#1b1714" stroke-width="1.6"/>
+          <path d="M0 -14l8 26-8-6-8 6z" fill="#1b1714"/>
+          <text y="-30" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1714">N</text>
+        </g>
+        <!-- Scale bar: 20 ft -->
+        <g transform="translate(30 702)" font-size="11" fill="#1b1714">
+          <rect x="0" y="0" [attr.width]="len(10)" height="6" fill="#1b1714"/>
+          <rect [attr.x]="len(10)" y="0" [attr.width]="len(10)" height="6" fill="#fff" stroke="#1b1714"/>
+          <text x="0" y="20">0</text><text [attr.x]="len(10)" y="20" text-anchor="middle">10</text><text [attr.x]="len(20)" y="20" text-anchor="end">20 ft</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="flex flex-col gap-4 p-4 md:p-6">
+      <div>
+        <p class="font-mono text-[0.62rem] uppercase tracking-[0.15em] text-brass-deep">Setbacks from the boundary</p>
+        <dl class="mt-2 grid grid-cols-2 gap-2">
+          <div *ngFor="let b of setbacks" class="rounded-xl border border-ink/10 bg-paper px-3 py-2">
+            <dt class="font-mono text-[0.58rem] uppercase tracking-[0.13em] text-ink/70">{{ b.side }}</dt>
+            <dd class="mt-0.5 text-[0.95rem] font-semibold text-ink">{{ b.value }}</dd>
+          </div>
+        </dl>
+      </div>
+      <dl class="grid gap-2 text-[0.88rem]">
+        <div class="flex justify-between gap-4 border-b border-ink/10 pb-2"><dt class="text-ink/70">Plot</dt><dd class="text-right font-semibold text-ink">{{ plan.plot.areaSqM }} sq m, {{ label(W) }} × {{ label(L) }}</dd></div>
+        <div class="flex justify-between gap-4 border-b border-ink/10 pb-2"><dt class="text-ink/70">Road</dt><dd class="text-right font-semibold text-ink">{{ plan.plot.roadWidthM }} m (80 ft) wide, to the north</dd></div>
+        <div class="flex justify-between gap-4 border-b border-ink/10 pb-2"><dt class="text-ink/70">Ground structure</dt><dd class="text-right font-semibold text-ink">35′-6″ × 84′-6″</dd></div>
+        <div class="flex justify-between gap-4 border-b border-ink/10 pb-2"><dt class="text-ink/70">Floors 1 to 3</dt><dd class="text-right font-semibold text-ink">40′-6″ × 89′-6″, 5 ft towards the road</dd></div>
+      </dl>
+      <ul class="grid gap-1.5 text-[0.8rem] text-ink/80" aria-label="Legend">
+        <li class="flex items-center gap-2"><span class="h-3 w-5 rounded-sm border border-ink bg-[#f6efdc]" aria-hidden="true"></span>Ground structure</li>
+        <li class="flex items-center gap-2"><span class="h-3 w-5 rounded-sm border border-dashed border-[#8a6a21]" aria-hidden="true"></span>Floors 1 to 3 above</li>
+        <li class="flex items-center gap-2"><span class="h-3 w-5 rounded-sm bg-[#d4e6e1] ring-1 ring-[#7fb3a8]" aria-hidden="true"></span>Glass front on the road</li>
+        <li class="flex items-center gap-2"><span class="h-0.5 w-5 bg-[#2a6f68]" aria-hidden="true"></span>Walkway to the lift lobby</li>
+      </ul>
+      <p class="text-[0.74rem] leading-snug text-ink/70">Drawn from the architect's dimensions. Dimensions as marked; the road width and the neighbours are not drawn to scale. Not for construction.</p>
+    </div>
+  </div>
+</figure>

@@ -45,5 +45,5 @@ export class TiltDirective implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void { cancelAnimationFrame(this.raf); this.cleanup.forEach((f) => f()); }
+  ngOnDestroy(): void { if (this.raf && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this.raf); this.cleanup.forEach((f) => f()); }
 }

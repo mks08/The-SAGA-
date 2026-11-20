@@ -37,5 +37,9 @@ export class ParallaxDirective implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void { this.io?.disconnect(); removeEventListener('scroll', this.onScroll); cancelAnimationFrame(this.raf); }
+  ngOnDestroy(): void {
+    this.io?.disconnect();
+    if (typeof removeEventListener === 'function') removeEventListener('scroll', this.onScroll);
+    if (this.raf && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this.raf);
+  }
 }

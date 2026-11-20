@@ -8,7 +8,7 @@ export interface DistanceRow { id: string; name: string; value: string; note?: s
 
 export const NEARBY_DISTANCES: DistanceRow[] = [
   { id: 'nift', name: 'NIFT Varanasi campus', value: '≈ 100 m', note: 'Near the plot', footer: true },
-  { id: 'apollo', name: 'Apollo Hospital (upcoming)', value: 'Opposite', note: 'Under construction, not yet operational', footer: true },
+  { id: 'apollo', name: 'Apollo Hospital (upcoming)', value: '≈ 50 m', note: 'Opposite the plot; under construction, not yet operational', footer: true },
   { id: 'trade', name: 'Varanasi Trade Centre', value: '≈ 330 m', note: 'Along the road', footer: true },
   { id: 'vardhan', name: 'Vardhan Hospital, Lalpur', value: 'Nearby', note: 'Bada Lalpur, opposite the Trade Centre', footer: true },
   { id: 'ring', name: 'Ring Road (NH 135B)', value: '≈ 1 km', note: 'By road', footer: true },

@@ -9,7 +9,7 @@ interface RailItem { id: string; label: string; }
  * A slim dot rail on the right edge of the home page: shows where you are and jumps to a section.
  * Built from the `data-rail` attributes in the page, so a new section only needs that attribute. Desktop only.
  * Only the dots take clicks (the container and the hidden hover labels are pointer-events-none), so the rail never sits on top of
- * page controls such as the hero's Golden hour / Night switch on 1280-1366 px laptop screens.
+ * page controls on 1280-1366 px laptop screens.
  */
 @Component({
   selector: 'app-section-rail',

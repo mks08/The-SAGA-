@@ -1,0 +1,28 @@
+:host { display: block; }
+
+/* Stage markers. Mobile: a vertical list with the rail down the left. md and up: four columns with the rail across the top. */
+.node { background: rgb(var(--paper)); border-color: rgb(var(--ink) / 0.25); color: rgb(var(--ink) / 0.55); }
+.rail { left: 15px; top: 2.2rem; bottom: 0.2rem; width: 2px; background: repeating-linear-gradient(to bottom, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
+.state { color: rgb(var(--ink) / 0.6); }
+
+.st-done .node { background: rgb(var(--ok)); border-color: rgb(var(--ok)); color: #fff; }
+.st-done .rail { background: rgb(var(--ok)); }
+.st-done .state { color: rgb(var(--ok)); }
+
+.st-active .node { border-color: rgb(var(--brass-deep)); background: rgb(var(--brass-soft) / 0.35); }
+.st-active .rail { background: linear-gradient(to bottom, rgb(var(--brass-deep)) 0 45%, transparent 45%), repeating-linear-gradient(to bottom, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
+.st-active .state { color: rgb(var(--brass-deep)); }
+.st-active .dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgb(var(--brass-deep)); animation: ping2 2.4s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+.st-target .node { background: rgb(var(--ink)); border-color: rgb(var(--ink)); color: rgb(var(--brass)); }
+.st-target .state { color: rgb(var(--ink)); font-weight: 700; }
+
+@media (min-width: 768px) {
+  .rail { left: 2.4rem; right: 0.4rem; top: 15px; bottom: auto; width: auto; height: 2px; background: repeating-linear-gradient(to right, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
+  .st-done .rail { background: rgb(var(--ok)); }
+  .st-active .rail { background: linear-gradient(to right, rgb(var(--brass-deep)) 0 45%, transparent 45%), repeating-linear-gradient(to right, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-active .dot::after { animation: none; opacity: 0; }
+}

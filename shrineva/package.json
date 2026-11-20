@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "postbuild": "node scripts/prerender.js && node scripts/build-seo.js",
-    "build:seo": "node scripts/prerender.js && node scripts/build-seo.js"
+    "build:seo": "node scripts/prerender.js && node scripts/build-seo.js",
+    "indexnow": "node scripts/indexnow.js"
   },
   "private": true,
   "engines": {
