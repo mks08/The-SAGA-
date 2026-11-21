@@ -197,43 +197,33 @@ h1 em,h2 em{color:var(--deep);font-style:italic}
 
 /* Page 1 · cover */
 .p1 .ttl{padding:2mm 16mm 0}
-.p1 h1{font-size:34pt;margin-top:3.2mm}
-.p1 .lead{margin-top:3.4mm;font-size:10.6pt;max-width:152mm;color:rgba(16,14,12,.8)}
-.rowA{display:grid;grid-template-columns:96mm 1fr;gap:6mm;padding:6mm 16mm 0}
-.render{position:relative;border-radius:3.2mm;overflow:hidden;height:68mm}
-.render img{width:100%;height:100%;object-fit:cover;object-position:50% 56%;display:block}
+.p1 h1{font-size:35pt;margin-top:3.4mm}
+.p1 .lead{margin-top:3.6mm;font-size:10.8pt;max-width:172mm;color:rgba(16,14,12,.8)}
+.fw{margin:8mm 16mm 0;border-top:.3mm solid var(--ink);border-bottom:.25mm solid rgba(16,14,12,.25)}
+.fr{display:grid}
+.fr.a{grid-template-columns:repeat(6,1fr)}
+.fr.b{grid-template-columns:repeat(4,1fr);border-top:.25mm solid rgba(16,14,12,.22);background:rgba(190,142,62,.1)}
+.fr>div{padding:3.4mm 2mm 3.4mm 0}
+.fr>div+div{padding-left:3mm;border-left:.25mm solid rgba(16,14,12,.18)}
+.fr.b>div{padding-left:3.4mm}
+.fr .v{font-family:'Instrument Serif',serif;font-size:23pt;line-height:1}
+.fr .l{margin-top:1.7mm;font-weight:700;font-size:8.6pt;line-height:1.25}
+.fr .s{margin-top:.7mm;font-size:7.6pt;line-height:1.3;color:rgba(16,14,12,.7)}
+.band{display:grid;grid-template-columns:84mm 1fr;gap:7mm;padding:9mm 16mm 0;align-items:stretch}
+.render{position:relative;border-radius:3.2mm;overflow:hidden;min-height:60mm}
+.render img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:46% 60%;display:block}
 .render .chip{position:absolute;left:3mm;bottom:3mm;background:rgba(255,255,255,.92);padding:1mm 2.8mm;border-radius:8mm;color:rgba(16,14,12,.8);font-size:7.2pt}
-.addr{padding:4.2mm 5mm;display:flex;flex-direction:column;justify-content:space-between}
-.addr .pl1{font-family:'Instrument Serif',serif;font-size:25pt;line-height:1;margin-top:1.4mm}
-.addr .a2{font-size:9pt;line-height:1.4;margin-top:1.6mm;color:rgba(16,14,12,.82)}
-.addr .opp{display:flex;align-items:center;gap:2.4mm;flex-wrap:wrap;margin-top:2.6mm;padding:2.2mm 2.8mm;border-radius:2.6mm;background:var(--apollo);color:#fff;font-weight:700;font-size:9.4pt;line-height:1.25}
-.addr .opp .mono{background:var(--soft);color:var(--ink);padding:.6mm 2mm;border-radius:6mm;font-size:7.2pt;letter-spacing:.1em}
-.addr .road{font-size:8pt;line-height:1.4;color:rgba(16,14,12,.78)}
-.tiles{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:3mm;padding:5mm 16mm 0}
-.tile{border-radius:3mm;padding:3.2mm 4mm 3.4mm;background:var(--ink2);color:var(--paper)}
-.tile .v{font-family:'Instrument Serif',serif;font-size:17.5pt;line-height:1.05}
-.tile .s{font-size:7.6pt;line-height:1.35;margin-top:1mm;color:rgba(240,234,222,.8)}
-.tile.l{background:var(--paper2);color:var(--ink);border:.25mm solid rgba(16,14,12,.18)}
-.tile.l .s{color:rgba(16,14,12,.72)}
-.nb{padding:5.4mm 16mm 0}
-.nb .nh{display:flex;justify-content:space-between;align-items:baseline;color:var(--deep)}
-.nb .nh span+span{color:rgba(16,14,12,.64)}
-.ng{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:2.6mm;margin-top:2.2mm}
-.nc{background:#fff;border:.25mm solid rgba(16,14,12,.14);border-radius:3mm;padding:3mm 3.2mm 3mm;display:flex;flex-direction:column;justify-content:space-between;min-height:30mm}
-.nc b{font-size:9pt;line-height:1.2;color:var(--deep);font-weight:800;display:block}
-.nc small{font-size:7.5pt;color:rgba(16,14,12,.7);line-height:1.3;margin-top:.8mm;display:block}
-.nc .dist{font-family:'Instrument Serif',serif;font-size:18pt;line-height:1;color:var(--ink);margin-top:2mm}
-.nc.ap{background:var(--apollo);border-color:var(--apollo);color:#fff}
-.nc.ap .bd{align-self:flex-start;background:var(--soft);color:var(--ink);border-radius:6mm;padding:.7mm 2.2mm;font-size:7.2pt;letter-spacing:.1em;margin-bottom:1.8mm}
-.nc.ap b{font-family:'Instrument Serif',serif;font-weight:400;font-size:19pt;line-height:1;color:#fff}
-.nc.ap small{color:rgba(255,255,255,.86);font-size:7.4pt}
-.nc.ap .dist{color:#fff;font-size:24pt}
-.facts{margin:5mm 16mm 0;display:grid;grid-template-columns:repeat(6,1fr);border-top:.3mm solid var(--ink);border-bottom:.25mm solid rgba(16,14,12,.25)}
-.facts>div{padding:3mm 2mm 3mm 0}
-.facts>div+div{padding-left:3mm;border-left:.25mm solid rgba(16,14,12,.18)}
-.facts .v{font-family:'Instrument Serif',serif;font-size:21pt;line-height:1}
-.facts .l{margin-top:1.6mm;font-weight:700;font-size:7.8pt;line-height:1.25}
-.facts .s{margin-top:.6mm;font-size:7.2pt;line-height:1.3;color:rgba(16,14,12,.68)}
+.nl .nh{display:flex;justify-content:space-between;align-items:baseline;color:var(--deep)}
+.nl .nh span+span{color:rgba(16,14,12,.64)}
+.nl .rows{margin-top:1.2mm}
+.nl .rows>div{display:flex;justify-content:space-between;align-items:center;gap:3mm;padding:2.8mm 0;border-bottom:.2mm solid rgba(16,14,12,.16)}
+.nl b{display:block;font-size:9.2pt;line-height:1.25;font-weight:500}
+.nl small{display:block;font-size:7.7pt;line-height:1.3;color:rgba(16,14,12,.68);margin-top:.3mm}
+.nl .d{font-family:'Instrument Serif',serif;font-size:14.5pt;color:var(--deep);white-space:nowrap}
+.nl .hi b{font-weight:800;font-size:10.8pt;color:var(--ink)}
+.nl .hi b:before{content:'';display:inline-block;width:1.8mm;height:1.8mm;border-radius:50%;background:var(--brass);margin-right:1.8mm;vertical-align:.15mm}
+.nl .hi .d{font-size:19pt;color:var(--ink)}
+.nl .note{margin-top:2.4mm;font-size:7.6pt;line-height:1.4;color:rgba(16,14,12,.7)}
 .dark{position:absolute;left:0;right:0;bottom:0;height:47mm;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1.05fr 1.25fr .8fr;gap:7mm;align-items:center;padding:0 16mm}
 .dark .k{color:var(--soft);font-size:7.2pt}
 .dark a{display:block;font-weight:700;font-size:10.4pt;line-height:1.6}
@@ -249,19 +239,14 @@ h1 em,h2 em{color:var(--deep);font-style:italic}
 .sh .tb{background:var(--paper2);display:flex;justify-content:space-between;align-items:center;padding:2.4mm 3.8mm}
 .sh .tb b{font-family:'Instrument Serif',serif;font-weight:400;font-size:13.5pt}
 .sh .tb span{color:rgba(16,14,12,.7);font-size:7.2pt}
-.sh .im{background:#f6f2e8;display:flex;justify-content:center;align-items:center;height:161mm;padding:0}
+.sh .im{background:#f6f2e8;display:flex;justify-content:center;align-items:center;height:172mm;padding:0}
 .sh .im img{max-width:100%;max-height:100%;width:auto;height:auto;display:block}
-.key{margin:4.2mm 16mm 0;display:flex;align-items:center;gap:5mm;padding:2.6mm 4mm;border:.25mm solid rgba(16,14,12,.14);background:#fff;border-radius:3mm}
-.key ul{list-style:none;display:flex;flex-wrap:wrap;gap:1.4mm 4.6mm;font-size:7.7pt;font-weight:600}
-.key li{display:flex;align-items:center;gap:1.8mm;white-space:nowrap}
-.key i{display:inline-block;width:4mm;height:3mm;border-radius:.6mm;flex:none}
-.key li b{font-family:'DM Mono',monospace;font-weight:500}
-.stats{min-height:21.5mm;display:grid;grid-template-columns:1.25fr 1.05fr .9fr;border-top:.25mm solid rgba(16,14,12,.16)}
+.stats{min-height:25mm;display:grid;grid-template-columns:1.25fr 1.05fr .9fr;border-top:.25mm solid rgba(16,14,12,.16)}
 .stats>div{padding:2.4mm 2.6mm 2.6mm}
 .stats>div+div{border-left:.25mm solid rgba(16,14,12,.14)}
 .stats .k{color:var(--deep);font-size:7.2pt;letter-spacing:.05em;white-space:nowrap}
-.stats b{display:block;font-family:'Instrument Serif',serif;font-weight:400;font-size:14.5pt;line-height:1.05;margin-top:.9mm}
-.stats small{display:block;font-size:7.5pt;line-height:1.3;color:rgba(16,14,12,.72);margin-top:.5mm}
+.stats b{display:block;font-family:'Instrument Serif',serif;font-weight:400;font-size:16pt;line-height:1.05;margin-top:.9mm}
+.stats small{display:block;font-size:7.8pt;line-height:1.3;color:rgba(16,14,12,.72);margin-top:.5mm}
 .sh .v3{border-top:.25mm solid rgba(16,14,12,.16);position:relative}
 .sh .v3{margin-top:auto}
 .sh .v3 img{width:100%;height:34mm;object-fit:cover;display:block}
@@ -294,53 +279,39 @@ h1 em,h2 em{color:var(--deep);font-style:italic}
 .chg{margin:3.4mm 16mm 0;display:grid;grid-template-columns:44mm 1fr;gap:4mm;align-items:start}
 .chg b{font-family:'Instrument Serif',serif;font-weight:400;font-size:12.5pt;line-height:1.1}
 
-/* Page 4 · location, the building and how to lease */
-.row4{display:grid;grid-template-columns:72mm 1fr;gap:7mm;padding:3.4mm 16mm 0;align-items:start}
-.site{background:#f6f2e8;overflow:hidden}
-.site img{width:100%;display:block}
-.near>div{display:flex;justify-content:space-between;align-items:center;gap:3mm;padding:1.9mm 0;border-bottom:.2mm solid rgba(16,14,12,.16)}
-.near b{font-size:8.6pt;display:block;line-height:1.25;color:var(--deep);font-weight:800}
-.near small{font-size:7.5pt;color:rgba(16,14,12,.68);display:block;line-height:1.3}
-.near .d{font-family:'Instrument Serif',serif;font-size:13pt;color:var(--ink);white-space:nowrap}
-.near .apr{background:var(--apollo);border-radius:2.4mm;padding:2.2mm 3mm;border-bottom:0;margin-bottom:.6mm}
-.near .apr b{color:#fff;font-size:10pt}
-.near .apr small{color:rgba(255,255,255,.86)}
-.near .apr .d{color:#fff;font-size:16pt}
-.sb{display:grid;grid-template-columns:1fr 1fr;gap:1.6mm;margin-top:2mm}
-.sb>div{background:#fff;border:.2mm solid rgba(16,14,12,.12);border-radius:2.4mm;padding:1.5mm 2.6mm}
-.sb .mono{font-size:7.2pt;color:rgba(16,14,12,.68)}
-.sb b{font-size:9pt}
-.glance{display:grid;grid-template-columns:repeat(3,1fr);gap:2.6mm;padding:4mm 16mm 0}
-.gl{padding:2.8mm 3.4mm 3mm}
-.gl .k{color:var(--deep);font-size:7.2pt;letter-spacing:.1em}
-.gl b{display:block;font-family:'Instrument Serif',serif;font-weight:400;font-size:13.5pt;line-height:1.1;margin-top:.8mm}
-.gl small{display:block;font-size:7.7pt;line-height:1.35;color:rgba(16,14,12,.74);margin-top:.7mm}
-.duo{display:grid;grid-template-columns:1fr 1fr;gap:6mm;padding:4mm 16mm 0}
-.uses{display:flex;flex-wrap:wrap;gap:1.6mm;margin-top:2mm}
-.uses span{border:.25mm solid rgba(16,14,12,.25);background:#fff;border-radius:6mm;padding:1.1mm 2.8mm;font-weight:700;font-size:7.6pt}
-.how{list-style:none;counter-reset:s;margin-top:1.6mm;display:grid;gap:1.4mm}
-.how li{counter-increment:s;display:flex;gap:2.6mm;align-items:baseline;font-size:7.8pt;line-height:1.35}
-.how li:before{content:counter(s);font-family:'Instrument Serif',serif;font-size:13pt;color:var(--deep);width:4mm;flex:none}
-.how b{font-weight:800}
-.cta{position:absolute;left:16mm;right:16mm;bottom:34mm;height:44mm;border-radius:4mm;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1fr 30mm 30mm;gap:5mm;padding:4.6mm 6mm;align-items:center}
+/* Page 4 · map, specification and contacts */
+.mapw{position:relative;margin:4.4mm 16mm 0;border-radius:3.5mm;overflow:hidden;border:.25mm solid rgba(16,14,12,.16);background:#e9e7df}
+.mapw>img{display:block;width:100%;height:auto}
+.mapw .gm{position:absolute;left:3.2mm;top:3.2mm;background:var(--ink);color:var(--paper);padding:1.5mm 3.6mm;border-radius:7mm;font-weight:700;font-size:8.2pt}
+.mapw .nt{position:absolute;left:45mm;top:3.2mm;background:rgba(255,255,255,.92);padding:1.5mm 3mm;border-radius:7mm;font-size:7.2pt;color:rgba(16,14,12,.78)}
+.spec{padding:5.4mm 16mm 0}
+.spec .sh2{display:flex;justify-content:space-between;align-items:baseline;color:var(--deep)}
+.spec .sh2 span+span{color:rgba(16,14,12,.64)}
+.spec .tbl{display:grid;grid-template-columns:1fr 1fr;column-gap:9mm;margin-top:1.4mm}
+.spec .r{display:grid;grid-template-columns:32mm 1fr;gap:3mm;padding:1.7mm 0;border-bottom:.2mm solid rgba(16,14,12,.16);align-items:baseline}
+.spec .r .k{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em;font-size:7.2pt;color:rgba(16,14,12,.66);line-height:1.3}
+.spec .r .v{font-weight:700;font-size:8.8pt;line-height:1.3}
+.spec .r .v small{font-weight:500;color:rgba(16,14,12,.7);font-size:7.7pt}
+.cta{margin:5mm 16mm 0;border-radius:4mm;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1fr 29mm 29mm;gap:5mm;padding:4.4mm 6mm;align-items:center}
 .cta h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:18pt;line-height:1.05}
-.cta .lines a{display:block;font-weight:700;font-size:9.6pt;line-height:1.6}
-.cta .lines .k{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.12em;font-size:7.2pt;color:var(--soft);display:inline-block;width:35mm;font-weight:400;white-space:nowrap}
+.cta .lines{margin-top:1.8mm}
+.cta .lines a{display:block;font-weight:700;font-size:9.4pt;line-height:1.55}
+.cta .lines .k{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.12em;font-size:7.2pt;color:var(--soft);display:inline-block;width:30mm;font-weight:400;white-space:nowrap}
 .qr{text-align:center}
 .qr img{width:25mm;height:25mm;background:#fff;padding:1.4mm;border-radius:2.2mm;display:block;margin:0 auto}
 .qr p{margin-top:1.4mm;font-size:7.2pt;line-height:1.3;color:rgba(240,234,222,.82)}
-.disc{position:absolute;left:16mm;right:16mm;bottom:18.5mm}
+.disc{margin:3.6mm 16mm 0}
 `;
 
 const near = [
-  ['NIFT Varanasi campus', 'Near the plot', '≈ 100 m'],
-  ['Apollo Hospital (upcoming)', 'Opposite the plot; under construction, not yet operational', '≈ 50 m'],
-  ['Varanasi Trade Centre', 'Along the road', '≈ 330 m'],
-  ['Vardhan Hospital, Lalpur', 'Bada Lalpur, opposite the Trade Centre', 'Nearby'],
-  ['Ring Road (NH 135B)', 'By road', '≈ 1 km'],
+  ['Apollo Hospital (upcoming)', 'Opposite the plot; under construction, not yet operational', '≈ 50 m', true],
+  ['NIFT Varanasi campus', 'Near the plot', '≈ 100 m', true],
+  ['Varanasi Trade Centre', 'Along the road', '≈ 330 m', false],
+  ['Vardhan Hospital, Lalpur', 'Bada Lalpur, opposite the Trade Centre', 'Nearby', false],
+  ['Ring Road (NH 135B)', 'By road', '≈ 1 km', false],
 ];
 
-const facts = [
+const factsA = [
   ['50 ft', 'Road frontage', 'About, on the road side'],
   ['24 m', 'Wide road', 'North-facing, 80 ft'],
   ['12+', 'Covered parking', 'Cars, at ground level'],
@@ -348,14 +319,30 @@ const facts = [
   ['≈ 3,500', 'Sq ft per floor', 'Gross, Floors 1 to 3'],
   ['Every', 'Level has a fire exit', 'Marked on each plan'],
 ];
-
-const USES = ['Clinic, lab or diagnostics', 'Bank or NBFC branch', 'Office, IT or corporate', 'Showroom or shop', 'Restaurant or café', 'Coaching or education', 'Fitness or coworking'];
-const STEPS = [
-  ['Tell us what you need', 'Area, use and timing, by form, call or WhatsApp.'],
-  ['See it', 'Floor options, this brochure and a visit to the plot.'],
-  ['Agree the terms', 'Commercial terms, fit-out and floor condition, in writing.'],
+const factsB = [
+  ['Ground + 3', 'Parking and three floors', 'Ground (Parking), Floors 1 to 3'],
+  ['Vastu', 'Compliant', 'Layout and orientation'],
+  ['VDA', 'Approved', 'Varanasi Development Authority'],
+  ['High', 'Footfall potential', 'Near NIFT, opposite the upcoming Apollo Hospital'],
 ];
+const row = (f) => `<div><div class="v">${f[0]}</div><div class="l">${f[1]}</div><div class="s">${f[2]}</div></div>`;
 
+const SPEC = [
+  ['Project', 'SHRINEVA, Bada Lalpur, Varanasi'],
+  ['Plot area', '≈ 525 sq m <small>(≈ 5,650 sq ft)</small>'],
+  ['Road', '24 m wide, north-facing'],
+  ['Frontage', '≈ 50 ft'],
+  ['Configuration', 'Ground (Parking) + 3 floors'],
+  ['Gross floor area', '≈ 3,500 sq ft <small>(Floors 1 to 3)</small>'],
+  ['Carpet floor area', '≈ 3,100 sq ft <small>(Floors 1 to 3)</small>'],
+  ['Floor to floor', 'Ground ≈ 9′-6″ · Floors ≈ 11′-6″'],
+  ['Parking', '12+ cars, ground level'],
+  ['Lift', '10-passenger, serves every level'],
+  ['Fire escape', 'Dedicated exit on every level'],
+  ['Setbacks', 'Front 15′-8″ · Rear 15′-4½″ · East 8′-11½″ · West 5′-0″'],
+  ['Building status', 'Under construction'],
+  ['Target completion', `${PROJECT_STATUS.completion.value}, subject to approvals`],
+];
 const COORD = '25.383306° N, 82.978028° E';
 const bfoot = (n) => `<div class="foot mono"><span class="fl"><img class="wm" src="${I('logo.png')}" alt="SHRINEVA"> Plot D-15, Bada Lalpur, Varanasi</span><span><a href="mailto:${EMAIL}">${EMAIL}</a> · <a href="tel:${PHONE1_E}">${PHONE1}</a> · ${n} / 4</span></div>`;
 const bhdr = (tag) => `<div class="hdr s">${lockup(11.5)}<span class="mono tag">${tag}</span></div>`;
@@ -368,37 +355,22 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
 <section class="page p1">
   <div class="hdr">${lockup(13)}<span class="mono tag">Lease · whole floor or part floor</span></div>
   <div class="ttl">
-    <div class="eyebrow mono">Plot D-15 · Bada Lalpur · Varanasi</div>
+    <div class="eyebrow mono">Plot D-15 · Bada Lalpur · Opp. Apollo Hospital (upcoming) · Varanasi</div>
     <h1>Commercial &amp; mixed&#8209;use space in <em>Bada&nbsp;Lalpur, Varanasi.</em></h1>
-    <p class="lead">Three open floors on a 24 m wide north&#8209;facing road. Lease a whole floor, part of a floor, or more than one.</p>
+    <p class="lead">Opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi, on a 24 m wide north&#8209;facing road. Lease a whole floor, part of a floor, or more than one.</p>
   </div>
-  <div class="rowA">
+  <div class="fw">
+    <div class="fr a">${factsA.map(row).join('')}</div>
+    <div class="fr b">${factsB.map(row).join('')}</div>
+  </div>
+  <div class="band">
     <div class="render"><img src="${I('hero.jpg')}" alt="Indicative 3D render of the SHRINEVA building"><span class="chip mono">Indicative 3D render</span></div>
-    <div class="card addr">
-      <div>
-        <div class="mono" style="color:var(--deep)">Address</div>
-        <div class="pl1">Plot D-15</div>
-        <div class="a2">Lalpur Housing Scheme, Bada Lalpur,<br>Varanasi, Uttar Pradesh 221003</div>
-      </div>
-      <div class="opp"><span class="mono">Opp.</span><span>Apollo Hospital <span style="font-weight:500;opacity:.9">(upcoming)</span></span></div>
-      <div class="road">On a 24 m wide north&#8209;facing road, about 100 m from NIFT Varanasi.</div>
+    <div class="nl">
+      <div class="nh mono"><span>Nearby</span><span>From the plot, approximate</span></div>
+      <div class="rows">${near.map((n) => `<div${n[3] ? ' class="hi"' : ''}><span><b>${n[0]}</b><small>${n[1]}</small></span><span class="d"${n[2] === 'Nearby' ? ' style="font-size:11pt"' : ''}>${n[2]}</span></div>`).join('')}</div>
+      <p class="note">Approximate distances from the plot. The Apollo Hospital is upcoming and under construction.</p>
     </div>
   </div>
-  <div class="tiles">
-    <div class="tile"><div class="v">Ground (Parking) + 3</div><div class="s">Parking level and three commercial floors</div></div>
-    <div class="tile l"><div class="v">Vastu compliant</div><div class="s">Layout and orientation</div></div>
-    <div class="tile l"><div class="v">VDA approved</div><div class="s">Varanasi Development Authority</div></div>
-  </div>
-  <div class="nb">
-    <div class="nh mono"><span>Nearby</span><span>Distances from the plot, approximate</span></div>
-    <div class="ng">
-      <div class="nc ap"><div><span class="bd mono" style="display:inline-block">Main landmark · Upcoming</span><b>Apollo Hospital</b><small>Opposite the plot. Under construction, not yet operational.</small></div><div class="dist">≈ 50 m</div></div>
-      <div class="nc"><div><b>NIFT Varanasi</b><small>Campus, near the plot</small></div><div class="dist">≈ 100 m</div></div>
-      <div class="nc"><div><b>Varanasi Trade Centre</b><small>Along the road</small></div><div class="dist">≈ 330 m</div></div>
-      <div class="nc"><div><b>Ring Road</b><small>NH 135B, by road</small></div><div class="dist">≈ 1 km</div></div>
-    </div>
-  </div>
-  <div class="facts">${facts.map((f) => `<div><div class="v">${f[0]}</div><div class="l">${f[1]}</div><div class="s">${f[2]}</div></div>`).join('')}</div>
   <div class="dark">
     <div><div class="mono k">Leasing desk</div>
       <a href="tel:${PHONE1_E}">${PHONE1}<span class="sub"> · also WhatsApp</span></a><a href="tel:${PHONE2_E}">${PHONE2}</a><a href="mailto:${EMAIL}">${EMAIL}</a></div>
@@ -413,7 +385,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
   <div class="head">
     <div class="eyebrow mono">Floor plans</div>
     <h2>Ground (Parking), then <em>Floors 1 to 3.</em></h2>
-    <p class="lead2">Floors 1, 2 and 3 are identical. Each plan marks the lift and stair core, the fire exit and the glass front.</p>
+    <p class="lead2">Floors 1, 2 and 3 are identical. Each plan marks the lift and stair core, the fire exit and the glass front. North is at the top.</p>
   </div>
   <div class="pls">
     <div class="card sh">
@@ -434,10 +406,6 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
         <div><div class="mono k">Plot area</div><b>525 sq m</b><small>≈ 5,650 sq ft</small></div>
       </div>
     </div>
-  </div>
-  <div class="key">
-    <span class="mono" style="color:var(--deep)">Key</span>
-    <ul>${[['background:#1b1714', 'Column'], ['background:#fff;border:.2mm solid rgba(16,14,12,.5)', 'Lift and stair core'], ['background:#168a4b', 'Fire exit'], ['background:#d4e6e1;border:.2mm solid #7fb3a8', 'Glass front'], ['background:#dccfae', 'Open setback (ground)'], ['background:#e6cf9a', 'Recess, not in floor area']].map((k) => `<li><i style="${k[0]}"></i>${k[1]}</li>`).join('')}<li><b>N&nbsp;&uarr;</b>North at the top</li></ul>
   </div>
   ${bfoot(2)}
 </section>
@@ -471,52 +439,42 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
   ${bfoot(3)}
 </section>
 
-<!-- 4 · Location, the building and how to lease -->
+<!-- 4 · Location, specification and contacts -->
 <section class="page p4">
-  ${bhdr('Location and details')}
+  ${bhdr('Location and specification')}
   <div class="head">
-    <div class="eyebrow mono">Location</div>
-    <h2>Plot D-15, on a 24 m wide road, <em>north-facing.</em></h2>
+    <div class="eyebrow mono">Location and specification</div>
+    <h2>Plot D-15, <em>Bada Lalpur, Varanasi.</em></h2>
   </div>
-  <div class="row4">
-    <div class="card site"><img src="${I('site-plan.png')}" alt="Site plan"></div>
-    <div>
-      <div class="mono" style="color:var(--deep);margin-bottom:1.2mm">Nearby</div>
-      <div class="near">
-        <div class="apr"><span><b>Apollo Hospital (upcoming)</b><small>Opposite the plot; under construction, not yet operational</small></span><span class="d">≈ 50 m</span></div>
-        <div><span><b>NIFT Varanasi campus</b><small>Near the plot</small></span><span class="d">≈ 100 m</span></div>
-        <div><span><b>Varanasi Trade Centre</b><small>Along the road</small></span><span class="d">≈ 330 m</span></div>
-        <div><span><b>Vardhan Hospital, Lalpur</b><small>Bada Lalpur, opposite the Trade Centre</small></span><span class="d" style="font-size:10.5pt">Nearby</span></div>
-        <div><span><b>Ring Road (NH 135B)</b><small>By road</small></span><span class="d">≈ 1 km</span></div>
-      </div>
-      <div class="mono" style="color:var(--deep);margin:3mm 0 0">Setbacks from the boundary</div>
-      <div class="sb"><div><div class="mono">Front (north)</div><b>15′-8″</b></div><div><div class="mono">Rear (south)</div><b>15′-4½″</b></div><div><div class="mono">East</div><b>8′-11½″</b></div><div><div class="mono">West</div><b>5′-0″</b></div></div>
+  <div class="mapw">
+    <img src="${I('location-map.jpg')}" alt="Illustrated location map: Plot D-15 on the 24 m wide road, with NIFT, the upcoming Apollo Hospital, Varanasi Trade Centre, Vardhan Hospital and the Ring Road (NH 135B)">
+    <a class="gm" href="${MAP}">Open in Google Maps &rsaquo;</a>
+    <span class="nt mono">Not to scale</span>
+  </div>
+  <div class="spec">
+    <div class="sh2 mono"><span>Specification</span><span>Approximate, subject to final measurement</span></div>
+    <div class="tbl">
+      <div>${SPEC.slice(0, 7).map((r) => `<div class="r"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}</div>
+      <div>${SPEC.slice(7).map((r) => `<div class="r"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}</div>
     </div>
-  </div>
-  <div class="glance">
-    <div class="card gl"><div class="mono k">Building</div><b>Ground (Parking) + 3</b><small>Open-plan floors of about 3,500 sq ft gross, offered as open shells, glass front on the road</small></div>
-    <div class="card gl"><div class="mono k">Lift and stairs</div><b>10-passenger lift</b><small>Serves every level, with a wide stair on the east core</small></div>
-    <div class="card gl"><div class="mono k">Fire safety</div><b>Fire exit on every level</b><small>Open setbacks on all four sides of the building</small></div>
-  </div>
-  <div class="duo">
-    <div><div class="mono" style="color:var(--deep)">Suited to</div><div class="uses">${USES.map((u) => `<span>${u}</span>`).join('')}</div></div>
-    <div><div class="mono" style="color:var(--deep)">How leasing works</div><ol class="how">${STEPS.map((s) => `<li><span><b>${s[0]}.</b> ${s[1]}</span></li>`).join('')}</ol></div>
   </div>
   <div class="cta">
     <div>
       <div class="mono" style="color:var(--soft)">Leasing desk</div>
-      <h3 style="margin:1.2mm 0 2mm">See it, then decide.</h3>
+      <h3 style="margin-top:1.2mm">See it, then decide.</h3>
       <div class="lines">
-        <a href="tel:${PHONE1_E}"><span class="k">Call / WhatsApp</span>${PHONE1}</a>
+        <a href="tel:${PHONE1_E}"><span class="k">Call</span>${PHONE1}</a>
+        <a href="${WA}"><span class="k">WhatsApp</span>${PHONE1}</a>
         <a href="tel:${PHONE2_E}"><span class="k">Call</span>${PHONE2}</a>
         <a href="mailto:${EMAIL}"><span class="k">Email</span>${EMAIL}</a>
         <a href="${SITE}"><span class="k">Website</span>${SITE_SHOW}</a>
+        <a href="${MAP}"><span class="k">Google Maps</span>Open the location</a>
       </div>
     </div>
     <a class="qr" href="${MAP}"><img src="${T('qr-map.png')}" alt="QR code for the map"><p>Map and directions</p></a>
     <a class="qr" href="${WA}"><img src="${T('qr-whatsapp.png')}" alt="QR code for WhatsApp"><p>Chat on WhatsApp</p></a>
   </div>
-  <p class="disc small">Areas are approximate and subject to final measurement. 3D renders and plans are indicative and subject to change; finishes, signage, planting and surroundings are illustrative. The Apollo Hospital is upcoming and under construction. Use of any floor is subject to floor suitability and approvals. Nothing in this brochure is an offer.</p>
+  <p class="disc small">Areas are approximate and subject to final measurement. Renders, plans and the map are indicative. The Apollo Hospital is upcoming and under construction. Use of a floor is subject to suitability and approvals. Nothing here is an offer.</p>
   ${bfoot(4)}
 </section>
 
@@ -599,6 +557,7 @@ ${planPage(2, 'Ground level', 'Ground level plan', 'Ground level', 'Covered park
 
 (async () => {
   execFileSync('python3', [path.join(__dirname, 'prep-images.py')], { stdio: 'inherit' });
+  execFileSync('python3', [path.join(__dirname, 'fix-map.py')], { stdio: 'inherit' });
   const { chromium } = require('/opt/npm-tools/node_modules/playwright');
   const browser = await chromium.launch();
   const render = async (htmlStr, name, pdfPath) => {
