@@ -216,7 +216,7 @@ function downloads(canonical: string) {
     publisher: { '@id': ID.org },
   });
   return [
-    doc('brochure', 'SHRINEVA brochure (PDF)', `Four pages: the final 3D design, floor plans and areas, specifications and location, with the leasing contacts. Renders are indicative and subject to change.`, BROCHURE.href),
+    doc('brochure', 'SHRINEVA brochure (PDF)', `Four pages: the building and its location, floor plans with areas, the project timeline with site photographs, and location details, with the leasing contacts. Renders are indicative and subject to change.`, BROCHURE.href),
     doc('floor-plans-pdf', 'SHRINEVA floor plans (PDF)', 'Typical-floor, ground-level and site plans with areas and setbacks. Areas are approximate and subject to final measurement.', BROCHURE.plansHref),
   ];
 }

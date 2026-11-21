@@ -119,7 +119,7 @@ export const BROCHURE = {
   cover: 'assets/images/brochure-cover.webp',
   coverWidth: 909,
   coverHeight: 1287,
-  size: '1.4 MB',
+  size: '1.9 MB',
   pages: 4,
 };
 

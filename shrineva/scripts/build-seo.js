@@ -140,7 +140,7 @@ const llms = [
   ...pageLines,
   '',
   '## Documents',
-  `- [Brochure (PDF)](${url(BROCHURE.href)}): four pages: the building, floor plans and areas, safety and access, location and the leasing contacts.`,
+  `- [Brochure (PDF)](${url(BROCHURE.href)}): four pages: the building and its location, floor plans with areas (ground level, then floors 1 to 3), the project timeline with site photographs, and location, setbacks and the leasing contacts.`,
   `- [Floor plans (PDF)](${url(BROCHURE.plansHref)}): typical floor, ground level and site plans with areas and setbacks.`,
   '',
   '## Optional',

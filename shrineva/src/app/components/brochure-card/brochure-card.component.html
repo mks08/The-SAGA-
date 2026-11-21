@@ -2,22 +2,22 @@
   <div class="container-srineva">
     <div appReveal class="grid items-center gap-6 rounded-3xl border border-ink/10 bg-white p-4 shadow-soft sm:p-5 md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] md:gap-10 md:p-7">
       <a [href]="brochure.href" target="_blank" rel="noopener" download (click)="track('brochure_cover_click')" class="group mx-auto block w-full max-w-[15rem] overflow-hidden rounded-xl border border-ink/10 shadow-lift md:mx-0" aria-label="Open the SHRINEVA brochure (PDF)">
-        <img [src]="brochure.cover" [attr.width]="brochure.coverWidth" [attr.height]="brochure.coverHeight" loading="lazy" decoding="async" alt="First page of the SHRINEVA brochure: the building render, the 24 m north-facing road, key figures and the leasing contacts" class="block h-auto w-full transition-transform duration-700 group-hover:scale-[1.02]">
+        <img [src]="brochure.cover" [attr.width]="brochure.coverWidth" [attr.height]="brochure.coverHeight" loading="lazy" decoding="async" alt="First page of the SHRINEVA brochure: commercial and mixed-use space in Bada Lalpur, Varanasi, with the building render, the upcoming Apollo Hospital opposite, key figures and the leasing contacts" class="block h-auto w-full transition-transform duration-700 group-hover:scale-[1.02]">
       </a>
       <div class="md:pr-4">
         <span class="eyebrow">Brochure</span>
         <h2 id="brochure-title" class="font-display text-display-md text-ink">The SHRINEVA brochure, <em class="text-brass-deep">to keep and share.</em></h2>
-        <p class="mt-3 max-w-lg text-[0.97rem] leading-relaxed text-ink/70">The building, floor plans with areas, safety and access, and the location, in {{ brochure.pages }} pages, with the leasing contacts. Made to forward to your team.</p>
+        <p class="mt-3 max-w-lg text-[0.97rem] leading-relaxed text-ink/70">The building and its location, floor plans with areas, the project timeline with site photographs, and the setbacks, in {{ brochure.pages }} pages, with the leasing contacts. Made to forward to your team.</p>
         <ul class="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-[0.84rem] font-semibold text-ink/80">
           <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brass" aria-hidden="true"></span>{{ brochure.pages }} pages, A4</li>
-          <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brass" aria-hidden="true"></span>Final 3D renders</li>
           <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brass" aria-hidden="true"></span>Floor plans and areas</li>
+          <li class="flex items-center gap-2"><span class="size-1.5 rounded-full bg-brass" aria-hidden="true"></span>Project timeline and site photos</li>
         </ul>
         <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <a class="btn-primary justify-center" [href]="brochure.href" target="_blank" rel="noopener" download (click)="track('brochure_download')">Download the brochure <span aria-hidden="true">↓</span></a>
           <a class="btn-outline justify-center" [href]="brochure.plansHref" target="_blank" rel="noopener" download (click)="track('plan_pdf_download')">Floor plans only (PDF)</a>
         </div>
-        <p class="mt-3 text-[0.76rem] text-ink/70">PDF · about {{ brochure.size }} · Renders are indicative and subject to change.</p>
+        <p class="mt-3 text-[0.76rem] text-ink/70">PDF · about {{ brochure.size }} · The render and plans are indicative and subject to change.</p>
       </div>
     </div>
   </div>

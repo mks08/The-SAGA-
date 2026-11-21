@@ -17,15 +17,18 @@ def png(src, name, w=None, colors=128):
     im = im.quantize(colors=colors, method=Image.MEDIANCUT, dither=Image.NONE)
     im.save(os.path.join(out, name), 'PNG', optimize=True)
 
-jpg(f'{imgs}/hero/hero-day-1920.webp', 'hero.jpg', 1920, 80)
+jpg(f'{imgs}/hero/hero-day-1920.webp', 'hero.jpg', 1500, 80)
 for n in ('entrance', 'lift-lobby', 'facade-day'):
     jpg(f'{imgs}/renders/{n}.webp', f'{n}.jpg', 900, 80)
-for n in ('front-day', 'ground-level', 'upper-floor-south'):
-    jpg(f'{imgs}/photos/{n}.webp', f'site-{n}.jpg', 900, 76)
+# Site photographs are used uncropped; the front view is portrait, the others landscape.
+for n in ('front-day', 'ground-level', 'upper-floor-south', 'upper-floor-north', 'apollo-side', 'nift-side'):
+    jpg(f'{imgs}/photos/{n}.webp', f'site-{n}.jpg', 1000 if n != 'front-day' else 900, 78)
 jpg(f'{imgs}/plans/typical-3d.webp', 'typical-3d.jpg', 1100, 82)
 jpg(f'{imgs}/plans/ground-3d.webp', 'ground-3d.jpg', 1100, 82)
 png(f'{imgs}/plans/plan-typical-sheet.webp', 'plan-typical.png', None, 96)
 png(f'{imgs}/plans/plan-ground-sheet.webp', 'plan-ground.png', None, 96)
 png(os.path.join(os.path.dirname(__file__), 'site-plan.png'), 'site-plan.png', 1100, 96)
+# The same lockup as the website: the SG monogram beside the SHRINEVA wordmark (src/app/components/brand-logo).
 im = Image.open(f'{imgs}/logo-wordmark.webp').convert('RGBA'); im.save(os.path.join(out, 'logo.png'), 'PNG', optimize=True)
+im = Image.open(f'{imgs}/logo-mark.webp').convert('RGBA'); im.save(os.path.join(out, 'mark.png'), 'PNG', optimize=True)
 print('prepared', sorted(os.listdir(out)))
