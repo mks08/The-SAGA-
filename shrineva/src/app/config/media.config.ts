@@ -29,7 +29,7 @@ const H = 'assets/images/hero/';
 /** Hero: the finalised building render (960 / 1920 px wide). One image, preloaded, so it is the first thing that paints. */
 export const HERO = {
   src960: `${H}hero-day-960.webp`, src1920: `${H}hero-day-1920.webp`,
-  alt: 'Indicative 3D render of the SHRINEVA commercial building: open ground level and three floors with glass fronts and a sandstone-clad side, Bada Lalpur, Varanasi',
+  alt: 'Indicative 3D render of the SHRINEVA commercial building in Bada Lalpur, Varanasi: open ground level and three glass floors',
 };
 export const HERO_W = 1920;
 export const HERO_H = 995;
@@ -119,7 +119,7 @@ export const BROCHURE = {
   cover: 'assets/images/brochure-cover.webp',
   coverWidth: 909,
   coverHeight: 1287,
-  size: '1.9 MB',
+  size: '2.1 MB',
   pages: 4,
 };
 
@@ -130,18 +130,18 @@ const photo = (id: string, title: string, caption: string, alt: string, width: n
 
 export const SITE_PHOTOS: MediaItem[] = [
   photo('front-day', 'The building today', 'The concrete frame of the upper floors, seen from the road.',
-    'Photograph of the SHRINEVA building under construction, seen from the road: concrete frame of three upper floors', 1088, 1500),
+    'The SHRINEVA building under construction, seen from the road: the concrete frame of three upper floors', 1088, 1500),
   photo('ground-level', 'Ground level', 'The open ground level as built so far.',
-    'Photograph of the open ground level of the SHRINEVA building under construction', 1600, 1200),
+    'The open ground level of the SHRINEVA building under construction', 1600, 1200),
   photo('upper-floor-south', 'Upper floor, looking south', 'An upper floor as built so far, looking south.',
-    'Photograph of an upper floor of the SHRINEVA building under construction, looking south', 1600, 1200),
+    'An upper floor of the SHRINEVA building under construction, looking south', 1600, 1200),
   photo('upper-floor-north', 'Upper floor, looking north', 'The same floor, looking north.',
-    'Photograph of an upper floor of the SHRINEVA building under construction looking north', 1200, 750),
+    'An upper floor of the SHRINEVA building under construction, looking north', 1200, 750),
   photo('apollo-side', 'View towards the upcoming Apollo Hospital site', 'The upcoming Apollo Hospital is under construction opposite the plot.',
-    'Photograph from the SHRINEVA building towards the road and the construction site of the upcoming Apollo Hospital', 1200, 750),
+    'View from the SHRINEVA building towards the road and the construction site of the upcoming Apollo Hospital', 1200, 750),
   photo('nift-side', 'View towards NIFT', 'NIFT Varanasi is about 100 m away.',
-    'Photograph from the SHRINEVA building towards the NIFT Varanasi side with a construction crane in view', 1331, 695),
+    'View from the SHRINEVA building towards NIFT Varanasi, with a construction crane in view', 1331, 695),
   photo('frame-lights', 'The frame with lights', 'The frame of the building, seen from the road, with string lights on it.',
-    'Photograph of the SHRINEVA building frame seen from the road with string lights on each floor', 900, 1200),
+    'The SHRINEVA building frame seen from the road, with string lights on each floor', 900, 1200),
 ];
 

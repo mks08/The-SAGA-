@@ -12,18 +12,19 @@ npm start            # dev server
 npm run build        # browser build + server build, then prerender + SEO files + gates. Always run the full build.
 ```
 
-`npm run build` runs `ng build` (to `dist/shrineva`) and `ng run shrineva:server:production` (to `dist/shrineva-server`, build tool only, **never uploaded**). `postbuild` then runs:
+`npm run build` runs `ng build` (to `dist/shrineva`) and `ng run shrineva:server:production` (to `dist/shrineva-server`, build tool only, **never uploaded**). The initial bundle budget (`angular.json`) warns at 820 kB and fails at 1 MB; the 3D explorer (about 114 kB compressed) and the ChaiX answers and engine (about 28 kB compressed) are separate chunks that load only when used. `postbuild` then runs:
 
 1. `scripts/prerender.js`: renders every route of the real app with `renderModule` and writes `dist/shrineva/<route>/index.html` (11 routes) plus `404.html`. Each file holds the page exactly as a visitor sees it, with title, description, canonical, hreflang, Open Graph and JSON-LD written by `SeoService` during the render. Nothing is hidden. The home page also gets a `<link rel="preload">` for the hero image. Any render error or timeout fails the build.
 2. `scripts/build-seo.js`: writes `sitemap.xml` (hreflang alternates, the two PDFs, the real site photographs, and a `lastmod` that moves only when the content does), `robots.txt` (30 named search, AI-search, AI-assistant and AI-model crawlers, all allowed), `llms.txt`, `llms-full.txt` and the IndexNow key file, then runs the **quality gates**:
    - English titles 50-60 and descriptions 145-155 characters (Hindi route: 30-62 and 80-160); FAQ answers 40-60 words; exactly one H1; one canonical; `<html lang>` and hreflang pairs correct
-   - valid JSON-LD (no `RealEstateAgent`, `Accommodation`, `Residence`, `Apartment`); FAQPage matches the visible FAQ
+   - valid JSON-LD: `Organization` (leasing contact), `Place` (the building), `WebSite`, `WebPage`, `BreadcrumbList`; never `RealEstateAgent`, `Accommodation`, `Residence`, `Apartment` or `LocalBusiness` (that would claim a staffed walk-in office); FAQPage matches the visible FAQ
    - no forbidden claims: "column-free" / "pillar-free", "60-70 m", "handover" (use "project completion"), a completion month without "target" and "subject to approvals", a year in a title or meta description, studio / residential wording, any VDA wording beyond the short badge
    - "Apollo" never without "upcoming / under construction" (Hindi: "निर्माणाधीन")
    - the home preload and first hero image are the hero image; the VDA badge appears exactly when `approvals.vda.show` is true
    - never "Stadium Road", never time-of-day wording (golden hour / night view), no lift capacity other than 10 passengers
    - the progress section (`#status`) with the targeted month and "Updated …" is on `/`, `/leasing` and `/walkthrough`; JSON-LD carries `dateModified` and the targeted completion; every named crawler is in `robots.txt` and none is shut out; every sitemap and llms link exists; the IndexNow key file is present
    - no hidden-text patterns, every `<img>` has alt, width, height and a loading mode, every link and asset resolves, every route is in the `.htaccess` whitelist
+3. `scripts/test-chaix.js`: the ChaiX test (questions in English and Hindi, every specification row, wording rules, point-wise structure); see `docs/chaix.md`.
 
 **SSR rules** (so the prerender keeps working): code that touches `window`, `document`, observers or timers is guarded with `isPlatformBrowser`. Nothing may start a timer or interval on the server, or the render never settles (40 s limit).
 
@@ -31,14 +32,16 @@ npm run build        # browser build + server build, then prerender + SEO files 
 
 | Page | Purpose |
 |---|---|
-| `/` | Hero (one final 3D image, fact bar, "VDA approved" badge), **what is available** (stack of levels, ways to lease), **space finder** (3D floor drawing that follows the size and use), brochure card, guided 3D walkthrough, safety / access / building specifications, satellite map and distances, business paths, FAQ, enquiry |
+| `/` | Hero (one final 3D image, fact bar, "VDA approved" badge), **building explorer** (tap a floor on the building: its plan, area and details open beside it, with a lift-off 3D view of the floors), brochure card, guided 3D walkthrough, **project progress** (stages and real site photographs), **specification sheet** (safety, access, building facts), satellite map and distances, business paths, FAQ, **enquiry with three paths** (visit, brochure, question) |
 | `/walkthrough` | Seven-stop guided tour of the final 3D design (play / pause, previous / next, zoom, full screen, keyboard, "where this view is taken" pin), then photographs of the building as it stands today |
 | `/floor-plans` | Typical-floor and ground-level plans (**2D first, 3D second**, zoom, full screen), area schedule, **site plan** (plot, 24 m road, setbacks, NIFT and Apollo), plan-set and brochure PDFs |
 | `/healthcare-diagnostic-space`, `/office-bank-coaching-space`, `/retail-showroom-cafe-space` | Intent pages for ads and search: answer first, facts, qualified form, FAQ. Copy in `landing.config.ts`; `/?intent=healthcare\|office\|retail\|floor` changes the home headline for an ad |
 | `/location-contact` | Address, phones, WhatsApp, leasing@shrineva.in, **satellite map at the brochure coordinates** (25.383306, 82.978028), distances, site-visit form, FAQ |
-| `/leasing` | What is available, **space finder**, how leasing works, downloads, enquiry form, FAQ |
+| `/leasing` | Floors available for lease (whole or part), how leasing works, project progress, downloads, enquiry form, FAQ |
 | `/hi` | Hindi page (hreflang pair of `/`): answer, facts, floors, uses, distances, FAQ, contact. Copy in `hindi.config.ts` |
 | `/privacy-disclaimer`, `/terms` | Legal |
+
+Every page also carries the **ChaiX** avatar (bottom right; it greets with "How can I help you?" and then "My name is ChaiX"), the WhatsApp button, a header "Schedule a visit" button from tablet width up, and on phones a Call / WhatsApp / Visit bar. Any content picture can be pressed to enlarge it (one lightbox at the root of the app).
 
 Old URLs (`/property`, `/spaces/*`, `/infrastructure`, `/growth`, `/gallery`, `/brokers`, `/location`, `/contact`, `/privacy`, `/disclaimer`, `/business-fit`) 301 to the new pages in `.htaccess`, in the app router and in `vercel.json`.
 
@@ -46,20 +49,23 @@ Old URLs (`/property`, `/spaces/*`, `/infrastructure`, `/growth`, `/gallery`, `/
 
 | What | File |
 |---|---|
-| Facts: areas, plan figures, address, GPS, phones, hours, domain, `sameAs`, residential switch | `src/app/config/property.config.ts` |
+| Facts: areas, plan figures, address, GPS, phones, hours, domain, `sameAs` | `src/app/config/property.config.ts` |
 | Titles, descriptions, H1, sitemap priority per route | `src/app/config/seo.config.ts` |
 | FAQ text (page, FAQPage markup, static HTML and llms.txt all read it) | `src/app/config/faq.config.ts` |
 | Page copy shared with the static HTML: level areas, leasing points and steps | `src/app/config/content.config.ts` |
 | Intent pages | `src/app/config/landing.config.ts` |
 | Distances | `src/app/config/location.config.ts` |
 | Hindi page copy (derived from the same figures) | `src/app/config/hindi.config.ts`, `src/app/pages/hindi-page/` |
-| Space finder: floor geometry and maths (feet, from the architect's sheet SH-02), the SVG scene, the UI | `src/app/config/floor-model.ts`, `src/app/components/space-finder/floor-scene.ts`, `space-finder.component.*` |
-| Finder sizes, use chips, notes; key facts; the stack; fire-safety / access / building specifications; the **project status and timeline** (`PROJECT_STATUS`: stages, targeted completion month, update date, tenant-changes note) and dated progress entries (`PROGRESS_UPDATES`) | `src/app/config/content.config.ts` |
-| Language of the shell (switch, pop-up, action bar) | `navbar`, `booking-popup/popup-text.ts`, `core/services/page-lang.service.ts` |
+| Building explorer (tap a floor; plan, area, details; lift-off 3D floor view) and its data | `src/app/components/building-explorer/`, `src/app/explorer3d/`, `src/app/config/explorer.config.ts`, images in `src/assets/images/explorer/` (`tools/explorer/build-explorer-image.py` makes them) |
+| Specification sheet (`SPEC_GROUPS`, shown on the home page and in the brochure; ChaiX reads it too); key facts; the stack; the **project status and timeline** (`PROJECT_STATUS`: stages, targeted completion month, update date, tenant-changes note) and dated progress entries (`PROGRESS_UPDATES`); items still to be confirmed (`ASK_ITEMS`) | `src/app/config/content.config.ts`, `src/app/components/building-specs/` |
+| The enquiry form, one design everywhere: **name, mobile and email (required) and a query with an example as placeholder**, in three paths (schedule a visit, download the brochure, ask a question). The home-page section, the dialog, the contact / leasing / business pages and ChaiX's "Send my question" all use these four fields | `src/app/components/lead-form/` (fields and words in `lead-text.ts`, English and Hindi), `booking-popup/`, `contact/`, `src/app/core/ui-events.ts` (`openLeadPath`), `src/app/core/services/lead.service.ts` |
+| **ChaiX**, the chat assistant: everything it knows, the engine, the window, the build test (see `docs/chaix.md`) | `src/app/config/chaix.knowledge.ts`, `src/app/core/chaix/chaix-engine.ts`, `src/app/components/chaix/`, `scripts/test-chaix.js` |
+| The space finder (retired from the site; kept for reference, not built) | `parked/space-finder/` |
+| Language of the shell (switch, pop-up, action bar, ChaiX) | `navbar`, `lead-form/lead-text.ts`, `chaix/chaix.text.ts`, `core/services/page-lang.service.ts` |
 | Project progress section (stages + real site photographs, `#status`) | `src/app/components/project-timeline/` (photos from `SITE_PHOTOS` in `media.config.ts`) |
 | Prerender and SEO build | `scripts/prerender.js`, `scripts/build-seo.js`, `scripts/lib/load-ts.js`, `src/main.server.ts`, `src/app/app.server.module.ts` |
 | Images: hero, tour stops, plan sheets and 3D views, site photos, brochure cover | `src/app/config/media.config.ts`, `src/assets/images/` |
-| Brochure (4 pages) and floor-plan set (3 pages) PDFs: generated from the same facts, in the site's fonts and colours (see "Brochure" below) | `src/assets/shrineva-brochure.pdf`, `src/assets/shrineva-floor-plans.pdf`, `tools/brochure/` |
+| Brochure (4 pages, about 2 MB) and floor-plan set (3 pages) PDFs: generated from the same facts, in the site's fonts and colours (see "Brochure" below) | `src/assets/shrineva-brochure.pdf`, `src/assets/shrineva-floor-plans.pdf`, `tools/brochure/` |
 | Logo (always the designed artwork, never typed text) | `src/app/components/brand-logo/`, `src/assets/images/logo-*.webp` |
 | Structured data | `src/app/core/seo/schema.ts` |
 | Enquiry delivery | `src/app/core/services/lead.service.ts`, `src/api/lead.php`, `src/api/config.php` |
@@ -71,7 +77,9 @@ Old URLs (`/property`, `/spaces/*`, `/infrastructure`, `/growth`, `/gallery`, `/
 
 ## Brochure and plan-set PDFs
 
-`node tools/brochure/build-brochure.js` rebuilds both PDFs and the brochure cover image (needs Playwright and `pdftoppm`; the pictures are shrunk first by `prep-images.py`, so the brochure stays under 2 MB). The brochure's four A4 portrait pages are: 1 cover (commercial and mixed-use space, address, nearby landmarks with the upcoming Apollo Hospital highlighted, map coordinates, website), 2 floor plans (ground, then floors 1 to 3, each with floor area, floor height and plot area), 3 project timeline with uncut site photographs, 4 location, setbacks, building facts, uses, how leasing works and the contacts. There are no 3D views in the brochure; the separate plan set keeps them. Contacts (both phones, WhatsApp, leasing@shrineva.in, shrineva.in) and the map / WhatsApp QR codes (`qr-*.png`, made from the brochure coordinates and 918114080609) are inside; every one is a live link. `tools/brochure/site-plan.png` is a screenshot of the site-plan drawing on `/floor-plans` (re-capture it if that drawing changes). The facts in the script mirror `src/app/config`; change both together.
+`node tools/brochure/build-brochure.js` rebuilds both PDFs and the brochure cover image (needs Playwright and `pdftoppm`; the pictures are shrunk first by `prep-images.py`, so the brochure stays under 2 MB). The brochure's four A4 portrait pages are: 1 cover (kept calm on purpose: the 3D render top right, one headline and sentence, a brass **Get directions** button that opens the location in Google Maps, five key facts and five short chips, the nearby landmarks with the sentence "The Apollo Hospital is upcoming and under construction" highlighted underneath, an address card with a map QR, and a dark strip with the leasing desk and an index of pages 2 to 4 that links to them), 2 floor plans (ground, then floors 1 to 3, each with floor area and floor height), 3 project timeline with uncut site photographs, 4 location (illustrated map, not to scale, with links) and the specification table, then the leasing desk contacts. There are no 3D views in the brochure; the separate plan set keeps them. Contacts (the one phone, which is also the WhatsApp number, leasing@shrineva.in, shrineva.in) and the map / WhatsApp QR codes (`qr-*.png`, made from the brochure coordinates and 918114080609) are inside; every one is a live link. `tools/brochure/site-plan.png` is a screenshot of the site-plan drawing on `/floor-plans` (re-capture it if that drawing changes). The facts in the script mirror `src/app/config`; change both together.
+
+**Brochure and plan-set downloads are handed out through the enquiry form** (name, mobile number and email), so the PDFs are not in the sitemap, `llms.txt` or the structured data, and `.htaccess` sends `X-Robots-Tag: noindex, noarchive` for every `.pdf` (delete that block to let search engines index them).
 
 ## Project timeline and site photographs
 
@@ -86,12 +94,12 @@ Old URLs (`/property`, `/spaces/*`, `/infrastructure`, `/growth`, `/gallery`, `/
 
 ## Content rules
 
-- Facts only. Approvals, rents and footfall are not claimed. The completion month (March 2027) is shown only as a target, always with "subject to approvals"; the word is "project completion", never "handover" (tenants may ask for changes and the works then continue). There is no fit-out stage and no stage has its own date. The Apollo Hospital is always "upcoming / under construction". Use of any floor is "subject to floor suitability and applicable statutory approvals".
+- Facts only. No rent, price, deposit or other charge is quoted anywhere, and no footfall figure is published ("footfall potential" is the only wording). Approvals are limited to the owner's own statements, "VDA approved" and "Vastu compliant" (see the VDA badge note below). The completion month (March 2027) is shown only as a target, always with "subject to approvals"; the word is "project completion", never "handover" (tenants may ask for changes and the works then continue). There is no fit-out stage and no stage has its own date. The Apollo Hospital is always "upcoming / under construction". Use of any floor is "subject to floor suitability and applicable statutory approvals".
 - Areas are about 3,500 sq ft gross and about 3,100 sq ft carpet per upper floor, approximate and subject to final measurement.
 - Renders are labelled indicative. Photographs are labelled as construction progress. The renders themselves are not edited. No time-of-day labels anywhere (one hero image, no toggle).
 - The road is "a 24 m (80 ft) wide north-facing road"; "Stadium Road" is not used (the build fails on it). The lift is a 10-passenger lift; no operating hours are shown.
-- **Space finder:** a planning aid, not a drawing for construction. Carpet is spread over the architect's floor plate in proportion to area (floor 3,520 sq ft gross less 354 sq ft lift / lobby / stair bay; marketing carpet about 3,100). Two occupiers on one floor: a 100 sq ft common-passage allowance is an assumption until the architect confirms the demising scheme.
-- The studio / residential plan is not mentioned anywhere (`PROPOSED_RESIDENTIAL.show = false`).
+- The space finder (a planning aid) is retired from the site and kept in `parked/space-finder/` for reference; nothing on the site refers to it.
+- The studio / residential plan is not mentioned anywhere (there is no switch for it: the old proposed-residential form was removed, and the build fails if "studio", "2 BHK" or "serviced stay" appear).
 - Floors are described as "Open-plan commercial floor plates with flexible tenant layouts". Never "column-free" (the build fails on it).
 - **VDA badge:** shown on the owner's instruction (20 Nov 2026) as the short label "VDA approved" only (`approvals.vda` in `property.config.ts`; set `show: false` to remove it). Its scope (plan sanction, number, date) is still to be confirmed with the owner; no wider approval wording is allowed.
 
@@ -112,19 +120,26 @@ npm run build
 
 ## Where enquiries go
 
+**One form, everywhere.** Every enquiry form on the site asks for the same four things: **name, mobile number and email (all required) and a query** (the placeholder shows an example question; the query is optional on "Schedule a visit" and "Brochure", required on "Ask a question"). It is one component (`lead-form`) with three paths: **Schedule a visit**, **Brochure** (the PDF downloads straight away) and **Ask a question**. The home page, the contact, leasing and business pages and the pop-up (the header and the phone bar open it; on `/hi` it is in Hindi) all use it, and ChaiX's "Send my question to the team" has the same four fields.
+
 ```
 visitor's browser ──► /api/lead.php (this site's hosting)
-                          ├─ validates, rate-limits, ignores bots (honeypot)
-                          ├─ keeps a private copy: leads.csv + leads-YYYY-MM.jsonl
-                          └─ emails the recipients in api/config.php (leasing@shrineva.in)
-                      if that fails ──► FormSubmit (third party) ──► the leasing inbox
-                      if that fails ──► the page shows the phone and WhatsApp numbers
+                          ├─ checks the fields, the host, the size; ignores bots (hidden field); at most 6 per visitor per 10 minutes
+                          ├─ keeps a private copy: leads.csv + leads-YYYY-MM.jsonl  (folder "shrineva-leads" above public_html, else api/_data)
+                          └─ emails leasing@shrineva.in (Reply-To = the visitor, so Reply answers them)
+                      if the handler cannot be reached ──► FormSubmit (third party) ──► the leasing inbox
+                      if that fails too ──► the page says "Your request was not sent", shows the phone and WhatsApp number,
+                                            and keeps what the visitor typed
 ```
+
+The page shows "received" only when the handler confirms that the mail was handed to the mail system. If the mail system refuses it, the handler answers with an error (the visitor is told to call or WhatsApp) but the enquiry is still stored in `leads.csv`, so nothing is lost. The email subject names the path and the visitor (`[SHRINEVA] New site-visit request: <name> · <mobile>`, `New brochure download: …`, `New question: …`, `New question from the ChaiX chat: …`), and the body lists the name, mobile, email, the query, the page and the floor or business the visitor was looking at, and the UTM tags. The server checks the name and the mobile number; the email address is checked when one is given (the forms on the site require it).
+
+**What has been tested, and what only you can test.** Tested here with a local PHP server and a stand-in mail program: validation and error messages, all three paths, the pop-up (phone, 320 px, landscape), ChaiX, the Hindi pop-up, the "mail failed" path (no false "sent", typed values kept, lead still stored), and the emails produced (To `leasing@shrineva.in`, Reply-To the visitor). **Not testable from here:** whether Hostinger's mail system delivers into the `leasing@shrineva.in` inbox. That needs the mailbox and the live site, so the first deployment ends with a real test (step 3 below).
 
 **First deployment**
 
 1. Create the mailbox `leasing@shrineva.in` (Hostinger → Emails). Until it exists, mail to it bounces; the private copy in `leads.csv` is always kept.
-2. For reliable delivery add `api/config.local.php` on the server (git-ignored):
+2. For reliable delivery add `api/config.local.php` on the server (git-ignored, never committed; the Hostinger zip leaves it out):
 
    ```php
    <?php return [
@@ -134,17 +149,17 @@ visitor's browser ──► /api/lead.php (this site's hosting)
      'from' => 'leasing@shrineva.in',
    ];
    ```
-3. Submit the form once from the live site; check the inbox and `shrineva-leads/leads.csv` (one level above `public_html`, or `api/_data/`).
-4. The first FormSubmit backup submission emails an activation link; click it or the backup stays silent.
+3. **Send the test:** from your phone on the live site submit one enquiry on each path (visit, brochure, question) and one through ChaiX. Four emails should reach `leasing@shrineva.in` within a minute or two. Look in the spam folder once and mark them "not spam". If nothing arrives but the entries are in `shrineva-leads/leads.csv`, the site works and only the mail transport needs the SMTP settings in step 2. To have a copy land in a personal inbox as well, add that address to `recipients` in `api/config.php` (or forward from the mailbox).
+4. The first FormSubmit backup submission emails an activation link; click it or the backup stays silent. (It only runs when the handler cannot be reached.)
 5. Add SPF, DKIM and DMARC for the domain in hPanel.
 
-Phones: +91 81140 80609 (also WhatsApp) and +91 73557 70378.
+One public phone number everywhere (site, ChaiX, structured data, `llms.txt`, brochure and plan-set PDFs): +91 81140 80609, which is also the WhatsApp number. One public email: leasing@shrineva.in (owner, 22 Nov 2026). `property.config.ts` holds one number on purpose; do not add a second one.
 
 ## Analytics
 
 `src/environments/environment*.ts` hold `ga4MeasurementId` (G-…), `googleAdsId` (AW-…) and `googleAdsLabels`. They are empty; nothing loads until set, but events still go to `window.dataLayer`. With IDs set, gtag.js loads once, GA4 and Ads are configured, and each conversion also sends its Ads label (tested with dummy IDs).
 
-Events: `shrineva_commercial_lead` (the enquiry form **and** the short "Schedule a visit" pop-up), `shrineva_phone_click`, `shrineva_whatsapp_click`, `shrineva_brochure_download` (any `.pdf` link). Phone, WhatsApp and PDF clicks are caught by one delegated listener. UTM tags and `gclid` are kept for the session and sent with every enquiry. If an older `leads.csv` exists on the server, rename it before the first new lead (columns changed).
+Events: `shrineva_commercial_lead` (a submitted enquiry on any path, including the pop-up and ChaiX), `shrineva_phone_click`, `shrineva_whatsapp_click`, `shrineva_brochure_download` (any `.pdf` link). Phone, WhatsApp and PDF clicks are caught by one delegated listener. Other events carry names and counts only, never typed text: `lead_dialog_open`, `lead_path_select`, `lead_form_error`, `site_visit_click`, `brochure_click`, `specs_question_click`, `explorer_select` / `explorer_plan_open` / `explorer_3d_open` / `explorer_3d_view` / `explorer_3d_close`, `plan_level` / `plan_view` / `plan_zoom` / `plan_open` / `plan_pdf_click`, `tour_step` / `tour_play` / `tour_zoom` / `tour_fullscreen` / `tour_enlarge`, `site_photo_open`, `map_mode`, and the ChaiX events listed in `docs/chaix.md` (`chaix_prompt_show`, `chaix_open`, `chaix_question`, ...). UTM tags and `gclid` are kept for the session and sent with every enquiry. If an older `leads.csv` exists on the server, rename it before the first new lead (columns changed).
 
 ## Deploy to Hostinger (static upload)
 
@@ -156,9 +171,9 @@ Events: `shrineva_commercial_lead` (the enquiry form **and** the short "Schedule
 
 **Rollback:** keep the previous `public_html` as a zip; to roll back, delete the new files and restore it. `vercel.json` is included as an alternative; the PHP endpoint does not run there (forms use the FormSubmit route).
 
-## Performance (measured, phone-sized screen, slow 4G, CPU slowed 4x)
+## Performance
 
-Home about 500 KB and main content in about 1.6 s; floor plans about 370 KB; `/hi` about 270 KB; `/leasing` and business pages about 245 KB (re-measure with `perf.js` after changes). Levers: pre-rendered HTML, Brotli and long caching in `.htaccess`, preloaded hero, tour images loaded on demand, live map iframe only when near the viewport, Latin-only fonts, system Devanagari font on `/hi`, no CSS blur filters.
+The first download is pre-rendered HTML plus one application bundle (about 800 kB before compression; the build warns at 820 kB and fails at 1 MB). The two heavy parts are separate downloads that load only when needed: the 3D explorer (about 114 kB compressed, when a visitor opens a floor's 3D plan or the 3D plan view) and the ChaiX brain (about 28 kB compressed, when ChaiX is opened or its button is approached). Other levers: Brotli and long caching in `.htaccess`, preloaded hero, tour images loaded on demand, the live map iframe only when near the viewport, Latin-only fonts, a system Devanagari font on `/hi`, no CSS blur filters on large areas. Re-measure on a phone-sized screen with throttling after big changes; the older figures (home about 500 kB, main content in about 1.6 s on slow 4G) were taken before the explorer, ChaiX and the timeline were added.
 
 ## Known follow-ups
 
@@ -172,4 +187,7 @@ Home about 500 KB and main content in about 1.6 s; floor plans about 370 KB; `/h
 - The map pin is at the brochure coordinates; a plot outline needs the corner coordinates (or a Google My Maps link) from the owner.
 - Fire-fighting systems, power backup, water and connectivity appear only as "ask the leasing team" items until the owner confirms them (`ASK_ITEMS` in `content.config.ts`).
 - No CAPTCHA on the enquiry endpoint (honeypot and rate limit only); consider Cloudflare Turnstile if spam appears.
-- Not tested yet: Firefox and real devices (Chromium and WebKit engines were).
+- Not tested yet: Firefox and real devices (Chromium and WebKit engines were). Layout was swept at 320, 360, 390, 412 px, landscape phone, 768, 1024, 1280, 1440 and 1920 px, in the resting state and with the menu, ChaiX, the pop-up, the explorer's 3D plan and the lightbox open.
+- Enquiry emails go to `leasing@shrineva.in` only. Decide whether a personal inbox should also get a copy (see "First deployment", step 3).
+- Dev builds print one Angular `NG0100` (value changed after check) warning from the walkthrough; production is unaffected.
+- The map on the home and location pages loads live Google tiles; with no network (or a blocked Google) the frame stays grey and the "Directions" and "Open in Google Maps" buttons beside it still work.

@@ -5,6 +5,7 @@ import { PROPERTY, waLink } from '../../config/property.config';
 import { RENDERS } from '../../config/media.config';
 import { Faq, faqForPath } from '../../config/faq.config';
 import { LANDING_PAGES, LandingPage } from '../../config/landing.config';
+import { openLightbox } from '../../core/ui-events';
 
 /**
  * One template for the three intent landing pages (healthcare / office / retail). All copy lives in landing.config.ts so the
@@ -32,6 +33,10 @@ export class LandingPageComponent implements OnInit {
   ];
 
   constructor(private route: ActivatedRoute, private seo: SeoService) {}
+
+  enlarge(): void {
+    openLightbox({ items: [this.render], disclaimer: 'Indicative render. Construction is ongoing and the design is subject to change.' });
+  }
 
   ngOnInit(): void {
     const key = this.route.snapshot.data['landing'] as string;

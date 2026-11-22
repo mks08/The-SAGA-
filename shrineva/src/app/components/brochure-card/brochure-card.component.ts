@@ -1,8 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { BROCHURE } from '../../config/media.config';
-import { AnalyticsService } from '../../core/services/analytics.service';
+import { openLeadPath } from '../../core/ui-events';
 
-/** The brochure as a PDF download. `compact` tightens the section spacing for use inside other pages. */
+/**
+ * The brochure. The PDF is handed over through the enquiry form (mobile number and email), so the button opens the
+ * "Brochure" path of the site-wide dialog; the download starts as soon as the details are accepted.
+ * `compact` tightens the section spacing for use inside other pages.
+ */
 @Component({
   selector: 'app-brochure-card',
   templateUrl: './brochure-card.component.html',
@@ -10,6 +14,5 @@ import { AnalyticsService } from '../../core/services/analytics.service';
 export class BrochureCardComponent {
   @Input() compact = false;
   brochure = BROCHURE;
-  constructor(private analytics: AnalyticsService) {}
-  track(name: string) { this.analytics.event(name); }
+  open(): void { openLeadPath({ path: 'brochure', source: 'brochure_card' }); }
 }

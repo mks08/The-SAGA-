@@ -4,6 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { PROPERTY, waLink } from '../../config/property.config';
+import { openLeadPath } from '../../core/ui-events';
 
 interface NavLink { path: string; label: string; live?: boolean; }
 
@@ -65,7 +66,7 @@ export class NavbarComponent implements OnDestroy {
 
   openPopup() {
     this.closeMenu();
-    window.dispatchEvent(new CustomEvent('open-booking-popup'));
+    openLeadPath({ source: 'navbar', path: 'visit' });
   }
 
   track(name: string) { this.analytics.event(name, { source: 'navbar' }); }

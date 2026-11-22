@@ -3,11 +3,13 @@ import { PROPERTY, waLink } from '../../config/property.config';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { PageLangService } from '../../core/services/page-lang.service';
 import { HI } from '../../config/hindi.config';
+import { openLeadPath } from '../../core/ui-events';
 
 /**
  * Sticky action bar for phones (hidden from the md breakpoint up, where the WhatsApp button and the header buttons are used).
- * Call and WhatsApp are plain links, so AnalyticsService counts them as shrineva_phone_click / shrineva_whatsapp_click.
- * "Book Visit" jumps to the enquiry form when the page has one (#enquiry), otherwise opens the short site-visit pop-up.
+ * Three actions: Call and WhatsApp are plain links, so AnalyticsService counts them as shrineva_phone_click /
+ * shrineva_whatsapp_click; Visit opens the three-path enquiry dialog. ChaiX is not in the bar: its round launcher floats above
+ * the bar on every screen (components/chaix).
  */
 @Component({
   selector: 'app-mobile-cta',
@@ -24,12 +26,6 @@ export class MobileCtaComponent {
 
   bookVisit(): void {
     this.analytics.event('site_visit_click', { source: 'mobile_bar' });
-    const form = document.getElementById('enquiry');
-    if (form) {
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      window.setTimeout(() => (form.querySelector('input,select') as HTMLElement | null)?.focus({ preventScroll: true }), 500);
-      return;
-    }
-    window.dispatchEvent(new CustomEvent('open-booking-popup'));
+    openLeadPath({ source: 'mobile_bar', path: 'visit' });
   }
 }

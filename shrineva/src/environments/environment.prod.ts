@@ -14,6 +14,5 @@ export const environment = {
     phoneClick: '', // shrineva_phone_click
     whatsappClick: '', // shrineva_whatsapp_click
     brochureDownload: '', // shrineva_brochure_download
-    residentialLead: '', // shrineva_residential_lead
   },
 };

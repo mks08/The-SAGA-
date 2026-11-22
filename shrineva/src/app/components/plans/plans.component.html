@@ -20,7 +20,7 @@
         <!-- Title block -->
         <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-ink/10 bg-paper-2 px-4 py-2.5 md:px-5">
           <p class="font-display text-[1.05rem] leading-tight text-ink">{{ sheet.title }}</p>
-          <p class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink/70">SHRINEVA · Plot D-15 · Sheet {{ sheet.no }} · Facing north</p>
+          <p class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink/70">SHRINEVA · Plot D-15 · Sheet {{ sheet.no }} · Facing north</p>
         </div>
 
         <!-- View + tools -->
@@ -31,7 +31,7 @@
                     [ngClass]="j === viewIdx ? 'bg-white text-ink shadow-sm' : 'text-ink/70 hover:text-ink'"
                     [attr.aria-pressed]="j === viewIdx" (click)="selectView(j)">{{ v.id === '2d' ? '2D plan' : '3D view' }}</button>
           </div>
-          <div *ngIf="is2d" class="flex items-center gap-1.5" role="group" aria-label="Zoom the plan">
+          <div *ngIf="is2d" class="flex max-w-full flex-wrap items-center gap-1.5" role="group" aria-label="Zoom the plan">
             <button type="button" class="tool" (click)="zoomBy(-1)" [disabled]="zoom === zooms[0]" aria-label="Zoom out">−</button>
             <span class="min-w-[3rem] text-center font-mono text-[0.7rem] text-ink/70" aria-live="polite">{{ zoom * 100 | number: '1.0-0' }}%</span>
             <button type="button" class="tool" (click)="zoomBy(1)" [disabled]="zoom === zooms[zooms.length - 1]" aria-label="Zoom in">+</button>
@@ -53,7 +53,7 @@
           <div class="pointer-events-none absolute right-5 top-4 md:right-7" aria-hidden="true">
             <svg viewBox="0 0 44 56" width="38" height="48" class="drop-shadow-sm"><circle cx="22" cy="34" r="19" fill="#fff" stroke="#1b1714" stroke-width="1.5"/><path d="M22 19l7 23-7-5-7 5z" fill="#1b1714"/><text x="22" y="12" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#1b1714">N</text></svg>
           </div>
-          <p class="pointer-events-none absolute bottom-4 left-5 rounded-full bg-white/90 px-2.5 py-1 font-mono text-[0.56rem] uppercase tracking-[0.12em] text-ink/70 backdrop-blur md:bottom-6 md:left-7">{{ is2d ? 'Dimensions as marked · not to scale' : 'Illustrative 3D cutaway' }}</p>
+          <p class="pointer-events-none absolute bottom-4 left-5 rounded-full bg-white/90 px-2.5 py-1 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-ink/70 backdrop-blur md:bottom-6 md:left-7">{{ is2d ? 'Dimensions as marked · not to scale' : 'Illustrative 3D cutaway' }}</p>
         </div>
 
         <!-- Legend -->
@@ -73,14 +73,14 @@
       <!-- Numbers -->
       <div class="flex flex-col gap-4">
         <div appReveal [style.--i]="1" class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
-          <p class="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-brass-deep">{{ now.label }}</p>
+          <p class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-brass-deep">{{ now.label }}</p>
           <p class="mt-1 font-display text-[clamp(2.2rem,4.6vw,3rem)] leading-none text-ink">{{ now.value }}</p>
           <p class="mt-2 text-[0.9rem] text-ink/70">{{ now.sub }}</p>
         </div>
 
         <dl appReveal [style.--i]="2" class="grid gap-x-6 gap-y-3 rounded-3xl border border-ink/10 bg-white p-5 sm:grid-cols-2 md:p-6">
           <div *ngFor="let f of now.facts" class="border-b border-ink/10 pb-2">
-            <dt class="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink/70">{{ f.label }}</dt>
+            <dt class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink/70">{{ f.label }}</dt>
             <dd class="mt-0.5 text-[0.92rem] font-semibold text-ink">{{ f.value }}</dd>
           </div>
         </dl>
@@ -93,7 +93,7 @@
             <tbody class="divide-y divide-ink/10">
               <tr *ngFor="let r of schedule" class="align-top">
                 <th scope="row" class="w-[34%] px-5 py-2.5 font-semibold text-ink">{{ r.level }}</th>
-                <td class="px-2 py-2.5 text-ink/85">{{ r.area }}<span class="block text-[0.74rem] text-ink/70">{{ r.basis }} · {{ r.height }}</span></td>
+                <td class="px-2 py-2.5 text-ink/85">{{ r.area }}<span class="block text-[0.76rem] text-ink/70">{{ r.basis }} · {{ r.height }}</span></td>
               </tr>
             </tbody>
           </table>
@@ -101,14 +101,13 @@
 
         <div appReveal [style.--i]="4" class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
           <p class="font-display text-[1.25rem] text-ink">Take the plans with you</p>
-          <p class="mt-1 text-[0.88rem] text-ink/70">The plan set as a short PDF, or the brochure with specifications and contacts.</p>
+          <p class="mt-1 text-[0.88rem] text-ink/70">The plan set and the full brochure with the specification and contacts, as PDFs. Enter your name, mobile number and email and they download straight away.</p>
           <div class="mt-4 flex flex-col gap-3 sm:flex-row">
-            <a class="btn-primary justify-center" [href]="pdf" target="_blank" rel="noopener" download (click)="track('plan_pdf_download')">Plan set (PDF) <span aria-hidden="true">↓</span></a>
-            <a class="btn-outline justify-center" [href]="brochure.href" target="_blank" rel="noopener" download (click)="track('brochure_download')">Brochure ({{ brochure.size }})</a>
+            <button type="button" class="btn-primary justify-center" (click)="getPdf()" aria-haspopup="dialog">Plans and brochure (PDF) <span aria-hidden="true">↓</span></button>
           </div>
         </div>
 
-        <button type="button" class="btn-outline self-start" (click)="openPopup()">Ask about availability</button>
+        <button type="button" class="btn-outline self-start" (click)="openPopup()" aria-haspopup="dialog">Schedule a visit</button>
       </div>
     </div>
 

@@ -1,0 +1,172 @@
+<!--
+  ChaiX, the SHRINEVA leasing assistant. The dock is on every page and every screen size: a round avatar with a green "online" dot, and
+  beside it a speech bubble that says "How can I help you?" as the page loads, then "My name is ChaiX · Online" a few seconds later,
+  then leaves only the avatar. Phones: the dock sits above the Call / WhatsApp / Visit bar.
+-->
+<div *ngIf="!open" class="chaix-dock" [class.is-away]="away" [class.has-bubble]="bubble !== 'none'" [class.hi-copy]="hindiUi" [attr.lang]="hindiUi ? 'hi' : null">
+  <div *ngIf="bubble !== 'none'" class="chaix-bubble" [class.is-name]="bubble === 'name'" role="group" [attr.aria-label]="ui.promptAria"
+       (pointerenter)="holdBubble()" (pointerleave)="releaseBubble()" (focusin)="holdBubble()" (focusout)="releaseBubble()">
+    <button type="button" class="chaix-bubble-main" (click)="openFromBubble()">
+      <span class="b-line">{{ bubble === 'help' ? ui.promptHelp : ui.promptName }}</span>
+      <span *ngIf="bubble === 'name'" class="b-sub"><i class="b-dot" aria-hidden="true"></i>{{ ui.online }}</span>
+    </button>
+    <button type="button" class="chaix-bubble-x" (click)="dismissBubble()" [attr.aria-label]="ui.promptDismiss">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <button type="button" class="chaix-launcher" (click)="openFrom({ source: 'launcher' })" (pointerenter)="warm()" (focus)="warm()"
+          aria-haspopup="dialog" [attr.aria-label]="ui.launcherAria" id="chaix-launcher">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.2 3.6a.5.5 0 0 1-.8-.4V16H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 6.6l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" fill="currentColor" stroke="none"/></svg>
+    <i class="chaix-online" aria-hidden="true"></i>
+    <span class="chaix-launcher-label" aria-hidden="true">{{ ui.launcher }}</span>
+  </button>
+</div>
+
+<ng-container *ngIf="open">
+  <div *ngIf="sheet" class="chaix-scrim" (click)="close()" aria-hidden="true"></div>
+
+  <section #panel class="chaix-panel theme-light" [class.is-sheet]="sheet" [class.is-reduced]="reduced" [class.hi-copy]="lang === 'hi'" role="dialog" [attr.aria-modal]="sheet ? 'true' : 'false'"
+           [attr.aria-label]="t.dialog" tabindex="-1" data-track-source="chaix" id="chaix-panel"
+           [style.bottom.px]="sheet && kbOffset ? kbOffset : null" [style.maxHeight.px]="sheet && vvh ? vvh - 10 : null">
+
+    <header class="chaix-head">
+      <span class="chaix-avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.2 3.6a.5.5 0 0 1-.8-.4V16H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 6.6l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" fill="currentColor" stroke="none"/></svg>
+        <i class="chaix-online is-head"></i>
+      </span>
+      <div class="min-w-0 flex-1" [attr.lang]="lang === 'hi' ? 'hi' : null">
+        <p class="chaix-title">{{ t.title }}</p>
+        <p class="chaix-sub">{{ t.subtitle }}</p>
+      </div>
+      <button type="button" class="chaix-lang" (click)="toggleLang()" [attr.aria-label]="t.switchAria" [attr.lang]="t.switchLang === 'hi' ? 'hi' : 'en'">{{ t.switchLabel }}</button>
+      <button type="button" class="chaix-x" (click)="close()" [attr.aria-label]="t.close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+
+    <div #log class="chaix-log" role="log" aria-live="polite" tabindex="0" [attr.aria-label]="t.chatLog" [attr.aria-busy]="typing" [attr.lang]="lang === 'hi' ? 'hi' : 'en'">
+
+      <div *ngFor="let m of msgs; let last = last; trackBy: trackMsg" class="msg" [class.msg-bot]="m.from === 'bot'" [class.msg-me]="m.from === 'me'">
+        <span class="sr-only">{{ m.from === 'bot' ? t.bot : t.you }}:</span>
+        <!-- The visitor's own words stay plain text. ChaiX's answers are drawn from their parts (labels, lists, sentences, links), never as HTML. -->
+        <p *ngIf="m.from === 'me'" class="bubble">{{ m.text }}</p>
+        <div *ngIf="m.from === 'bot'" class="bubble rich">
+          <ng-container *ngFor="let b of m.blocks">
+            <ng-container [ngSwitch]="b.k">
+              <p *ngSwitchCase="'h'" class="b-h"><ng-container *ngTemplateOutlet="parts; context: { $implicit: b.segs }"></ng-container></p>
+              <ul *ngSwitchCase="'ul'" class="b-ul">
+                <li *ngFor="let item of b.items"><ng-container *ngTemplateOutlet="parts; context: { $implicit: item }"></ng-container></li>
+              </ul>
+              <hr *ngSwitchCase="'sep'" class="b-sep" aria-hidden="true">
+              <p *ngSwitchDefault class="b-p"><ng-container *ngTemplateOutlet="parts; context: { $implicit: b.segs }"></ng-container></p>
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <div *ngIf="m.actions.length" class="acts">
+          <ng-container *ngFor="let a of m.actions">
+            <ng-container [ngSwitch]="a.kind">
+              <a *ngSwitchCase="'tel'" class="pill" [href]="'tel:' + a.href">{{ a.label }}</a>
+              <a *ngSwitchCase="'whatsapp'" class="pill" [href]="waHref" target="_blank" rel="noopener noreferrer">{{ a.label }}</a>
+              <a *ngSwitchCase="'url'" class="pill" [href]="a.href" target="_blank" rel="noopener noreferrer">{{ a.label }} <span aria-hidden="true">↗</span></a>
+              <a *ngSwitchCase="'route'" class="pill" [href]="a.href" (click)="go(a, $event)">{{ a.label }} <span aria-hidden="true">→</span></a>
+              <button *ngSwitchDefault type="button" class="pill pill-solid" (click)="run(a)" aria-haspopup="dialog">{{ a.label }}</button>
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <ul *ngIf="last && m.from === 'bot' && m.chips.length && !busy && !formOpen" class="chips" [attr.aria-label]="t.suggestions">
+          <li *ngFor="let c of m.chips"><button type="button" class="chip" (click)="askChip(c)">{{ c.label }}</button></li>
+        </ul>
+      </div>
+
+      <div *ngIf="typing" class="msg msg-bot" role="status">
+        <span class="sr-only">{{ t.typing }}</span>
+        <p class="bubble typing" aria-hidden="true"><i></i><i></i><i></i></p>
+      </div>
+
+      <!-- Send my question to the team -->
+      <form *ngIf="formOpen" class="cb" [formGroup]="form" (ngSubmit)="submitForm()" novalidate [attr.aria-label]="t.formTitle">
+        <p class="cb-title">{{ t.formTitle }}</p>
+        <p class="cb-intro">{{ t.formIntro }} {{ t.chatSentWith }}</p>
+
+        <div>
+          <label class="field-label" for="chaix-name">{{ lt.name }} *</label>
+          <input #nameField id="chaix-name" type="text" class="field-input" [class.is-invalid]="invalid('name')" formControlName="name"
+                 autocomplete="name" autocapitalize="words" maxlength="100" [attr.placeholder]="lt.namePh" enterkeyhint="next"
+                 [attr.aria-invalid]="invalid('name')" [attr.aria-describedby]="invalid('name') ? 'chaix-name-err' : null">
+          <p class="field-error" *ngIf="invalid('name')" id="chaix-name-err">{{ lt.errName }}</p>
+        </div>
+        <div>
+          <label class="field-label" for="chaix-phone">{{ lt.phone }} *</label>
+          <input id="chaix-phone" type="tel" inputmode="numeric" class="field-input" [class.is-invalid]="invalid('phone')" formControlName="phone"
+                 autocomplete="tel-national" maxlength="14" [attr.placeholder]="lt.phonePh" enterkeyhint="next"
+                 [attr.aria-invalid]="invalid('phone')" [attr.aria-describedby]="invalid('phone') ? 'chaix-phone-err' : null">
+          <p class="field-error" *ngIf="invalid('phone')" id="chaix-phone-err">{{ lt.errPhone }}</p>
+        </div>
+        <div>
+          <label class="field-label" for="chaix-email">{{ lt.email }} *</label>
+          <input id="chaix-email" type="email" inputmode="email" class="field-input" [class.is-invalid]="invalid('email')" formControlName="email"
+                 autocomplete="email" autocapitalize="off" spellcheck="false" [attr.placeholder]="lt.emailPh" enterkeyhint="next"
+                 [attr.aria-invalid]="invalid('email')" [attr.aria-describedby]="invalid('email') ? 'chaix-email-err' : null">
+          <p class="field-error" *ngIf="invalid('email')" id="chaix-email-err">{{ lt.errEmail }}</p>
+        </div>
+        <div>
+          <label class="field-label" for="chaix-question">{{ t.question }} *</label>
+          <textarea id="chaix-question" class="field-input" rows="3" maxlength="1200" formControlName="question" [class.is-invalid]="invalid('question')"
+                    [attr.placeholder]="t.questionPh" [attr.aria-invalid]="invalid('question')" [attr.aria-describedby]="invalid('question') ? 'chaix-question-hint chaix-question-err' : 'chaix-question-hint'"></textarea>
+          <p class="cb-hint" id="chaix-question-hint">{{ t.formHint }}</p>
+          <p class="field-error" *ngIf="invalid('question')" id="chaix-question-err">{{ t.errQuestion }}</p>
+        </div>
+
+        <div class="hp" aria-hidden="true"><input type="text" formControlName="website" tabindex="-1" autocomplete="off" aria-label="Leave empty"></div>
+
+        <div class="cb-fail" role="alert" *ngIf="failed">
+          <strong>{{ lt.failedStrong }}</strong> {{ lt.failed(property.contact.phoneDisplay) }}
+          <a [href]="waHref" target="_blank" rel="noopener noreferrer" class="underline">{{ lt.wa }}</a>
+        </div>
+
+        <div class="cb-btns">
+          <button type="submit" class="btn-primary" [disabled]="sending" (mousedown)="$event.preventDefault()">{{ sending ? lt.sending : t.submit }} <span class="arrow" aria-hidden="true" *ngIf="!sending">→</span></button>
+          <button type="button" class="btn-outline" (click)="closeForm()" [disabled]="sending">{{ t.notNow }}</button>
+        </div>
+        <p class="cb-priv">{{ lt.privacyPre }} <a href="/privacy-disclaimer" (click)="goPrivacyLink($event)" class="underline">{{ lt.privacy }}</a>.</p>
+      </form>
+    </div>
+
+    <footer class="chaix-foot" *ngIf="!formOpen" [class.is-compact]="compact">
+      <!-- The most-asked questions stay pinned here for the whole chat; the visitor can still type anything. -->
+      <div class="pinned" *ngIf="pinned.length && !compact" role="group" [attr.aria-label]="t.pinnedAria" [attr.lang]="lang === 'hi' ? 'hi' : 'en'">
+        <p class="pinned-label" aria-hidden="true">{{ t.pinnedLabel }}</p>
+        <div class="pinned-row">
+          <button *ngFor="let c of pinned" type="button" class="chip" [disabled]="busy" (click)="askChip(c, 'pinned')">{{ c.label }}</button>
+        </div>
+      </div>
+      <form class="composer" (submit)="send($event)" [attr.aria-label]="t.inputLabel">
+        <label class="sr-only" for="chaix-input">{{ t.inputLabel }}</label>
+        <input #box id="chaix-input" type="text" class="composer-input" [formControl]="draft" maxlength="300" autocomplete="off" autocapitalize="sentences"
+               enterkeyhint="send" [attr.placeholder]="t.placeholder" [attr.lang]="lang === 'hi' ? 'hi' : null">
+        <button type="submit" class="composer-send" [disabled]="busy || !draft.value.trim()" [attr.aria-label]="t.send">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+      <button *ngIf="!compact" type="button" class="to-team" (click)="openForm('question')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>
+        {{ t.toTeam }}
+      </button>
+    </footer>
+  </section>
+</ng-container>
+
+<!-- The parts of one line: bold text, tap-to-call and tap-to-write links, and plain text. -->
+<ng-template #parts let-list>
+  <ng-container *ngFor="let s of list">
+    <ng-container [ngSwitch]="s.t">
+      <strong *ngSwitchCase="'b'">{{ s.s }}</strong>
+      <a *ngSwitchCase="'tel'" class="b-link" [href]="s.href">{{ s.s }}</a>
+      <a *ngSwitchCase="'mail'" class="b-link" [href]="s.href">{{ s.s }}</a>
+      <ng-container *ngSwitchDefault>{{ s.s }}</ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>

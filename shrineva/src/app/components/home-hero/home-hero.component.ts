@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PLAN, PROPERTY, waLink } from '../../config/property.config';
 import { HERO_DEFAULT, HERO_INTENTS, HeroIntent } from '../../config/landing.config';
-import { BROCHURE, HERO } from '../../config/media.config';
+import { HERO, HERO_H, HERO_W, MediaItem } from '../../config/media.config';
 import { KEY_FACTS } from '../../config/content.config';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { openLeadPath, openLightbox } from '../../core/ui-events';
 
 /**
  * Home hero: the answer to "what, where, how big, what next" on the first screen.
@@ -21,8 +22,14 @@ export class HomeHeroComponent implements OnDestroy {
   plan = PLAN;
   image = HERO;
   facts = KEY_FACTS;
-  brochure = BROCHURE;
   waHref = waLink();
+
+  /** The hero picture as the image viewer shows it (press the picture to enlarge it). */
+  private heroItem: MediaItem = {
+    id: 'hero', group: 'Home', title: 'SHRINEVA, from the road',
+    caption: 'The building from the 24 m road: open ground level, three glass floors and a sandstone side wall.',
+    alt: HERO.alt, src: HERO.src1920, thumb: HERO.src960, width: HERO_W, height: HERO_H,
+  };
 
   /**
    * Google Ads message match: /?intent=healthcare | office | retail | floor swaps the headline and sub-headline to what the
@@ -40,12 +47,19 @@ export class HomeHeroComponent implements OnDestroy {
     });
   }
 
-  openPopup() {
-    this.analytics.event('site_visit_click', { source: 'hero' });
-    window.dispatchEvent(new CustomEvent('open-booking-popup'));
+  enlarge(): void {
+    openLightbox({ items: [this.heroItem], disclaimer: 'Indicative 3D render. Construction is ongoing and the design is subject to change.' });
   }
 
-  track(name: string) { this.analytics.event(name, { source: 'hero' }); }
+  openPopup() {
+    this.analytics.event('site_visit_click', { source: 'hero' });
+    openLeadPath({ source: 'hero', path: 'visit' });
+  }
+
+  openBrochure() {
+    this.analytics.event('brochure_click', { source: 'hero' });
+    openLeadPath({ source: 'hero', path: 'brochure' });
+  }
 
   ngOnDestroy(): void { this.sub.unsubscribe(); }
 }

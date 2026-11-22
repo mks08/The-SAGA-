@@ -7,8 +7,9 @@
     "build": "ng build && ng run shrineva:server:production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "postbuild": "node scripts/prerender.js && node scripts/build-seo.js",
-    "build:seo": "node scripts/prerender.js && node scripts/build-seo.js",
+    "postbuild": "node scripts/prerender.js && node scripts/build-seo.js && node scripts/test-chaix.js",
+    "build:seo": "node scripts/prerender.js && node scripts/build-seo.js && node scripts/test-chaix.js",
+    "test:chaix": "node scripts/test-chaix.js",
     "indexnow": "node scripts/indexnow.js"
   },
   "private": true,
@@ -30,6 +31,7 @@
     "@fontsource/dm-sans": "^5.3.0",
     "@fontsource/instrument-serif": "^5.3.0",
     "rxjs": "^7.8.0",
+    "three": "^0.160.1",
     "tslib": "^2.6.0",
     "zone.js": "^0.13.0"
   },
@@ -38,6 +40,7 @@
     "@angular/cli": "^16.2.0",
     "@angular/compiler-cli": "^16.2.0",
     "@types/node": "^20.4.0",
+    "@types/three": "^0.160.0",
     "autoprefixer": "^10.5.4",
     "postcss": "^8.5.26",
     "tailwindcss": "^3.4.19",

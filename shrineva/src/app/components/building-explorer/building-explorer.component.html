@@ -1,0 +1,154 @@
+<section id="explorer" data-rail="Floors" class="ex-root relative bg-paper pb-12 pt-14 md:pb-20 md:pt-24 lg:pt-28" aria-labelledby="explorer-title">
+  <div class="container-srineva">
+
+    <header appReveal class="max-w-2xl">
+      <span class="eyebrow">Explore the building</span>
+      <h2 id="explorer-title" class="font-display text-display-md text-ink">Tap a floor, <em class="text-brass-deep">see the plan.</em></h2>
+      <p class="mt-3 text-[0.98rem] leading-relaxed text-ink/70">Choose a floor on the building. The floors above lift away, so you can turn its plan in 3D and see it from every side, with its area and details beside it. <strong *ngIf="statusLines" class="font-semibold text-ink">{{ statusLines }}</strong></p>
+    </header>
+
+    <div class="mt-6 grid gap-4 lg:mt-9 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-8">
+
+      <!-- The building, and the tabs that choose the floor. On phones the wrapper disappears so the tabs can stay pinned while the details scroll. -->
+      <div class="contents lg:block lg:sticky lg:top-[calc(var(--nav-h)+1.25rem)] lg:self-start">
+
+        <div class="ex-stage relative overflow-hidden rounded-[1.6rem] border border-ink/10 bg-[#171310] shadow-lift" [class.is-3d]="mode === 'plan3d'" [class.is-loading]="mode === 'loading'">
+          <div class="ex-img-wrap relative">
+            <img class="block h-auto w-full" [src]="image.src740" [attr.srcset]="image.src480 + ' 480w, ' + image.src740 + ' 740w'" sizes="(min-width: 1024px) 42vw, 100vw"
+                 [attr.width]="image.width" [attr.height]="image.height" loading="lazy" decoding="async" [alt]="image.alt">
+
+            <!-- Outlines drawn on the render itself, so they stay aligned at any size -->
+            <svg class="ex-svg" [attr.viewBox]="'0 0 ' + view.w + ' ' + view.h" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <path *ngFor="let l of levels; trackBy: trackById" class="ex-dim" [class.is-on]="sel === l.id" [attr.d]="l.dimPath" fill-rule="evenodd"/>
+              <polygon *ngFor="let l of levels; let i = index; trackBy: trackById" class="ex-pulse" [attr.points]="l.shape" [style.--i]="i"/>
+              <polygon *ngFor="let l of levels; trackBy: trackById" class="ex-line" [class.is-on]="sel === l.id" [class.is-hover]="hoverId === l.id && sel !== l.id" [attr.points]="l.shape"/>
+              <polygon *ngFor="let l of levels; trackBy: trackById" class="ex-hit" [attr.points]="l.shape"
+                       (click)="pick(l.id, 'stage')" (pointerenter)="hover(l.id)" (pointerleave)="hover(null)"/>
+            </svg>
+
+            <div class="pointer-events-none absolute inset-x-0 top-0 z-[1] h-28 bg-gradient-to-b from-[#0b0a14]/60 to-transparent" aria-hidden="true"></div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-14 bg-gradient-to-t from-[#0b0a14]/65 to-transparent" aria-hidden="true"></div>
+
+            <!-- Which level is chosen. On the render it is the big title; in 3D it shrinks to a small tag, so it never covers the plan. -->
+            <div class="ex-title-box pointer-events-none absolute left-3.5 top-3.5 z-[3] sm:left-5 sm:top-5" aria-hidden="true">
+              <div class="ex-t-big">
+                <p class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-brass-soft">{{ labelled.use }}</p>
+                <p class="mt-0.5 font-display text-[clamp(1.45rem,6.4vw,2.1rem)] leading-none text-[#faf3e3]">{{ labelled.title }}</p>
+                <p *ngIf="!touched" class="ex-hint mt-2 inline-flex items-center gap-2 rounded-full bg-[#171310]/75 py-1.5 pl-2.5 pr-3 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-brass-soft backdrop-blur">
+                  <span class="live-dot"></span>Tap a floor
+                </p>
+              </div>
+              <p class="ex-t-mini">{{ labelled.title }}<span> · 3D plan</span></p>
+            </div>
+
+            <!-- Round markers beside the building: the same choice as the tabs, for fingers that go straight to the picture -->
+            <button *ngFor="let l of levels; trackBy: trackById" type="button" class="ex-marker" [class.is-on]="sel === l.id"
+                    [style.left.%]="l.markerLeft" [style.top.%]="l.markerTop" tabindex="-1" aria-hidden="true"
+                    (click)="pick(l.id, 'marker')" (pointerenter)="hover(l.id)" (pointerleave)="hover(null)">{{ l.short }}</button>
+
+            <p class="ex-cap pointer-events-none absolute bottom-2.5 left-3.5 z-[2] font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[#f6efe0]/85 sm:left-5">Indicative 3D render</p>
+
+            <!-- The 3D plan: the floors above lift away, the chosen floor is cut open and can be turned from any side. Drawn by explorer3d/ (a separate download). -->
+            <div class="ex-3d" tabindex="0" role="group" aria-roledescription="3D model" [attr.aria-label]="live3d || 'Interactive 3D plan of the chosen floor'"></div>
+
+            <div class="ex-compass" aria-hidden="true">
+              <svg class="ex-compass-rose" viewBox="0 0 40 40" width="40" height="40" focusable="false">
+                <circle cx="20" cy="20" r="19" class="ex-compass-ring"/>
+                <path d="M20 6 L24.2 21 H15.8 Z" class="ex-compass-n"/>
+                <path d="M20 34 L24.2 21 H15.8 Z" class="ex-compass-s"/>
+                <text x="20" y="5.6" text-anchor="middle" class="ex-compass-t">N</text>
+              </svg>
+            </div>
+
+            <div *ngIf="canUse3d" class="ex-mode" role="group" aria-label="What the picture shows">
+              <button type="button" class="ex-mode-b" [class.is-on]="mode === 'elevation'" [attr.aria-pressed]="mode === 'elevation'" (click)="showBuilding()">Building</button>
+              <button type="button" class="ex-mode-b" [class.is-on]="mode !== 'elevation'" [attr.aria-pressed]="mode !== 'elevation'" (click)="show3d('button')">3D plan</button>
+            </div>
+
+            <p *ngIf="mode === 'loading'" class="ex-loading" role="status"><span class="ex-spin" aria-hidden="true"></span>Opening the 3D plan</p>
+
+            <p *ngIf="mode === 'plan3d' && hint3d" class="ex-3d-hint" aria-hidden="true">Drag to turn · pinch to zoom</p>
+
+            <div *ngIf="mode === 'plan3d'" class="ex-hud" role="group" aria-label="3D view controls">
+              <div class="ex-pill" role="group" aria-label="View from">
+                <button *ngFor="let p of presets" type="button" class="ex-chip" [class.is-on]="view3d === p.id" [attr.aria-pressed]="view3d === p.id" [attr.title]="p.hint" (click)="setView(p.id)">{{ p.label }}</button>
+              </div>
+              <div class="ex-pill" role="group" aria-label="Zoom">
+                <button type="button" class="ex-chip ex-chip-sq" aria-label="Zoom out" (click)="zoom3d(1.25)"><span aria-hidden="true">−</span></button>
+                <button type="button" class="ex-chip ex-chip-sq" aria-label="Zoom in" (click)="zoom3d(0.8)"><span aria-hidden="true">+</span></button>
+              </div>
+            </div>
+
+            <p class="sr-only" role="status" aria-live="polite">{{ mode === 'plan3d' ? live3d : '' }}</p>
+          </div>
+        </div>
+
+        <div role="tablist" aria-label="Choose a floor" class="ex-tabs sticky top-[calc(var(--nav-h)+0.5rem)] z-30 mt-1 grid grid-cols-4 gap-1 rounded-[1.4rem] border border-ink/10 bg-white/90 p-1 shadow-soft backdrop-blur-xl lg:static lg:mt-3">
+          <button *ngFor="let l of levels; trackBy: trackById" type="button" role="tab" class="ex-tab" [id]="'ex-tab-' + l.id"
+                  [attr.aria-selected]="sel === l.id" [attr.aria-controls]="'ex-panel-' + l.id" [attr.tabindex]="sel === l.id ? 0 : -1"
+                  [attr.aria-label]="l.short + ' ' + l.use + ', ' + l.title.toLowerCase()"
+                  (click)="pick(l.id, 'tab')" (keydown)="tabKey($event)" (pointerenter)="hover(l.id)" (pointerleave)="hover(null)">
+            <span class="ex-tab-n" aria-hidden="true">{{ l.short }}</span>&ngsp;<span class="ex-tab-u" aria-hidden="true">{{ l.use }}</span>
+            <span *ngIf="l.status === 'available'" class="ex-tab-dot" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- The details of the chosen floor. Every floor is in the page; the others are only hidden. -->
+      <div class="ex-panels" (pointerdown)="swipeStart($event)" (pointerup)="swipeEnd($event)" (pointercancel)="swipeEnd($event)">
+        <div *ngFor="let l of levels; trackBy: trackById" role="tabpanel" class="ex-panel" [id]="'ex-panel-' + l.id" [attr.aria-labelledby]="'ex-tab-' + l.id" [hidden]="sel !== l.id">
+          <div class="rounded-[1.6rem] border border-ink/10 bg-white p-4 shadow-soft sm:p-6">
+
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-brass-deep">{{ l.use }}</p>
+                <h3 class="font-display text-[clamp(1.9rem,5vw,2.6rem)] leading-none text-ink">{{ l.title }}</h3>
+              </div>
+              <span class="ex-badge" [ngClass]="'is-' + l.status"><span class="ex-dot" aria-hidden="true"></span>{{ l.statusLabel }}</span>
+            </div>
+
+            <div class="mt-4 grid grid-cols-[minmax(0,8.75rem)_minmax(0,1fr)] gap-4 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-6">
+              <button type="button" class="ex-plan group" (click)="openPlan(l)" [attr.aria-label]="'Open the ' + l.title.toLowerCase() + ' plan, enlarged'" aria-haspopup="dialog">
+                <img [src]="l.sheets[0].thumb" [attr.width]="l.thumbW" [attr.height]="l.thumbH" loading="lazy" decoding="async" [alt]="l.sheets[0].alt"
+                     class="block h-auto w-full transition-transform duration-700 group-hover:scale-[1.03]">
+                <span class="ex-plan-cap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4M11 8.5v5M8.5 11h5"/></svg>
+                  Plan
+                </span>
+              </button>
+              <div class="min-w-0">
+                <p class="font-display text-[clamp(1.55rem,4.6vw,2.2rem)] leading-[1.05] text-ink">{{ l.headline }}</p>
+                <p class="mt-1 text-[0.82rem] leading-snug text-ink/70">{{ l.headlineNote }}</p>
+                <p class="mt-3 text-[0.9rem] leading-snug text-ink/75">{{ l.summary }}</p>
+              </div>
+            </div>
+
+            <dl class="mt-4 divide-y divide-ink/10 rounded-2xl border border-ink/10 bg-paper/60">
+              <div *ngFor="let f of l.facts" class="flex items-baseline justify-between gap-4 px-3.5 py-2.5 text-[0.87rem]">
+                <dt class="shrink-0 text-ink/65">{{ f.label }}</dt>
+                <dd class="text-right font-semibold leading-snug text-ink">{{ f.value }}</dd>
+              </div>
+            </dl>
+
+            <div *ngIf="l.use === 'Commercial'" class="mt-4">
+              <p class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-ink/65">Ways to lease</p>
+              <ul class="mt-2 flex flex-wrap gap-2">
+                <li *ngFor="let o of lease" class="rounded-full border border-brass-deep/35 bg-brass/10 px-3 py-1.5 text-[0.82rem] font-semibold text-ink/85">{{ o }}</li>
+              </ul>
+            </div>
+
+            <div class="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+              <button type="button" class="btn-primary col-span-2 justify-center sm:col-span-1" (click)="visit(l)" aria-haspopup="dialog">Schedule a visit</button>
+              <button type="button" class="btn-outline justify-center" (click)="brochure(l)" aria-haspopup="dialog">Brochure <span aria-hidden="true">↓</span></button>
+              <button type="button" class="btn-outline justify-center" (click)="chaix(l)" aria-haspopup="dialog">Ask ChaiX</button>
+            </div>
+            <a routerLink="/floor-plans" [fragment]="l.plansFragment" class="mt-3 inline-flex min-h-[44px] items-center gap-1.5 text-[0.88rem] font-bold text-brass-deep hover:underline">See the plans in 2D and 3D <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <p class="mt-3 px-1 text-[0.76rem] leading-relaxed text-ink/65">Areas are approximate and subject to final measurement. The render, the 3D model and the plans are indicative and subject to change.</p>
+      </div>
+    </div>
+  </div>
+
+  <app-lightbox [items]="lbItems" [index]="lbIndex" disclaimer="Indicative plan, subject to change. Areas are approximate." (indexChange)="lbIndex = $event" (closed)="lbIndex = null"></app-lightbox>
+</section>

@@ -18,7 +18,7 @@ interface RailItem { id: string; label: string; }
       <ul class="flex flex-col items-end gap-1">
         <li *ngFor="let it of items">
           <a [href]="'#' + it.id" (click)="go($event, it.id)" class="group flex min-h-[28px] items-center gap-3" [attr.aria-current]="active === it.id ? 'true' : null">
-            <span class="rounded-full bg-ink/80 px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-paper opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">{{ it.label }}</span>
+            <span class="rounded-full bg-ink/80 px-2.5 py-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-paper opacity-0 backdrop-blur transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">{{ it.label }}</span>
             <span class="pointer-events-auto flex h-7 w-6 items-center justify-center">
               <span class="block rounded-full border border-brass/70 transition-all duration-300"
                     [ngClass]="active === it.id ? 'h-6 w-2 bg-brass' : 'size-2 bg-ink/30 group-hover:bg-brass/70'"></span>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SeoService } from '../../core/services/seo.service';
 import { MARKETING_AREA, PROPERTY, waLink } from '../../config/property.config';
-import { BROCHURE } from '../../config/media.config';
+import { openLeadPath } from '../../core/ui-events';
 import { LEASING_POINTS, LEASING_STEPS } from '../../config/content.config';
 import { faqForPath } from '../../config/faq.config';
 
@@ -11,7 +11,6 @@ import { faqForPath } from '../../config/faq.config';
 })
 export class LeasingPageComponent implements OnInit {
   property = PROPERTY;
-  brochure = BROCHURE;
   faqs = faqForPath('leasing');
   area = MARKETING_AREA;
   waHref = waLink(`Hi, I'd like to request the leasing information pack for SHRINEVA, ${PROPERTY.address.full}.`);
@@ -21,4 +20,7 @@ export class LeasingPageComponent implements OnInit {
 
   constructor(private seo: SeoService) {}
   ngOnInit(): void { this.seo.apply('leasing'); }
+
+  openBrochure(): void { openLeadPath({ source: 'leasing_page', path: 'brochure' }); }
+  openVisit(): void { openLeadPath({ source: 'leasing_page', path: 'visit' }); }
 }

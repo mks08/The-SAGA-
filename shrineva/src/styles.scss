@@ -283,8 +283,8 @@
     padding: 0.28rem 0.7rem 0.28rem 0.5rem;
     border-radius: 999px;
     font-family: var(--font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: rgb(var(--brass-deep));
     background: rgb(var(--brass-deep) / 0.08);
@@ -303,11 +303,11 @@
 
 
   /* ── Form controls ── */
-  .field-label { display: block; margin-bottom: 0.4rem; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(var(--ink) / 0.72); }
+  .field-label { display: block; margin-bottom: 0.4rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(var(--ink) / 0.72); }
   .field-input {
     width: 100%; min-height: 48px; padding: 0.65rem 1rem;
     border: 1px solid rgb(var(--ink) / 0.18); border-radius: 0.85rem;
-    background: #faf7f0; color: rgb(var(--ink)); font-size: 0.97rem; font-family: var(--font-sans);
+    background: #faf7f0; color: rgb(var(--ink)); font-size: 1rem; font-family: var(--font-sans);
     transition: border-color 0.2s, box-shadow 0.2s;
     &::placeholder { color: rgb(var(--ink) / 0.42); }
     &:hover { border-color: rgb(var(--ink) / 0.4); }
@@ -352,7 +352,7 @@
   }
 
 
-  /* ── Small controls: plan and walkthrough tools, space finder ── */
+  /* ── Small controls: plan and walkthrough tools ── */
   .tool {
     display: inline-flex; align-items: center; justify-content: center;
     min-width: 44px; min-height: 44px; padding: 0 0.75rem;
@@ -365,17 +365,6 @@
     &:disabled { opacity: 0.4; cursor: not-allowed; }
     &.is-on { background: rgb(var(--ink)); color: rgb(var(--paper)); border-color: rgb(var(--ink)); }
   }
-  .tool-text { font-size: 0.82rem; letter-spacing: 0.02em; }
-
-  .chip-btn {
-    min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid rgb(var(--ink) / 0.15); background: rgb(var(--paper));
-    color: rgb(var(--ink)); font-size: 0.9rem; font-weight: 600;
-    transition: border-color 0.25s, background 0.25s, color 0.25s, transform 0.3s var(--ease-smooth);
-    &:hover { border-color: rgb(var(--brass-deep) / 0.7); transform: translateY(-1px); }
-    &:active { transform: scale(0.97); }
-    &.is-on { border-color: rgb(var(--brass-deep)); background: rgb(var(--ink)); color: rgb(var(--paper)); }
-  }
-
   /* Segmented switch (3D / Plan, one / two occupiers) */
   .seg {
     min-height: 36px; padding: 0 0.9rem; border-radius: 999px; border: 0; background: transparent;
@@ -385,41 +374,12 @@
     &.is-on { background: rgb(var(--ink)); color: rgb(var(--paper)); }
     &:disabled, &.is-off { opacity: 0.45; cursor: not-allowed; }
   }
-  .seg-lg { min-height: 44px; padding: 0 1.15rem; font-size: 0.88rem; }
-
-  /* Range slider (space finder) */
-  .range {
-    -webkit-appearance: none; appearance: none; height: 44px; background: transparent; cursor: pointer; --c: #8a6a21;
-    &::-webkit-slider-runnable-track { height: 6px; border-radius: 99px; background: rgb(var(--ink) / 0.14); }
-    &::-moz-range-track { height: 6px; border-radius: 99px; background: rgb(var(--ink) / 0.14); }
-    &::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 26px; height: 26px; margin-top: -10px; border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 2px 8px rgb(var(--ink) / 0.35); transition: transform 0.2s; }
-    &::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 2px 8px rgb(var(--ink) / 0.35); }
-    &:active::-webkit-slider-thumb { transform: scale(1.12); }
-    &:focus-visible { outline: 2px solid rgb(var(--brass)); outline-offset: 2px; border-radius: 99px; }
-  }
-  .range-a { --c: #b98a2a; }
-  .range-b { --c: #3f867c; }
 
   /* Floor-plan viewer (zoom and drag) */
   .plan-stage { scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
   .plan-stage.is-zoomed { cursor: grab; touch-action: pan-x pan-y; }
   .plan-stage.is-zoomed:active { cursor: grabbing; }
   .plan-img { transition: width 0.35s var(--ease-smooth); }
-
-  /* On phones the drawing is pinned above the controls, so keep focused or scrolled-to controls clear of it and of the bottom bar. */
-  @media (max-width: 1023px) {
-    #space-finder .chip-btn, #space-finder .seg, #space-finder .tool, #space-finder input.range, #space-finder summary, #space-finder .btn-primary, #space-finder .btn-outline { scroll-margin-block: 390px 96px; }
-  }
-
-  /* Space finder: blocks and labels settle in when a layout appears */
-  .finder-svg .blk { animation: blockIn 0.55s var(--ease-smooth) both; }
-  .finder-svg .chip-pop { animation: chipIn 0.5s var(--ease-smooth) 0.12s both; transform-box: fill-box; transform-origin: center; }
-  @media (min-width: 1024px) { .finder-svg.is-plan { max-height: 640px; } }
-  .finder-svg polygon, .finder-svg rect { transition: fill 0.35s, fill-opacity 0.35s; }
-
-  /* "What is available": the stack builds floor by floor */
-  .rv .stack-row { opacity: 0; transform: translate3d(0, 18px, 0); }
-  .rv.is-in .stack-row { opacity: 1; transform: none; transition: opacity 0.7s var(--ease-smooth), transform 0.7s var(--ease-smooth); transition-delay: calc(var(--i, 0) * 110ms + 120ms); }
 
   /* Line drawings (site plan outline) draw themselves in */
   .draw-path { stroke-dasharray: 1; stroke-dashoffset: 0; }
@@ -457,8 +417,6 @@
 @keyframes ping2 { 0% { transform: scale(1); opacity: 0.55; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
 @keyframes pageIn { from { opacity: 0; transform: translate3d(0, 10px, 0); } to { opacity: 1; transform: none; } }
 @keyframes wordRise { to { opacity: 1; transform: none; } }
-@keyframes blockIn { from { opacity: 0; transform: translate3d(0, 10px, 0); } to { opacity: 1; transform: none; } }
-@keyframes chipIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
 @keyframes heroSettle { from { transform: scale(1.06); } to { transform: scale(1); } }
 @keyframes progressGrow { to { transform: scaleX(1); } }
 @keyframes kenburns { from { transform: scale(1.04); } to { transform: scale(1.12) translate3d(-1%, -1%, 0); } }
@@ -482,8 +440,8 @@ html.wt-lock, html.wt-lock body { overflow: hidden; }
 .theme-soft :focus-visible { outline-color: rgb(var(--brass)); }
 
 @media (max-width: 768px) {
-  /* room for the fixed Call / WhatsApp / Site visit bar: inside the footer, so no stray strip shows under it */
-  app-site-footer { display: block; padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); background: rgb(243 237 226); }
+  /* room for the fixed Call / WhatsApp / Site visit bar and the round ChaiX launcher above it: inside the footer, so no stray strip shows under it */
+  app-site-footer { display: block; padding-bottom: calc(9.75rem + env(safe-area-inset-bottom)); background: rgb(243 237 226); }
   .btn-primary, .btn-outline, .btn-whatsapp { white-space: normal; text-align: center; }
 }
 
@@ -493,14 +451,13 @@ html.wt-lock, html.wt-lock body { overflow: hidden; }
   .rv, .reveal, .reveal-left, .reveal-right, .rv-scale { opacity: 1 !important; transform: none !important; }
   .rv-clip { clip-path: none !important; }
   .w { opacity: 1 !important; transform: none !important; }
-  .rv .stack-row { opacity: 1 !important; transform: none !important; }
   .rv .draw-path { stroke-dashoffset: 0 !important; }
   .scroll-progress { display: none !important; }
 }
 
 /* Printing and PDF export always show everything. */
 @media print {
-  .rv, .reveal, .reveal-left, .reveal-right, .rv-scale, .w, .rv .stack-row { opacity: 1 !important; transform: none !important; }
+  .rv, .reveal, .reveal-left, .reveal-right, .rv-scale, .w { opacity: 1 !important; transform: none !important; }
   .rv .draw-path { stroke-dashoffset: 0 !important; }
   .rv-clip { clip-path: none !important; }
   .scroll-progress { display: none !important; }

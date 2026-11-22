@@ -21,8 +21,7 @@ const T = (p) => 'file://' + path.join(__dirname, p);
 const I = (p) => 'file://' + path.join(__dirname, 'img', p);
 const F = (p) => 'file://' + path.join(ROOT, 'node_modules', p);
 
-const PHONE1 = '+91 81140 80609', PHONE1_E = '+918114080609';
-const PHONE2 = '+91 73557 70378', PHONE2_E = '+917355770378';
+const PHONE1 = '+91 81140 80609', PHONE1_E = '+918114080609';   // the one public number (also WhatsApp); owner, 22 Nov 2026
 const EMAIL = 'leasing@shrineva.in';
 const SITE = 'https://shrineva.in', SITE_SHOW = 'shrineva.in';
 const WA = 'https://wa.me/918114080609?text=' + encodeURIComponent('Hi, I would like to know more about commercial space at SHRINEVA, Bada Lalpur');
@@ -195,43 +194,52 @@ h1 em,h2 em{color:var(--deep);font-style:italic}
 .foot{white-space:nowrap;gap:4mm;position:absolute;left:16mm;right:16mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;border-top:.25mm solid rgba(16,14,12,.2);padding-top:2.6mm;color:rgba(16,14,12,.74);font-size:7.2pt}
 .card{background:#fff;border:.25mm solid rgba(16,14,12,.12);border-radius:3.5mm}
 
-/* Page 1 · cover */
-.p1 .ttl{padding:2mm 16mm 0}
-.p1 h1{font-size:35pt;margin-top:3.4mm}
-.p1 .lead{margin-top:3.6mm;font-size:10.8pt;max-width:172mm;color:rgba(16,14,12,.8)}
-.fw{margin:8mm 16mm 0;border-top:.3mm solid var(--ink);border-bottom:.25mm solid rgba(16,14,12,.25)}
-.fr{display:grid}
-.fr.a{grid-template-columns:repeat(6,1fr)}
-.fr.b{grid-template-columns:repeat(4,1fr);border-top:.25mm solid rgba(16,14,12,.22);background:rgba(190,142,62,.1)}
-.fr>div{padding:3.4mm 2mm 3.4mm 0}
-.fr>div+div{padding-left:3mm;border-left:.25mm solid rgba(16,14,12,.18)}
-.fr.b>div{padding-left:3.4mm}
-.fr .v{font-family:'Instrument Serif',serif;font-size:23pt;line-height:1}
-.fr .l{margin-top:1.7mm;font-weight:700;font-size:8.6pt;line-height:1.25}
-.fr .s{margin-top:.7mm;font-size:7.6pt;line-height:1.3;color:rgba(16,14,12,.7)}
-.band{display:grid;grid-template-columns:84mm 1fr;gap:7mm;padding:9mm 16mm 0;align-items:stretch}
-.render{position:relative;border-radius:3.2mm;overflow:hidden;min-height:60mm}
-.render img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:46% 60%;display:block}
-.render .chip{position:absolute;left:3mm;bottom:3mm;background:rgba(255,255,255,.92);padding:1mm 2.8mm;border-radius:8mm;color:rgba(16,14,12,.8);font-size:7.2pt}
+/* Page 1 · cover. Calm and airy: the picture sits top right, the headline is moderate, only the hero facts are shown, and every block leads on to the pages that follow. */
+.p1 .top{position:relative;height:124mm}
+.p1 .shot{position:absolute;top:0;right:0;width:101mm;height:119mm;border-bottom-left-radius:9mm;overflow:hidden;background:#d9cdb9}
+.p1 .shot img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.p1 .shot .chip{position:absolute;left:4mm;bottom:4mm;background:rgba(255,255,255,.92);padding:1.1mm 3mm;border-radius:8mm;color:rgba(16,14,12,.8);font-size:7.2pt}
+.p1 .intro{position:absolute;left:16mm;top:14mm;width:85mm}
+.p1 .tag{margin-top:9mm;color:var(--deep)}
+.p1 h1{font-size:26pt;margin-top:3mm;line-height:1.05}
+.p1 .lead{margin-top:4.4mm;font-size:9.6pt;line-height:1.55;color:rgba(16,14,12,.8)}
+.p1 .dir{display:inline-flex;align-items:center;gap:2.4mm;margin-top:6.4mm;padding:3.1mm 5.6mm 3.1mm 4.6mm;border-radius:9mm;background:linear-gradient(135deg,#e8cf96,#be8e3e);color:var(--ink);font-weight:800;font-size:9.8pt;line-height:1;box-shadow:0 1.2mm 3mm -1.4mm rgba(122,86,20,.55)}
+.p1 .dir svg{width:4.6mm;height:4.6mm;flex:none}
+.p1 .dirn{margin-top:2mm;font-size:7.4pt;color:rgba(16,14,12,.66)}
+.p1 .facts{margin:0 16mm;border-top:.3mm solid var(--ink);display:grid;grid-template-columns:repeat(5,1fr)}
+.p1 .facts>div{padding:4.2mm 2mm 3.6mm 0}
+.p1 .facts>div+div{padding-left:3.6mm;border-left:.25mm solid rgba(16,14,12,.16)}
+.p1 .facts .v{font-family:'Instrument Serif',serif;font-size:19pt;line-height:1}
+.p1 .facts .l{margin-top:1.8mm;font-weight:700;font-size:8.2pt;line-height:1.25}
+.p1 .facts .s{margin-top:.6mm;font-size:7.5pt;line-height:1.3;color:rgba(16,14,12,.7)}
+.p1 .chips{margin:0 16mm;display:flex;flex-wrap:wrap;gap:2mm;padding:3.6mm 0 0;border-top:.25mm solid rgba(16,14,12,.16)}
+.p1 .chips span{border:.25mm solid rgba(16,14,12,.22);background:#fff;border-radius:6mm;padding:1.5mm 3.4mm;font-weight:700;font-size:7.9pt;line-height:1.2}
+.p1 .low{display:grid;grid-template-columns:1fr 64mm;gap:9mm;padding:7mm 16mm 0;align-items:start}
 .nl .nh{display:flex;justify-content:space-between;align-items:baseline;color:var(--deep)}
 .nl .nh span+span{color:rgba(16,14,12,.64)}
 .nl .rows{margin-top:1.2mm}
-.nl .rows>div{display:flex;justify-content:space-between;align-items:center;gap:3mm;padding:2.8mm 0;border-bottom:.2mm solid rgba(16,14,12,.16)}
-.nl b{display:block;font-size:9.2pt;line-height:1.25;font-weight:500}
-.nl small{display:block;font-size:7.7pt;line-height:1.3;color:rgba(16,14,12,.68);margin-top:.3mm}
-.nl .d{font-family:'Instrument Serif',serif;font-size:14.5pt;color:var(--deep);white-space:nowrap}
-.nl .hi b{font-weight:800;font-size:10.8pt;color:var(--ink)}
-.nl .hi b:before{content:'';display:inline-block;width:1.8mm;height:1.8mm;border-radius:50%;background:var(--brass);margin-right:1.8mm;vertical-align:.15mm}
-.nl .hi .d{font-size:19pt;color:var(--ink)}
-.nl .note{margin-top:2.4mm;font-size:7.6pt;line-height:1.4;color:rgba(16,14,12,.7)}
-.dark{position:absolute;left:0;right:0;bottom:0;height:47mm;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1.05fr 1.25fr .8fr;gap:7mm;align-items:center;padding:0 16mm}
+.nl .rows>div{display:flex;justify-content:space-between;align-items:center;gap:3mm;padding:2.2mm 0;border-bottom:.2mm solid rgba(16,14,12,.16)}
+.nl b{display:block;font-size:9pt;line-height:1.25;font-weight:600}
+.nl small{display:block;font-size:7.6pt;line-height:1.3;color:rgba(16,14,12,.68);margin-top:.3mm}
+.nl .d{font-family:'Instrument Serif',serif;font-size:14pt;color:var(--deep);white-space:nowrap}
+.nl .note{margin-top:3.2mm;padding:2.8mm 3.8mm;border-left:1mm solid var(--brass);border-radius:0 2.4mm 2.4mm 0;background:rgba(190,142,62,.16);font-size:8.4pt;line-height:1.42;color:rgba(16,14,12,.78)}
+.nl .note b{font-weight:800;color:var(--ink)}
+.p1 .find{background:#fff;border:.25mm solid rgba(16,14,12,.12);border-radius:3.5mm;padding:4.2mm 4.4mm 4mm}
+.p1 .find .k{color:var(--deep)}
+.p1 .find .addr{margin-top:1.8mm;font-weight:700;font-size:8.8pt;line-height:1.4}
+.p1 .find .row{display:flex;gap:3.4mm;align-items:center;margin-top:3.4mm}
+.p1 .find .row img{width:25mm;height:25mm;display:block;flex:none;border:.25mm solid rgba(16,14,12,.12);border-radius:1.8mm;padding:1mm;background:#fff}
+.p1 .find .coord{font-family:'DM Mono',monospace;font-size:7.4pt;line-height:1.5;letter-spacing:.01em}
+.p1 .find .sub{margin-top:1mm;font-size:7.4pt;line-height:1.35;color:rgba(16,14,12,.68)}
+.p1 .find .gm{display:block;margin-top:3.2mm;padding-top:2.6mm;border-top:.2mm solid rgba(16,14,12,.14);font-weight:800;font-size:8.4pt;color:var(--deep)}
+.dark{position:absolute;left:0;right:0;bottom:0;height:37mm;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1.15fr 1fr .75fr;gap:8mm;align-items:center;padding:0 16mm}
 .dark .k{color:var(--soft);font-size:7.2pt}
-.dark a{display:block;font-weight:700;font-size:10.4pt;line-height:1.6}
-.dark .sub{font-weight:400;font-size:7.4pt;color:rgba(240,234,222,.72)}
-.dark .loc{display:flex;gap:4mm;align-items:center}
-.dark .loc img{width:25mm;height:25mm;background:#fff;padding:1.4mm;border-radius:2.2mm;display:block;flex:none}
-.dark .coord{font-family:'DM Mono',monospace;font-size:9pt;line-height:1.5;letter-spacing:.02em;margin-top:1.6mm;color:var(--paper);font-weight:400}
-.dark .web{font-family:'Instrument Serif',serif;font-size:20pt;line-height:1.05;margin-top:1.4mm}
+.dark a{display:block}
+.dark .ph{font-weight:700;font-size:10.6pt;line-height:1.6}
+.dark .sub{font-weight:400;font-size:7.6pt;color:rgba(240,234,222,.72)}
+.dark .idx{margin-top:1.6mm;font-size:8.2pt;line-height:1.75;color:rgba(240,234,222,.86)}
+.dark .idx span{display:inline-block;width:6.4mm;font-family:'DM Mono',monospace;font-size:7.2pt;color:var(--soft)}
+.dark .web{font-family:'Instrument Serif',serif;font-size:19pt;line-height:1.05;margin-top:1.6mm}
 
 /* Page 2 · floor plans */
 .pls{display:grid;grid-template-columns:1fr 1fr;gap:6mm;padding:4.5mm 16mm 0}
@@ -304,11 +312,11 @@ h1 em,h2 em{color:var(--deep);font-style:italic}
 `;
 
 const near = [
-  ['Apollo Hospital (upcoming)', 'Opposite the plot; under construction, not yet operational', '≈ 50 m', true],
-  ['NIFT Varanasi campus', 'Near the plot', '≈ 100 m', true],
-  ['Varanasi Trade Centre', 'Along the road', '≈ 330 m', false],
-  ['Vardhan Hospital, Lalpur', 'Bada Lalpur, opposite the Trade Centre', 'Nearby', false],
-  ['Ring Road (NH 135B)', 'By road', '≈ 1 km', false],
+  ['Apollo Hospital (upcoming)', 'Opposite the plot; under construction, not yet operational', '≈ 50 m'],
+  ['NIFT Varanasi campus', 'Near the plot', '≈ 100 m'],
+  ['Varanasi Trade Centre', 'Along the road', '≈ 330 m'],
+  ['Vardhan Hospital, Lalpur', 'Bada Lalpur, opposite the Trade Centre', 'Nearby'],
+  ['Ring Road (NH 135B)', 'By road', '≈ 1 km'],
 ];
 
 const factsA = [
@@ -317,14 +325,9 @@ const factsA = [
   ['12+', 'Covered parking', 'Cars, at ground level'],
   ['10', 'Passenger lift', 'Serves every level'],
   ['≈ 3,500', 'Sq ft per floor', 'Gross, Floors 1 to 3'],
-  ['Every', 'Level has a fire exit', 'Marked on each plan'],
 ];
-const factsB = [
-  ['Ground + 3', 'Parking and three floors', 'Ground (Parking), Floors 1 to 3'],
-  ['Vastu', 'Compliant', 'Layout and orientation'],
-  ['VDA', 'Approved', 'Varanasi Development Authority'],
-  ['High', 'Footfall potential', 'Near NIFT, opposite the upcoming Apollo Hospital'],
-];
+// The remaining hero points, kept as light chips so the cover does not read as a wall of numbers.
+const chips = ['Ground + 3', 'Fire exit on every level', 'Vastu compliant', 'VDA approved', 'High footfall potential'];
 const row = (f) => `<div><div class="v">${f[0]}</div><div class="l">${f[1]}</div><div class="s">${f[2]}</div></div>`;
 
 const SPEC = [
@@ -333,6 +336,8 @@ const SPEC = [
   ['Road', '24 m wide, north-facing'],
   ['Frontage', '≈ 50 ft'],
   ['Configuration', 'Ground (Parking) + 3 floors'],
+  ['Approval', 'VDA approved <small>(Varanasi Development Authority)</small>'],
+  ['Vastu', 'Compliant <small>(layout and orientation)</small>'],
   ['Gross floor area', '≈ 3,500 sq ft <small>(Floors 1 to 3)</small>'],
   ['Carpet floor area', '≈ 3,100 sq ft <small>(Floors 1 to 3)</small>'],
   ['Floor to floor', 'Ground ≈ 9′-6″ · Floors ≈ 11′-6″'],
@@ -353,34 +358,43 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
 
 <!-- 1 · Cover -->
 <section class="page p1">
-  <div class="hdr">${lockup(13)}<span class="mono tag">Lease · whole floor or part floor</span></div>
-  <div class="ttl">
-    <div class="eyebrow mono">Plot D-15 · Bada Lalpur · Opp. Apollo Hospital (upcoming) · Varanasi</div>
-    <h1>Commercial &amp; mixed&#8209;use space in <em>Bada&nbsp;Lalpur, Varanasi.</em></h1>
-    <p class="lead">Opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi, on a 24 m wide north&#8209;facing road. Lease a whole floor, part of a floor, or more than one.</p>
+  <div class="top">
+    <div class="shot"><img src="${I('hero-cover.jpg')}" alt="Indicative 3D render of the SHRINEVA building"><span class="chip mono">Indicative 3D render</span></div>
+    <div class="intro">
+      ${lockup(13)}
+      <div class="tag mono">Lease · whole floor or part floor</div>
+      <h1>Commercial &amp; mixed&#8209;use space in <em>Bada&nbsp;Lalpur, Varanasi.</em></h1>
+      <p class="lead">Opposite the upcoming Apollo Hospital and about 100&nbsp;m from NIFT Varanasi, on a 24&nbsp;m wide north&#8209;facing road. Lease a whole floor, part of a floor, or more than one.</p>
+      <a class="dir" href="${MAP}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Get directions<span aria-hidden="true">&nbsp;&rsaquo;</span></a>
+      <div class="dirn">Opens the location in Google Maps</div>
+    </div>
   </div>
-  <div class="fw">
-    <div class="fr a">${factsA.map(row).join('')}</div>
-    <div class="fr b">${factsB.map(row).join('')}</div>
-  </div>
-  <div class="band">
-    <div class="render"><img src="${I('hero.jpg')}" alt="Indicative 3D render of the SHRINEVA building"><span class="chip mono">Indicative 3D render</span></div>
+  <div class="facts">${factsA.map(row).join('')}</div>
+  <div class="chips">${chips.map((c) => `<span>${c}</span>`).join('')}</div>
+  <div class="low">
     <div class="nl">
       <div class="nh mono"><span>Nearby</span><span>From the plot, approximate</span></div>
-      <div class="rows">${near.map((n) => `<div${n[3] ? ' class="hi"' : ''}><span><b>${n[0]}</b><small>${n[1]}</small></span><span class="d"${n[2] === 'Nearby' ? ' style="font-size:11pt"' : ''}>${n[2]}</span></div>`).join('')}</div>
-      <p class="note">Approximate distances from the plot. The Apollo Hospital is upcoming and under construction.</p>
+      <div class="rows">${near.map((n) => `<div><span><b>${n[0]}</b><small>${n[1]}</small></span><span class="d"${n[2] === 'Nearby' ? ' style="font-size:11pt"' : ''}>${n[2]}</span></div>`).join('')}</div>
+      <p class="note">Approximate distances from the plot. <b>The Apollo Hospital is upcoming and under construction.</b></p>
+    </div>
+    <div class="find">
+      <div class="mono k">Find us</div>
+      <div class="addr">SHRINEVA, Plot D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi 221003</div>
+      <div class="row"><img src="${T('qr-map.png')}" alt="QR code for the map location"><div><div class="coord">${COORD.replace(', ', '<br>')}</div><div class="sub">Scan the code for the map and directions</div></div></div>
+      <a class="gm" href="${MAP}">Open in Google Maps &rsaquo;</a>
     </div>
   </div>
   <div class="dark">
     <div><div class="mono k">Leasing desk</div>
-      <a href="tel:${PHONE1_E}">${PHONE1}<span class="sub"> · also WhatsApp</span></a><a href="tel:${PHONE2_E}">${PHONE2}</a><a href="mailto:${EMAIL}">${EMAIL}</a></div>
-    <a class="loc" href="${MAP}"><img src="${T('qr-map.png')}" alt="QR code for the map location"><span><span class="mono k">Map location</span><span class="coord" style="display:block">${COORD}</span><span class="sub" style="display:block;margin-top:1mm">Scan for the map and directions</span></span></a>
-    <div><div class="mono k">Website</div><a class="web" href="${SITE}" style="font-weight:400;font-size:20pt">${SITE_SHOW}</a></div>
+      <a class="ph" href="tel:${PHONE1_E}">${PHONE1}<span class="sub"> · also WhatsApp</span></a><a class="ph" href="mailto:${EMAIL}">${EMAIL}</a></div>
+    <div><div class="mono k">Inside</div>
+      <div class="idx"><a href="#pg2"><span>02</span>Floor plans</a><a href="#pg3"><span>03</span>Project progress</a><a href="#pg4"><span>04</span>Location and specification</a></div></div>
+    <div><div class="mono k">Website</div><a class="web" href="${SITE}">${SITE_SHOW}</a></div>
   </div>
 </section>
 
 <!-- 2 · Floor plans -->
-<section class="page p2">
+<section class="page p2" id="pg2">
   ${bhdr('Floor plans')}
   <div class="head">
     <div class="eyebrow mono">Floor plans</div>
@@ -411,7 +425,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
 </section>
 
 <!-- 3 · Where the building stands -->
-<section class="page p3">
+<section class="page p3" id="pg3">
   ${bhdr('Project progress')}
   <div class="head">
     <div class="eyebrow mono">Project timeline</div>
@@ -440,7 +454,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
 </section>
 
 <!-- 4 · Location, specification and contacts -->
-<section class="page p4">
+<section class="page p4" id="pg4">
   ${bhdr('Location and specification')}
   <div class="head">
     <div class="eyebrow mono">Location and specification</div>
@@ -454,8 +468,8 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
   <div class="spec">
     <div class="sh2 mono"><span>Specification</span><span>Approximate, subject to final measurement</span></div>
     <div class="tbl">
-      <div>${SPEC.slice(0, 7).map((r) => `<div class="r"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}</div>
-      <div>${SPEC.slice(7).map((r) => `<div class="r"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}</div>
+      <div>${SPEC.slice(0, Math.ceil(SPEC.length / 2)).map((r) => `<div class="r"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}</div>
+      <div>${SPEC.slice(Math.ceil(SPEC.length / 2)).map((r) => `<div class="r"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`).join('')}</div>
     </div>
   </div>
   <div class="cta">
@@ -465,7 +479,6 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
       <div class="lines">
         <a href="tel:${PHONE1_E}"><span class="k">Call</span>${PHONE1}</a>
         <a href="${WA}"><span class="k">WhatsApp</span>${PHONE1}</a>
-        <a href="tel:${PHONE2_E}"><span class="k">Call</span>${PHONE2}</a>
         <a href="mailto:${EMAIL}"><span class="k">Email</span>${EMAIL}</a>
         <a href="${SITE}"><span class="k">Website</span>${SITE_SHOW}</a>
         <a href="${MAP}"><span class="k">Google Maps</span>Open the location</a>

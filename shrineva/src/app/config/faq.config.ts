@@ -11,7 +11,6 @@ import { HI } from './hindi.config';
 export interface Faq { q: string; a: string; }
 
 const p1 = PROPERTY.contact.phoneDisplay;
-const p2 = PROPERTY.contact.phone2Display;
 const EMAIL = PROPERTY.contact.publicEmail;
 
 /** Answer-first block at the top of the home page body (visible, and repeated in the static HTML and llms.txt). 40–60 words. */
@@ -40,7 +39,7 @@ export const CORE_FAQ: Faq[] = [
   },
   {
     q: 'How do I book a site visit or contact the SHRINEVA leasing office?',
-    a: `Call ${p1} or ${p2}, message the leasing team on WhatsApp at ${p1}, email ${EMAIL}, or fill in the enquiry form on this page to request a site visit. The leasing team confirms a time with you.`,
+    a: `Call or WhatsApp ${p1}, email ${EMAIL}, or fill in the enquiry form on this page to request a site visit. Tell the leasing team which floor or business use you have in mind: they reply with the floor options, the plans and a visit time that suits you.`,
   },
 ];
 

@@ -18,6 +18,12 @@ def png(src, name, w=None, colors=128):
     im.save(os.path.join(out, name), 'PNG', optimize=True)
 
 jpg(f'{imgs}/hero/hero-day-1920.webp', 'hero.jpg', 1500, 80)
+# Cover picture, top right: a crop of the same render around the building (cropping only; the render itself is untouched).
+_h = Image.open(f'{imgs}/hero/hero-day-1920.webp').convert('RGB')
+_x0, _x1 = 560, 1500
+_c = _h.crop((_x0, 0, _x1, _h.height))
+if _c.width > 1000: _c = _c.resize((1000, round(_c.height * 1000 / _c.width)), Image.LANCZOS)
+_c.save(os.path.join(out, 'hero-cover.jpg'), 'JPEG', quality=84, optimize=True, progressive=True)
 for n in ('entrance', 'lift-lobby', 'facade-day'):
     jpg(f'{imgs}/renders/{n}.webp', f'{n}.jpg', 900, 80)
 # Site photographs are used uncropped; the front view is portrait, the others landscape.

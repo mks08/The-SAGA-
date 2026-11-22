@@ -75,7 +75,14 @@ function clean($v, int $max): string
     return mb_substr($v, 0, $max, 'UTF-8');
 }
 
-$kinds = ['leasing' => 'leasing enquiry', 'site-visit' => 'site-visit request', 'broker' => 'broker requirement', 'residential' => 'proposed residential interest'];
+// The website's three paths are 'site-visit', 'brochure' and 'query'; 'chaix' is a question (name, mobile, email, question and the chat so far) sent from inside the ChaiX assistant.
+// 'leasing' and 'broker' are the older long forms and still work.
+$kinds = [
+    'leasing' => 'leasing enquiry', 'site-visit' => 'site-visit request', 'brochure' => 'brochure download', 'query' => 'question',
+    'chaix' => 'question from the ChaiX chat', 'broker' => 'broker requirement',
+];
+// Every form on the site (the three paths and the ChaiX question form) asks for name, mobile, email and a query, so a name is required on all kinds.
+$nameRequired = array_keys($kinds);
 $kind = clean($in['kind'] ?? 'leasing', 20);
 if (!isset($kinds[$kind])) {
     $kind = 'leasing';
@@ -107,7 +114,7 @@ $fields = [
 ];
 
 $errors = [];
-if (mb_strlen($fields['name'], 'UTF-8') < 2) {
+if (in_array($kind, $nameRequired, true) ? mb_strlen($fields['name'], 'UTF-8') < 2 : ($fields['name'] !== '' && mb_strlen($fields['name'], 'UTF-8') < 2)) {
     $errors[] = 'name';
 }
 $digits = preg_match('/^\+?91([6-9]\d{9})$/', $fields['phone'], $pm) ? $pm[1] : (preg_replace('/^0/', '', $fields['phone']) ?? '');
@@ -205,7 +212,7 @@ function b64subject(string $s): string
 }
 
 $label = $kinds[$kind];
-$who = $fields['name'] . ' · ' . $fields['phone'];
+$who = ($fields['name'] !== '' ? $fields['name'] . ' · ' : '') . $fields['phone'];
 $subject = '[SHRINEVA] New ' . $label . ': ' . $who;
 $rows = [
     'Type' => ucfirst($label), 'Name' => $fields['name'], 'Phone' => $fields['phone'], 'Email' => $fields['email'],
@@ -221,7 +228,8 @@ $rows = [
 $body = "A new enquiry came in through the SHRINEVA website.\r\n\r\n";
 foreach ($rows as $k => $v) {
     if ($v !== '') {
-        $body .= str_pad($k . ':', 22) . $v . "\r\n";
+        // A value of several lines (the chat that comes with a question) keeps its lines under its own column.
+        $body .= str_pad($k . ':', 22) . preg_replace('/\r\n|\r|\n/', "\r\n" . str_repeat(' ', 22), $v) . "\r\n";
     }
 }
 $body .= "\r\nReply to this email to answer the enquirer directly" . ($fields['email'] === '' ? ' (no email was given: call or WhatsApp the number above).' : '.') . "\r\n";

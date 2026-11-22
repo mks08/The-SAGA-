@@ -1,28 +1,97 @@
-:host { display: block; }
+:host {
+  display: block;
+  --g1: 47 154 98;        /* lighter green */
+  --g2: 30 108 68;        /* the site's green (--ok) */
+}
 
-/* Stage markers. Mobile: a vertical list with the rail down the left. md and up: four columns with the rail across the top. */
-.node { background: rgb(var(--paper)); border-color: rgb(var(--ink) / 0.25); color: rgb(var(--ink) / 0.55); }
-.rail { left: 15px; top: 2.2rem; bottom: 0.2rem; width: 2px; background: repeating-linear-gradient(to bottom, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
-.state { color: rgb(var(--ink) / 0.6); }
+/* A modern green progress tracker.
+   Phones: a vertical list, the rail down the left. md and up: four columns, the rail across the top.
+   The rail between two stages is drawn by scrolling (--p, set by appScrollProgress; 1 = fully drawn without JavaScript):
+   finished = solid green, in progress = moving green stripes (no percentage is claimed), upcoming = dashed. */
+.tl {
+  --track: rgb(var(--ink) / 0.1);
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
-.st-done .node { background: rgb(var(--ok)); border-color: rgb(var(--ok)); color: #fff; }
-.st-done .rail { background: rgb(var(--ok)); }
-.st-done .state { color: rgb(var(--ok)); }
+.st { position: relative; display: flex; flex-direction: column; padding-left: 3.5rem; }
 
-.st-active .node { border-color: rgb(var(--brass-deep)); background: rgb(var(--brass-soft) / 0.35); }
-.st-active .rail { background: linear-gradient(to bottom, rgb(var(--brass-deep)) 0 45%, transparent 45%), repeating-linear-gradient(to bottom, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
-.st-active .state { color: rgb(var(--brass-deep)); }
-.st-active .dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgb(var(--brass-deep)); animation: ping2 2.4s cubic-bezier(0, 0, 0.2, 1) infinite; }
+/* ── Node ─────────────────────────────────────────────────────────────────────────────── */
+.tl-node {
+  position: absolute; left: 0; top: 0.35rem; z-index: 2;
+  display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+  background: #faf7f0; border: 2px solid rgb(var(--ink) / 0.22); color: rgb(var(--ink) / 0.5);
+  transition: transform 0.5s var(--ease-bounce);
+}
+.st-done .tl-node { background: linear-gradient(135deg, rgb(var(--g1)), rgb(var(--g2))); border-color: transparent; color: #fff; box-shadow: 0 0 0 5px rgb(var(--g2) / 0.13), 0 8px 18px -8px rgb(var(--g2) / 0.7); }
+.st-active .tl-node { background: #fff; border: 3px solid rgb(var(--g1)); color: rgb(var(--g2)); box-shadow: 0 0 0 5px rgb(var(--g2) / 0.13); }
+.st-next .tl-node { border-style: dashed; background: #faf7f0; }
+.st-target .tl-node { background: #fff; border-color: rgb(var(--g2)); color: rgb(var(--g2)); box-shadow: 0 0 0 5px rgb(var(--g2) / 0.1); }
 
-.st-target .node { background: rgb(var(--ink)); border-color: rgb(var(--ink)); color: rgb(var(--brass)); }
-.st-target .state { color: rgb(var(--ink)); font-weight: 700; }
+.tl-dot { position: relative; display: block; width: 10px; height: 10px; border-radius: 50%; background: rgb(var(--g2)); }
+.tl-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgb(var(--g1)); animation: ping2 2.2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+/* ── Rail between two stages ──────────────────────────────────────────────────────────── */
+.tl-rail {
+  position: absolute; z-index: 1; left: 16px; top: 2.75rem; bottom: -1.2rem; width: 4px; border-radius: 4px; overflow: hidden;
+  background: var(--track);
+}
+.st-next .tl-rail { background: repeating-linear-gradient(to bottom, rgb(var(--ink) / 0.26) 0 5px, transparent 5px 10px); }
+.tl-fill {
+  position: absolute; inset: 0; border-radius: inherit; transform-origin: top center;
+  transform: scaleY(clamp(0, calc(var(--p, 1) * var(--n, 3) - var(--k, 0)), 1));
+  will-change: transform;
+}
+.st-done .tl-fill { background: linear-gradient(to bottom, rgb(var(--g1)), rgb(var(--g2))); }
+.st-active .tl-fill {
+  background: repeating-linear-gradient(-45deg, rgb(var(--g1)) 0 7px, rgb(var(--g2)) 7px 14px);
+  background-size: 20px 20px; animation: tlFlowY 1s linear infinite;
+}
+.st-next .tl-fill, .st-target .tl-fill { display: none; }
+@keyframes tlFlowY { to { background-position: 0 20px; } }
+@keyframes tlFlowX { to { background-position: 20px 0; } }
+
+/* ── Card ─────────────────────────────────────────────────────────────────────────────── */
+.tl-card {
+  flex: 1 1 auto; padding: 0.85rem 1rem 0.95rem; border-radius: 1.1rem; border: 1px solid rgb(var(--ink) / 0.1); background: rgb(255 255 255 / 0.65);
+  transition: box-shadow 0.4s var(--ease-smooth), border-color 0.3s;
+}
+.tl-state { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(var(--ink) / 0.6); }
+.st-done .tl-card { background: rgb(var(--g2) / 0.06); border-color: rgb(var(--g2) / 0.22); }
+.st-done .tl-state { color: rgb(var(--g2)); }
+.st-active .tl-card { background: #fff; border-color: rgb(var(--g1) / 0.55); box-shadow: 0 18px 38px -22px rgb(var(--g2) / 0.65); }
+.st-active .tl-state { color: rgb(var(--g2)); font-weight: 700; }
+.st-next .tl-card { background: transparent; border-style: dashed; }
+.st-target .tl-card { background: #fff; border-color: rgb(var(--ink) / 0.14); }
+.st-target .tl-state { color: rgb(var(--ink)); font-weight: 700; }
+
+/* ── Summary bar ──────────────────────────────────────────────────────────────────────── */
+.tl-summary { margin-bottom: 1.4rem; }
+.tl-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.tl-seg { height: 8px; border-radius: 999px; background: rgb(var(--ink) / 0.1); }
+.sg-done { background: linear-gradient(90deg, rgb(var(--g1)), rgb(var(--g2))); }
+.sg-active { background: repeating-linear-gradient(-45deg, rgb(var(--g1)) 0 7px, rgb(var(--g2)) 7px 14px); background-size: 20px 20px; animation: tlFlowX 1s linear infinite; }
+.sg-target { background: transparent; box-shadow: inset 0 0 0 1.5px rgb(var(--g2) / 0.55); }
+
+.tl-live { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--ok)); box-shadow: 0 0 0 3px rgb(var(--ok) / 0.18); }
 
 @media (min-width: 768px) {
-  .rail { left: 2.4rem; right: 0.4rem; top: 15px; bottom: auto; width: auto; height: 2px; background: repeating-linear-gradient(to right, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
-  .st-done .rail { background: rgb(var(--ok)); }
-  .st-active .rail { background: linear-gradient(to right, rgb(var(--brass-deep)) 0 45%, transparent 45%), repeating-linear-gradient(to right, rgb(var(--ink) / 0.28) 0 5px, transparent 5px 10px); }
+  .tl-bar { display: none; }   /* the stepper below says the same on wider screens */
+  .tl { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
+  .st { padding: 3.4rem 0.8rem 0 0; }
+  .tl-node { width: 40px; height: 40px; top: 0; }
+  .tl-rail { left: 52px; right: 12px; top: 18px; bottom: auto; width: auto; height: 4px; }
+  .st-next .tl-rail { background: repeating-linear-gradient(to right, rgb(var(--ink) / 0.26) 0 5px, transparent 5px 10px); }
+  .tl-fill { transform-origin: left center; transform: scaleX(clamp(0, calc(var(--p, 1) * var(--n, 3) - var(--k, 0)), 1)); }
+  .st-done .tl-fill { background: linear-gradient(to right, rgb(var(--g1)), rgb(var(--g2))); }
+  .st-active .tl-fill { animation-name: tlFlowX; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .st-active .dot::after { animation: none; opacity: 0; }
+  .tl-dot::after { animation: none; opacity: 0; }
+  .st-active .tl-fill, .sg-active { animation: none; }
+  .tl-fill { transform: none; }
 }

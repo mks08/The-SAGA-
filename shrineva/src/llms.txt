@@ -2,12 +2,12 @@
 
 > SHRINEVA is a commercial building for rent or lease at Plot No. D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi, Uttar Pradesh 221003, India, opposite the upcoming Apollo Hospital and about 100 m from NIFT Varanasi, on a 24 m wide north-facing road. Three open-plan floors of about 3,500 sq ft gross (about 3,100 sq ft carpet) with flexible tenant layouts can be rented or leased whole or in part. The concrete structure is complete; project completion is targeted for March 2027, subject to approvals. Images labelled as renders are indicative.
 
-Last updated: November 2026 (2026-11-20). Leasing enquiries: leasing@shrineva.in, +91 81140 80609 (also WhatsApp) or +91 73557 70378.
+Last updated: November 2026 (2026-11-20). Leasing enquiries: leasing@shrineva.in or +91 81140 80609 (also WhatsApp).
 
 ## Key facts
 - Address: Plot No. D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi, Uttar Pradesh 221003, India.
 - GPS coordinates: 25.383306, 82.978028.
-- Leasing phone: +91 81140 80609 (also WhatsApp, https://wa.me/918114080609) and +91 73557 70378. Leasing email: leasing@shrineva.in.
+- Leasing phone: +91 81140 80609 (also WhatsApp, https://wa.me/918114080609). Leasing email: leasing@shrineva.in.
 - Location: opposite the upcoming Apollo Hospital (under construction, not yet operational) and about 100 m from the NIFT Varanasi campus, on a 24 m wide north-facing road in Bada Lalpur, about 1 km from Ring Road (NH 135B).
 - Plot and road: 525 sq m plot with about 50 ft of frontage on a 24 m wide road.
 - Floors: three upper floors, each about 3,500 sq ft gross and about 3,100 sq ft carpet. Open-plan commercial floor plates with flexible tenant layouts, offered as open shells to rent or lease whole or in part. Areas are approximate.
@@ -28,9 +28,8 @@ Last updated: November 2026 (2026-11-20). Leasing enquiries: leasing@shrineva.in
 - [हिंदी (Hindi): वाराणसी में किराये पर कमर्शियल स्पेस](https://shrineva.in/hi): बड़ा लालपुर, वाराणसी में 24 मीटर चौड़ी उत्तरमुखी सड़क पर कमर्शियल स्पेस किराये/लीज़ पर: लगभग 3,500 वर्ग फुट की खुली मंज़िलें, निर्माणाधीन Apollo के सामने।
 
 ## Documents
-- [Brochure (PDF)](https://shrineva.in/assets/shrineva-brochure.pdf): four pages: the building and its location, floor plans with areas (ground level, then floors 1 to 3), the project timeline with site photographs, and location, setbacks and the leasing contacts.
-- [Floor plans (PDF)](https://shrineva.in/assets/shrineva-floor-plans.pdf): typical floor, ground level and site plans with areas and setbacks.
+- Brochure (PDF, 4 pages): the building and the places around it, floor plans with areas, the project timeline with site photographs, and the location map with the building specification and the leasing contacts. It is sent when a visitor enters a name, mobile number and email in the "Brochure" form: https://shrineva.in/#brochure . The same facts are on the pages of this site.
 
 ## Optional
 - [Full site content in one file](https://shrineva.in/llms-full.txt): every page, FAQ, fact, distance and the project timeline, in Markdown.
-- [Sitemap](https://shrineva.in/sitemap.xml): all pages, the two PDFs and the site photographs.
+- [Sitemap](https://shrineva.in/sitemap.xml): all pages and the site photographs.

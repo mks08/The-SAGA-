@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs';
 import { MARKETING_AREA, PLAN, PROPERTY } from '../../config/property.config';
 import { LEVEL_INFO, LevelInfo } from '../../config/content.config';
 import { AnalyticsService } from '../../core/services/analytics.service';
-import { BROCHURE, FLOOR_PLANS_PDF, MediaItem, PLAN_LEVELS } from '../../config/media.config';
+import { MediaItem, PLAN_LEVELS } from '../../config/media.config';
+import { openLeadPath } from '../../core/ui-events';
 
 /** A row of the area schedule (level, area, height). Figures are the marketing figures used everywhere else on the site. */
 interface ScheduleRow { level: string; area: string; basis: string; height: string; }
@@ -24,8 +25,6 @@ export class PlansComponent implements OnDestroy {
   property = PROPERTY;
   plan = PLAN;
   levels = PLAN_LEVELS;
-  pdf = FLOOR_PLANS_PDF;
-  brochure = BROCHURE;
   readonly info: Record<string, LevelInfo> = LEVEL_INFO;
 
   levelIdx = 1; // the typical floor is what most visitors lease: start there
@@ -94,6 +93,6 @@ export class PlansComponent implements OnDestroy {
   up() { this.drag = null; }
 
   open() { this.lightboxIndex = Math.max(0, this.gallery.findIndex((g) => g.id === this.view.item.id)); this.analytics.event('plan_open'); }
-  openPopup() { window.dispatchEvent(new CustomEvent('open-booking-popup')); }
-  track(name: string) { this.analytics.event(name); }
+  openPopup() { openLeadPath({ source: 'floor_plans', path: 'visit', context: this.level.tab }); }
+  getPdf() { this.analytics.event('plan_pdf_click'); openLeadPath({ source: 'floor_plans', path: 'brochure', context: this.level.tab }); }
 }

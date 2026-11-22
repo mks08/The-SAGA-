@@ -1,1 +1,26 @@
 :host { display: contents; }
+
+/* One cell of the phone action bar: icon over a short label, 54 px tall for a comfortable thumb target. */
+.mbar-item {
+  display: flex;
+  min-height: 54px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border-radius: 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: rgb(var(--paper));
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.mbar-item:active { background: rgb(var(--paper) / 0.09); transform: scale(0.97); }
+.mbar-visit {
+  background: linear-gradient(135deg, rgb(232 207 150), rgb(190 142 62));
+  color: #1b1714;
+  font-weight: 800;
+}
+.mbar-visit:active { background: linear-gradient(135deg, rgb(222 196 138), rgb(176 128 52)); }

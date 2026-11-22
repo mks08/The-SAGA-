@@ -1,0 +1,52 @@
+/* Global styles the parked space finder used (removed from src/styles.scss to keep the live stylesheet lean).
+   To bring the space finder back, paste these into the @layer components block of src/styles.scss. */
+
+  .tool-text { font-size: 0.82rem; letter-spacing: 0.02em; }
+
+  .chip-btn {
+    min-height: 44px; padding: 0 1rem; border-radius: 999px; border: 1px solid rgb(var(--ink) / 0.15); background: rgb(var(--paper));
+    color: rgb(var(--ink)); font-size: 0.9rem; font-weight: 600;
+    transition: border-color 0.25s, background 0.25s, color 0.25s, transform 0.3s var(--ease-smooth);
+    &:hover { border-color: rgb(var(--brass-deep) / 0.7); transform: translateY(-1px); }
+    &:active { transform: scale(0.97); }
+    &.is-on { border-color: rgb(var(--brass-deep)); background: rgb(var(--ink)); color: rgb(var(--paper)); }
+  }
+
+
+  .seg-lg { min-height: 44px; padding: 0 1.15rem; font-size: 0.88rem; }
+
+  /* Range slider (space finder) */
+  .range {
+    -webkit-appearance: none; appearance: none; height: 44px; background: transparent; cursor: pointer; --c: #8a6a21;
+    &::-webkit-slider-runnable-track { height: 6px; border-radius: 99px; background: rgb(var(--ink) / 0.14); }
+    &::-moz-range-track { height: 6px; border-radius: 99px; background: rgb(var(--ink) / 0.14); }
+    &::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 26px; height: 26px; margin-top: -10px; border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 2px 8px rgb(var(--ink) / 0.35); transition: transform 0.2s; }
+    &::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 2px 8px rgb(var(--ink) / 0.35); }
+    &:active::-webkit-slider-thumb { transform: scale(1.12); }
+    &:focus-visible { outline: 2px solid rgb(var(--brass)); outline-offset: 2px; border-radius: 99px; }
+  }
+  .range-a { --c: #b98a2a; }
+  .range-b { --c: #3f867c; }
+
+
+  /* On phones the drawing is pinned above the controls, so keep focused or scrolled-to controls clear of it and of the bottom bar. */
+  @media (max-width: 1023px) {
+    #space-finder .chip-btn, #space-finder .seg, #space-finder .tool, #space-finder input.range, #space-finder summary, #space-finder .btn-primary, #space-finder .btn-outline { scroll-margin-block: 390px 96px; }
+  }
+
+  /* Space finder: blocks and labels settle in when a layout appears */
+  .finder-svg .blk { animation: blockIn 0.55s var(--ease-smooth) both; }
+  .finder-svg .chip-pop { animation: chipIn 0.5s var(--ease-smooth) 0.12s both; transform-box: fill-box; transform-origin: center; }
+  @media (min-width: 1024px) { .finder-svg.is-plan { max-height: 640px; } }
+  .finder-svg polygon, .finder-svg rect { transition: fill 0.35s, fill-opacity 0.35s; }
+
+  /* "What is available": the stack builds floor by floor */
+  .rv .stack-row { opacity: 0; transform: translate3d(0, 18px, 0); }
+  .rv.is-in .stack-row { opacity: 1; transform: none; transition: opacity 0.7s var(--ease-smooth), transform 0.7s var(--ease-smooth); transition-delay: calc(var(--i, 0) * 110ms + 120ms); }
+
+
+@keyframes blockIn { from { opacity: 0; transform: translate3d(0, 10px, 0); } to { opacity: 1; transform: none; } }
+
+@keyframes chipIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
+
+  .rv .stack-row { opacity: 1 !important; transform: none !important; }

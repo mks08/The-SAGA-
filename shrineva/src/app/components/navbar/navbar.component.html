@@ -35,15 +35,21 @@
       </button>
     </div>
 
-    <!-- Hamburger -->
-    <button type="button" class="xl:hidden grid size-11 place-items-center rounded-full border border-paper/20 text-paper" [class.open]="menuOpen"
-            (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-controls="mobile-menu" aria-label="Toggle navigation">
-      <span class="grid gap-[5px]" aria-hidden="true">
-        <span class="hamburger-line block h-px w-5 bg-current"></span>
-        <span class="hamburger-line block h-px w-5 bg-current"></span>
-        <span class="hamburger-line block h-px w-5 bg-current"></span>
-      </span>
-    </button>
+    <!-- Tablets and landscape phones (the phone action bar is hidden from 768 px, the full menu bar starts at 1280 px): the visit button stays in the header -->
+    <div class="flex items-center gap-2 xl:hidden">
+      <button type="button" class="btn-primary btn-sm hidden !whitespace-nowrap md:inline-flex" (click)="openPopup()">
+        Schedule a visit <span class="arrow" aria-hidden="true">→</span>
+      </button>
+      <!-- Hamburger -->
+      <button type="button" class="grid size-11 place-items-center rounded-full border border-paper/20 text-paper" [class.open]="menuOpen"
+              (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-controls="mobile-menu" aria-label="Toggle navigation">
+        <span class="grid gap-[5px]" aria-hidden="true">
+          <span class="hamburger-line block h-px w-5 bg-current"></span>
+          <span class="hamburger-line block h-px w-5 bg-current"></span>
+          <span class="hamburger-line block h-px w-5 bg-current"></span>
+        </span>
+      </button>
+    </div>
   </div>
 
   <!-- Mobile menu -->
@@ -55,7 +61,7 @@
       <a *ngFor="let link of navLinks; let i = index" [routerLink]="link.path" routerLinkActive="!text-brass-soft" [routerLinkActiveOptions]="{ exact: link.path === '/' }" (click)="closeMenu()"
          class="flex items-baseline gap-4 border-b border-paper/10 py-3.5 font-display text-[1.7rem] leading-none text-paper"
          [style.transition-delay]="menuOpen ? (i * 40) + 'ms' : '0ms'">
-        <span class="font-mono text-[0.66rem] tracking-widest text-brass-soft">0{{ i + 1 }}</span>
+        <span class="font-mono text-[0.7rem] tracking-widest text-brass-soft">0{{ i + 1 }}</span>
         <span>{{ link.label }}</span>
         <span *ngIf="link.live" class="live-dot self-center" aria-hidden="true"></span>
       </a>
@@ -65,7 +71,6 @@
         <a [href]="waHref" class="btn-whatsapp w-full" target="_blank" rel="noopener">WhatsApp leasing</a>
         <div class="mt-3 grid gap-2 text-[0.95rem] text-paper/80">
           <a [href]="'tel:' + property.contact.phoneE164" class="min-h-[44px] flex items-center">{{ property.contact.phoneDisplay }}</a>
-          <a [href]="'tel:' + property.contact.phone2E164" class="min-h-[44px] flex items-center">{{ property.contact.phone2Display }}</a>
           <a *ngIf="property.contact.publicEmail" [href]="'mailto:' + property.contact.publicEmail" class="min-h-[44px] flex items-center text-brass-soft">{{ property.contact.publicEmail }}</a>
         </div>
       </div>

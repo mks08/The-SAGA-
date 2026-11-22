@@ -53,8 +53,8 @@ export const LANDING_PAGES: LandingPage[] = [
     formCategory: 'Healthcare / Diagnostic',
     faq: [
       {
-        q: 'Is the Apollo Hospital next to SHRINEVA already open?',
-        a: 'No. The Apollo Hospital opposite SHRINEVA is upcoming and under construction, so it is not yet operational. SHRINEVA therefore makes no claim about patient footfall. Healthcare tenants should plan around the building’s own specifications and the approvals their operation needs.',
+        q: 'Does SHRINEVA promise patients from the upcoming Apollo Hospital?',
+        a: 'No promise is made. The Apollo Hospital opposite SHRINEVA is upcoming and under construction, so it is not yet operational and SHRINEVA makes no claim about patient numbers or footfall. Healthcare tenants should plan around the building’s own specifications and the approvals their operation needs.',
       },
       {
         q: 'Can SHRINEVA host a pathology lab or diagnostic centre?',

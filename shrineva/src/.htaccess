@@ -53,6 +53,11 @@ AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application
 <FilesMatch "\.(html|css|js|json|xml|txt|svg)$">
 Header append Vary Accept-Encoding
 </FilesMatch>
+# The brochure and plan PDFs are handed out through the enquiry form (name, mobile number and email): keep them out of search results.
+# Delete this block if you would rather let Google index the PDFs.
+<FilesMatch "\.pdf$">
+Header set X-Robots-Tag "noindex, noarchive"
+</FilesMatch>
 </IfModule>
 
 # Browser caching: hashed JS/CSS/fonts never change under the same name; HTML must revalidate.

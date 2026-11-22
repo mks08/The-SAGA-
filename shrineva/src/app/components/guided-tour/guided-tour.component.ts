@@ -3,6 +3,7 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { MediaItem, TOUR_PINS, TOUR_STOPS } from '../../config/media.config';
 import { PLAN, PROPERTY } from '../../config/property.config';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { openLeadPath } from '../../core/ui-events';
 
 /**
  * Guided walkthrough: the finalised 3D renders in the order a visitor would meet the building (road, entrance, walkway,
@@ -215,5 +216,5 @@ export class GuidedTourComponent implements AfterViewInit, OnDestroy {
   onDouble() { this.setZoom(this.zoom === 1 ? 2.6 : 1); }
 
   open() { this.lightboxIndex = this.idx; this.analytics.event('tour_enlarge'); }
-  openPopup() { window.dispatchEvent(new CustomEvent('open-booking-popup')); }
+  openPopup() { openLeadPath({ source: 'walkthrough', path: 'visit' }); }
 }

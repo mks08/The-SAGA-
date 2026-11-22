@@ -19,32 +19,31 @@
       </div>
 
       <nav aria-label="Footer" appReveal [style.--i]="1">
-        <h2 class="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-brass-soft">Explore</h2>
+        <h2 class="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-brass-soft">Explore</h2>
         <ul class="mt-3 grid grid-cols-2 gap-x-6 text-[0.9rem]">
-          <li><a routerLink="/" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Home</a></li>
-          <li><a routerLink="/walkthrough" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Walkthrough</a></li>
-          <li><a routerLink="/floor-plans" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floor Plans</a></li>
-          <li><a routerLink="/location-contact" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location &amp; Visit</a></li>
-          <li><a routerLink="/leasing" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Leasing</a></li>
-          <li><a routerLink="/healthcare-diagnostic-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Healthcare &amp; Diagnostics</a></li>
-          <li><a routerLink="/office-bank-coaching-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Office, Bank &amp; Coaching</a></li>
-          <li><a routerLink="/retail-showroom-cafe-space" class="flex min-h-[40px] items-center text-paper/80 transition-colors hover:text-brass-soft">Retail, Showroom &amp; Café</a></li>
+          <li><a routerLink="/" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Home</a></li>
+          <li><a routerLink="/walkthrough" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Walkthrough</a></li>
+          <li><a routerLink="/floor-plans" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Floor Plans</a></li>
+          <li><a routerLink="/location-contact" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Location &amp; Visit</a></li>
+          <li><a routerLink="/leasing" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Leasing</a></li>
+          <li><a routerLink="/healthcare-diagnostic-space" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Healthcare &amp; Diagnostics</a></li>
+          <li><a routerLink="/office-bank-coaching-space" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Office, Bank &amp; Coaching</a></li>
+          <li><a routerLink="/retail-showroom-cafe-space" class="flex min-h-[44px] items-center text-paper/80 transition-colors hover:text-brass-soft">Retail, Showroom &amp; Café</a></li>
         </ul>
       </nav>
 
       <div appReveal [style.--i]="2">
-        <h2 class="font-mono text-[0.66rem] uppercase tracking-[0.2em] text-brass-soft">Leasing desk</h2>
+        <h2 class="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-brass-soft">Leasing desk</h2>
         <ul class="mt-3 grid gap-0.5 text-[0.92rem]">
-          <li *ngIf="property.contact.publicEmail"><a [href]="'mailto:' + property.contact.publicEmail" class="flex min-h-[40px] items-center font-semibold text-brass-soft hover:underline">{{ property.contact.publicEmail }}</a></li>
-          <li><a [href]="'tel:' + property.contact.phoneE164" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phoneDisplay }}</a></li>
-          <li><a [href]="'tel:' + property.contact.phone2E164" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phone2Display }}</a></li>
-          <li><a [href]="waHref" target="_blank" rel="noopener" class="flex min-h-[40px] items-center text-paper/85 hover:text-brass-soft">WhatsApp leasing ↗</a></li>
-          <li><a [href]="brochure.href" target="_blank" rel="noopener" download class="flex min-h-[40px] items-center font-semibold text-paper/85 hover:text-brass-soft">Brochure (PDF) ↓</a></li>
+          <li *ngIf="property.contact.publicEmail"><a [href]="'mailto:' + property.contact.publicEmail" class="flex min-h-[44px] items-center font-semibold text-brass-soft hover:underline">{{ property.contact.publicEmail }}</a></li>
+          <li><a [href]="'tel:' + property.contact.phoneE164" class="flex min-h-[44px] items-center text-paper/85 hover:text-brass-soft">{{ property.contact.phoneDisplay }}</a></li>
+          <li><a [href]="waHref" target="_blank" rel="noopener" class="flex min-h-[44px] items-center text-paper/85 hover:text-brass-soft">WhatsApp leasing ↗</a></li>
+          <li><button type="button" (click)="openBrochure()" aria-haspopup="dialog" class="flex min-h-[44px] items-center text-left font-semibold text-paper/85 hover:text-brass-soft">Brochure (PDF) ↓</button></li>
         </ul>
       </div>
     </div>
 
-    <p class="mt-6 max-w-4xl text-[0.72rem] leading-relaxed text-paper/70">
+    <p class="mt-6 max-w-4xl text-[0.76rem] leading-relaxed text-paper/70">
       Areas are approximate and subject to final measurement. 3D renders are indicative and subject to change; finishes, signage, planting and surroundings are illustrative, and site photographs show construction progress.
       The Apollo Hospital opposite is upcoming and under construction. Use of any floor is subject to approvals. Nothing on this site is an offer.
     </p>
@@ -52,9 +51,9 @@
     <div class="mt-5 flex flex-col gap-1 border-t border-paper/10 pt-4 text-[0.78rem] text-paper/70 sm:flex-row sm:items-center sm:justify-between">
       <p>© {{ year }} {{ property.brand.name }}. All rights reserved.</p>
       <p class="flex gap-5">
-        <a routerLink="/privacy-disclaimer" class="flex min-h-[40px] items-center hover:text-paper">Privacy Policy</a>
-        <a routerLink="/terms" class="flex min-h-[40px] items-center hover:text-paper">Terms</a>
-        <a routerLink="/privacy-disclaimer" fragment="disclaimer" class="flex min-h-[40px] items-center hover:text-paper">Disclaimer</a>
+        <a routerLink="/privacy-disclaimer" class="flex min-h-[44px] items-center px-1 hover:text-paper">Privacy Policy</a>
+        <a routerLink="/terms" class="flex min-h-[44px] min-w-[44px] items-center justify-center px-1 hover:text-paper">Terms</a>
+        <a routerLink="/privacy-disclaimer" fragment="disclaimer" class="flex min-h-[44px] items-center px-1 hover:text-paper">Disclaimer</a>
       </p>
     </div>
   </div>

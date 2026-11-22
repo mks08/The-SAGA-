@@ -1,0 +1,90 @@
+<div class="lead-form" [attr.id]="anchorId || null" [attr.lang]="hindi ? 'hi' : null" [class.hi-copy]="hindi">
+
+  <!-- The three paths -->
+  <div *ngIf="showTabs && !done" class="grid grid-cols-3 gap-1 rounded-full bg-ink/[0.07] p-1" role="tablist" [attr.aria-label]="txt.tablist">
+    <button *ngFor="let p of paths" type="button" role="tab" [id]="idPrefix + '-tab-' + p"
+            [attr.aria-selected]="path === p" [attr.aria-controls]="idPrefix + '-panel'" [attr.tabindex]="path === p ? 0 : -1"
+            (click)="select(p)" (keydown)="tabKey($event)"
+            class="min-h-[44px] rounded-full px-1.5 text-[0.78rem] font-bold leading-tight transition-[background-color,color,box-shadow] duration-300 sm:text-[0.84rem]"
+            [ngClass]="path === p ? 'bg-ink text-paper shadow-soft' : 'text-ink/75 hover:bg-ink/[0.07]'">{{ txt.tabs[p] }}</button>
+  </div>
+
+  <div [id]="idPrefix + '-panel'" [attr.role]="showTabs && !done ? 'tabpanel' : null" [attr.aria-labelledby]="showTabs && !done ? idPrefix + '-tab-' + path : null" [class.mt-5]="showTabs && !done">
+
+    <ng-container *ngIf="!done; else thanks">
+      <p class="font-display text-[1.65rem] leading-tight text-ink md:text-[1.8rem]" role="heading" [attr.aria-level]="headingLevel">{{ txt.titles[path] }}</p>
+      <p class="mt-1.5 text-[0.9rem] leading-snug text-ink/70">{{ txt.subs[path] }}</p>
+
+      <p *ngIf="contextShown" class="mt-3 inline-flex max-w-full items-center gap-2 rounded-full border border-brass-deep/35 bg-brass/10 py-1 pl-3 pr-1 text-[0.8rem] font-semibold text-ink">
+        <span class="truncate"><span class="font-normal text-ink/70">{{ txt.forLabel }}:</span> {{ contextShown }}</span>
+        <button type="button" class="grid size-7 shrink-0 place-items-center rounded-full text-ink/70 hover:bg-ink/10" (click)="clearContext()" [attr.aria-label]="txt.removeContext">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="mt-4 grid gap-3.5" [attr.aria-label]="txt.tabs[path]">
+        <div class="grid gap-3.5 sm:grid-cols-2">
+          <div>
+            <label class="field-label" [for]="idPrefix + '-name'">{{ txt.name }} *</label>
+            <input [id]="idPrefix + '-name'" type="text" class="field-input" [class.is-invalid]="isInvalid('name')" formControlName="name"
+                   autocomplete="name" autocapitalize="words" maxlength="100" [attr.placeholder]="txt.namePh" enterkeyhint="next" [attr.aria-invalid]="isInvalid('name')" [attr.aria-describedby]="isInvalid('name') ? idPrefix + '-name-err' : null">
+            <p class="field-error" *ngIf="isInvalid('name')" [id]="idPrefix + '-name-err'">{{ txt.errName }}</p>
+          </div>
+          <div>
+            <label class="field-label" [for]="idPrefix + '-phone'">{{ txt.phone }} *</label>
+            <input [id]="idPrefix + '-phone'" type="tel" inputmode="numeric" class="field-input" [class.is-invalid]="isInvalid('phone')" formControlName="phone"
+                   autocomplete="tel-national" maxlength="10" [attr.placeholder]="txt.phonePh" enterkeyhint="next" [attr.aria-invalid]="isInvalid('phone')" [attr.aria-describedby]="isInvalid('phone') ? idPrefix + '-phone-err' : null">
+            <p class="field-error" *ngIf="isInvalid('phone')" [id]="idPrefix + '-phone-err'">{{ txt.errPhone }}</p>
+          </div>
+        </div>
+        <div>
+          <label class="field-label" [for]="idPrefix + '-email'">{{ txt.email }} *</label>
+          <input [id]="idPrefix + '-email'" type="email" inputmode="email" class="field-input" [class.is-invalid]="isInvalid('email')" formControlName="email"
+                 autocomplete="email" autocapitalize="off" spellcheck="false" [attr.placeholder]="txt.emailPh" enterkeyhint="next" [attr.aria-invalid]="isInvalid('email')" [attr.aria-describedby]="isInvalid('email') ? idPrefix + '-email-err' : null">
+          <p class="field-error" *ngIf="isInvalid('email')" [id]="idPrefix + '-email-err'">{{ txt.errEmail }}</p>
+        </div>
+        <div>
+          <label class="field-label" [for]="idPrefix + '-msg'">{{ txt.message[path] }}<ng-container *ngIf="path === 'query'"> *</ng-container></label>
+          <textarea [id]="idPrefix + '-msg'" class="field-input" rows="3" maxlength="1500" formControlName="message" [class.is-invalid]="isInvalid('message')"
+                    [attr.placeholder]="txt.messagePh[path]" [attr.aria-invalid]="isInvalid('message')" [attr.aria-describedby]="isInvalid('message') ? idPrefix + '-msg-err' : null"></textarea>
+          <p class="field-error" *ngIf="isInvalid('message')" [id]="idPrefix + '-msg-err'">{{ txt.errMessage }}</p>
+        </div>
+
+        <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+          <input type="text" formControlName="website" tabindex="-1" autocomplete="off" aria-label="Leave empty">
+        </div>
+
+        <div class="rounded-2xl border border-red-800/30 bg-red-50 p-3.5 text-[0.88rem] leading-snug text-red-900" role="alert" *ngIf="failed">
+          <strong>{{ txt.failedStrong }}</strong> {{ txt.failed(property.contact.phoneDisplay) }}
+          <ng-container *ngIf="path === 'brochure'"><br>{{ txt.failedBrochure }} <a [href]="brochure.href" download target="_blank" rel="noopener" class="font-bold underline" data-track-source="lead_form">PDF ↓</a></ng-container>
+        </div>
+
+        <div class="flex flex-col gap-2.5 sm:flex-row">
+          <button type="submit" class="btn-primary sm:flex-1" [disabled]="submitting">
+            {{ submitting ? txt.sending : txt.send[path] }} <span class="arrow" aria-hidden="true" *ngIf="!submitting">{{ path === 'brochure' ? '↓' : '→' }}</span>
+          </button>
+          <a [href]="waHref" class="btn-outline" target="_blank" rel="noopener" data-track-source="lead_form">{{ txt.wa }}</a>
+        </div>
+        <p class="text-[0.76rem] leading-snug text-ink/70">{{ txt.privacyPre }} <a routerLink="/privacy-disclaimer" class="underline">{{ txt.privacy }}</a>.</p>
+      </form>
+    </ng-container>
+
+    <ng-template #thanks>
+      <div class="grid place-content-center justify-items-center py-4 text-center" role="status">
+        <div class="mb-4 grid size-14 place-items-center rounded-full bg-ok/15 text-2xl text-ok" aria-hidden="true">✓</div>
+        <p class="font-display text-[1.9rem] leading-tight text-ink" role="heading" [attr.aria-level]="headingLevel">{{ txt.done[done!].title }}</p>
+        <p class="mx-auto mt-2 max-w-xs text-[0.95rem] leading-snug text-ink/70">{{ txt.done[done!].body }}</p>
+
+        <div class="mt-5 grid w-full max-w-xs gap-2.5">
+          <ng-container *ngIf="done === 'brochure'">
+            <a [id]="idPrefix + '-dl'" [href]="brochure.href" download target="_blank" rel="noopener" class="btn-primary justify-center" data-track-source="lead_form">{{ txt.downloadBtn }} <span aria-hidden="true">↓</span></a>
+            <a [href]="brochure.plansHref" download target="_blank" rel="noopener" class="btn-outline justify-center" data-track-source="lead_form">{{ txt.plansOnly }}</a>
+          </ng-container>
+          <button *ngIf="done !== 'brochure'" type="button" class="btn-primary justify-center" (click)="askChaix()">{{ txt.askChaix }}</button>
+          <a [href]="waHref" class="btn-whatsapp justify-center" target="_blank" rel="noopener" data-track-source="lead_form">{{ txt.waNow }}</a>
+          <button type="button" class="min-h-[44px] text-[0.84rem] font-semibold text-ink/70 underline underline-offset-4" (click)="reset()">{{ txt.another }}</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

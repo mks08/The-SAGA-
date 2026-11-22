@@ -14,12 +14,12 @@
         <div #stage class="relative aspect-[4/3] min-h-[280px] w-full flex-1 bg-ink-3 sm:aspect-[16/10] lg:aspect-auto lg:min-h-[430px]">
           <iframe *ngIf="mapReady" [src]="embed" class="absolute inset-0 h-full w-full border-0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
                   [title]="(mode === 'sat' ? 'Satellite map' : 'Map') + ' showing SHRINEVA, Plot D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi'"></iframe>
-          <div class="pointer-events-none absolute inset-0 grid place-items-center text-[#f6f1e8]/70" *ngIf="!mapReady" aria-hidden="true"><span class="font-mono text-[0.66rem] uppercase tracking-[0.14em]">Loading the map</span></div>
+          <div class="pointer-events-none absolute inset-0 grid place-items-center text-[#f6f1e8]/70" *ngIf="!mapReady" aria-hidden="true"><span class="font-mono text-[0.7rem] uppercase tracking-[0.14em]">Loading the map</span></div>
           <!-- Satellite / Map -->
           <div class="absolute left-3 top-3 inline-flex rounded-full bg-[#1b1714]/75 p-1 backdrop-blur" role="group" aria-label="Map type">
-            <button type="button" class="min-h-[36px] rounded-full px-3.5 text-[0.8rem] font-bold transition-colors" [attr.aria-pressed]="mode === 'sat'" (click)="setMode('sat')"
+            <button type="button" class="min-h-[44px] rounded-full px-4 text-[0.82rem] font-bold transition-colors" [attr.aria-pressed]="mode === 'sat'" (click)="setMode('sat')"
                     [ngClass]="mode === 'sat' ? 'bg-[#f6f1e8] text-[#1b1714]' : 'text-[#f6f1e8]/85 hover:text-white'">Satellite</button>
-            <button type="button" class="min-h-[36px] rounded-full px-3.5 text-[0.8rem] font-bold transition-colors" [attr.aria-pressed]="mode === 'map'" (click)="setMode('map')"
+            <button type="button" class="min-h-[44px] rounded-full px-4 text-[0.82rem] font-bold transition-colors" [attr.aria-pressed]="mode === 'map'" (click)="setMode('map')"
                     [ngClass]="mode === 'map' ? 'bg-[#f6f1e8] text-[#1b1714]' : 'text-[#f6f1e8]/85 hover:text-white'">Map</button>
           </div>
         </div>
@@ -44,7 +44,7 @@
             <span class="shrink-0 font-display text-[1.3rem] leading-none text-brass-deep">{{ r.value }}</span>
           </li>
         </ul>
-        <p class="border-t border-ink/10 px-4 py-2.5 text-[0.72rem] leading-snug text-ink/70 md:px-5">Approximate straight-line distances from the plot, from the owner's location sheet. The Apollo Hospital is upcoming and under construction.</p>
+        <p class="border-t border-ink/10 px-4 py-2.5 text-[0.76rem] leading-snug text-ink/70 md:px-5">Approximate straight-line distances from the plot, from the owner's location sheet. The Apollo Hospital is upcoming and under construction.</p>
       </div>
     </div>
   </div>

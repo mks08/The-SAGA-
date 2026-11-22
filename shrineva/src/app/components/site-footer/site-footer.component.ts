@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MARKETING_AREA, PROPERTY, mapLinks, waLink } from '../../config/property.config';
-import { BROCHURE } from '../../config/media.config';
+import { openLeadPath } from '../../core/ui-events';
 
 @Component({
   selector: 'app-site-footer',
@@ -13,5 +13,5 @@ export class SiteFooterComponent {
   waHref = waLink();
   year = new Date().getFullYear();
   links = mapLinks();
-  brochure = BROCHURE;
+  openBrochure(): void { openLeadPath({ source: 'footer', path: 'brochure' }); }
 }

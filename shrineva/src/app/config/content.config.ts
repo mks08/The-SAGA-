@@ -3,7 +3,7 @@
  * Keeping it here means the page a visitor reads and the page a crawler reads can never disagree.
  * Figures come from property.config.ts and the printed brochure; nothing is invented.
  */
-import { MARKETING_AREA, PLAN } from './property.config';
+import { MARKETING_AREA, PLAN, PROPERTY } from './property.config';
 
 export interface Fact { label: string; value: string; }
 export interface LevelInfo { id: 'ground' | 'typical'; title: string; value: string; label: string; sub: string; facts: Fact[]; }
@@ -48,8 +48,8 @@ export const LEASING_POINTS: string[] = [
 ];
 
 export const LEASING_STEPS: { t: string; d: string }[] = [
-  { t: 'Tell us what you need', d: 'Area, use and timing. Use the form, call or WhatsApp.' },
-  { t: 'See it', d: 'Floor options, the brochure and a visit to the plot.' },
+  { t: 'Tell us what you need', d: 'Area, use and timing. Schedule a visit, download the brochure or ask a question; call or WhatsApp works too.' },
+  { t: 'See it', d: 'The floor options, the plans and a visit to the plot.' },
   { t: 'Agree the terms', d: 'Commercial terms, fit-out and floor condition, in writing.' },
 ];
 
@@ -155,57 +155,61 @@ export const KEY_FACTS: KeyFact[] = [
   { text: 'Every level', label: 'Fire exit', sub: 'Marked on each plan', icon: 'fire' },
 ];
 
-/**
- * "What is available": the building as a stack, top floor first. Floors 1 to 3 are identical (architect's sheet SH-02).
- * Availability of individual floors is confirmed by the leasing team; the stack only states what each level is.
- */
-export interface StackLevel { id: string; label: string; area: string; detail: string; tag: string; kind: 'floor' | 'ground'; }
-export const STACK: StackLevel[] = [
-  { id: 'f3', label: 'Floor 3', area: MARKETING_AREA.gross.replace('about', 'About'), detail: 'Open floor plate, glass front on the road', tag: 'For lease', kind: 'floor' },
-  { id: 'f2', label: 'Floor 2', area: MARKETING_AREA.gross.replace('about', 'About'), detail: 'Open floor plate, glass front on the road', tag: 'For lease', kind: 'floor' },
-  { id: 'f1', label: 'Floor 1', area: MARKETING_AREA.gross.replace('about', 'About'), detail: 'Open floor plate, glass front on the road', tag: 'For lease', kind: 'floor' },
-  { id: 'g', label: 'Ground', area: 'About 3,000 sq ft', detail: 'Covered parking for 12+ cars, entries and lift lobby', tag: 'Parking and entry', kind: 'ground' },
-];
-
 export const LEASE_OPTIONS: string[] = ['A whole floor', 'Part of a floor', 'More than one floor'];
 
 /**
- * Safety, access and building facts. Only facts the owner or the architect's sheets state are listed as facts.
- * Anything not yet confirmed (fire-fighting systems and clearances, power backup, water, connectivity) is NOT claimed:
- * it appears under ASK_ITEMS as a prompt to ask the leasing team. Move an item into SPEC_GROUPS once the owner confirms it.
+ * The specification sheet (home page, and page 4 of the brochure). Only facts the owner or the architect's sheets state are
+ * listed as facts, with the same figures as the brochure. Anything not yet confirmed (fire-fighting systems and clearances,
+ * power backup, water, washrooms, air-conditioning, connectivity, floor loading, signage permissions) is NOT claimed: it appears
+ * under ASK_ITEMS as a prompt to ask the leasing team. Move an item into SPEC_GROUPS once the owner or architect confirms it.
  */
-export interface SpecGroup { title: string; icon: 'fire' | 'lift' | 'building'; items: { label: string; value: string }[]; }
+export interface SpecGroup { title: string; icon: 'project' | 'site' | 'building' | 'access'; items: { label: string; value: string }[]; }
+const setback = (i: number) => PLAN.setbacks[i].value;
 export const SPEC_GROUPS: SpecGroup[] = [
   {
-    title: 'Fire safety and escape', icon: 'fire',
+    title: 'Project', icon: 'project',
     items: [
-      { label: 'Fire exit', value: 'On every level, marked on the plans' },
-      { label: 'Staircase', value: `${PLAN.stilt.staircase.split(' · ')[0].replace(' flights', '')} wide flights from the ground level to Floor 3` },
-      { label: 'Open sides', value: 'Open setbacks on all four sides of the building' },
-      { label: 'Front setback', value: `${PLAN.setbacks[0].value} between the building and the road side` },
+      { label: 'Project', value: 'SHRINEVA, Bada Lalpur, Varanasi' },
+      { label: 'Status', value: 'Under construction' },
+      { label: 'Target completion', value: `${PROJECT_STATUS.completion.value}, ${PROJECT_STATUS.completion.note.toLowerCase()}` },
+      // shown only while the owner's switch is on (property.config.ts approvals.vda.show), as in the hero and the footer
+      ...(PROPERTY.approvals.vda.show ? [{ label: 'Approval', value: PROPERTY.approvals.vda.label }] : []),
+      { label: 'Orientation', value: 'Vastu compliant' },
     ],
   },
   {
-    title: 'Access and circulation', icon: 'lift',
+    title: 'Site', icon: 'site',
     items: [
+      { label: 'Plot area', value: `About ${PLAN.plot.areaSqM} sq m (about 5,650 sq ft)` },
+      { label: 'Road', value: `${PLAN.plot.roadWidthM} m wide, north-facing` },
+      { label: 'Frontage', value: `About ${PLAN.plot.frontageFt} ft` },
+      { label: 'Setbacks', value: `Front ${setback(0)} · Rear ${setback(1)} · East ${setback(2)} · West ${setback(3)}` },
+    ],
+  },
+  {
+    title: 'Building', icon: 'building',
+    items: [
+      { label: 'Configuration', value: 'Ground (parking) plus three floors' },
+      { label: 'Gross floor area', value: `${MARKETING_AREA.gross.replace('about', 'About')} per floor (Floors 1 to 3)` },
+      { label: 'Carpet floor area', value: `${MARKETING_AREA.carpet.replace('about', 'About')} per floor (Floors 1 to 3)` },
+      { label: 'Floor to floor', value: 'Ground about 9′-6″ · Floors about 11′-6″' },
+      { label: 'Floor plate', value: 'Open plan, with flexible tenant layouts' },
+      { label: 'Front', value: 'Glass front facing the road' },
+      { label: 'Condition', value: 'Open shell, fitted out by the tenant' },
+    ],
+  },
+  {
+    title: 'Access and safety', icon: 'access',
+    items: [
+      { label: 'Parking', value: 'Covered, at ground level, for 12+ cars' },
       { label: 'Passenger lift', value: `One ${PLAN.lift.adjective} lift, serving every level` },
       { label: 'Lift and stair lobby', value: 'One core on the east side, reached by west and east walkways' },
-      { label: 'Parking', value: 'Covered, at ground level, for 12+ cars' },
-      { label: 'Frontage', value: `About ${PLAN.plot.frontageFt} ft on a ${PLAN.plot.roadWidthM} m wide north-facing road` },
-    ],
-  },
-  {
-    title: 'The building', icon: 'building',
-    items: [
-      { label: 'Height', value: 'Ground level plus three floors' },
-      { label: 'Floor to floor', value: 'About 11.5 ft on Floors 1 to 3, about 9.5 ft at ground level' },
-      { label: 'Floor plate', value: 'Open-plan commercial floor plates with flexible tenant layouts' },
-      { label: 'Front', value: 'Glass front facing the road' },
-      { label: 'Orientation', value: 'Vastu compliant' },
-      { label: 'Approval', value: 'VDA approved' },
+      { label: 'Staircase', value: `${PLAN.stilt.staircase.split(' · ')[0].replace(' flights', '')} wide flights from the ground level to Floor 3` },
+      { label: 'Fire escape', value: 'A dedicated exit on every level, marked on the plans' },
+      { label: 'Open sides', value: 'Open setbacks on all four sides of the building' },
     ],
   },
 ];
 
 /** Not yet confirmed: shown as questions to put to the leasing team, never as features. */
-export const ASK_ITEMS: string[] = ['Fire-fighting systems and clearances', 'Power and backup supply', 'Water supply', 'Fibre and connectivity', 'Floor condition and fit-out'];
+export const ASK_ITEMS: string[] = ['Fire-fighting systems and clearances', 'Power and backup supply', 'Water supply and washrooms', 'Air-conditioning provision', 'Fibre and connectivity', 'Floor loading', 'Signage permissions', 'Loading and unloading'];

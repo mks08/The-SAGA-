@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PROPERTY, waLink } from '../../config/property.config';
+import { openLeadPath } from '../../core/ui-events';
 
 @Component({
   selector: 'app-final-cta',
@@ -10,6 +11,6 @@ export class FinalCtaComponent {
   waHref = waLink();
 
   openPopup() {
-    window.dispatchEvent(new CustomEvent('open-booking-popup'));
+    openLeadPath({ source: 'final_cta', path: 'visit' });
   }
 }

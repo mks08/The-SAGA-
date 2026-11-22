@@ -92,7 +92,7 @@ export interface FloorDefinition {
 /**
  * Architect's plan data — SHRINEVA Floor Plans sheets SH-01 (ground level, R1; the sheet itself is titled "Stilt")
  * and SH-02 (First floor, R2), dated 12.10.2026. On the website the ground level is always called the
- * "Parking level" and the building "Parking + 3"; the word "stilt" is kept only as the internal key below. Areas are computed from the dimensions shown and are NOT certified carpet areas.
+ * "Parking level" and the building "Ground + 3"; the word "stilt" is kept only as the internal key below. Areas are computed from the dimensions shown and are NOT certified carpet areas.
  */
 export const PLAN = {
   sheetDate: '12.10.2026',
@@ -148,7 +148,7 @@ export const PROPERTY = {
   brand: {
     name: 'SHRINEVA',
     monogram: 'SG',
-    tagline: 'COMMERCIAL · PARKING + 3 FLOORS',
+    tagline: 'COMMERCIAL · GROUND + 3 FLOORS',
     legalNote: 'A family-promoted commercial development in Bada Lalpur, Varanasi.',
   },
 
@@ -173,12 +173,10 @@ export const PROPERTY = {
      * (Emails) before launch, otherwise enquiries sent to it bounce.
      */
     publicEmail: 'leasing@shrineva.in',
-    // Email and both phone numbers are taken from the owner's enquiry sheet (Floor Plans PDF, 12.10.2026).
-    // Primary line first (owner, 19 Nov 2026): +91 81140 80609 is also the WhatsApp number. Secondary: +91 73557 70378.
+    // One public phone number and one public email, everywhere (owner, 22 Nov 2026): +91 81140 80609, which is also the
+    // WhatsApp number. Do not add a second number to the site, the structured data, ChaiX or the PDFs.
     phoneDisplay: '+91 81140 80609',
     phoneE164: '+918114080609',
-    phone2Display: '+91 73557 70378',
-    phone2E164: '+917355770378',
     whatsappDisplay: '+91 81140 80609',
     whatsappE164: '918114080609',
     whatsappMessage: 'Hi, I am interested in commercial space at SHRINEVA Bada Lalpur',
@@ -210,8 +208,8 @@ export const PROPERTY = {
   },
 
   structure: {
-    type: 'Commercial building · parking + 3 floors',
-    configuration: 'Parking + 3 commercial floors',
+    type: 'Commercial building · ground (parking) + 3 floors',
+    configuration: 'Ground (parking) + 3 commercial floors',
     groundUse: 'Open parking level for arrival, parking and brand visibility',
     commercialFloors: 3,
   },
@@ -332,7 +330,6 @@ export const PROPERTY = {
     fullFloorAvailable: true,
     subdivisionConsidered: true,
     longTermAccepted: true,
-    pricingDisclosure: 'Commercial terms on request',
   },
 
   /**
@@ -565,14 +562,4 @@ export const MARKETING_AREA = {
   carpet: 'about 3,100 sq ft',
   grossNum: 3500,
   carpetNum: 3100,
-};
-
-/**
- * Proposed residential / serviced units (studio and 2 BHK). OFF by default: the owner's standing instruction is that this
- * plan is not mentioned in marketing. When switched on, a clearly labelled "proposed" interest form appears on
- * /location-contact, kept apart from the commercial leasing form, and `shrineva_residential_lead` is tracked.
- */
-export const PROPOSED_RESIDENTIAL = {
-  show: false,
-  label: 'Proposed Studio & 2 BHK Units — subject to availability and regulatory approvals',
 };

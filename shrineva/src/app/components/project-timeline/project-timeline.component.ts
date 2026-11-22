@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { PROJECT_STATUS, ProjectStage } from '../../config/content.config';
 import { MediaItem, SITE_PHOTOS } from '../../config/media.config';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { openLeadPath } from '../../core/ui-events';
 
 /**
  * Project progress: four stages (structure, brickwork / façade / lift / services, final works, project completion), the
@@ -23,6 +24,9 @@ export class ProjectTimelineComponent {
   @Input() showChanges = true;
 
   status = PROJECT_STATUS;
+  /** The stage being worked on now (the one marked 'active'); used for the "Stage 2 of 4" line. */
+  readonly activeIndex = Math.max(0, PROJECT_STATUS.stages.findIndex((s) => s.state === 'active'));
+  readonly activeStage: ProjectStage = PROJECT_STATUS.stages[this.activeIndex];
   photos: MediaItem[] = SITE_PHOTOS;
   lightboxIndex: number | null = null;
 
@@ -35,7 +39,7 @@ export class ProjectTimelineComponent {
 
   ask() {
     this.analytics.event('site_visit_click', { source: 'progress' });
-    window.dispatchEvent(new CustomEvent('open-booking-popup'));
+    openLeadPath({ source: 'progress', path: 'query', message: 'I would like changes to my floor. ' });
   }
 
   /** Thumbnails are 640 px wide; the height follows the photo's own proportions. */

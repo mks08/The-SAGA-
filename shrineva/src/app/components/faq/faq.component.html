@@ -1,8 +1,16 @@
 <section *ngIf="items.length" class="bg-paper py-12 md:py-16" [attr.aria-labelledby]="headingId" id="faq">
-  <div class="container-srineva">
-    <span class="eyebrow">{{ eyebrow }}</span>
-    <h2 [id]="headingId" class="font-display text-display-md text-ink">{{ heading }}</h2>
-    <dl class="mt-6 grid max-w-3xl gap-3">
+  <div class="container-srineva grid gap-6 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
+    <!-- Heading column: stays in view beside the questions on wide screens -->
+    <header class="lg:sticky lg:top-[calc(var(--nav-h)+2rem)] lg:self-start">
+      <span class="eyebrow">{{ eyebrow }}</span>
+      <h2 [id]="headingId" class="font-display text-display-md text-ink">{{ heading }}</h2>
+      <p class="mt-3 hidden max-w-sm text-[0.96rem] leading-relaxed text-ink/70 lg:block">{{ lang.hindi ? 'यहाँ जवाब नहीं मिला? ChaiX से पूछें, या लीज़िंग टीम को कॉल करें।' : 'Not answered here? Ask ChaiX, or call the leasing team.' }}</p>
+      <div class="mt-4 hidden flex-wrap items-center gap-2 lg:flex">
+        <button type="button" class="btn-outline btn-sm" (click)="ask()" aria-haspopup="dialog">{{ lang.hindi ? 'ChaiX से पूछें' : 'Ask ChaiX' }}</button>
+        <a [href]="'tel:' + property.contact.phoneE164" class="btn-ghost btn-sm whitespace-nowrap" data-track-source="faq">{{ property.contact.phoneDisplay }}</a>
+      </div>
+    </header>
+    <dl class="grid gap-3 lg:max-w-3xl">
       <div *ngFor="let f of items" class="rounded-3xl border border-ink/10 bg-white p-5 md:p-6">
         <dt><h3 class="font-display text-[1.25rem] leading-snug text-ink">{{ f.q }}</h3></dt>
         <dd class="mt-2 text-[0.96rem] leading-relaxed text-ink/80">{{ f.a }}</dd>

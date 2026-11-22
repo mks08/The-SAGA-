@@ -1,22 +1,23 @@
-<div class="lb" *ngIf="open && current as c" role="dialog" aria-modal="true" [attr.aria-label]="c.title" (click)="close()">
-  <div class="lb-top" (click)="$event.stopPropagation()">
-    <span class="lb-count" *ngIf="items.length > 1">{{ (index || 0) + 1 }} / {{ items.length }}</span>
+<div class="lb" #frame *ngIf="open && current as c" role="dialog" aria-modal="true" [attr.aria-label]="c.title" [attr.lang]="lang === 'hi' ? 'hi' : null">
+  <div class="lb-top">
+    <span class="lb-count" *ngIf="items.length > 1" aria-live="polite">{{ (index || 0) + 1 }} / {{ items.length }}</span>
     <div class="lb-actions">
-      <button type="button" class="lb-btn" *ngIf="c.zoomSrc" (click)="zoomed = !zoomed">{{ zoomed ? 'Fit to screen' : 'Zoom in' }}</button>
-      <button type="button" class="lb-btn" (click)="close()" aria-label="Close viewer">Close ✕</button>
+      <button type="button" class="lb-btn" (click)="toggleZoom()">{{ zoomed ? t.fit : t.zoom }}</button>
+      <button type="button" class="lb-btn lb-close" #closeBtn (click)="close()" [attr.aria-label]="t.closeAria">{{ t.close }} <span aria-hidden="true">✕</span></button>
     </div>
   </div>
 
-  <div class="lb-stage" [class.zoomed]="zoomed" (click)="$event.stopPropagation()">
-    <button type="button" class="lb-nav prev" *ngIf="items.length > 1 && !zoomed" (click)="step(-1)" aria-label="Previous image">‹</button>
-    <img *ngIf="!zoomed" [src]="c.src" [alt]="c.alt" [attr.width]="c.width" [attr.height]="c.height" loading="eager" class="lb-img">
-    <img *ngIf="zoomed" [src]="c.zoomSrc || c.src" [alt]="c.alt" [attr.width]="c.zoomWidth || c.width" [attr.height]="c.zoomWidth ? null : c.height" loading="eager" class="lb-img-zoom" [style.width.px]="c.zoomWidth || c.width">
-    <button type="button" class="lb-nav next" *ngIf="items.length > 1 && !zoomed" (click)="step(1)" aria-label="Next image">›</button>
+  <div class="lb-stage" #stage [class.zoomed]="zoomed" (click)="onStageClick($event)" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+    <button type="button" class="lb-nav prev" *ngIf="items.length > 1 && !zoomed" (click)="step(-1)" [attr.aria-label]="t.prev"><span aria-hidden="true">‹</span></button>
+    <img *ngIf="!zoomed" [src]="c.src" [alt]="c.alt" [attr.width]="c.width" [attr.height]="c.height" loading="eager" decoding="async" class="lb-img" draggable="false" (dblclick)="toggleZoom()">
+    <img *ngIf="zoomed" [src]="c.zoomSrc || c.src" [alt]="c.alt" [attr.width]="c.zoomWidth || c.width" [attr.height]="c.zoomWidth ? null : c.height" loading="eager" decoding="async" class="lb-img-zoom" draggable="false"
+         [style.width.px]="c.zoomWidth || c.width" (load)="centreZoom()" (dblclick)="toggleZoom()">
+    <button type="button" class="lb-nav next" *ngIf="items.length > 1 && !zoomed" (click)="step(1)" [attr.aria-label]="t.next"><span aria-hidden="true">›</span></button>
   </div>
 
-  <div class="lb-caption" (click)="$event.stopPropagation()">
+  <div class="lb-caption">
     <strong>{{ c.title }}</strong>
-    <span>{{ c.caption }}</span>
+    <span *ngIf="c.caption">{{ c.caption }}</span>
     <small *ngIf="disclaimer">{{ disclaimer }}</small>
   </div>
 </div>

@@ -1,119 +1,89 @@
-import { Component, Inject, OnInit, OnDestroy, HostListener, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PROPERTY, waLink } from '../../config/property.config';
-import { NEED_OPTIONS } from '../../config/highlights.config';
-import { LeadService } from '../../core/services/lead.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
-import { HI } from '../../config/hindi.config';
-import { NEED_LABEL_HI, PopupText, POPUP_EN, POPUP_HI } from './popup-text';
+import { LeadPath, LeadPathRequest, OPEN_LEAD_EVENT } from '../../core/ui-events';
+import { LEAD_EN, LEAD_HI, LeadText } from '../lead-form/lead-text';
 
+/**
+ * The site-wide enquiry dialog: the three paths (schedule a visit, download the brochure, ask a question) in one sheet.
+ * It slides up from the bottom on phones and sits centred on larger screens. Any button opens it through openLeadPath()
+ * (core/ui-events.ts), which dispatches the original 'open-booking-popup' window event, so older callers still work.
+ * It never opens by itself.
+ */
 @Component({
   selector: 'app-booking-popup',
   templateUrl: './booking-popup.component.html',
   styleUrls: ['./booking-popup.component.scss'],
 })
 export class BookingPopupComponent implements OnInit, OnDestroy {
-  showPopup = false;
-  popupSubmitted = false;
-  bookingForm!: FormGroup;
-  property = PROPERTY;
-  submitting = false;
-  failed = false;
-  waHref = waLink();
-  waSubmittedHref = waLink('Hi, I just sent a site-visit enquiry for SHRINEVA, Bada Lalpur, Varanasi.');
-
-  needs = NEED_OPTIONS;
-  /** English by default; Hindi when the visitor opens it from the Hindi page (document language hi). */
-  txt: PopupText = POPUP_EN;
+  show = false;
+  path: LeadPath = 'visit';
+  context = '';
+  source = 'popup';
+  category = '';
+  message = '';
   hindi = false;
-  needLabelHi = NEED_LABEL_HI;
+  txt: LeadText = LEAD_EN;
 
-  private popupListener!: EventListener;
+  @ViewChild('card') card?: ElementRef<HTMLElement>;
+
+  private listener!: EventListener;
   private returnFocusTo: HTMLElement | null = null;
-
   private readonly browser: boolean;
 
-  constructor(private fb: FormBuilder, private leads: LeadService, private analytics: AnalyticsService, @Inject(PLATFORM_ID) platformId: object, @Inject(DOCUMENT) private doc: Document) {
+  constructor(private analytics: AnalyticsService, @Inject(PLATFORM_ID) platformId: object, @Inject(DOCUMENT) private doc: Document) {
     this.browser = isPlatformBrowser(platformId);
   }
 
-  ngOnInit() {
-    this.bookingForm = this.fb.group({
-      name:    ['', [Validators.required, Validators.minLength(2)]],
-      phone:   ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
-      need:    [''],
-      website: [''], // honeypot
-    });
-
-    // Opens only on request (buttons dispatch 'open-booking-popup'); no auto-open interstitial.
-
-    // Listen for programmatic open
-    this.popupListener = () => this.open();
-    if (this.browser) window.addEventListener('open-booking-popup', this.popupListener);
+  ngOnInit(): void {
+    this.listener = (e: Event) => this.open((e as CustomEvent<LeadPathRequest>).detail || {});
+    if (this.browser) window.addEventListener(OPEN_LEAD_EVENT, this.listener);
   }
 
-  open() {
+  open(req: LeadPathRequest = {}): void {
     this.hindi = (this.doc.documentElement.lang || '').toLowerCase().startsWith('hi');
-    this.txt = this.hindi ? POPUP_HI : POPUP_EN;
-    this.waHref = waLink(this.hindi ? HI.waMessage : PROPERTY.contact.whatsappMessage);
-    this.showPopup = true;
-    this.popupSubmitted = false;
-    this.failed = false;
-    this.returnFocusTo = document.activeElement as HTMLElement | null;
-    document.body.style.overflow = 'hidden';
-    // Move keyboard focus into the dialog once it has rendered.
-    setTimeout(() => (document.querySelector('.popup-card .popup-close') as HTMLElement | null)?.focus(), 50);
+    this.txt = this.hindi ? LEAD_HI : LEAD_EN;
+    this.path = req.path || 'visit';
+    this.context = req.context || '';
+    this.source = req.source || 'popup';
+    this.category = req.category || '';
+    this.message = req.message || '';
+    this.show = true;
+    this.returnFocusTo = this.doc.activeElement as HTMLElement | null;
+    this.doc.body.style.overflow = 'hidden';
+    this.analytics.event('lead_dialog_open', { path: this.path, source: this.source });
+    // Keyboard focus moves into the dialog once it has rendered.
+    setTimeout(() => (this.doc.querySelector('.popup-card .popup-close') as HTMLElement | null)?.focus(), 60);
   }
 
   @HostListener('document:keydown.escape')
-  close() {
-    if (!this.showPopup) return;
-    this.showPopup = false;
-    document.body.style.overflow = '';
+  close(): void {
+    if (!this.show) return;
+    this.show = false;
+    this.doc.body.style.overflow = '';
     this.returnFocusTo?.focus?.();
     this.returnFocusTo = null;
   }
 
-  onOverlayClick(e: Event) {
-    if ((e.target as HTMLElement).classList.contains('popup-overlay')) {
-      this.close();
-    }
+  onOverlayClick(e: Event): void {
+    if ((e.target as HTMLElement).classList.contains('popup-overlay')) this.close();
   }
 
-  isInvalid(field: string) {
-    const c = this.bookingForm.get(field);
-    return c && c.invalid && (c.dirty || c.touched);
+  /** Keeps Tab inside the dialog while it is open. */
+  @HostListener('document:keydown', ['$event'])
+  trap(e: KeyboardEvent): void {
+    if (!this.show || e.key !== 'Tab' || !this.card) return;
+    const items = Array.from(this.card.nativeElement.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([tabindex="-1"]), textarea, select, [tabindex]:not([tabindex="-1"])'))
+      .filter((el) => el.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    const active = this.doc.activeElement;
+    if (e.shiftKey && (active === first || !this.card.nativeElement.contains(active))) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && (active === last || !this.card.nativeElement.contains(active))) { e.preventDefault(); first.focus(); }
   }
 
-  async submit() {
-    this.bookingForm.markAllAsTouched();
-    if (!this.bookingForm.valid) return;
-    const data = this.bookingForm.value;
-    if (data.website) { this.popupSubmitted = true; return; } // bot
-
-    this.submitting = true;
-    this.failed = false;
-    const result = await this.leads.submit('New Site-Visit Enquiry for SHRINEVA', {
-      name: data.name,
-      phone: data.phone,
-      space_type: data.need || '',
-    }, 'site-visit');
-    this.submitting = false;
-
-    if (result.ok) {
-      this.analytics.event('site_visit_submit');
-      // the short visit form is a qualified lead too: shrineva_commercial_lead (and the Ads conversion once its label is set)
-      this.analytics.conversion('commercialLead', { lead_type: 'site_visit', business_category: data.need || 'not_given', via: result.via, language: this.hindi ? 'hi' : 'en' });
-      this.popupSubmitted = true;
-      this.bookingForm.reset({ need: '' });
-    } else {
-      this.failed = true;
-      this.analytics.event('site_visit_error', { reason: result.reason });
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.browser) window.removeEventListener('open-booking-popup', this.popupListener);
+  ngOnDestroy(): void {
+    if (this.browser) window.removeEventListener(OPEN_LEAD_EVENT, this.listener);
+    if (this.browser) this.doc.body.style.overflow = '';
   }
 }

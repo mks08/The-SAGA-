@@ -5,17 +5,19 @@ import { RouterModule } from '@angular/router';
 
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { LightboxComponent } from './components/lightbox/lightbox.component';
+import { LightboxHostComponent } from './components/lightbox-host/lightbox-host.component';
 import { RevealDirective } from './directives/reveal.directive';
 import { CountUpDirective } from './directives/count-up.directive';
 import { TiltDirective } from './directives/tilt.directive';
 import { SpotlightDirective } from './directives/spotlight.directive';
 import { ParallaxDirective } from './directives/parallax.directive';
+import { ScrollProgressDirective } from './directives/scroll-progress.directive';
 
-const DIRECTIVES = [RevealDirective, CountUpDirective, TiltDirective, SpotlightDirective, ParallaxDirective];
+const DIRECTIVES = [RevealDirective, CountUpDirective, TiltDirective, SpotlightDirective, ParallaxDirective, ScrollProgressDirective];
 
 @NgModule({
-  declarations: [PageHeaderComponent, LightboxComponent, ...DIRECTIVES],
+  declarations: [PageHeaderComponent, LightboxComponent, LightboxHostComponent, ...DIRECTIVES],
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  exports: [PageHeaderComponent, LightboxComponent, ...DIRECTIVES, CommonModule, ReactiveFormsModule, RouterModule],
+  exports: [PageHeaderComponent, LightboxComponent, LightboxHostComponent, ...DIRECTIVES, CommonModule, ReactiveFormsModule, RouterModule],
 })
 export class SharedModule {}

@@ -8,16 +8,15 @@ import { environment } from '../../../environments/environment';
  * IDs and conversion labels come from src/environments/environment*.ts and stay empty until the owner supplies them; while
  * they are empty nothing is loaded, but events still go to window.dataLayer so a tag manager added later can read them.
  *
- * The five conversion events (names fixed by the SEO / Ads brief):
+ * The four conversion events (names fixed by the SEO / Ads brief):
  *   shrineva_commercial_lead      qualified commercial enquiry submitted (also the short "book a visit" form)
  *   shrineva_phone_click          any tel: link
  *   shrineva_whatsapp_click       any wa.me / WhatsApp link
  *   shrineva_brochure_download    any .pdf link (brochure, floor plans)
- *   shrineva_residential_lead     proposed-residential interest form (only if that form is switched on)
  * Phone, WhatsApp and PDF clicks are caught by ONE delegated listener, so every link on every page is counted exactly once
  * and no component has to remember to track it.
  */
-export type ConversionKey = 'commercialLead' | 'phoneClick' | 'whatsappClick' | 'brochureDownload' | 'residentialLead';
+export type ConversionKey = 'commercialLead' | 'phoneClick' | 'whatsappClick' | 'brochureDownload';
 
 type Gtag = (...args: unknown[]) => void;
 interface TrackWindow { dataLayer?: unknown[]; gtag?: Gtag; __shrinevaClicks?: boolean }
@@ -30,7 +29,6 @@ const EVENT_NAME: Record<ConversionKey, string> = {
   phoneClick: 'shrineva_phone_click',
   whatsappClick: 'shrineva_whatsapp_click',
   brochureDownload: 'shrineva_brochure_download',
-  residentialLead: 'shrineva_residential_lead',
 };
 
 @Injectable({ providedIn: 'root' })

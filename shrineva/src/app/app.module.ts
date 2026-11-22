@@ -19,6 +19,7 @@ import { BookingPopupComponent } from './components/booking-popup/booking-popup.
 import { WhatsappFabComponent } from './components/whatsapp-fab/whatsapp-fab.component';
 import { SiteFooterComponent } from './components/site-footer/site-footer.component';
 import { MobileCtaComponent } from './components/mobile-cta/mobile-cta.component';
+import { ChaixComponent } from './components/chaix/chaix.component';
 
 import { FloorPlansPageComponent } from './pages/floor-plans-page/floor-plans-page.component';
 import { LeasingPageComponent } from './pages/leasing-page/leasing-page.component';
@@ -35,10 +36,8 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { LocationContactPageComponent } from './pages/location-contact-page/location-contact-page.component';
 import { PrivacyDisclaimerPageComponent } from './pages/privacy-disclaimer-page/privacy-disclaimer-page.component';
 import { FaqComponent } from './components/faq/faq.component';
-import { CommercialLeadFormComponent } from './components/commercial-lead-form/commercial-lead-form.component';
-import { ResidentialLeadFormComponent } from './components/residential-lead-form/residential-lead-form.component';
-import { SpaceFinderComponent } from './components/space-finder/space-finder.component';
-import { AvailabilityComponent } from './components/availability/availability.component';
+import { LeadFormComponent } from './components/lead-form/lead-form.component';
+import { BuildingExplorerComponent } from './components/building-explorer/building-explorer.component';
 import { BuildingSpecsComponent } from './components/building-specs/building-specs.component';
 import { SitePlanComponent } from './components/site-plan/site-plan.component';
 import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
@@ -56,6 +55,7 @@ import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
     WhatsappFabComponent,
     SiteFooterComponent,
     MobileCtaComponent,
+    ChaixComponent,
     FloorPlansPageComponent,
     LeasingPageComponent,
     TermsPageComponent,
@@ -71,11 +71,9 @@ import { HindiPageComponent } from './pages/hindi-page/hindi-page.component';
     LocationContactPageComponent,
     PrivacyDisclaimerPageComponent,
     FaqComponent,
-    CommercialLeadFormComponent,
-    ResidentialLeadFormComponent,
-    SpaceFinderComponent,
+    LeadFormComponent,
+    BuildingExplorerComponent,
     HindiPageComponent,
-    AvailabilityComponent,
     SitePlanComponent,
     BuildingSpecsComponent,
   ],

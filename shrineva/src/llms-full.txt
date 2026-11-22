@@ -7,7 +7,7 @@ Last updated: November 2026 (2026-11-20). Source: https://shrineva.in/. Short ve
 ## Key facts
 - Address: Plot No. D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi, Uttar Pradesh 221003, India.
 - GPS coordinates: 25.383306, 82.978028.
-- Leasing phone: +91 81140 80609 (also WhatsApp, https://wa.me/918114080609) and +91 73557 70378. Leasing email: leasing@shrineva.in.
+- Leasing phone: +91 81140 80609 (also WhatsApp, https://wa.me/918114080609). Leasing email: leasing@shrineva.in.
 - Location: opposite the upcoming Apollo Hospital (under construction, not yet operational) and about 100 m from the NIFT Varanasi campus, on a 24 m wide north-facing road in Bada Lalpur, about 1 km from Ring Road (NH 135B).
 - Plot and road: 525 sq m plot with about 50 ft of frontage on a 24 m wide road.
 - Floors: three upper floors, each about 3,500 sq ft gross and about 3,100 sq ft carpet. Open-plan commercial floor plates with flexible tenant layouts, offered as open shells to rent or lease whole or in part. Areas are approximate.
@@ -45,11 +45,11 @@ About 3,500 sq ft (Gross, on each of Floors 1, 2 and 3; About 3,100 sq ft carpet
 - Fire exit: On every level
 - Condition: Open shell, fitted out by the tenant
 
-### Stack
-- Floor 3: About 3,500 sq ft. Open floor plate, glass front on the road (For lease).
-- Floor 2: About 3,500 sq ft. Open floor plate, glass front on the road (For lease).
-- Floor 1: About 3,500 sq ft. Open floor plate, glass front on the road (For lease).
-- Ground: About 3,000 sq ft. Covered parking for 12+ cars, entries and lift lobby (Parking and entry).
+### Floor by floor (the building explorer on the home page)
+- Ground floor: parking for 12+ cars, covered and open to the road, with west and east entries to the lift and stair lobby.
+- First floor: commercial, about 3,500 sq ft gross (about 3,100 sq ft carpet), an open floor plate with a glass front on the road; available.
+- Second floor: commercial, about 3,500 sq ft gross (about 3,100 sq ft carpet), an open floor plate with a glass front on the road; available.
+- Third floor: commercial, about 3,500 sq ft gross (about 3,100 sq ft carpet), an open floor plate with a glass front on the road; available.
 
 ### What can be leased
 - A whole floor
@@ -63,32 +63,42 @@ About 3,500 sq ft (Gross, on each of Floors 1, 2 and 3; About 3,100 sq ft carpet
 - Brand visibility on a 24 m road, signage and ground-level parking
 
 ### How leasing works
-1. Tell us what you need: Area, use and timing. Use the form, call or WhatsApp.
-2. See it: Floor options, the brochure and a visit to the plot.
+1. Tell us what you need: Area, use and timing. Schedule a visit, download the brochure or ask a question; call or WhatsApp works too.
+2. See it: The floor options, the plans and a visit to the plot.
 3. Agree the terms: Commercial terms, fit-out and floor condition, in writing.
 
-## Safety and access
-### Fire safety and escape
-- Fire exit: On every level, marked on the plans
-- Staircase: 5′-3″ wide flights from the ground level to Floor 3
-- Open sides: Open setbacks on all four sides of the building
-- Front setback: 15′-8″ between the building and the road side
+## Specification (the same figures as page 4 of the brochure)
+### Project
+- Project: SHRINEVA, Bada Lalpur, Varanasi
+- Status: Under construction
+- Target completion: March 2027, subject to approvals
+- Approval: VDA approved
+- Orientation: Vastu compliant
 
-### Access and circulation
+### Site
+- Plot area: About 525 sq m (about 5,650 sq ft)
+- Road: 24 m wide, north-facing
+- Frontage: About 50 ft
+- Setbacks: Front 15′-8″ · Rear 15′-4½″ · East 8′-11½″ · West 5′-0″
+
+### Building
+- Configuration: Ground (parking) plus three floors
+- Gross floor area: About 3,500 sq ft per floor (Floors 1 to 3)
+- Carpet floor area: About 3,100 sq ft per floor (Floors 1 to 3)
+- Floor to floor: Ground about 9′-6″ · Floors about 11′-6″
+- Floor plate: Open plan, with flexible tenant layouts
+- Front: Glass front facing the road
+- Condition: Open shell, fitted out by the tenant
+
+### Access and safety
+- Parking: Covered, at ground level, for 12+ cars
 - Passenger lift: One 10-passenger lift, serving every level
 - Lift and stair lobby: One core on the east side, reached by west and east walkways
-- Parking: Covered, at ground level, for 12+ cars
-- Frontage: About 50 ft on a 24 m wide north-facing road
+- Staircase: 5′-3″ wide flights from the ground level to Floor 3
+- Fire escape: A dedicated exit on every level, marked on the plans
+- Open sides: Open setbacks on all four sides of the building
 
-### The building
-- Height: Ground level plus three floors
-- Floor to floor: About 11.5 ft on Floors 1 to 3, about 9.5 ft at ground level
-- Floor plate: Open-plan commercial floor plates with flexible tenant layouts
-- Front: Glass front facing the road
-- Orientation: Vastu compliant
-- Approval: VDA approved
-
-Not stated on the site, so ask the leasing team: Fire-fighting systems and clearances; Power and backup supply; Water supply; Fibre and connectivity; Floor condition and fit-out.
+Not stated on the site, so ask the leasing team: Fire-fighting systems and clearances; Power and backup supply; Water supply and washrooms; Air-conditioning provision; Fibre and connectivity; Floor loading; Signage permissions; Loading and unloading.
 
 ## Location and approximate distances
 - NIFT Varanasi campus: ≈ 100 m (Near the plot)
@@ -121,7 +131,7 @@ Clinic, Pathology Lab & Diagnostic Space Opposite the Upcoming Apollo Hospital, 
 - Healthcare operators who can enquire: Pathology laboratories; Diagnostic centres; Specialist clinics; Other healthcare operators.
 - Use of any floor is subject to floor suitability and applicable statutory approvals.
 
-**Is the Apollo Hospital next to SHRINEVA already open?** No. The Apollo Hospital opposite SHRINEVA is upcoming and under construction, so it is not yet operational. SHRINEVA therefore makes no claim about patient footfall. Healthcare tenants should plan around the building’s own specifications and the approvals their operation needs.
+**Does SHRINEVA promise patients from the upcoming Apollo Hospital?** No promise is made. The Apollo Hospital opposite SHRINEVA is upcoming and under construction, so it is not yet operational and SHRINEVA makes no claim about patient numbers or footfall. Healthcare tenants should plan around the building’s own specifications and the approvals their operation needs.
 
 **Can SHRINEVA host a pathology lab or diagnostic centre?** Open floors of about 3,100 sq ft carpet can be planned for lab or diagnostic layouts, with a 10-passenger lift and fire exits on every level. Suitability depends on the chosen floor and the applicable statutory approvals for your operation. Share your requirement and we will confirm feasibility at a site visit.
 
@@ -182,7 +192,7 @@ SHRINEVA offers parking for 12+ cars at ground level and one 10-passenger lift s
 SHRINEVA suits pathology labs, diagnostic centres and clinics; banks, NBFCs and insurance branches; corporate and IT offices; retail showrooms and boutiques; restaurants and cafés; and coaching institutes, coworking, fitness and wellness centres. Every use is subject to floor suitability and applicable statutory approvals, including municipal, fire and FSSAI approvals for food businesses.
 
 ### How do I book a site visit or contact the SHRINEVA leasing office?
-Call +91 81140 80609 or +91 73557 70378, message the leasing team on WhatsApp at +91 81140 80609, email leasing@shrineva.in, or fill in the enquiry form on this page to request a site visit. The leasing team confirms a time with you.
+Call or WhatsApp +91 81140 80609, email leasing@shrineva.in, or fill in the enquiry form on this page to request a site visit. Tell the leasing team which floor or business use you have in mind: they reply with the floor options, the plans and a visit time that suits you.
 
 ### When will the SHRINEVA building be complete and ready for tenants?
 Project completion at SHRINEVA is targeted for March 2027, subject to approvals. The concrete structure is complete, and brickwork, façade, lift and services are in progress, followed by final works on the ground, boundary and flooring. Floors are offered as open shells. Dates are targets and may change.
@@ -211,10 +221,10 @@ Hindi page: https://shrineva.in/hi
 
 ## Contact and downloads
 - Email: leasing@shrineva.in
-- Phone: +91 81140 80609 (also WhatsApp, https://wa.me/918114080609) and +91 73557 70378
+- Phone: +91 81140 80609 (also WhatsApp, https://wa.me/918114080609)
 - Address: Plot No. D-15, Lalpur Housing Scheme, Bada Lalpur, Varanasi, Uttar Pradesh 221003, India
-- Brochure (PDF): https://shrineva.in/assets/shrineva-brochure.pdf
-- Floor plans (PDF): https://shrineva.in/assets/shrineva-floor-plans.pdf
+- Brochure (PDF, 4 pages, with the floor plans and the specification): sent after a visitor enters a name, mobile number and email in the Brochure form at https://shrineva.in/#brochure
+- Ways to get in touch on the site: schedule a visit, get the brochure, or ask a question (each asks for a mobile number and an email); or call, WhatsApp or write to the leasing desk above.
 
 ## Notes
 - The Apollo Hospital opposite is upcoming and under construction. No footfall, rent or return claim is made for this building.

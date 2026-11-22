@@ -6,7 +6,7 @@
         <h2 id="tour-title" class="font-display text-display-md text-ink">Walk in from the road, <em class="text-brass-deep">stop by stop.</em></h2>
         <p class="mt-2 text-[0.94rem] text-ink/65">The finalised 3D design, from the street to the lift lobby. Use the arrows, the stop list, zoom, or full screen.</p>
       </div>
-      <p class="hidden font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ink/70 md:block">← → move · space play · + − zoom · F full screen</p>
+      <p class="hidden font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink/70 md:block">← → move · space play · + − zoom · F full screen</p>
     </div>
     <h2 *ngIf="variant === 'page'" id="tour-title" class="sr-only">Guided walkthrough</h2>
 
@@ -41,14 +41,14 @@
 
           <!-- Top chips -->
           <div class="pointer-events-none absolute left-3 top-3 flex items-center gap-2 md:left-4 md:top-4">
-            <span class="rounded-full bg-white/90 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink/70 backdrop-blur">Indicative 3D render</span>
-            <span *ngIf="chapter" class="hidden rounded-full bg-[#1b1714]/70 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#f6f1e8] backdrop-blur sm:inline">{{ chapter }}</span>
+            <span class="rounded-full bg-white/90 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink/70 backdrop-blur">Indicative 3D render</span>
+            <span *ngIf="chapter" class="hidden rounded-full bg-[#1b1714]/70 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[#f6f1e8] backdrop-blur sm:inline">{{ chapter }}</span>
           </div>
-          <p *ngIf="hintShown && !reduced" class="pointer-events-none absolute right-3 top-3 hidden rounded-full bg-[#1b1714]/70 px-3 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#f6f1e8] backdrop-blur md:right-4 md:top-4 md:block" aria-hidden="true">Double-click to zoom</p>
+          <p *ngIf="hintShown && !reduced" class="pointer-events-none absolute right-3 top-3 hidden rounded-full bg-[#1b1714]/70 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[#f6f1e8] backdrop-blur md:right-4 md:top-4 md:block" aria-hidden="true">Double-click to zoom</p>
 
           <!-- Caption over the picture (tablet and up) -->
           <div class="pointer-events-none absolute inset-x-0 bottom-0 hidden bg-gradient-to-t from-[#1b1714]/90 via-[#1b1714]/45 to-transparent px-6 pb-5 pt-14 text-[#f6f1e8] sm:block" aria-hidden="true">
-            <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#e8cf96]">Stop {{ label }}</p>
+            <p class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-[#e8cf96]">Stop {{ label }}</p>
             <p class="mt-1 font-display text-[clamp(1.35rem,3vw,2rem)] leading-tight">{{ current.title }}</p>
             <p class="mt-1 max-w-2xl text-[0.92rem] leading-snug text-[#f6f1e8]/85">{{ current.caption }}</p>
           </div>
@@ -58,7 +58,7 @@
         <div class="below">
           <!-- Caption under the picture (phones) -->
           <div class="px-4 pt-3 sm:hidden" aria-hidden="true">
-            <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-brass-deep">Stop {{ label }}</p>
+            <p class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-brass-deep">Stop {{ label }}</p>
             <p class="mt-0.5 font-display text-[1.45rem] leading-tight">{{ current.title }}</p>
             <p class="mt-1 text-[0.88rem] leading-snug opacity-75">{{ current.caption }}</p>
           </div>
@@ -71,7 +71,7 @@
               <svg *ngIf="!playing" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
             </button>
             <button type="button" class="tool" (click)="next()" aria-label="Next stop">›</button>
-            <span class="min-w-[3.6rem] text-center font-mono text-[0.72rem] tracking-wide opacity-75" aria-hidden="true">{{ idx + 1 }} / {{ stops.length }}</span>
+            <span class="min-w-[3.6rem] text-center font-mono text-[0.76rem] tracking-wide opacity-75" aria-hidden="true">{{ idx + 1 }} / {{ stops.length }}</span>
             <span class="mx-1 hidden h-6 w-px bg-ink/15 sm:block" aria-hidden="true"></span>
             <button type="button" class="tool" (click)="zoomBy(-1)" [disabled]="zoom === zooms[0]" aria-label="Zoom out">−</button>
             <span class="min-w-[2.8rem] text-center font-mono text-[0.7rem] opacity-75" aria-live="polite">{{ zoom * 100 | number: '1.0-0' }}%</span>
@@ -83,9 +83,9 @@
           </div>
 
           <!-- Progress: tap a bar to jump -->
-          <ol class="flex gap-1.5 px-3 pb-1 pt-3 md:px-4">
+          <ol class="flex px-3 pb-0 pt-1 md:px-4">
             <li *ngFor="let s of stops; let i = index" class="flex-1">
-              <button type="button" (click)="go(i)" class="group block w-full py-2" [attr.aria-label]="'Go to stop ' + (i + 1) + ': ' + s.title" [attr.aria-current]="i === idx ? 'true' : null">
+              <button type="button" (click)="go(i)" class="group block w-full px-[3px] py-[1.125rem]" [attr.aria-label]="'Go to stop ' + (i + 1) + ': ' + s.title" [attr.aria-current]="i === idx ? 'true' : null">
                 <span class="block h-1 overflow-hidden rounded-full bg-ink/12 transition-[height] group-hover:h-1.5">
                   <span class="fill block h-full w-full rounded-full bg-brass-deep"
                         [class.done]="i < idx || (i === idx && !playing)" [class.run]="i === idx && playing"
@@ -115,7 +115,7 @@
             <button type="button" (click)="go(i)" class="flex w-full items-center gap-3 p-2.5 text-left transition-colors" [ngClass]="i === idx ? 'bg-paper-2' : 'hover:bg-paper'" [attr.aria-current]="i === idx ? 'true' : null">
               <img [src]="s.thumb" alt="" width="640" [attr.height]="s.height === 829 ? 332 : 282" loading="lazy" decoding="async" class="h-12 w-[5.2rem] shrink-0 rounded-lg object-cover" [class.ring-2]="i === idx" [class.ring-brass-deep]="i === idx">
               <span class="min-w-0">
-                <span class="block font-mono text-[0.56rem] uppercase tracking-[0.13em] text-brass-deep">{{ i + 1 }} · {{ chapterOf(s) }}</span>
+                <span class="block font-mono text-[0.7rem] uppercase tracking-[0.13em] text-brass-deep">{{ i + 1 }} · {{ chapterOf(s) }}</span>
                 <span class="block truncate text-[0.88rem] font-bold text-ink">{{ s.title }}</span>
               </span>
             </button>
@@ -124,8 +124,8 @@
 
         <figure class="rounded-3xl border border-ink/10 bg-white p-3">
           <figcaption class="flex items-center justify-between px-1 pb-1">
-            <span class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink/70">Where this view is taken</span>
-            <span class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ink/70">N ↑</span>
+            <span class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink/70">Where this view is taken</span>
+            <span class="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink/70">N ↑</span>
           </figcaption>
           <svg [attr.viewBox]="'0 0 ' + 150 + ' ' + 290" class="mx-auto block h-auto w-full max-w-[9.5rem]" role="img" aria-label="Mini site plan with the approximate viewpoint of the current stop">
             <rect x="0" y="12" width="150" height="32" fill="#2a2622"/>

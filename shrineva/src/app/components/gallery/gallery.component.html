@@ -12,8 +12,9 @@
         <button type="button" class="group relative block w-full overflow-hidden rounded-2xl bg-paper-3 text-left" (click)="open(i)" [attr.aria-label]="p.title + '. Enlarge'">
           <img [src]="p.thumb" [alt]="p.alt" width="640" [attr.height]="thumbHeight(p)" loading="lazy" decoding="async"
                class="block h-auto w-full transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]">
-          <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1b1714]/85 via-[#1b1714]/30 to-transparent p-3 pt-10 text-[#f6f1e8]">
-            <strong class="block text-[0.86rem] font-bold leading-snug">{{ p.title }}</strong>
+          <!-- Phones: the caption sits under the picture (a long title never covers or runs off a small thumbnail). From md up it overlays the picture. -->
+          <span class="block bg-[#1b1714] px-3 py-2.5 text-[#f6f1e8] md:absolute md:inset-x-0 md:bottom-0 md:bg-transparent md:bg-gradient-to-t md:from-[#1b1714]/85 md:via-[#1b1714]/30 md:to-transparent md:p-3 md:pt-10">
+            <strong class="block text-[0.82rem] font-bold leading-snug md:text-[0.86rem]">{{ p.title }}</strong>
           </span>
         </button>
       </li>

@@ -16,9 +16,11 @@
       <h2 id="progress-title" class="font-display text-display-md text-ink">What has been built, and when</h2>
       <ol class="mt-6 grid gap-4 md:grid-cols-2">
         <li *ngFor="let u of progress" class="overflow-hidden rounded-3xl border border-ink/10 bg-white">
-          <img *ngIf="u.photo" [src]="u.photo" [alt]="u.alt || u.title" [attr.width]="u.width || 1600" [attr.height]="u.height || 1200" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover">
+          <button *ngIf="u.photo" type="button" class="block w-full cursor-zoom-in" (click)="enlarge(u)" aria-haspopup="dialog" [attr.aria-label]="u.title + '. Enlarge the photograph'">
+            <img [src]="u.photo" [alt]="u.alt || u.title" [attr.width]="u.width || 1600" [attr.height]="u.height || 1200" loading="lazy" decoding="async" class="aspect-[4/3] w-full object-cover">
+          </button>
           <div class="p-4 md:p-5">
-            <time [attr.datetime]="u.date" class="font-mono text-[0.64rem] uppercase tracking-[0.16em] text-brass-deep">{{ u.date | date: 'd MMM y' }}</time>
+            <time [attr.datetime]="u.date" class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-brass-deep">{{ u.date | date: 'd MMM y' }}</time>
             <h3 class="mt-1 font-display text-[1.35rem] leading-tight text-ink">{{ u.title }}</h3>
             <p class="mt-1 text-[0.92rem] leading-relaxed text-ink/75">{{ u.text }}</p>
           </div>
@@ -30,7 +32,7 @@
   <section class="bg-paper py-9 md:py-12" aria-label="Next steps">
     <div class="container-srineva flex flex-col gap-3 sm:flex-row sm:flex-wrap">
       <a routerLink="/floor-plans" class="btn-outline justify-center">See the floor plans</a>
-      <a [href]="brochure.href" target="_blank" rel="noopener" download class="btn-outline justify-center">Download the brochure (PDF)</a>
+      <button type="button" class="btn-outline justify-center" (click)="openBrochure()" aria-haspopup="dialog">Download the brochure (PDF)</button>
     </div>
   </section>
   <app-final-cta></app-final-cta>

@@ -18,12 +18,13 @@ import { Component, Input } from '@angular/core';
         <img src="assets/images/logo-mark.webp" alt="" width="120" height="116" loading="eager" decoding="async" class="h-11 w-auto select-none">
         <span class="flex flex-col">
           <img src="assets/images/logo-wordmark-sm.webp" alt="SHRINEVA" width="320" height="82" loading="eager" decoding="async" class="h-[1.85rem] w-auto select-none">
-          <span *ngIf="tagline" class="mt-1 whitespace-nowrap font-mono text-[0.56rem] uppercase leading-none tracking-[0.2em] text-brass-soft">Commercial space · Varanasi</span>
+          <span *ngIf="tagline" class="brand-tagline mt-1 whitespace-nowrap font-mono text-[0.56rem] uppercase leading-none tracking-[0.2em] text-brass-soft">Commercial space · Varanasi</span>
         </span>
       </span>
     </ng-template>
   `,
-  styles: [':host { display: inline-block; }'],
+  // On a 320 px phone the tagline would push the menu button over the wordmark, so it steps out below 360 px.
+  styles: [':host { display: inline-block; } @media (max-width: 359.98px) { .brand-tagline { display: none; } }'],
 })
 export class BrandLogoComponent {
   @Input() variant: 'lockup' | 'wordmark' = 'lockup';

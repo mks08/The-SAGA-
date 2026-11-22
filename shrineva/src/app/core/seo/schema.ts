@@ -1,6 +1,6 @@
 import { seoForPath, SEO_DOMAIN, SEO_ROUTES, SITE_UPDATED } from '../../config/seo.config';
 import { PROPERTY, PLAN, MARKETING_AREA } from '../../config/property.config';
-import { RENDERS, SITE_PHOTOS, BROCHURE } from '../../config/media.config';
+import { RENDERS, SITE_PHOTOS } from '../../config/media.config';
 import { PROJECT_STATUS } from '../../config/content.config';
 import { NEARBY_DISTANCES } from '../../config/location.config';
 import { faqForPath } from '../../config/faq.config';
@@ -10,11 +10,13 @@ import { LANDING_PAGES, landingByPath } from '../../config/landing.config';
  * Structured data (JSON-LD) for every route. Pure functions with no Angular imports so the same
  * graph is used at runtime (SeoService) and written into the static HTML shells by scripts/build-seo.js.
  *
- * Graph per page: LocalBusiness (the leasing office: address, geo, phones, service area), WebSite, Place (the building,
- * with its measured facts as PropertyValue), WebPage, BreadcrumbList, plus - where the page shows them - a RealEstateListing
+ * Graph per page: Organization (the leasing contact: phones, email, languages, service area), WebSite, Place (the building: address,
+ * map, geo and its measured facts as PropertyValue), WebPage, BreadcrumbList, plus - where the page shows them - a RealEstateListing
  * (a page type) whose Offer is a lease offer, and a FAQPage whose questions are exactly the visible FAQ.
- * Deliberately not used: RealEstateAgent (the owner leases directly, it is not an agent) and Accommodation (the floors are
- * commercial open shells, not lodging).
+ * Deliberately not used: RealEstateAgent (the owner leases directly, it is not an agent), Accommodation (the floors are
+ * commercial open shells, not lodging) and LocalBusiness (it would claim a staffed walk-in office with opening hours, and the owner has
+ * not said there is one; site visits are by appointment. If a leasing office with visiting hours opens at the site, change the
+ * Organization to LocalBusiness and add its hours).
  * Facts only: no approvals, rents or footfall are asserted. The completion month is stated only as a target, subject to approvals
  * (PROJECT_STATUS), and the Apollo Hospital is "upcoming". dateModified is SITE_UPDATED, the same date the sitemap uses.
  */
@@ -59,31 +61,29 @@ export function buildGraph(path: string, canonical: string) {
   const sameAs = (PROPERTY.sameAs || []).filter((u) => /^https:\/\//.test(u));
 
   const org = {
-    '@type': 'LocalBusiness',
+    '@type': 'Organization',
     '@id': ID.org,
     name: `${PROPERTY.brand.name} Leasing`,
     alternateName: PROPERTY.brand.name,
-    description: `Leasing office for ${PROPERTY.brand.name}, a commercial building on a 24 m wide north-facing road in Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital. Floors of ${MARKETING_AREA.gross} for lease, whole or in part.`,
+    description: `Leasing enquiries for ${PROPERTY.brand.name}, a commercial building on a 24 m wide north-facing road in Bada Lalpur, Varanasi, opposite the upcoming Apollo Hospital. Floors of ${MARKETING_AREA.gross} for lease, whole or in part.`,
     url: `${SEO_DOMAIN}/`,
     logo: abs(PROPERTY.images.logo),
     image: [PROPERTY.images.og, ...RENDERS.slice(0, 3).map((r) => abs(r.src))],
     telephone: PROPERTY.contact.phoneE164,
     ...(PROPERTY.contact.publicEmail ? { email: PROPERTY.contact.publicEmail } : {}),
     address: address(),
-    ...(geo() ? { geo: geo() } : {}),
-    hasMap: PROPERTY.address.googleMapsUrl,
     areaServed: [
       { '@type': 'City', name: 'Varanasi' },
       { '@type': 'AdministrativeArea', name: 'Uttar Pradesh' },
     ],
-    contactPoint: [PROPERTY.contact.phoneE164, PROPERTY.contact.phone2E164].map((telephone) => ({
+    contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'leasing enquiries',
-      telephone,
+      telephone: PROPERTY.contact.phoneE164,
+      ...(PROPERTY.contact.publicEmail ? { email: PROPERTY.contact.publicEmail } : {}),
       areaServed: 'IN',
       availableLanguage: ['en', 'hi'],
-    })),
-    amenityFeature: amenities(),
+    },
     location: { '@id': ID.place },
     ...(sameAs.length ? { sameAs } : {}),
   };
@@ -141,7 +141,6 @@ export function buildGraph(path: string, canonical: string) {
   if (LISTING_PATHS.has(path)) graph.push(listing(path, canonical));
   if (!path) graph.push(...homeExtras(), sitePhotoGallery(canonical));
   if (path === 'walkthrough') graph.push(gallerySchema(), sitePhotoGallery(canonical));
-  if (path === 'leasing' || path === 'floor-plans') graph.push(...downloads(canonical));
 
   const faqs = faqForPath(path, landingByPath(path)?.faq ?? []);
   if (faqs.length) {
@@ -200,25 +199,6 @@ function breadcrumbs(path: string, canonical: string) {
     items.push({ '@type': 'ListItem', position: items.length + 1, name: crumbName(path), item: canonical });
   }
   return { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: items };
-}
-
-/** The two PDFs offered for download. */
-function downloads(canonical: string) {
-  const doc = (id: string, name: string, description: string, href: string) => ({
-    '@type': 'DigitalDocument',
-    '@id': `${canonical}#${id}`,
-    name,
-    description,
-    url: abs(href),
-    encodingFormat: 'application/pdf',
-    inLanguage: 'en-IN',
-    about: { '@id': ID.place },
-    publisher: { '@id': ID.org },
-  });
-  return [
-    doc('brochure', 'SHRINEVA brochure (PDF)', `Four pages: the building and its location, floor plans with areas, the project timeline with site photographs, and location details, with the leasing contacts. Renders are indicative and subject to change.`, BROCHURE.href),
-    doc('floor-plans-pdf', 'SHRINEVA floor plans (PDF)', 'Typical-floor, ground-level and site plans with areas and setbacks. Areas are approximate and subject to final measurement.', BROCHURE.plansHref),
-  ];
 }
 
 /** A real site photograph, dated: tells Google Images and AI assistants these show the building as it stands. */

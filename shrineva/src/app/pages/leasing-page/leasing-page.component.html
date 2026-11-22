@@ -5,8 +5,6 @@
   subtitle="Floors of about 3,500 sq ft (about 3,100 sq ft carpet), leased whole or in part, on long-term commercial leases.">
 </app-page-header>
 
-<app-space-finder></app-space-finder>
-
 <app-project-timeline [showPhotos]="false"></app-project-timeline>
 
 <section class="bg-paper py-10 md:py-14" aria-labelledby="lease-avail">
@@ -30,11 +28,11 @@
         </li>
       </ol>
 
-      <h2 class="mt-10 font-display text-[1.5rem] text-ink">Terms and documents</h2>
-      <p class="mt-2 max-w-md text-[0.95rem] leading-relaxed text-ink/75">{{ property.leasing.pricingDisclosure }}. The leasing team shares terms and technical specifications directly.</p>
+      <h2 class="mt-10 font-display text-[1.5rem] text-ink">Brochure and plans</h2>
+      <p class="mt-2 max-w-md text-[0.95rem] leading-relaxed text-ink/75">The brochure carries the floor plans, the specification and the project timeline. The leasing team shares the terms and the technical details directly.</p>
       <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <a [href]="brochure.href" target="_blank" rel="noopener" download class="btn-primary justify-center">Download brochure <span class="font-normal opacity-80">PDF</span></a>
-        <a [href]="brochure.plansHref" target="_blank" rel="noopener" download class="btn-outline justify-center">Floor plans <span class="font-normal opacity-70">PDF</span></a>
+        <button type="button" class="btn-primary justify-center" (click)="openBrochure()" aria-haspopup="dialog">Download the brochure <span class="font-normal opacity-80">PDF</span></button>
+        <button type="button" class="btn-outline justify-center" (click)="openVisit()" aria-haspopup="dialog">Schedule a visit</button>
       </div>
       <p class="mt-5 text-[0.92rem] text-ink/75">
         Or call <a [href]="'tel:' + property.contact.phoneE164" class="font-semibold text-ink underline-offset-4 hover:underline">{{ property.contact.phoneDisplay }}</a>,
@@ -43,8 +41,9 @@
       </p>
     </div>
 
-    <app-commercial-lead-form anchorId="enquiry" heading="Request leasing details"
-      intro="Tell us about your business and the area you need. We will call back with floor options and terms."></app-commercial-lead-form>
+    <div class="rounded-3xl border border-ink/10 bg-white p-5 shadow-soft md:p-7">
+      <app-lead-form anchorId="enquiry" source="leasing_page" idPrefix="lease"></app-lead-form>
+    </div>
   </div>
 </section>
 
